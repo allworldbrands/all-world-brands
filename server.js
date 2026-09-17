@@ -1,20 +1,314 @@
-const express=require("express"),path=require("path"),helmet=require("helmet"),morgan=require("morgan"),Database=require("better-sqlite3");
-const app=express(),db=new Database(process.env.DB_FILE||"allworldbrands.db"),PORT=process.env.PORT||3000;
-db.pragma("journal_mode=WAL");
-db.exec(`CREATE TABLE IF NOT EXISTS countries(id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT NOT NULL,code TEXT UNIQUE NOT NULL);
-CREATE TABLE IF NOT EXISTS brands(id INTEGER PRIMARY KEY AUTOINCREMENT,country_id INTEGER NOT NULL,name TEXT NOT NULL,category TEXT,description TEXT,website TEXT,verification TEXT DEFAULT 'Unverified');
-CREATE TABLE IF NOT EXISTS factories(id INTEGER PRIMARY KEY AUTOINCREMENT,brand_id INTEGER NOT NULL,name TEXT NOT NULL,country TEXT,address TEXT,source TEXT);
-CREATE TABLE IF NOT EXISTS applications(id INTEGER PRIMARY KEY AUTOINCREMENT,brand_name TEXT NOT NULL,country TEXT NOT NULL,owner_email TEXT NOT NULL,website TEXT,package TEXT DEFAULT 'Basic',status TEXT DEFAULT 'pending',created_at TEXT DEFAULT CURRENT_TIMESTAMP);`);
-const cs=[["United States","US"],["United Kingdom","GB"],["Germany","DE"],["France","FR"],["Italy","IT"],["Spain","ES"],["Türkiye","TR"],["Uzbekistan","UZ"],["Japan","JP"],["South Korea","KR"],["China","CN"],["India","IN"],["UAE","AE"],["Saudi Arabia","SA"],["Canada","CA"],["Australia","AU"],["Brazil","BR"],["Mexico","MX"],["Netherlands","NL"],["Switzerland","CH"],["Sweden","SE"],["Norway","NO"],["Poland","PL"],["Singapore","SG"],["Indonesia","ID"]];
-const ic=db.prepare("INSERT OR IGNORE INTO countries(name,code) VALUES(?,?)");cs.forEach(x=>ic.run(...x));
-if(!db.prepare("SELECT 1 FROM brands LIMIT 1").get()){const gid=db.prepare("SELECT id FROM countries WHERE code=?"),ib=db.prepare("INSERT INTO brands(country_id,name,category,description,website,verification) VALUES(?,?,?,?,?,?)");[
-["US","Apple","Electronics","Technology brand profile.","https://www.apple.com","Official source"],["US","Nike","Sports","Sportswear and footwear brand profile.","https://www.nike.com","Official source"],["GB","Burberry","Luxury","British luxury fashion brand profile.","https://www.burberry.com","Official source"],["DE","BMW","Automotive","Automotive brand profile.","https://www.bmw.com","Official source"],["FR","L'Oréal","Cosmetics","Beauty brand profile.","https://www.loreal.com","Official source"],["IT","Ferrari","Automotive","Automotive brand profile.","https://www.ferrari.com","Official source"],["TR","Arçelik","Home","Home appliances brand profile.","https://www.arcelik.com.tr","Official source"],["UZ","Artel","Electronics","Consumer electronics brand profile.","https://artelelectronics.com","Brand provided"],["JP","Toyota","Automotive","Automotive brand profile.","https://global.toyota","Official source"],["KR","Samsung","Electronics","Technology brand profile.","https://www.samsung.com","Official source"],["CN","Huawei","Electronics","Technology brand profile.","https://www.huawei.com","Official source"],["IN","Tata","Industrial","Business group profile.","https://www.tata.com","Official source"]].forEach(x=>ib.run(gid.get(x[0]).id,...x.slice(1)));}
-app.use(helmet({contentSecurityPolicy:false}));app.use(morgan("tiny"));app.use(express.json());app.use(express.static(path.join(__dirname,"public")));
-app.get("/api/health",(q,r)=>r.json({ok:true,service:"ALL WORLD BRANDS API"}));
-app.get("/api/countries",(q,r)=>r.json(db.prepare("SELECT * FROM countries ORDER BY name").all()));
-app.get("/api/countries/:id/brands",(q,r)=>r.json(db.prepare("SELECT * FROM brands WHERE country_id=? ORDER BY name").all(q.params.id)));
-app.get("/api/brands/:id",(q,r)=>{let b=db.prepare("SELECT b.*,c.name country FROM brands b JOIN countries c ON c.id=b.country_id WHERE b.id=?").get(q.params.id);if(!b)return r.status(404).json({error:"Brand not found"});b.factories=db.prepare("SELECT * FROM factories WHERE brand_id=?").all(q.params.id);r.json(b)});
-app.get("/api/search",(q,r)=>{let s=`%${q.query.q||""}%`;r.json(db.prepare("SELECT b.id,b.name,b.category,c.name country,b.verification FROM brands b JOIN countries c ON c.id=b.country_id WHERE b.name LIKE ? OR b.category LIKE ? OR c.name LIKE ? LIMIT 50").all(s,s,s))});
-app.post("/api/applications",(q,r)=>{let x=q.body||{};if(!x.brand_name||!x.country||!x.owner_email)return r.status(400).json({error:"Required fields missing"});let i=db.prepare("INSERT INTO applications(brand_name,country,owner_email,website,package) VALUES(?,?,?,?,?)").run(x.brand_name,x.country,x.owner_email,x.website||"",x.package||"Basic");r.status(201).json({id:i.lastInsertRowid,status:"pending"})});
-app.get("/api/admin/applications",(q,r)=>r.json(db.prepare("SELECT * FROM applications ORDER BY created_at DESC").all()));
-app.get("*",(q,r)=>r.sendFile(path.join(__dirname,"public","index.html")));app.listen(PORT,()=>console.log("ALL WORLD BRANDS: http://localhost:"+PORT));
+const express = require("express");
+const path = require("path");
+const helmet = require("helmet");
+const morgan = require("morgan");
+const Database = require("better-sqlite3");
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+const DB_FILE =
+  process.env.DB_FILE || path.join(__dirname, "allworldbrands.db");
+
+const db = new Database(DB_FILE);
+
+db.pragma("journal_mode = WAL");
+
+db.exec(`
+CREATE TABLE IF NOT EXISTS countries (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  code TEXT UNIQUE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS brands (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  country_id INTEGER NOT NULL,
+  name TEXT NOT NULL,
+  category TEXT,
+  description TEXT,
+  website TEXT,
+  verification TEXT DEFAULT 'Unverified',
+  FOREIGN KEY(country_id) REFERENCES countries(id)
+);
+
+CREATE TABLE IF NOT EXISTS factories (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  brand_id INTEGER NOT NULL,
+  name TEXT NOT NULL,
+  country TEXT,
+  address TEXT,
+  source TEXT,
+  FOREIGN KEY(brand_id) REFERENCES brands(id)
+);
+
+CREATE TABLE IF NOT EXISTS applications (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  brand_name TEXT NOT NULL,
+  country TEXT NOT NULL,
+  owner_email TEXT NOT NULL,
+  website TEXT,
+  package TEXT DEFAULT 'Basic',
+  status TEXT DEFAULT 'pending',
+  created_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
+`);
+
+const countries = [
+  ["Afghanistan","AF"],["Albania","AL"],["Algeria","DZ"],
+  ["Andorra","AD"],["Angola","AO"],["Argentina","AR"],
+  ["Armenia","AM"],["Australia","AU"],["Austria","AT"],
+  ["Azerbaijan","AZ"],["Bahamas","BS"],["Bahrain","BH"],
+  ["Bangladesh","BD"],["Belarus","BY"],["Belgium","BE"],
+  ["Belize","BZ"],["Benin","BJ"],["Bolivia","BO"],
+  ["Bosnia and Herzegovina","BA"],["Botswana","BW"],
+  ["Brazil","BR"],["Brunei","BN"],["Bulgaria","BG"],
+  ["Cambodia","KH"],["Cameroon","CM"],["Canada","CA"],
+  ["Chile","CL"],["China","CN"],["Colombia","CO"],
+  ["Costa Rica","CR"],["Croatia","HR"],["Cuba","CU"],
+  ["Cyprus","CY"],["Czech Republic","CZ"],["Denmark","DK"],
+  ["Dominican Republic","DO"],["Ecuador","EC"],["Egypt","EG"],
+  ["Estonia","EE"],["Ethiopia","ET"],["Finland","FI"],
+  ["France","FR"],["Georgia","GE"],["Germany","DE"],
+  ["Ghana","GH"],["Greece","GR"],["Guatemala","GT"],
+  ["Honduras","HN"],["Hong Kong","HK"],["Hungary","HU"],
+  ["Iceland","IS"],["India","IN"],["Indonesia","ID"],
+  ["Iran","IR"],["Iraq","IQ"],["Ireland","IE"],
+  ["Israel","IL"],["Italy","IT"],["Jamaica","JM"],
+  ["Japan","JP"],["Jordan","JO"],["Kazakhstan","KZ"],
+  ["Kenya","KE"],["Kuwait","KW"],["Kyrgyzstan","KG"],
+  ["Laos","LA"],["Latvia","LV"],["Lebanon","LB"],
+  ["Libya","LY"],["Lithuania","LT"],["Luxembourg","LU"],
+  ["Malaysia","MY"],["Maldives","MV"],["Malta","MT"],
+  ["Mauritius","MU"],["Mexico","MX"],["Moldova","MD"],
+  ["Monaco","MC"],["Mongolia","MN"],["Montenegro","ME"],
+  ["Morocco","MA"],["Mozambique","MZ"],["Myanmar","MM"],
+  ["Namibia","NA"],["Nepal","NP"],["Netherlands","NL"],
+  ["New Zealand","NZ"],["Nicaragua","NI"],["Nigeria","NG"],
+  ["North Macedonia","MK"],["Norway","NO"],["Oman","OM"],
+  ["Pakistan","PK"],["Panama","PA"],["Paraguay","PY"],
+  ["Peru","PE"],["Philippines","PH"],["Poland","PL"],
+  ["Portugal","PT"],["Qatar","QA"],["Romania","RO"],
+  ["Russia","RU"],["Rwanda","RW"],["Saudi Arabia","SA"],
+  ["Senegal","SN"],["Serbia","RS"],["Singapore","SG"],
+  ["Slovakia","SK"],["Slovenia","SI"],["South Africa","ZA"],
+  ["South Korea","KR"],["Spain","ES"],["Sri Lanka","LK"],
+  ["Sudan","SD"],["Sweden","SE"],["Switzerland","CH"],
+  ["Syria","SY"],["Taiwan","TW"],["Tajikistan","TJ"],
+  ["Tanzania","TZ"],["Thailand","TH"],["Tunisia","TN"],
+  ["Türkiye","TR"],["Turkmenistan","TM"],["Uganda","UG"],
+  ["Ukraine","UA"],["United Arab Emirates","AE"],
+  ["United Kingdom","GB"],["United States","US"],
+  ["Uruguay","UY"],["Uzbekistan","UZ"],["Venezuela","VE"],
+  ["Vietnam","VN"],["Yemen","YE"],["Zambia","ZM"],
+  ["Zimbabwe","ZW"]
+];
+
+const insertCountry = db.prepare(
+  "INSERT OR IGNORE INTO countries (name, code) VALUES (?, ?)"
+);
+
+const insertCountries = db.transaction((items) => {
+  for (const item of items) {
+    insertCountry.run(item[0], item[1]);
+  }
+});
+
+insertCountries(countries);
+
+const seedBrands = [
+  ["US","Apple","Electronics","Technology brand profile.","https://www.apple.com"],
+  ["US","Nike","Sports","Sportswear brand profile.","https://www.nike.com"],
+  ["GB","Burberry","Luxury","British luxury fashion brand.","https://www.burberry.com"],
+  ["DE","BMW","Automotive","German automotive brand.","https://www.bmw.com"],
+  ["FR","L'Oréal","Cosmetics","Beauty brand profile.","https://www.loreal.com"],
+  ["IT","Ferrari","Automotive","Italian automotive brand.","https://www.ferrari.com"],
+  ["TR","Arçelik","Home","Home appliances brand.","https://www.arcelik.com.tr"],
+  ["UZ","Artel","Electronics","Uzbek consumer electronics brand.","https://artelelectronics.com"],
+  ["JP","Toyota","Automotive","Japanese automotive brand.","https://global.toyota"],
+  ["KR","Samsung","Electronics","Technology brand.","https://www.samsung.com"],
+  ["CN","Huawei","Electronics","Technology brand.","https://www.huawei.com"],
+  ["IN","Tata","Industrial","Business group profile.","https://www.tata.com"]
+];
+
+const insertBrand = db.prepare(`
+  INSERT INTO brands
+  (country_id, name, category, description, website, verification)
+  VALUES (?, ?, ?, ?, ?, ?)
+`);
+
+const brandCount =
+  db.prepare("SELECT COUNT(*) AS count FROM brands").get().count;
+
+if (brandCount === 0) {
+  const getCountry = db.prepare(
+    "SELECT id FROM countries WHERE code = ?"
+  );
+
+  for (const b of seedBrands) {
+    const country = getCountry.get(b[0]);
+
+    if (country) {
+      insertBrand.run(
+        country.id,
+        b[1],
+        b[2],
+        b[3],
+        b[4],
+        "Official source"
+      );
+    }
+  }
+}
+
+app.use(helmet({ contentSecurityPolicy: false }));
+app.use(morgan("tiny"));
+app.use(express.json({ limit: "1mb" }));
+app.use(express.urlencoded({ extended: true }));
+
+app.use(
+  express.static(path.join(__dirname, "public"))
+);
+
+app.get("/api/health", (req, res) => {
+  res.json({
+    ok: true,
+    service: "ALL WORLD BRANDS API"
+  });
+});
+
+app.get("/api/countries", (req, res) => {
+  const rows = db.prepare(
+    "SELECT * FROM countries ORDER BY name COLLATE NOCASE"
+  ).all();
+
+  res.json(rows);
+});
+
+app.get("/api/countries/:id/brands", (req, res) => {
+  const rows = db.prepare(`
+    SELECT * FROM brands
+    WHERE country_id = ?
+    ORDER BY name COLLATE NOCASE
+  `).all(req.params.id);
+
+  res.json(rows);
+});
+
+app.get("/api/brands/:id", (req, res) => {
+  const brand = db.prepare(`
+    SELECT
+      b.*,
+      c.name AS country,
+      c.code AS country_code
+    FROM brands b
+    JOIN countries c
+      ON c.id = b.country_id
+    WHERE b.id = ?
+  `).get(req.params.id);
+
+  if (!brand) {
+    return res.status(404).json({
+      error: "Brand not found"
+    });
+  }
+
+  brand.factories = db.prepare(
+    "SELECT * FROM factories WHERE brand_id = ? ORDER BY name"
+  ).all(req.params.id);
+
+  res.json(brand);
+});
+
+app.get("/api/search", (req, res) => {
+  const q = String(req.query.q || "").trim();
+
+  if (!q) {
+    return res.json([]);
+  }
+
+  const s = `%${q}%`;
+
+  const rows = db.prepare(`
+    SELECT
+      b.id,
+      b.name,
+      b.category,
+      b.description,
+      b.website,
+      b.verification,
+      c.name AS country,
+      c.code AS country_code
+    FROM brands b
+    JOIN countries c
+      ON c.id = b.country_id
+    WHERE b.name LIKE ?
+       OR b.category LIKE ?
+       OR b.description LIKE ?
+       OR c.name LIKE ?
+    ORDER BY b.name COLLATE NOCASE
+    LIMIT 50
+  `).all(s, s, s, s);
+
+  res.json(rows);
+});
+
+app.post("/api/applications", (req, res) => {
+  const x = req.body || {};
+
+  if (!x.brand_name || !x.country || !x.owner_email) {
+    return res.status(400).json({
+      error: "brand_name, country and owner_email are required"
+    });
+  }
+
+  const result = db.prepare(`
+    INSERT INTO applications
+    (brand_name, country, owner_email, website, package)
+    VALUES (?, ?, ?, ?, ?)
+  `).run(
+    String(x.brand_name).trim(),
+    String(x.country).trim(),
+    String(x.owner_email).trim(),
+    String(x.website || "").trim(),
+    String(x.package || "Basic").trim()
+  );
+
+  res.status(201).json({
+    id: result.lastInsertRowid,
+    status: "pending",
+    message: "Application received"
+  });
+});
+
+app.get("/api/admin/applications", (req, res) => {
+  const rows = db.prepare(
+    "SELECT * FROM applications ORDER BY created_at DESC"
+  ).all();
+
+  res.json(rows);
+});
+
+// Frontend fallback
+app.use((req, res, next) => {
+  if (req.method !== "GET") {
+    return next();
+  }
+
+  res.sendFile(
+    path.join(__dirname, "public", "index.html")
+  );
+});
+
+app.use((err, req, res, next) => {
+  console.error(err);
+
+  res.status(500).json({
+    error: "Internal server error"
+  });
+});
+
+app.listen(PORT, () => {
+  console.log(
+    `ALL WORLD BRANDS running on port ${PORT}`
+  );
+});
