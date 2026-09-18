@@ -5,7 +5,6 @@ const morgan = require("morgan");
 const Database = require("better-sqlite3");
 
 const app = express();
-
 const PORT = process.env.PORT || 3000;
 
 /* =========================
@@ -342,11 +341,9 @@ app.use(
   })
 );
 
-/* =====================================================
-   ADMIN AUTHENTICATION
-   IMPORTANT:
-   ADMIN ROUTES COME BEFORE PUBLIC STATIC FILES
-===================================================== */
+/* =========================
+   ADMIN AUTH
+========================= */
 
 const ADMIN_USER =
   process.env.ADMIN_USER || "admin";
@@ -432,9 +429,9 @@ function adminAuth(req, res, next) {
   next();
 }
 
-/* =====================================================
-   PROTECTED ADMIN PAGE
-===================================================== */
+/* =========================
+   ADMIN PAGE
+========================= */
 
 app.get(
   "/admin",
@@ -481,9 +478,9 @@ app.get(
   }
 );
 
-/* =====================================================
-   PROTECTED ADMIN STATIC FILES
-===================================================== */
+/* =========================
+   ADMIN STATIC
+========================= */
 
 app.use(
   "/admin",
@@ -501,7 +498,7 @@ app.use(
 );
 
 /* =========================
-   PUBLIC STATIC FILES
+   PUBLIC STATIC
 ========================= */
 
 app.use(
@@ -528,7 +525,7 @@ app.get(
 );
 
 /* =========================
-   COUNTRIES API
+   COUNTRIES
 ========================= */
 
 app.get(
@@ -689,9 +686,9 @@ app.post(
   }
 );
 
-/* =====================================================
-   ADMIN API
-===================================================== */
+/* =========================
+   ADMIN BRANDS
+========================= */
 
 app.get(
   "/api/admin/brands",
