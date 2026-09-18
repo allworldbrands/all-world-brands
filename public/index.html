@@ -1,19 +1,783 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ALL WORLD BRANDS</title><style>
-body{margin:0;font:16px system-ui;background:#f5f7fb;color:#182235}header{background:#101827;color:white;padding:18px 5%}.nav{max-width:1200px;margin:auto;display:flex;justify-content:space-between}.logo{font-weight:900}.logo span{color:#72a0ff}main{max-width:1200px;margin:auto;padding:40px 5%}h1{font-size:clamp(36px,6vw,64px);line-height:1.02}.search{display:flex;gap:10px;max-width:700px}.search input,input,select{padding:14px;border:1px solid #dfe4ec;border-radius:10px;flex:1}.btn{background:#215df2;color:white;border:0;padding:13px 18px;border-radius:10px;font-weight:700}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}.card,.panel{background:white;border:1px solid #e1e6ee;border-radius:16px;padding:20px}.card{cursor:pointer}.muted{color:#6c7789;font-size:13px}.badge{background:#edf2ff;color:#2551bd;border-radius:20px;padding:5px 8px;font-size:11px}.hidden{display:none}.form{display:grid;gap:12px;max-width:650px}@media(max-width:600px){.search{flex-direction:column}}
-</style></head><body><header><div class="nav"><div class="logo">ALL <span>WORLD BRANDS</span></div><div>allworldbrands.net</div></div></header><main>
-<h1>Discover brands around the world.</h1><p class="muted">Countries → brands → factories → sources. Advertising and verification remain separate.</p>
-<div class="search"><input id="q" placeholder="Search brand, country or category"><button class="btn" onclick="search()">Search</button></div><div id="results" class="panel hidden"></div>
-<section id="countries"><h2>Countries</h2><div id="cg" class="grid"></div></section>
-<section id="brands" class="hidden"><button class="btn" onclick="back()">← Countries</button><h2 id="ct"></h2><div id="bg" class="grid"></div><div id="detail" class="panel hidden"></div></section>
-<section id="add"><h2>Add your brand</h2><div class="panel"><form class="form" onsubmit="apply(event)"><input id="bn" placeholder="Brand name" required><input id="co" placeholder="Country" required><input id="em" type="email" placeholder="Owner email" required><input id="web" placeholder="Official website"><select id="pk"><option>Basic</option><option>Business</option><option>Premium</option></select><button class="btn">Submit for review</button><div id="msg"></div></form></div></section></main>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>ALL WORLD BRANDS</title>
+
+<style>
+body{
+  margin:0;
+  font:16px system-ui;
+  background:#f5f7fb;
+  color:#182235;
+}
+
+header{
+  background:#101827;
+  color:white;
+  padding:18px 5%;
+}
+
+.nav{
+  max-width:1200px;
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+}
+
+.logo{
+  font-weight:900;
+}
+
+.logo span{
+  color:#72a0ff;
+}
+
+main{
+  max-width:1200px;
+  margin:auto;
+  padding:40px 5%;
+}
+
+h1{
+  font-size:clamp(36px,6vw,64px);
+  line-height:1.02;
+}
+
+.search{
+  display:flex;
+  gap:10px;
+  max-width:700px;
+}
+
+.search input,
+input,
+select{
+  padding:14px;
+  border:1px solid #dfe4ec;
+  border-radius:10px;
+  flex:1;
+  box-sizing:border-box;
+  width:100%;
+}
+
+.btn{
+  background:#215df2;
+  color:white;
+  border:0;
+  padding:13px 18px;
+  border-radius:10px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.btn:hover{
+  opacity:.9;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:
+    repeat(auto-fill,minmax(210px,1fr));
+  gap:14px;
+}
+
+.card,
+.panel{
+  background:white;
+  border:1px solid #e1e6ee;
+  border-radius:16px;
+  padding:20px;
+}
+
+.card{
+  cursor:pointer;
+}
+
+.card:hover{
+  box-shadow:0 5px 20px rgba(0,0,0,.06);
+}
+
+.muted{
+  color:#6c7789;
+  font-size:13px;
+}
+
+.badge{
+  background:#edf2ff;
+  color:#2551bd;
+  border-radius:20px;
+  padding:5px 8px;
+  font-size:11px;
+}
+
+.price{
+  font-size:32px;
+  font-weight:900;
+  margin:8px 0;
+}
+
+.form{
+  display:grid;
+  gap:12px;
+  max-width:650px;
+}
+
+.hidden{
+  display:none;
+}
+
+.success{
+  margin-top:10px;
+  padding:12px;
+  background:#eaf8ef;
+  color:#18733a;
+  border-radius:10px;
+}
+
+.error{
+  margin-top:10px;
+  padding:12px;
+  background:#fff0f0;
+  color:#b42318;
+  border-radius:10px;
+}
+
+@media(max-width:600px){
+
+  .nav{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .search{
+    flex-direction:column;
+  }
+
+  .search .btn{
+    width:100%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="nav">
+
+    <div class="logo">
+      ALL <span>WORLD BRANDS</span>
+    </div>
+
+    <div>
+      allworldbrands.net
+    </div>
+
+  </div>
+</header>
+
+<main>
+
+<h1>
+  Discover brands around the world.
+</h1>
+
+<p class="muted">
+  Countries → brands → factories → sources.
+  Advertising and verification remain separate.
+</p>
+
+<!-- SEARCH -->
+
+<div class="search">
+
+  <input
+    id="q"
+    placeholder="Search brand or country"
+  >
+
+  <button
+    class="btn"
+    onclick="searchBrands()"
+  >
+    Search
+  </button>
+
+</div>
+
+<div
+  id="results"
+  class="panel hidden"
+  style="margin-top:20px"
+></div>
+
+
+<!-- COUNTRIES -->
+
+<section id="countries">
+
+<h2>Countries</h2>
+
+<div
+  id="cg"
+  class="grid"
+></div>
+
+</section>
+
+
+<!-- BRANDS -->
+
+<section
+  id="brandsSection"
+  class="hidden"
+>
+
+<button
+  class="btn"
+  onclick="backToCountries()"
+>
+← Countries
+</button>
+
+<h2 id="ct"></h2>
+
+<div
+  id="bg"
+  class="grid"
+></div>
+
+<div
+  id="detail"
+  class="panel hidden"
+  style="margin-top:20px"
+></div>
+
+</section>
+
+
+<!-- ADD BRAND -->
+
+<section id="add">
+
+<h2>
+  Add your brand
+</h2>
+
+<div class="panel">
+
+  <p class="muted">
+    Submit your brand for review and listing.
+  </p>
+
+  <div class="price">
+    $1.00
+  </div>
+
+  <p class="muted">
+    One-time submission fee
+  </p>
+
+  <form
+    class="form"
+    onsubmit="apply(event)"
+  >
+
+    <input
+      id="bn"
+      placeholder="Brand name"
+      required
+    >
+
+    <input
+      id="co"
+      placeholder="Country"
+      required
+    >
+
+    <input
+      id="em"
+      type="email"
+      placeholder="Owner email"
+      required
+    >
+
+    <input
+      id="ph"
+      placeholder="Phone number"
+    >
+
+    <input
+      id="web"
+      placeholder="Official website"
+    >
+
+    <select id="pk">
+
+      <option value="Basic">
+        Basic — $1.00
+      </option>
+
+    </select>
+
+    <button
+      class="btn"
+      type="submit"
+    >
+      Submit for $1.00
+    </button>
+
+    <div
+      id="msg"
+    ></div>
+
+  </form>
+
+</div>
+
+</section>
+
+</main>
+
+
 <script>
-const f={US:"🇺🇸",GB:"🇬🇧",DE:"🇩🇪",FR:"🇫🇷",IT:"🇮🇹",ES:"🇪🇸",TR:"🇹🇷",UZ:"🇺🇿",JP:"🇯🇵",KR:"🇰🇷",CN:"🇨🇳",IN:"🇮🇳",AE:"🇦🇪",SA:"🇸🇦",CA:"🇨🇦",AU:"🇦🇺",BR:"🇧🇷",MX:"🇲🇽",NL:"🇳🇱",CH:"🇨🇭",SE:"🇸🇪",NO:"🇳🇴",PL:"🇵🇱",SG:"🇸🇬",ID:"🇮🇩"};
-const esc=x=>String(x??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
-async function load(){let d=await fetch("/api/countries").then(r=>r.json());cg.innerHTML=d.map(c=>`<div class=card onclick="brands(${c.id},'${esc(c.name)}')"><div style="font-size:28px">${f[c.code]||"🌍"}</div><h3>${esc(c.name)}</h3></div>`).join("")} 
-async function brands(id,n){countries.classList.add("hidden");brandsSection=true;document.getElementById("brands").classList.remove("hidden");ct.textContent=n;let d=await fetch("/api/countries/"+id+"/brands").then(r=>r.json());bg.innerHTML=d.map(b=>`<div class=card onclick="show(${b.id})"><h3>${esc(b.name)}</h3><p class=muted>${esc(b.category)}</p><span class=badge>${esc(b.verification)}</span></div>`).join("")}
-async function show(id){let b=await fetch("/api/brands/"+id).then(r=>r.json());detail.classList.remove("hidden");detail.innerHTML=`<h2>${esc(b.name)}</h2><p>${esc(b.description)}</p><p><b>Country:</b> ${esc(b.country)}</p><p><b>Category:</b> ${esc(b.category)}</p><p><b>Verification:</b> ${esc(b.verification)}</p>${b.website?`<a href="${esc(b.website)}" target=_blank>Official website</a>`:""}<h3>Factories</h3><p class=muted>${b.factories.length?"Factory records will appear here as they are verified.":"No verified factory records yet."}</p>`}
-function back(){document.getElementById("brands").classList.add("hidden");countries.classList.remove("hidden")}
-async function search(){let qv=q.value.trim();if(!qv)return;let d=await fetch("/api/search?q="+encodeURIComponent(qv)).then(r=>r.json());results.classList.remove("hidden");results.innerHTML=d.map(b=>`<div style="padding:10px;border-bottom:1px solid #eee" onclick="show(${b.id})"><b>${esc(b.name)}</b> · ${esc(b.country)} · ${esc(b.category)}</div>`).join("")||"No results."}
-async function apply(e){e.preventDefault();let r=await fetch("/api/applications",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({brand_name:bn.value,country:co.value,owner_email:em.value,website:web.value,package:pk.value})});let d=await r.json();msg.textContent=r.ok?"Application #"+d.id+" submitted for review.":d.error}
-load();
-</script></body></html>
+
+/* =========================
+   FLAGS
+========================= */
+
+const flags = {
+
+  US:"🇺🇸",
+  GB:"🇬🇧",
+  DE:"🇩🇪",
+  FR:"🇫🇷",
+  IT:"🇮🇹",
+  ES:"🇪🇸",
+  TR:"🇹🇷",
+  UZ:"🇺🇿",
+  JP:"🇯🇵",
+  KR:"🇰🇷",
+  CN:"🇨🇳",
+  IN:"🇮🇳",
+  AE:"🇦🇪",
+  SA:"🇸🇦",
+  CA:"🇨🇦",
+  AU:"🇦🇺",
+  BR:"🇧🇷",
+  MX:"🇲🇽",
+  NL:"🇳🇱",
+  CH:"🇨🇭",
+  SE:"🇸🇪",
+  NO:"🇳🇴",
+  PL:"🇵🇱",
+  SG:"🇸🇬",
+  ID:"🇮🇩"
+
+};
+
+
+/* =========================
+   ESCAPE HTML
+========================= */
+
+function esc(value){
+
+  return String(value ?? "")
+    .replace(/[&<>"']/g, function(m){
+
+      return {
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+
+      }[m];
+
+    });
+
+}
+
+
+/* =========================
+   LOAD COUNTRIES
+========================= */
+
+async function loadCountries(){
+
+  try{
+
+    const response =
+      await fetch("/api/countries");
+
+    const data =
+      await response.json();
+
+    document.getElementById("cg")
+      .innerHTML = data.map(function(c){
+
+        return `
+          <div
+            class="card"
+            onclick="loadBrands(${c.id}, '${esc(c.name)}')"
+          >
+
+            <div style="font-size:28px">
+              🌍
+            </div>
+
+            <h3>
+              ${esc(c.name)}
+            </h3>
+
+          </div>
+        `;
+
+      }).join("");
+
+  }catch(error){
+
+    console.error(error);
+
+  }
+
+}
+
+
+/* =========================
+   LOAD BRANDS
+========================= */
+
+async function loadBrands(id, countryName){
+
+  document
+    .getElementById("countries")
+    .classList.add("hidden");
+
+  document
+    .getElementById("brandsSection")
+    .classList.remove("hidden");
+
+  document
+    .getElementById("ct")
+    .textContent = countryName;
+
+  try{
+
+    const response =
+      await fetch(
+        "/api/countries/" + id + "/brands"
+      );
+
+    const data =
+      await response.json();
+
+    document.getElementById("bg")
+      .innerHTML = data.length
+
+      ? data.map(function(b){
+
+          return `
+            <div
+              class="card"
+              onclick="showBrand(${b.id})"
+            >
+
+              <h3>
+                ${esc(b.name)}
+              </h3>
+
+              <span class="badge">
+                Brand
+              </span>
+
+            </div>
+          `;
+
+        }).join("")
+
+      : `
+        <div class="panel">
+          No brands listed yet.
+        </div>
+      `;
+
+  }catch(error){
+
+    console.error(error);
+
+  }
+
+}
+
+
+/* =========================
+   BRAND DETAILS
+========================= */
+
+async function showBrand(id){
+
+  try{
+
+    const response =
+      await fetch("/api/brands/" + id);
+
+    const b =
+      await response.json();
+
+    const detail =
+      document.getElementById("detail");
+
+    detail.classList.remove("hidden");
+
+    detail.innerHTML = `
+
+      <h2>
+        ${esc(b.name)}
+      </h2>
+
+      <p>
+        ${esc(b.description || "No description available.")}
+      </p>
+
+      <p>
+        <b>Country:</b>
+        ${esc(b.country_name || "")}
+      </p>
+
+      ${
+        b.website
+
+        ? `
+          <p>
+            <a
+              href="${esc(b.website)}"
+              target="_blank"
+              rel="noopener"
+            >
+              Official website
+            </a>
+          </p>
+        `
+
+        : ""
+      }
+
+    `;
+
+  }catch(error){
+
+    console.error(error);
+
+  }
+
+}
+
+
+/* =========================
+   BACK
+========================= */
+
+function backToCountries(){
+
+  document
+    .getElementById("brandsSection")
+    .classList.add("hidden");
+
+  document
+    .getElementById("countries")
+    .classList.remove("hidden");
+
+}
+
+
+/* =========================
+   SEARCH
+========================= */
+
+async function searchBrands(){
+
+  const value =
+    document
+      .getElementById("q")
+      .value
+      .trim();
+
+  if(!value){
+
+    return;
+
+  }
+
+  try{
+
+    const response =
+      await fetch(
+        "/api/search?q=" +
+        encodeURIComponent(value)
+      );
+
+    const data =
+      await response.json();
+
+    const results =
+      document.getElementById("results");
+
+    results.classList.remove("hidden");
+
+    results.innerHTML =
+      data.length
+
+      ? data.map(function(b){
+
+          return `
+            <div
+              style="
+                padding:10px;
+                border-bottom:1px solid #eee;
+                cursor:pointer
+              "
+              onclick="showBrand(${b.id})"
+            >
+
+              <b>
+                ${esc(b.name)}
+              </b>
+
+              ·
+
+              ${esc(b.country_name || "")}
+
+            </div>
+          `;
+
+        }).join("")
+
+      : "No results.";
+
+  }catch(error){
+
+    console.error(error);
+
+  }
+
+}
+
+
+/* =========================
+   APPLY
+========================= */
+
+async function apply(event){
+
+  event.preventDefault();
+
+  const msg =
+    document.getElementById("msg");
+
+  msg.className = "";
+  msg.textContent = "Sending...";
+
+  const data = {
+
+    name:
+      document.getElementById("bn").value,
+
+    email:
+      document.getElementById("em").value,
+
+    phone:
+      document.getElementById("ph").value,
+
+    message:
+
+      "Brand: " +
+      document.getElementById("bn").value +
+
+      "\nCountry: " +
+      document.getElementById("co").value +
+
+      "\nWebsite: " +
+      document.getElementById("web").value +
+
+      "\nPackage: " +
+      document.getElementById("pk").value +
+
+      "\nPrice: $1.00"
+
+  };
+
+  try{
+
+    const response =
+      await fetch(
+        "/api/applications",
+        {
+          method:"POST",
+
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+
+          body:
+            JSON.stringify(data)
+        }
+      );
+
+    const result =
+      await response.json();
+
+    if(response.ok){
+
+      msg.className = "success";
+
+      msg.textContent =
+        "Application #" +
+        result.id +
+        " submitted successfully.";
+
+      document
+        .querySelector("form")
+        .reset();
+
+    }else{
+
+      msg.className = "error";
+
+      msg.textContent =
+        result.error ||
+        "Something went wrong.";
+
+    }
+
+  }catch(error){
+
+    console.error(error);
+
+    msg.className = "error";
+
+    msg.textContent =
+      "Connection error. Please try again.";
+
+  }
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+loadCountries();
+
+</script>
+
+</body>
+</html>
