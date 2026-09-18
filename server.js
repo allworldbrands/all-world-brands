@@ -1269,16 +1269,16 @@ app.put(
    ADMIN PAGE
    ===================================================== */
 
+appapp.get("/admin", adminAuth, (req, res) => {
+  res.sendFile(
+    path.join(__dirname, "public", "admin", "index.html")
+  );
+});
+
 app.use(
   "/admin",
   adminAuth,
-  express.static(
-    path.join(
-      __dirname,
-      "public",
-      "admin"
-    )
-  )
+  express.static(path.join(__dirname, "public", "admin"))
 );
 
 /* =====================================================
