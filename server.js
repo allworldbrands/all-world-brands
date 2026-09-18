@@ -2,370 +2,588 @@ const express = require("express");
 const path = require("path");
 const helmet = require("helmet");
 const morgan = require("morgan");
-const Database = require("better-sqlite3");
+const sqlite3 = require("sqlite3").verbose();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
 const SITE_URL = "https://allworldbrands.net";
 
 app.disable("x-powered-by");
 
-/* DATABASE */
-const db = new Database(path.join(__dirname, "allworldbrands.db"));
-db.pragma("journal_mode = WAL");
+/* =====================================================
+DATABASE
+===================================================== */
 
-/* TABLES */
-db.exec(`
-  CREATE TABLE IF NOT EXISTS countries (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL UNIQUE
-  );
-
-  CREATE TABLE IF NOT EXISTS brands (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    country_id INTEGER,
-    description TEXT,
-    website TEXT,
-    logo TEXT,
-    FOREIGN KEY(country_id) REFERENCES countries(id)
-  );
-
-  CREATE TABLE IF NOT EXISTS factories (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    brand_id INTEGER,
-    country_id INTEGER,
-    description TEXT,
-    address TEXT,
-    FOREIGN KEY(brand_id) REFERENCES brands(id),
-    FOREIGN KEY(country_id) REFERENCES countries(id)
-  );
-
-  CREATE TABLE IF NOT EXISTS applications (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT,
-    email TEXT,
-    phone TEXT,
-    message TEXT,
-    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    status TEXT DEFAULT 'new'
-  );
-`);
-
-/* COUNTRIES */
-const countryData = [
-  "Afghanistan","AF",
-  "Albania","AL",
-  "Algeria","DZ",
-  "American Samoa","AS",
-  "Andorra","AD",
-  "Angola","AO",
-  "Anguilla","AI",
-  "Antarctica","AQ",
-  "Antigua and Barbuda","AG",
-  "Argentina","AR",
-  "Armenia","AM",
-  "Aruba","AW",
-  "Australia","AU",
-  "Austria","AT",
-  "Azerbaijan","AZ",
-  "Bahamas","BS",
-  "Bahrain","BH",
-  "Bangladesh","BD",
-  "Barbados","BB",
-  "Belarus","BY",
-  "Belgium","BE",
-  "Belize","BZ",
-  "Benin","BJ",
-  "Bermuda","BM",
-  "Bhutan","BT",
-  "Bolivia","BO",
-  "Bonaire, Sint Eustatius and Saba","BQ",
-  "Bosnia and Herzegovina","BA",
-  "Botswana","BW",
-  "Bouvet Island","BV",
-  "Brazil","BR",
-  "British Indian Ocean Territory","IO",
-  "British Virgin Islands","VG",
-  "Brunei","BN",
-  "Bulgaria","BG",
-  "Burkina Faso","BF",
-  "Burundi","BI",
-  "Cambodia","KH",
-  "Cameroon","CM",
-  "Canada","CA",
-  "Cape Verde","CV",
-  "Cayman Islands","KY",
-  "Central African Republic","CF",
-  "Chad","TD",
-  "Chile","CL",
-  "China","CN",
-  "Christmas Island","CX",
-  "Cocos (Keeling) Islands","CC",
-  "Colombia","CO",
-  "Comoros","KM",
-  "Congo","CG",
-  "Congo, Democratic Republic of the","CD",
-  "Cook Islands","CK",
-  "Costa Rica","CR",
-  "Croatia","HR",
-  "Cuba","CU",
-  "Curaçao","CW",
-  "Cyprus","CY",
-  "Czech Republic","CZ",
-  "Côte d’Ivoire","CI",
-  "Denmark","DK",
-  "Djibouti","DJ",
-  "Dominica","DM",
-  "Dominican Republic","DO",
-  "Ecuador","EC",
-  "Egypt","EG",
-  "El Salvador","SV",
-  "Equatorial Guinea","GQ",
-  "Eritrea","ER",
-  "Estonia","EE",
-  "Eswatini","SZ",
-  "Ethiopia","ET",
-  "Falkland Islands","FK",
-  "Faroe Islands","FO",
-  "Fiji","FJ",
-  "Finland","FI",
-  "France","FR",
-  "French Guiana","GF",
-  "French Polynesia","PF",
-  "French Southern Territories","TF",
-  "Gabon","GA",
-  "Gambia","GM",
-  "Georgia","GE",
-  "Germany","DE",
-  "Ghana","GH",
-  "Gibraltar","GI",
-  "Greece","GR",
-  "Greenland","GL",
-  "Grenada","GD",
-  "Guadeloupe","GP",
-  "Guam","GU",
-  "Guatemala","GT",
-  "Guernsey","GG",
-  "Guinea","GN",
-  "Guinea-Bissau","GW",
-  "Guyana","GY",
-  "Haiti","HT",
-  "Heard Island and McDonald Islands","HM",
-  "Honduras","HN",
-  "Hong Kong","HK",
-  "Hungary","HU",
-  "Iceland","IS",
-  "India","IN",
-  "Indonesia","ID",
-  "Iran","IR",
-  "Iraq","IQ",
-  "Ireland","IE",
-  "Isle of Man","IM",
-  "Israel","IL",
-  "Italy","IT",
-  "Jamaica","JM",
-  "Japan","JP",
-  "Jersey","JE",
-  "Jordan","JO",
-  "Kazakhstan","KZ",
-  "Kenya","KE",
-  "Kiribati","KI",
-  "Kosovo","XK",
-  "Kuwait","KW",
-  "Kyrgyzstan","KG",
-  "Laos","LA",
-  "Latvia","LV",
-  "Lebanon","LB",
-  "Lesotho","LS",
-  "Liberia","LR",
-  "Libya","LY",
-  "Liechtenstein","LI",
-  "Lithuania","LT",
-  "Luxembourg","LU",
-  "Macau","MO",
-  "Madagascar","MG",
-  "Malawi","MW",
-  "Malaysia","MY",
-  "Maldives","MV",
-  "Mali","ML",
-  "Malta","MT",
-  "Marshall Islands","MH",
-  "Martinique","MQ",
-  "Mauritania","MR",
-  "Mauritius","MU",
-  "Mayotte","YT",
-  "Mexico","MX",
-  "Micronesia","FM",
-  "Moldova","MD",
-  "Monaco","MC",
-  "Mongolia","MN",
-  "Montenegro","ME",
-  "Montserrat","MS",
-  "Morocco","MA",
-  "Mozambique","MZ",
-  "Myanmar","MM",
-  "Namibia","NA",
-  "Nauru","NR",
-  "Nepal","NP",
-  "Netherlands","NL",
-  "New Caledonia","NC",
-  "New Zealand","NZ",
-  "Nicaragua","NI",
-  "Niger","NE",
-  "Nigeria","NG",
-  "Niue","NU",
-  "Norfolk Island","NF",
-  "North Korea","KP",
-  "North Macedonia","MK",
-  "Northern Mariana Islands","MP",
-  "Norway","NO",
-  "Oman","OM",
-  "Pakistan","PK",
-  "Palau","PW",
-  "Palestine","PS",
-  "Panama","PA",
-  "Papua New Guinea","PG",
-  "Paraguay","PY",
-  "Peru","PE",
-  "Philippines","PH",
-  "Pitcairn Islands","PN",
-  "Poland","PL",
-  "Portugal","PT",
-  "Puerto Rico","PR",
-  "Qatar","QA",
-  "Romania","RO",
-  "Russia","RU",
-  "Rwanda","RW",
-  "Réunion","RE",
-  "Saint Barthélemy","BL",
-  "Saint Helena, Ascension and Tristan da Cunha","SH",
-  "Saint Kitts and Nevis","KN",
-  "Saint Lucia","LC",
-  "Saint Martin","MF",
-  "Saint Pierre and Miquelon","PM",
-  "Saint Vincent and the Grenadines","VC",
-  "Samoa","WS",
-  "San Marino","SM",
-  "Sao Tome and Principe","ST",
-  "Saudi Arabia","SA",
-  "Senegal","SN",
-  "Serbia","RS",
-  "Seychelles","SC",
-  "Sierra Leone","SL",
-  "Singapore","SG",
-  "Sint Maarten (Dutch part)","SX",
-  "Slovakia","SK",
-  "Slovenia","SI",
-  "Solomon Islands","SB",
-  "Somalia","SO",
-  "South Africa","ZA",
-  "South Georgia and the South Sandwich Islands","GS",
-  "South Korea","KR",
-  "South Sudan","SS",
-  "Spain","ES",
-  "Sri Lanka","LK",
-  "Sudan","SD",
-  "Suriname","SR",
-  "Svalbard and Jan Mayen","SJ",
-  "Sweden","SE",
-  "Switzerland","CH",
-  "Syria","SY",
-  "Taiwan","TW",
-  "Tajikistan","TJ",
-  "Tanzania","TZ",
-  "Thailand","TH",
-  "Timor-Leste","TL",
-  "Togo","TG",
-  "Tokelau","TK",
-  "Tonga","TO",
-  "Trinidad and Tobago","TT",
-  "Tunisia","TN",
-  "Turkey","TR",
-  "Turkmenistan","TM",
-  "Turks and Caicos Islands","TC",
-  "Tuvalu","TV",
-  "U.S. Virgin Islands","VI",
-  "Uganda","UG",
-  "Ukraine","UA",
-  "United Arab Emirates","AE",
-  "United Kingdom","GB",
-  "United States","US",
-  "United States Minor Outlying Islands","UM",
-  "Uruguay","UY",
-  "Uzbekistan","UZ",
-  "Vanuatu","VU",
-  "Vatican City","VA",
-  "Venezuela","VE",
-  "Vietnam","VN",
-  "Wallis and Futuna","WF",
-  "Western Sahara","EH",
-  "Yemen","YE",
-  "Zambia","ZM",
-  "Zimbabwe","ZW",
-  "Åland Islands","AX"
-];
-
-const countryCodes = new Map();
-
-for (let i = 0; i < countryData.length; i += 2) {
-  countryCodes.set(countryData[i], countryData[i + 1]);
-}
-
-const insertCountry = db.prepare(
-  `INSERT OR IGNORE INTO countries (name) VALUES (?)`
+const db = new sqlite3.Database(
+  path.join(__dirname, "allworldbrands.db")
 );
 
-const insertCountries = db.transaction(() => {
-  for (let i = 0; i < countryData.length; i += 2) {
-    insertCountry.run(countryData[i]);
-  }
+/* =====================================================
+COUNTRIES + TERRITORIES
+===================================================== */
+
+const countries = [
+  ["Afghanistan", "AF"],
+  ["Åland Islands", "AX"],
+  ["Albania", "AL"],
+  ["Algeria", "DZ"],
+  ["American Samoa", "AS"],
+  ["Andorra", "AD"],
+  ["Angola", "AO"],
+  ["Anguilla", "AI"],
+  ["Antarctica", "AQ"],
+  ["Antigua and Barbuda", "AG"],
+  ["Argentina", "AR"],
+  ["Armenia", "AM"],
+  ["Aruba", "AW"],
+  ["Australia", "AU"],
+  ["Austria", "AT"],
+  ["Azerbaijan", "AZ"],
+  ["Bahamas", "BS"],
+  ["Bahrain", "BH"],
+  ["Bangladesh", "BD"],
+  ["Barbados", "BB"],
+  ["Belarus", "BY"],
+  ["Belgium", "BE"],
+  ["Belize", "BZ"],
+  ["Benin", "BJ"],
+  ["Bermuda", "BM"],
+  ["Bhutan", "BT"],
+  ["Bolivia", "BO"],
+  ["Bonaire, Sint Eustatius and Saba", "BQ"],
+  ["Bosnia and Herzegovina", "BA"],
+  ["Botswana", "BW"],
+  ["Bouvet Island", "BV"],
+  ["Brazil", "BR"],
+  ["British Indian Ocean Territory", "IO"],
+  ["British Virgin Islands", "VG"],
+  ["Brunei", "BN"],
+  ["Bulgaria", "BG"],
+  ["Burkina Faso", "BF"],
+  ["Burundi", "BI"],
+  ["Cabo Verde", "CV"],
+  ["Cambodia", "KH"],
+  ["Cameroon", "CM"],
+  ["Canada", "CA"],
+  ["Cayman Islands", "KY"],
+  ["Central African Republic", "CF"],
+  ["Chad", "TD"],
+  ["Chile", "CL"],
+  ["China", "CN"],
+  ["Christmas Island", "CX"],
+  ["Cocos (Keeling) Islands", "CC"],
+  ["Colombia", "CO"],
+  ["Comoros", "KM"],
+  ["Congo", "CG"],
+  ["Cook Islands", "CK"],
+  ["Costa Rica", "CR"],
+  ["Côte d'Ivoire", "CI"],
+  ["Croatia", "HR"],
+  ["Cuba", "CU"],
+  ["Curaçao", "CW"],
+  ["Cyprus", "CY"],
+  ["Czech Republic", "CZ"],
+  ["Democratic Republic of the Congo", "CD"],
+  ["Denmark", "DK"],
+  ["Djibouti", "DJ"],
+  ["Dominica", "DM"],
+  ["Dominican Republic", "DO"],
+  ["Ecuador", "EC"],
+  ["Egypt", "EG"],
+  ["El Salvador", "SV"],
+  ["Equatorial Guinea", "GQ"],
+  ["Eritrea", "ER"],
+  ["Estonia", "EE"],
+  ["Eswatini", "SZ"],
+  ["Ethiopia", "ET"],
+  ["Falkland Islands", "FK"],
+  ["Faroe Islands", "FO"],
+  ["Fiji", "FJ"],
+  ["Finland", "FI"],
+  ["France", "FR"],
+  ["French Guiana", "GF"],
+  ["French Polynesia", "PF"],
+  ["French Southern Territories", "TF"],
+  ["Gabon", "GA"],
+  ["Gambia", "GM"],
+  ["Georgia", "GE"],
+  ["Germany", "DE"],
+  ["Ghana", "GH"],
+  ["Gibraltar", "GI"],
+  ["Greece", "GR"],
+  ["Greenland", "GL"],
+  ["Grenada", "GD"],
+  ["Guadeloupe", "GP"],
+  ["Guam", "GU"],
+  ["Guatemala", "GT"],
+  ["Guernsey", "GG"],
+  ["Guinea", "GN"],
+  ["Guinea-Bissau", "GW"],
+  ["Guyana", "GY"],
+  ["Haiti", "HT"],
+  ["Heard Island and McDonald Islands", "HM"],
+  ["Holy See (Vatican City State)", "VA"],
+  ["Honduras", "HN"],
+  ["Hong Kong", "HK"],
+  ["Hungary", "HU"],
+  ["Iceland", "IS"],
+  ["India", "IN"],
+  ["Indonesia", "ID"],
+  ["Iran", "IR"],
+  ["Iraq", "IQ"],
+  ["Ireland", "IE"],
+  ["Isle of Man", "IM"],
+  ["Israel", "IL"],
+  ["Italy", "IT"],
+  ["Jamaica", "JM"],
+  ["Japan", "JP"],
+  ["Jersey", "JE"],
+  ["Jordan", "JO"],
+  ["Kazakhstan", "KZ"],
+  ["Kenya", "KE"],
+  ["Kiribati", "KI"],
+  ["North Korea", "KP"],
+  ["South Korea", "KR"],
+  ["Kosovo", "XK"],
+  ["Kuwait", "KW"],
+  ["Kyrgyzstan", "KG"],
+  ["Laos", "LA"],
+  ["Latvia", "LV"],
+  ["Lebanon", "LB"],
+  ["Lesotho", "LS"],
+  ["Liberia", "LR"],
+  ["Libya", "LY"],
+  ["Liechtenstein", "LI"],
+  ["Lithuania", "LT"],
+  ["Luxembourg", "LU"],
+  ["Macau", "MO"],
+  ["Madagascar", "MG"],
+  ["Malawi", "MW"],
+  ["Malaysia", "MY"],
+  ["Maldives", "MV"],
+  ["Mali", "ML"],
+  ["Malta", "MT"],
+  ["Marshall Islands", "MH"],
+  ["Martinique", "MQ"],
+  ["Mauritania", "MR"],
+  ["Mauritius", "MU"],
+  ["Mayotte", "YT"],
+  ["Mexico", "MX"],
+  ["Micronesia", "FM"],
+  ["Moldova", "MD"],
+  ["Monaco", "MC"],
+  ["Mongolia", "MN"],
+  ["Montenegro", "ME"],
+  ["Montserrat", "MS"],
+  ["Morocco", "MA"],
+  ["Mozambique", "MZ"],
+  ["Myanmar", "MM"],
+  ["Namibia", "NA"],
+  ["Nauru", "NR"],
+  ["Nepal", "NP"],
+  ["Netherlands", "NL"],
+  ["New Caledonia", "NC"],
+  ["New Zealand", "NZ"],
+  ["Nicaragua", "NI"],
+  ["Niger", "NE"],
+  ["Nigeria", "NG"],
+  ["Niue", "NU"],
+  ["Norfolk Island", "NF"],
+  ["North Macedonia", "MK"],
+  ["Northern Mariana Islands", "MP"],
+  ["Norway", "NO"],
+  ["Oman", "OM"],
+  ["Pakistan", "PK"],
+  ["Palau", "PW"],
+  ["Palestine", "PS"],
+  ["Panama", "PA"],
+  ["Papua New Guinea", "PG"],
+  ["Paraguay", "PY"],
+  ["Peru", "PE"],
+  ["Philippines", "PH"],
+  ["Pitcairn Islands", "PN"],
+  ["Poland", "PL"],
+  ["Portugal", "PT"],
+  ["Puerto Rico", "PR"],
+  ["Qatar", "QA"],
+  ["Réunion", "RE"],
+  ["Romania", "RO"],
+  ["Russia", "RU"],
+  ["Rwanda", "RW"],
+  ["Saint Barthélemy", "BL"],
+  ["Saint Helena", "SH"],
+  ["Saint Kitts and Nevis", "KN"],
+  ["Saint Lucia", "LC"],
+  ["Saint Martin", "MF"],
+  ["Saint Pierre and Miquelon", "PM"],
+  ["Saint Vincent and the Grenadines", "VC"],
+  ["Samoa", "WS"],
+  ["San Marino", "SM"],
+  ["São Tomé and Príncipe", "ST"],
+  ["Saudi Arabia", "SA"],
+  ["Senegal", "SN"],
+  ["Serbia", "RS"],
+  ["Seychelles", "SC"],
+  ["Sierra Leone", "SL"],
+  ["Singapore", "SG"],
+  ["Sint Maarten", "SX"],
+  ["Slovakia", "SK"],
+  ["Slovenia", "SI"],
+  ["Solomon Islands", "SB"],
+  ["Somalia", "SO"],
+  ["South Africa", "ZA"],
+  ["South Georgia and South Sandwich Islands", "GS"],
+  ["South Sudan", "SS"],
+  ["Spain", "ES"],
+  ["Sri Lanka", "LK"],
+  ["Sudan", "SD"],
+  ["Suriname", "SR"],
+  ["Svalbard and Jan Mayen", "SJ"],
+  ["Sweden", "SE"],
+  ["Switzerland", "CH"],
+  ["Syria", "SY"],
+  ["Taiwan", "TW"],
+  ["Tajikistan", "TJ"],
+  ["Tanzania", "TZ"],
+  ["Thailand", "TH"],
+  ["Timor-Leste", "TL"],
+  ["Togo", "TG"],
+  ["Tokelau", "TK"],
+  ["Tonga", "TO"],
+  ["Trinidad and Tobago", "TT"],
+  ["Tunisia", "TN"],
+  ["Turkey", "TR"],
+  ["Turkmenistan", "TM"],
+  ["Turks and Caicos Islands", "TC"],
+  ["Tuvalu", "TV"],
+  ["Uganda", "UG"],
+  ["Ukraine", "UA"],
+  ["United Arab Emirates", "AE"],
+  ["United Kingdom", "GB"],
+  ["United States", "US"],
+  ["United States Minor Outlying Islands", "UM"],
+  ["U.S. Virgin Islands", "VI"],
+  ["Uruguay", "UY"],
+  ["Uzbekistan", "UZ"],
+  ["Vanuatu", "VU"],
+  ["Venezuela", "VE"],
+  ["Vietnam", "VN"],
+  ["Wallis and Futuna", "WF"],
+  ["Western Sahara", "EH"],
+  ["Yemen", "YE"],
+  ["Zambia", "ZM"],
+  ["Zimbabwe", "ZW"]
+];
+
+/* =====================================================
+DATABASE TABLES
+===================================================== */
+
+db.serialize(() => {
+
+  db.run(`
+    CREATE TABLE IF NOT EXISTS countries (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT UNIQUE NOT NULL,
+      code TEXT
+    )
+  `);
+
+  db.run(`
+    CREATE TABLE IF NOT EXISTS brands (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      country_id INTEGER NOT NULL,
+      name TEXT NOT NULL,
+      logo TEXT DEFAULT '',
+      category TEXT DEFAULT '',
+      description TEXT,
+      website TEXT,
+      verification TEXT DEFAULT 'Unverified',
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY(country_id) REFERENCES countries(id)
+    )
+  `);
+
+  db.run(`
+    CREATE TABLE IF NOT EXISTS factories (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      brand_id INTEGER,
+      name TEXT,
+      city TEXT,
+      address TEXT,
+      phone TEXT,
+      website TEXT,
+      FOREIGN KEY(brand_id) REFERENCES brands(id)
+    )
+  `);
+
+  db.run(`
+    CREATE TABLE IF NOT EXISTS applications (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      brand_name TEXT NOT NULL,
+      country TEXT,
+      owner_name TEXT,
+      email TEXT,
+      phone TEXT,
+      website TEXT,
+      logo TEXT DEFAULT '',
+      description TEXT,
+      status TEXT DEFAULT 'new',
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
+  /* ===================================================
+  MIGRATIONS
+  =================================================== */
+
+  db.all(
+    `PRAGMA table_info(brands)`,
+    [],
+    (err, columns) => {
+
+      if (err) {
+        console.error(err);
+        return;
+      }
+
+      const existing = columns.map(
+        column => column.name
+      );
+
+      if (!existing.includes("logo")) {
+        db.run(
+          `ALTER TABLE brands ADD COLUMN logo TEXT DEFAULT ''`
+        );
+      }
+
+      if (!existing.includes("category")) {
+        db.run(
+          `ALTER TABLE brands ADD COLUMN category TEXT DEFAULT ''`
+        );
+      }
+
+      if (!existing.includes("verification")) {
+        db.run(
+          `ALTER TABLE brands ADD COLUMN verification TEXT DEFAULT 'Unverified'`
+        );
+      }
+    }
+  );
+
+  /* ===================================================
+  INSERT COUNTRIES
+  =================================================== */
+
+  const insertCountry = db.prepare(`
+    INSERT OR IGNORE INTO countries
+    (name, code)
+    VALUES (?, ?)
+  `);
+
+  countries.forEach(([name, code]) => {
+    insertCountry.run(name, code);
+  });
+
+  insertCountry.finalize();
+
+  /* ===================================================
+  STARTER BRANDS
+  =================================================== */
+
+  const starterBrands = [
+    [
+      "Apple",
+      "United States",
+      "",
+      "Technology",
+      "Technology company",
+      "https://www.apple.com"
+    ],
+    [
+      "Nike",
+      "United States",
+      "",
+      "Sportswear",
+      "Sportswear brand",
+      "https://www.nike.com"
+    ],
+    [
+      "Burberry",
+      "United Kingdom",
+      "",
+      "Fashion",
+      "Luxury fashion brand",
+      "https://www.burberry.com"
+    ],
+    [
+      "BMW",
+      "Germany",
+      "",
+      "Automotive",
+      "Automobile manufacturer",
+      "https://www.bmw.com"
+    ],
+    [
+      "L'Oréal",
+      "France",
+      "",
+      "Beauty",
+      "Beauty and cosmetics company",
+      "https://www.loreal.com"
+    ],
+    [
+      "Ferrari",
+      "Italy",
+      "",
+      "Automotive",
+      "Automobile manufacturer",
+      "https://www.ferrari.com"
+    ],
+    [
+      "Arçelik",
+      "Turkey",
+      "",
+      "Home Appliances",
+      "Home appliances",
+      "https://www.arcelik.com"
+    ],
+    [
+      "Artel",
+      "Uzbekistan",
+      "",
+      "Electronics",
+      "Electronics and home appliances",
+      "https://artelelectronics.com"
+    ],
+    [
+      "Toyota",
+      "Japan",
+      "",
+      "Automotive",
+      "Automobile manufacturer",
+      "https://www.toyota.com"
+    ],
+    [
+      "Samsung",
+      "South Korea",
+      "",
+      "Electronics",
+      "Electronics company",
+      "https://www.samsung.com"
+    ],
+    [
+      "Huawei",
+      "China",
+      "",
+      "Technology",
+      "Technology company",
+      "https://www.huawei.com"
+    ],
+    [
+      "Tata",
+      "India",
+      "",
+      "Conglomerate",
+      "Conglomerate",
+      "https://www.tata.com"
+    ]
+  ];
+
+  starterBrands.forEach(
+    (
+      [
+        name,
+        country,
+        logo,
+        category,
+        description,
+        website
+      ]
+    ) => {
+
+      db.get(
+        `SELECT id FROM countries WHERE name = ?`,
+        [country],
+        (err, row) => {
+
+          if (err || !row) {
+            return;
+          }
+
+          db.run(
+            `
+            INSERT INTO brands
+            (
+              country_id,
+              name,
+              logo,
+              category,
+              description,
+              website,
+              verification
+            )
+            SELECT ?, ?, ?, ?, ?, ?, ?
+            WHERE NOT EXISTS (
+              SELECT 1
+              FROM brands
+              WHERE country_id = ?
+              AND name = ?
+            )
+            `,
+            [
+              row.id,
+              name,
+              logo,
+              category,
+              description,
+              website,
+              "Official source",
+              row.id,
+              name
+            ]
+          );
+        }
+      );
+    }
+  );
 });
 
-insertCountries();
+/* =====================================================
+MIDDLEWARE
+===================================================== */
 
-/* STARTER BRANDS */
-const starterBrands = [
-  ["Apple","United States"],
-  ["Nike","United States"],
-  ["Burberry","United Kingdom"],
-  ["BMW","Germany"],
-  ["L'Oréal","France"],
-  ["Ferrari","Italy"],
-  ["Arçelik","Turkey"],
-  ["Artel","Uzbekistan"],
-  ["Toyota","Japan"],
-  ["Samsung","South Korea"],
-  ["Huawei","China"],
-  ["Tata","India"]
-];
-
-const findCountry = db.prepare(
-  `SELECT id FROM countries WHERE name = ?`
+app.use(
+  helmet({
+    contentSecurityPolicy: false
+  })
 );
 
-const insertBrand = db.prepare(
-  `INSERT INTO brands (name, country_id) VALUES (?, ?)`
+app.use(morgan("combined"));
+
+app.use(
+  express.json({
+    limit: "50kb"
+  })
 );
 
-for (const [brandName, countryName] of starterBrands) {
-  const country = findCountry.get(countryName);
+app.use(
+  express.urlencoded({
+    extended: true,
+    limit: "50kb"
+  })
+);
 
-  if (country) {
-    const exists = db.prepare(
-      `SELECT id FROM brands WHERE name = ?`
-    ).get(brandName);
+/* =====================================================
+MAIN DOMAIN REDIRECT
+===================================================== */
 
-    if (!exists) {
-      insertBrand.run(brandName, country.id);
-    }
-  }
-}
-
-/* OLD DOMAIN -> MAIN DOMAIN */
 app.use((req, res, next) => {
-  const host = String(req.headers.host || "")
+
+  const host = String(
+    req.headers.host || ""
+  )
     .toLowerCase()
     .split(":")[0];
 
@@ -382,315 +600,10 @@ app.use((req, res, next) => {
   next();
 });
 
-/* ROBOTS.TXT */
-app.get("/robots.txt", (req, res) => {
-  res.type("text/plain").send(`User-agent: *
-Allow: /
-Disallow: /admin
-Disallow: /api
-Sitemap: ${SITE_URL}/sitemap.xml
-`);
-});
+/* =====================================================
+ADMIN AUTH
+===================================================== */
 
-/* SITEMAP.XML */
-app.get("/sitemap.xml", (req, res) => {
-  const countries = db.prepare(
-    "SELECT id FROM countries ORDER BY id"
-  ).all();
-
-  const brands = db.prepare(
-    "SELECT id FROM brands ORDER BY id"
-  ).all();
-
-  let urls =
-    `<url>` +
-    `<loc>${SITE_URL}/</loc>` +
-    `<changefreq>daily</changefreq>` +
-    `<priority>1.0</priority>` +
-    `</url>`;
-
-  for (const country of countries) {
-    urls +=
-      `<url>` +
-      `<loc>${SITE_URL}/country/${country.id}</loc>` +
-      `<changefreq>weekly</changefreq>` +
-      `<priority>0.8</priority>` +
-      `</url>`;
-  }
-
-  for (const brand of brands) {
-    urls +=
-      `<url>` +
-      `<loc>${SITE_URL}/brand/${brand.id}</loc>` +
-      `<changefreq>weekly</changefreq>` +
-      `<priority>0.7</priority>` +
-      `</url>`;
-  }
-
-  res
-    .type("application/xml")
-    .send(
-      `<?xml version="1.0" encoding="UTF-8"?>` +
-      `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">` +
-      urls +
-      `</urlset>`
-    );
-});
-
-/* HTML ESCAPE */
-function htmlEscape(value) {
-  return String(value ?? "").replace(
-    /[&<>"]/g,
-    (m) => ({
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;"
-    }[m])
-  );
-}
-
-/* SEO COUNTRY PAGE */
-app.get("/country/:id", (req, res) => {
-  const country = db.prepare(
-    "SELECT * FROM countries WHERE id = ?"
-  ).get(req.params.id);
-
-  if (!country) {
-    return res.status(404).send("Country not found.");
-  }
-
-  const brands = db.prepare(`
-    SELECT id,name,description,website
-    FROM brands
-    WHERE country_id = ?
-    ORDER BY name COLLATE NOCASE
-  `).all(req.params.id);
-
-  const items = brands
-    .map(
-      (brand) =>
-        `<li><a href="/brand/${brand.id}">` +
-        `${htmlEscape(brand.name)}` +
-        `</a></li>`
-    )
-    .join("");
-
-  const title =
-    `${country.name} Brands | ALL WORLD BRANDS`;
-
-  const description =
-    `Discover brands and companies from ` +
-    `${country.name} on ALL WORLD BRANDS.`;
-
-  res.send(`
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-
-<title>${htmlEscape(title)}</title>
-
-<meta
-  name="description"
-  content="${htmlEscape(description)}"
->
-
-<meta
-  name="robots"
-  content="index,follow"
->
-
-<link
-  rel="canonical"
-  href="${SITE_URL}/country/${country.id}"
->
-
-<meta
-  property="og:title"
-  content="${htmlEscape(title)}"
->
-
-<meta
-  property="og:description"
-  content="${htmlEscape(description)}"
->
-
-<meta
-  property="og:url"
-  content="${SITE_URL}/country/${country.id}"
->
-
-</head>
-
-<body>
-
-<main>
-
-<h1>${htmlEscape(country.name)}</h1>
-
-<p>${htmlEscape(description)}</p>
-
-${
-  items
-    ? `<h2>Brands</h2><ul>${items}</ul>`
-    : `<p>No brands listed yet.</p>`
-}
-
-<p>
-<a href="/">← ALL WORLD BRANDS</a>
-</p>
-
-</main>
-
-</body>
-</html>
-`);
-});
-
-/* SEO BRAND PAGE */
-app.get("/brand/:id", (req, res) => {
-  const brand = db.prepare(`
-    SELECT
-      brands.*,
-      countries.name AS country_name,
-      countries.id AS country_id
-    FROM brands
-    LEFT JOIN countries
-      ON brands.country_id = countries.id
-    WHERE brands.id = ?
-  `).get(req.params.id);
-
-  if (!brand) {
-    return res.status(404).send("Brand not found.");
-  }
-
-  const title =
-    `${brand.name} | ALL WORLD BRANDS`;
-
-  const description =
-    `${brand.name} brand profile from ` +
-    `${brand.country_name || "the world"}.`;
-
-  const url =
-    `${SITE_URL}/brand/${brand.id}`;
-
-  res.send(`
-<!doctype html>
-<html lang="en">
-
-<head>
-
-<meta charset="utf-8">
-
-<meta
-  name="viewport"
-  content="width=device-width,initial-scale=1"
->
-
-<title>${htmlEscape(title)}</title>
-
-<meta
-  name="description"
-  content="${htmlEscape(description)}"
->
-
-<meta
-  name="robots"
-  content="index,follow"
->
-
-<link
-  rel="canonical"
-  href="${url}"
->
-
-<meta
-  property="og:title"
-  content="${htmlEscape(title)}"
->
-
-<meta
-  property="og:description"
-  content="${htmlEscape(description)}"
->
-
-<meta
-  property="og:url"
-  content="${url}"
->
-
-</head>
-
-<body>
-
-<main>
-
-<h1>${htmlEscape(brand.name)}</h1>
-
-<p>
-<strong>Country:</strong>
-<a href="/country/${brand.country_id}">
-${htmlEscape(brand.country_name || "")}
-</a>
-</p>
-
-<p>
-${htmlEscape(
-  brand.description ||
-  "Brand profile on ALL WORLD BRANDS."
-)}
-</p>
-
-${
-  brand.website
-    ? `<p>
-<a
-  href="${htmlEscape(brand.website)}"
-  target="_blank"
-  rel="noopener noreferrer"
->
-Official website
-</a>
-</p>`
-    : ""
-}
-
-<p>
-<a href="/">← ALL WORLD BRANDS</a>
-</p>
-
-</main>
-
-</body>
-</html>
-`);
-});
-
-/* MIDDLEWARE */
-app.use(
-  helmet({
-    contentSecurityPolicy: false
-  })
-);
-
-app.use(morgan("combined"));
-
-app.use(
-  express.json({
-    limit: "30kb"
-  })
-);
-
-app.use(
-  express.urlencoded({
-    extended: true,
-    limit: "30kb"
-  })
-);
-
-/* ADMIN AUTH */
 const ADMIN_USER =
   process.env.ADMIN_USER || "admin";
 
@@ -698,6 +611,7 @@ const ADMIN_PASSWORD =
   process.env.ADMIN_PASSWORD;
 
 function adminAuth(req, res, next) {
+
   if (!ADMIN_PASSWORD) {
     return res
       .status(500)
@@ -708,6 +622,7 @@ function adminAuth(req, res, next) {
     req.headers.authorization || "";
 
   if (!auth.startsWith("Basic ")) {
+
     res.setHeader(
       "WWW-Authenticate",
       'Basic realm="ALL WORLD BRANDS ADMIN"'
@@ -724,11 +639,13 @@ function adminAuth(req, res, next) {
   let decoded;
 
   try {
-    decoded =
-      Buffer
-        .from(encoded, "base64")
-        .toString("utf8");
+
+    decoded = Buffer
+      .from(encoded, "base64")
+      .toString("utf8");
+
   } catch (error) {
+
     res.setHeader(
       "WWW-Authenticate",
       'Basic realm="ALL WORLD BRANDS ADMIN"'
@@ -743,6 +660,7 @@ function adminAuth(req, res, next) {
     decoded.indexOf(":");
 
   if (separator === -1) {
+
     res.setHeader(
       "WWW-Authenticate",
       'Basic realm="ALL WORLD BRANDS ADMIN"'
@@ -763,6 +681,7 @@ function adminAuth(req, res, next) {
     username !== ADMIN_USER ||
     password !== ADMIN_PASSWORD
   ) {
+
     res.setHeader(
       "WWW-Authenticate",
       'Basic realm="ALL WORLD BRANDS ADMIN"'
@@ -776,11 +695,1347 @@ function adminAuth(req, res, next) {
   next();
 }
 
-/* ADMIN PAGE */
+/* =====================================================
+HEALTH
+===================================================== */
+
+app.get(
+  "/api/health",
+  (req, res) => {
+
+    res.json({
+      ok: true,
+      service: "ALL WORLD BRANDS",
+      countries: countries.length
+    });
+
+  }
+);
+
+/* =====================================================
+ROBOTS.TXT
+===================================================== */
+
+app.get(
+  "/robots.txt",
+  (req, res) => {
+
+    res.type("text/plain");
+
+    res.send(
+`User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api
+
+Sitemap: ${SITE_URL}/sitemap.xml
+`
+    );
+
+  }
+);
+
+/* =====================================================
+SITEMAP.XML
+===================================================== */
+
+app.get(
+  "/sitemap.xml",
+  (req, res) => {
+
+    db.all(
+      `
+      SELECT id
+      FROM countries
+      ORDER BY id
+      `,
+      [],
+      (countryError, countryRows) => {
+
+        if (countryError) {
+
+          return res
+            .status(500)
+            .send("Sitemap database error.");
+        }
+
+        db.all(
+          `
+          SELECT id
+          FROM brands
+          ORDER BY id
+          `,
+          [],
+          (brandError, brandRows) => {
+
+            if (brandError) {
+
+              return res
+                .status(500)
+                .send("Sitemap database error.");
+            }
+
+            let urls =
+              `<url>
+                <loc>${SITE_URL}/</loc>
+                <changefreq>daily</changefreq>
+                <priority>1.0</priority>
+              </url>`;
+
+            countryRows.forEach(country => {
+
+              urls += `
+              <url>
+                <loc>${SITE_URL}/country/${country.id}</loc>
+                <changefreq>weekly</changefreq>
+                <priority>0.8</priority>
+              </url>`;
+            });
+
+            brandRows.forEach(brand => {
+
+              urls += `
+              <url>
+                <loc>${SITE_URL}/brand/${brand.id}</loc>
+                <changefreq>weekly</changefreq>
+                <priority>0.7</priority>
+              </url>`;
+            });
+
+            res
+              .type("application/xml")
+              .send(
+`<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls}
+</urlset>`
+              );
+
+          }
+        );
+
+      }
+    );
+
+  }
+);
+
+/* =====================================================
+COUNTRIES
+===================================================== */
+
+app.get(
+  "/api/countries",
+  (req, res) => {
+
+    db.all(
+      `
+      SELECT
+        c.id,
+        c.name,
+        c.code,
+        COUNT(b.id) AS brand_count
+      FROM countries c
+      LEFT JOIN brands b
+        ON b.country_id = c.id
+      GROUP BY c.id
+      ORDER BY c.name COLLATE NOCASE
+      `,
+      [],
+      (err, rows) => {
+
+        if (err) {
+
+          console.error(err);
+
+          return res
+            .status(500)
+            .json({
+              error: "Database error"
+            });
+        }
+
+        res.json(rows);
+      }
+    );
+
+  }
+);
+
+/* =====================================================
+SINGLE COUNTRY
+===================================================== */
+
+app.get(
+  "/api/countries/:id",
+  (req, res) => {
+
+    db.get(
+      `
+      SELECT
+        id,
+        name,
+        code
+      FROM countries
+      WHERE id = ?
+      `,
+      [req.params.id],
+      (err, row) => {
+
+        if (err) {
+
+          return res
+            .status(500)
+            .json({
+              error: "Database error"
+            });
+        }
+
+        if (!row) {
+
+          return res
+            .status(404)
+            .json({
+              error: "Country not found"
+            });
+        }
+
+        res.json(row);
+      }
+    );
+
+  }
+);
+
+/* =====================================================
+COUNTRY BRANDS
+===================================================== */
+
+app.get(
+  "/api/countries/:id/brands",
+  (req, res) => {
+
+    db.all(
+      `
+      SELECT
+        b.id,
+        b.name,
+        b.logo,
+        b.category,
+        b.description,
+        b.website,
+        b.verification,
+        b.created_at,
+        c.id AS country_id,
+        c.name AS country,
+        c.code AS country_code
+      FROM brands b
+      JOIN countries c
+        ON c.id = b.country_id
+      WHERE b.country_id = ?
+      ORDER BY b.name COLLATE NOCASE
+      `,
+      [req.params.id],
+      (err, rows) => {
+
+        if (err) {
+
+          console.error(err);
+
+          return res
+            .status(500)
+            .json({
+              error: "Database error"
+            });
+        }
+
+        res.json(rows);
+      }
+    );
+
+  }
+);
+
+/* =====================================================
+BRAND BY ID
+===================================================== */
+
+app.get(
+  "/api/brands/:id",
+  (req, res) => {
+
+    db.get(
+      `
+      SELECT
+        b.id,
+        b.name,
+        b.logo,
+        b.category,
+        b.description,
+        b.website,
+        b.verification,
+        b.created_at,
+        c.id AS country_id,
+        c.name AS country,
+        c.code AS country_code
+      FROM brands b
+      JOIN countries c
+        ON c.id = b.country_id
+      WHERE b.id = ?
+      `,
+      [req.params.id],
+      (err, row) => {
+
+        if (err) {
+
+          return res
+            .status(500)
+            .json({
+              error: "Database error"
+            });
+        }
+
+        if (!row) {
+
+          return res
+            .status(404)
+            .json({
+              error: "Brand not found"
+            });
+        }
+
+        res.json(row);
+      }
+    );
+
+  }
+);
+
+/* =====================================================
+SEARCH
+===================================================== */
+
+app.get(
+  "/api/search",
+  (req, res) => {
+
+    const q =
+      String(req.query.q || "").trim();
+
+    if (!q) {
+      return res.json([]);
+    }
+
+    const like = `%${q}%`;
+
+    db.all(
+      `
+      SELECT
+        b.id,
+        b.name,
+        b.logo,
+        b.category,
+        b.description,
+        b.website,
+        b.verification,
+        c.id AS country_id,
+        c.name AS country,
+        c.code AS country_code
+      FROM brands b
+      JOIN countries c
+        ON c.id = b.country_id
+      WHERE
+        b.name LIKE ?
+        OR b.description LIKE ?
+        OR b.category LIKE ?
+        OR c.name LIKE ?
+      ORDER BY b.name COLLATE NOCASE
+      LIMIT 100
+      `,
+      [
+        like,
+        like,
+        like,
+        like
+      ],
+      (err, rows) => {
+
+        if (err) {
+
+          return res
+            .status(500)
+            .json({
+              error: "Database error"
+            });
+        }
+
+        res.json(rows);
+      }
+    );
+
+  }
+);
+
+/* =====================================================
+PUBLIC APPLICATION
+===================================================== */
+
+app.post(
+  "/api/applications",
+  (req, res) => {
+
+    const {
+      brand_name,
+      country,
+      owner_name,
+      email,
+      phone,
+      website,
+      logo,
+      description
+    } = req.body;
+
+    if (
+      !brand_name ||
+      !email
+    ) {
+
+      return res
+        .status(400)
+        .json({
+          ok: false,
+          error:
+            "Brand name and email are required"
+        });
+    }
+
+    const cleanBrand =
+      String(brand_name)
+        .trim()
+        .slice(0, 200);
+
+    const cleanEmail =
+      String(email)
+        .trim()
+        .slice(0, 200);
+
+    const cleanCountry =
+      String(country || "")
+        .trim()
+        .slice(0, 200);
+
+    const cleanOwner =
+      String(owner_name || "")
+        .trim()
+        .slice(0, 200);
+
+    const cleanPhone =
+      String(phone || "")
+        .trim()
+        .slice(0, 80);
+
+    const cleanWebsite =
+      String(website || "")
+        .trim()
+        .slice(0, 500);
+
+    const cleanLogo =
+      String(logo || "")
+        .trim()
+        .slice(0, 500);
+
+    const cleanDescription =
+      String(description || "")
+        .slice(0, 3000);
+
+    if (
+      !cleanBrand ||
+      !cleanEmail
+    ) {
+
+      return res
+        .status(400)
+        .json({
+          ok: false,
+          error:
+            "Brand name and email are required"
+        });
+    }
+
+    db.run(
+      `
+      INSERT INTO applications
+      (
+        brand_name,
+        country,
+        owner_name,
+        email,
+        phone,
+        website,
+        logo,
+        description
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      `,
+      [
+        cleanBrand,
+        cleanCountry,
+        cleanOwner,
+        cleanEmail,
+        cleanPhone,
+        cleanWebsite,
+        cleanLogo,
+        cleanDescription
+      ],
+      function (err) {
+
+        if (err) {
+
+          console.error(err);
+
+          return res
+            .status(500)
+            .json({
+              ok: false,
+              error:
+                "Could not save application"
+            });
+        }
+
+        res.json({
+          ok: true,
+          id: this.lastID,
+          message:
+            "Application received. Payment is not processed automatically yet."
+        });
+
+      }
+    );
+
+  }
+);
+
+/* =====================================================
+ADMIN — APPLICATIONS
+===================================================== */
+
+app.get(
+  "/api/admin/applications",
+  adminAuth,
+  (req, res) => {
+
+    db.all(
+      `
+      SELECT
+        id,
+        brand_name,
+        country,
+        owner_name,
+        owner_name AS owner_email,
+        email,
+        email AS applicant_email,
+        phone,
+        website,
+        logo,
+        description,
+        status,
+        created_at,
+        'Basic' AS package
+      FROM applications
+      ORDER BY id DESC
+      `,
+      [],
+      (err, rows) => {
+
+        if (err) {
+
+          console.error(err);
+
+          return res
+            .status(500)
+            .json({
+              error: "Database error"
+            });
+        }
+
+        res.json(rows);
+      }
+    );
+
+  }
+);
+
+/* =====================================================
+ADMIN — BRANDS
+===================================================== */
+
+app.get(
+  "/api/admin/brands",
+  adminAuth,
+  (req, res) => {
+
+    db.all(
+      `
+      SELECT
+        b.id,
+        b.name,
+        b.logo,
+        b.category,
+        b.description,
+        b.website,
+        b.verification,
+        b.created_at,
+        c.id AS country_id,
+        c.name AS country,
+        c.code AS country_code
+      FROM brands b
+      JOIN countries c
+        ON c.id = b.country_id
+      ORDER BY b.id DESC
+      `,
+      [],
+      (err, rows) => {
+
+        if (err) {
+
+          console.error(err);
+
+          return res
+            .status(500)
+            .json({
+              error: "Database error"
+            });
+        }
+
+        res.json(rows);
+      }
+    );
+
+  }
+);
+
+/* =====================================================
+ADMIN — ADD BRAND
+===================================================== */
+
+app.post(
+  "/api/admin/brands",
+  adminAuth,
+  (req, res) => {
+
+    const {
+      country_id,
+      country_code,
+      name,
+      logo,
+      category,
+      description,
+      website,
+      verification
+    } = req.body;
+
+    if (!name) {
+
+      return res
+        .status(400)
+        .json({
+          error:
+            "Brand name is required"
+        });
+    }
+
+    function createBrand(countryId) {
+
+      if (!countryId) {
+
+        return res
+          .status(400)
+          .json({
+            error:
+              "Valid country is required"
+          });
+      }
+
+      db.run(
+        `
+        INSERT INTO brands
+        (
+          country_id,
+          name,
+          logo,
+          category,
+          description,
+          website,
+          verification
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+        `,
+        [
+          countryId,
+          String(name).trim().slice(0, 200),
+          String(logo || "").trim().slice(0, 500),
+          String(category || "").trim().slice(0, 200),
+          String(description || "").slice(0, 3000),
+          String(website || "").trim().slice(0, 500),
+          String(
+            verification || "Unverified"
+          ).slice(0, 100)
+        ],
+        function (err) {
+
+          if (err) {
+
+            console.error(err);
+
+            return res
+              .status(500)
+              .json({
+                error:
+                  "Could not create brand"
+              });
+          }
+
+          res.json({
+            ok: true,
+            id: this.lastID
+          });
+
+        }
+      );
+    }
+
+    if (country_id) {
+      return createBrand(country_id);
+    }
+
+    if (country_code) {
+
+      db.get(
+        `
+        SELECT id
+        FROM countries
+        WHERE UPPER(code) = UPPER(?)
+        `,
+        [country_code],
+        (err, row) => {
+
+          if (err) {
+
+            return res
+              .status(500)
+              .json({
+                error:
+                  "Database error"
+              });
+          }
+
+          if (!row) {
+
+            return res
+              .status(400)
+              .json({
+                error:
+                  "Country code not found"
+              });
+          }
+
+          createBrand(row.id);
+        }
+      );
+
+      return;
+    }
+
+    return res
+      .status(400)
+      .json({
+        error:
+          "Country or country code is required"
+      });
+
+  }
+);
+
+/* =====================================================
+ADMIN — UPDATE BRAND
+===================================================== */
+
+app.put(
+  "/api/admin/brands/:id",
+  adminAuth,
+  (req, res) => {
+
+    const {
+      country_id,
+      country_code,
+      name,
+      logo,
+      category,
+      description,
+      website,
+      verification
+    } = req.body;
+
+    function updateBrand(countryId) {
+
+      if (!countryId || !name) {
+
+        return res
+          .status(400)
+          .json({
+            error:
+              "Country and brand name are required"
+          });
+      }
+
+      db.run(
+        `
+        UPDATE brands
+        SET
+          country_id = ?,
+          name = ?,
+          logo = ?,
+          category = ?,
+          description = ?,
+          website = ?,
+          verification = ?
+        WHERE id = ?
+        `,
+        [
+          countryId,
+          String(name).trim().slice(0, 200),
+          String(logo || "").trim().slice(0, 500),
+          String(category || "").trim().slice(0, 200),
+          String(description || "").slice(0, 3000),
+          String(website || "").trim().slice(0, 500),
+          String(
+            verification || "Unverified"
+          ).slice(0, 100),
+          req.params.id
+        ],
+        function (err) {
+
+          if (err) {
+
+            console.error(err);
+
+            return res
+              .status(500)
+              .json({
+                error:
+                  "Could not update brand"
+              });
+          }
+
+          res.json({
+            ok: true,
+            changes: this.changes
+          });
+
+        }
+      );
+    }
+
+    if (country_id) {
+      return updateBrand(country_id);
+    }
+
+    if (country_code) {
+
+      db.get(
+        `
+        SELECT id
+        FROM countries
+        WHERE UPPER(code) = UPPER(?)
+        `,
+        [country_code],
+        (err, row) => {
+
+          if (err) {
+
+            return res
+              .status(500)
+              .json({
+                error:
+                  "Database error"
+              });
+          }
+
+          if (!row) {
+
+            return res
+              .status(400)
+              .json({
+                error:
+                  "Country code not found"
+              });
+          }
+
+          updateBrand(row.id);
+        }
+      );
+
+      return;
+    }
+
+    return res
+      .status(400)
+      .json({
+        error:
+          "Country is required"
+      });
+
+  }
+);
+
+/* =====================================================
+ADMIN — DELETE BRAND
+===================================================== */
+
+app.delete(
+  "/api/admin/brands/:id",
+  adminAuth,
+  (req, res) => {
+
+    db.run(
+      `
+      DELETE FROM brands
+      WHERE id = ?
+      `,
+      [req.params.id],
+      function (err) {
+
+        if (err) {
+
+          console.error(err);
+
+          return res
+            .status(500)
+            .json({
+              error:
+                "Could not delete brand"
+            });
+        }
+
+        res.json({
+          ok: true,
+          changes: this.changes
+        });
+
+      }
+    );
+
+  }
+);
+
+/* =====================================================
+ADMIN — APPLICATION STATUS
+===================================================== */
+
+app.put(
+  "/api/admin/applications/:id",
+  adminAuth,
+  (req, res) => {
+
+    const { status } = req.body;
+
+    const allowed = [
+      "new",
+      "reviewing",
+      "approved",
+      "rejected"
+    ];
+
+    if (!allowed.includes(status)) {
+
+      return res
+        .status(400)
+        .json({
+          error:
+            "Invalid status"
+        });
+    }
+
+    db.run(
+      `
+      UPDATE applications
+      SET status = ?
+      WHERE id = ?
+      `,
+      [
+        status,
+        req.params.id
+      ],
+      function (err) {
+
+        if (err) {
+
+          console.error(err);
+
+          return res
+            .status(500)
+            .json({
+              error:
+                "Could not update application"
+            });
+        }
+
+        res.json({
+          ok: true,
+          changes: this.changes
+        });
+
+      }
+    );
+
+  }
+);
+
+/* =====================================================
+SEO HELPERS
+===================================================== */
+
+function htmlEscape(value) {
+
+  return String(value ?? "")
+    .replace(
+      /[&<>"]/g,
+      m => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;"
+      }[m])
+    );
+}
+
+/* =====================================================
+SEO COUNTRY PAGE
+===================================================== */
+
+app.get(
+  "/country/:id",
+  (req, res) => {
+
+    db.get(
+      `
+      SELECT
+        id,
+        name,
+        code
+      FROM countries
+      WHERE id = ?
+      `,
+      [req.params.id],
+      (err, country) => {
+
+        if (err) {
+          return res
+            .status(500)
+            .send("Database error");
+        }
+
+        if (!country) {
+          return res
+            .status(404)
+            .send("Country not found");
+        }
+
+        db.all(
+          `
+          SELECT
+            id,
+            name,
+            category,
+            description,
+            website,
+            logo
+          FROM brands
+          WHERE country_id = ?
+          ORDER BY name COLLATE NOCASE
+          `,
+          [country.id],
+          (brandErr, brands) => {
+
+            if (brandErr) {
+              return res
+                .status(500)
+                .send("Database error");
+            }
+
+            const countryName =
+              htmlEscape(country.name);
+
+            const title =
+              `${countryName} Brands | ALL WORLD BRANDS`;
+
+            const description =
+              `Discover brands from ${countryName} on ALL WORLD BRANDS.`;
+
+            const brandList =
+              brands
+                .map(
+                  brand =>
+                    `<li><a href="/brand/${brand.id}">${htmlEscape(brand.name)}</a></li>`
+                )
+                .join("");
+
+            res.send(
+`<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>${htmlEscape(title)}</title>
+
+<meta
+name="description"
+content="${htmlEscape(description)}"
+>
+
+<meta name="robots" content="index,follow">
+
+<link
+rel="canonical"
+href="${SITE_URL}/country/${country.id}"
+>
+
+<meta
+property="og:type"
+content="website"
+>
+
+<meta
+property="og:title"
+content="${htmlEscape(title)}"
+>
+
+<meta
+property="og:description"
+content="${htmlEscape(description)}"
+>
+
+<meta
+property="og:url"
+content="${SITE_URL}/country/${country.id}"
+>
+
+</head>
+
+<body>
+
+<h1>${countryName} Brands</h1>
+
+<p>
+Brands registered/listed from
+${countryName}.
+</p>
+
+<ul>
+${brandList || "<li>No brands listed yet.</li>"}
+</ul>
+
+<p>
+<a href="/">ALL WORLD BRANDS</a>
+</p>
+
+</body>
+</html>`
+            );
+          }
+        );
+
+      }
+    );
+
+  }
+);
+
+/* =====================================================
+SEO BRAND PAGE
+===================================================== */
+
+app.get(
+  "/brand/:id",
+  (req, res) => {
+
+    db.get(
+      `
+      SELECT
+        b.id,
+        b.name,
+        b.logo,
+        b.category,
+        b.description,
+        b.website,
+        b.verification,
+        c.name AS country,
+        c.code AS country_code
+      FROM brands b
+      JOIN countries c
+        ON c.id = b.country_id
+      WHERE b.id = ?
+      `,
+      [req.params.id],
+      (err, brand) => {
+
+        if (err) {
+          return res
+            .status(500)
+            .send("Database error");
+        }
+
+        if (!brand) {
+          return res
+            .status(404)
+            .send("Brand not found");
+        }
+
+        const brandName =
+          htmlEscape(brand.name);
+
+        const countryName =
+          htmlEscape(brand.country);
+
+        const rawDescription =
+          brand.description ||
+          `Information about ${brand.name} from ${brand.country}.`;
+
+        const description =
+          htmlEscape(rawDescription);
+
+        const title =
+          `${brand.name} | ${brand.country} | ALL WORLD BRANDS`;
+
+        const website =
+          brand.website
+            ? htmlEscape(brand.website)
+            : "";
+
+        const logo =
+          brand.logo
+            ? htmlEscape(brand.logo)
+            : "";
+
+        res.send(
+`<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+>
+
+<title>${htmlEscape(title)}</title>
+
+<meta
+name="description"
+content="${description}"
+>
+
+<meta
+name="robots"
+content="index,follow"
+>
+
+<link
+rel="canonical"
+href="${SITE_URL}/brand/${brand.id}"
+>
+
+<meta
+property="og:type"
+content="website"
+>
+
+<meta
+property="og:title"
+content="${htmlEscape(title)}"
+>
+
+<meta
+property="og:description"
+content="${description}"
+>
+
+<meta
+property="og:url"
+content="${SITE_URL}/brand/${brand.id}"
+>
+
+${
+  logo
+    ? `<meta property="og:image" content="${logo}">`
+    : ""
+}
+
+</head>
+
+<body>
+
+<main>
+
+<h1>${brandName}</h1>
+
+<p>
+Country: ${countryName}
+</p>
+
+${
+  brand.category
+    ? `<p>Category: ${htmlEscape(brand.category)}</p>`
+    : ""
+}
+
+<p>
+${description}
+</p>
+
+${
+  website
+    ? `<p><a href="${website}" rel="noopener noreferrer">Official website</a></p>`
+    : ""
+}
+
+<p>
+Verification:
+${htmlEscape(brand.verification || "Unverified")}
+</p>
+
+<p>
+<a href="/">ALL WORLD BRANDS</a>
+</p>
+
+</main>
+
+</body>
+
+</html>`
+        );
+
+      }
+    );
+
+  }
+);
+
+/* =====================================================
+ADMIN PAGE
+===================================================== */
+
+/* MUHIM: app.get ishlatiladi */
+
 app.get(
   "/admin",
   adminAuth,
   (req, res) => {
+
     res.setHeader(
       "Cache-Control",
       "no-store"
@@ -791,51 +2046,16 @@ app.get(
         __dirname,
         "public",
         "admin",
-        "admin.html"
+        "index.html"
       )
     );
+
   }
 );
 
-app.get(
-  "/admin/",
-  adminAuth,
-  (req, res) => {
-    res.setHeader(
-      "Cache-Control",
-      "no-store"
-    );
-
-    res.sendFile(
-      path.join(
-        __dirname,
-        "public",
-        "admin",
-        "admin.html"
-      )
-    );
-  }
-);
-
-app.get(
-  "/admin/admin.html",
-  adminAuth,
-  (req, res) => {
-    res.setHeader(
-      "Cache-Control",
-      "no-store"
-    );
-
-    res.sendFile(
-      path.join(
-        __dirname,
-        "public",
-        "admin",
-        "admin.html"
-      )
-    );
-  }
-);
+/* =====================================================
+ADMIN STATIC FILES
+===================================================== */
 
 app.use(
   "/admin",
@@ -845,388 +2065,35 @@ app.use(
       __dirname,
       "public",
       "admin"
-    ),
-    {
-      index: false
-    }
+    )
   )
 );
 
-/* PUBLIC STATIC */
+/* =====================================================
+PUBLIC FILES
+===================================================== */
+
 app.use(
   express.static(
-    path.join(__dirname, "public")
+    path.join(
+      __dirname,
+      "public"
+    )
   )
 );
 
-/* HEALTH */
-app.get(
-  "/api/health",
-  (req, res) => {
-    res.json({
-      ok: true,
-      service: "ALL WORLD BRANDS",
-      directoryEntries:
-        countryCodes.size
-    });
-  }
-);
+/* =====================================================
+FALLBACK
+===================================================== */
 
-/* COUNTRIES */
-app.get(
-  "/api/countries",
-  (req, res) => {
-    const rows = db.prepare(
-      `SELECT * FROM countries
-       ORDER BY name ASC`
-    ).all();
+/*
+  Express 5 da app.get("*") o'rniga /.*/
+  ishlatilmoqda.
+*/
 
-    res.json(
-      rows.map((row) => ({
-        ...row,
-        flag_code:
-          countryCodes.get(row.name) ||
-          null
-      }))
-    );
-  }
-);
-
-/* BRANDS BY COUNTRY */
-app.get(
-  "/api/countries/:id/brands",
-  (req, res) => {
-    const rows = db.prepare(`
-      SELECT
-        brands.*,
-        countries.name AS country_name
-      FROM brands
-      LEFT JOIN countries
-        ON brands.country_id = countries.id
-      WHERE brands.country_id = ?
-      ORDER BY brands.name ASC
-    `).all(req.params.id);
-
-    res.json(
-      rows.map((row) => ({
-        ...row,
-        country_code:
-          countryCodes.get(
-            row.country_name
-          ) || null
-      }))
-    );
-  }
-);
-
-/* BRAND DETAILS */
-app.get(
-  "/api/brands/:id",
-  (req, res) => {
-    const brand = db.prepare(`
-      SELECT
-        brands.*,
-        countries.name AS country_name
-      FROM brands
-      LEFT JOIN countries
-        ON brands.country_id = countries.id
-      WHERE brands.id = ?
-    `).get(req.params.id);
-
-    if (!brand) {
-      return res
-        .status(404)
-        .json({
-          error: "Brand not found"
-        });
-    }
-
-    brand.country_code =
-      countryCodes.get(
-        brand.country_name
-      ) || null;
-
-    res.json(brand);
-  }
-);
-
-/* SEARCH */
-app.get(
-  "/api/search",
-  (req, res) => {
-    const q =
-      String(req.query.q || "")
-        .trim();
-
-    if (!q) {
-      return res.json([]);
-    }
-
-    const search =
-      `%${q}%`;
-
-    const rows = db.prepare(`
-      SELECT
-        brands.id,
-        brands.name,
-        brands.description,
-        brands.website,
-        brands.logo,
-        countries.name AS country_name
-      FROM brands
-      LEFT JOIN countries
-        ON brands.country_id = countries.id
-      WHERE brands.name LIKE ?
-         OR countries.name LIKE ?
-      ORDER BY brands.name ASC
-      LIMIT 100
-    `).all(
-      search,
-      search
-    );
-
-    res.json(
-      rows.map((row) => ({
-        ...row,
-        country_code:
-          countryCodes.get(
-            row.country_name
-          ) || null
-      }))
-    );
-  }
-);
-
-/* APPLICATION */
-app.post(
-  "/api/applications",
-  (req, res) => {
-    const {
-      name,
-      email,
-      phone,
-      message
-    } = req.body;
-
-    if (!name || !email) {
-      return res
-        .status(400)
-        .json({
-          error:
-            "Name and email are required."
-        });
-    }
-
-    const cleanName =
-      String(name)
-        .trim()
-        .slice(0, 200);
-
-    const cleanEmail =
-      String(email)
-        .trim()
-        .slice(0, 200);
-
-    const cleanPhone =
-      String(phone || "")
-        .trim()
-        .slice(0, 80);
-
-    const cleanMessage =
-      String(message || "")
-        .slice(0, 3000);
-
-    if (
-      !cleanName ||
-      !cleanEmail
-    ) {
-      return res
-        .status(400)
-        .json({
-          error:
-            "Name and email are required."
-        });
-    }
-
-    const result =
-      db.prepare(`
-        INSERT INTO applications
-        (name,email,phone,message)
-        VALUES (?,?,?,?)
-      `).run(
-        cleanName,
-        cleanEmail,
-        cleanPhone,
-        cleanMessage
-      );
-
-    res.json({
-      success: true,
-      id: result.lastInsertRowid
-    });
-  }
-);
-
-/* ADMIN BRANDS */
-app.get(
-  "/api/admin/brands",
-  adminAuth,
-  (req, res) => {
-    const rows = db.prepare(`
-      SELECT
-        brands.*,
-        countries.name AS country_name
-      FROM brands
-      LEFT JOIN countries
-        ON brands.country_id = countries.id
-      ORDER BY brands.id DESC
-    `).all();
-
-    res.json(rows);
-  }
-);
-
-/* ADD BRAND */
-app.post(
-  "/api/admin/brands",
-  adminAuth,
-  (req, res) => {
-    const {
-      name,
-      country_id,
-      description,
-      website,
-      logo
-    } = req.body;
-
-    if (!name) {
-      return res
-        .status(400)
-        .json({
-          error:
-            "Brand name is required."
-        });
-    }
-
-    const result =
-      db.prepare(`
-        INSERT INTO brands
-        (
-          name,
-          country_id,
-          description,
-          website,
-          logo
-        )
-        VALUES (?,?,?,?,?)
-      `).run(
-        String(name)
-          .trim()
-          .slice(0, 200),
-
-        country_id || null,
-
-        String(description || "")
-          .slice(0, 3000),
-
-        String(website || "")
-          .trim()
-          .slice(0, 500),
-
-        String(logo || "")
-          .trim()
-          .slice(0, 500)
-      );
-
-    res.json({
-      success: true,
-      id: result.lastInsertRowid
-    });
-  }
-);
-
-/* DELETE BRAND */
-app.delete(
-  "/api/admin/brands/:id",
-  adminAuth,
-  (req, res) => {
-    db.prepare(
-      `DELETE FROM brands
-       WHERE id = ?`
-    ).run(req.params.id);
-
-    res.json({
-      success: true
-    });
-  }
-);
-
-/* ADMIN APPLICATIONS */
-app.get(
-  "/api/admin/applications",
-  adminAuth,
-  (req, res) => {
-    const rows =
-      db.prepare(
-        `SELECT * FROM applications
-         ORDER BY id DESC`
-      ).all();
-
-    res.json(rows);
-  }
-);
-
-/* UPDATE APPLICATION */
-app.patch(
-  "/api/admin/applications/:id",
-  adminAuth,
-  (req, res) => {
-    const { status } =
-      req.body;
-
-    db.prepare(`
-      UPDATE applications
-      SET status = ?
-      WHERE id = ?
-    `).run(
-      String(status || "new")
-        .slice(0, 50),
-
-      req.params.id
-    );
-
-    res.json({
-      success: true
-    });
-  }
-);
-
-/* DELETE APPLICATION */
-app.delete(
-  "/api/admin/applications/:id",
-  adminAuth,
-  (req, res) => {
-    db.prepare(
-      `DELETE FROM applications
-       WHERE id = ?`
-    ).run(req.params.id);
-
-    res.json({
-      success: true
-    });
-  }
-);
-
-/* PUBLIC FALLBACK */
 app.get(
   /.*/,
-  (req, res, next) => {
-    if (
-      req.path.startsWith("/api/") ||
-      req.path.startsWith("/admin")
-    ) {
-      return next();
-    }
+  (req, res) => {
 
     res.sendFile(
       path.join(
@@ -1235,42 +2102,67 @@ app.get(
         "index.html"
       )
     );
+
   }
 );
 
-/* 404 */
-app.use(
-  (req, res) => {
-    res
-      .status(404)
-      .send("Not found.");
-  }
-);
+/* =====================================================
+404 / ERROR
+===================================================== */
 
-/* ERROR HANDLER */
 app.use(
   (err, req, res, next) => {
+
     console.error(err);
+
+    if (res.headersSent) {
+      return next(err);
+    }
 
     res
       .status(500)
       .json({
-        error: "Server error"
+        error: "Internal server error"
       });
+
   }
 );
 
-/* START */
+/* =====================================================
+START SERVER
+===================================================== */
+
 app.listen(
   PORT,
   "0.0.0.0",
   () => {
+
     console.log(
-      `ALL WORLD BRANDS running on port ${PORT}`
+      "================================="
     );
 
     console.log(
-      `World directory entries: ${countryCodes.size}`
+      "ALL WORLD BRANDS"
     );
+
+    console.log(
+      "Server running on port:",
+      PORT
+    );
+
+    console.log(
+      "World entries loaded:",
+      countries.length
+    );
+
+    console.log(
+      "Canonical domain:",
+      SITE_URL
+    );
+
+    console.log(
+      "================================="
+    );
+
   }
 );
