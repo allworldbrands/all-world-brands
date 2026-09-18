@@ -4,16 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>ALL WORLD BRANDS — Global Brand Directory</title>
-
-<meta name="description"
-      content="ALL WORLD BRANDS — Discover brands from countries and territories around the world.">
+<title>ALL WORLD BRANDS</title>
 
 <style>
 *{
-    box-sizing:border-box;
     margin:0;
     padding:0;
+    box-sizing:border-box;
 }
 
 html{
@@ -22,120 +19,112 @@ html{
 
 body{
     font-family:Arial,Helvetica,sans-serif;
-    background:
-        radial-gradient(circle at 50% 0%,rgba(0,100,255,.22),transparent 35%),
-        radial-gradient(circle at 100% 40%,rgba(80,0,255,.16),transparent 35%),
-        #020817;
     color:#fff;
-    min-height:100vh;
+    background:#020817;
     overflow-x:hidden;
 }
 
-body:before{
-    content:"";
-    position:fixed;
-    inset:0;
-    pointer-events:none;
-    opacity:.25;
-    background-image:
-        radial-gradient(#fff 1px,transparent 1px);
-    background-size:70px 70px;
-    z-index:-1;
-}
-
-/* =========================
+/* ==============================
    HEADER
-========================= */
+============================== */
 
-header{
+.header{
     position:absolute;
+    z-index:50;
     top:0;
     left:0;
     width:100%;
-    z-index:20;
-    padding:20px 3%;
+    height:82px;
+    padding:0 3.5%;
     display:flex;
     align-items:center;
     justify-content:space-between;
+    background:linear-gradient(
+        180deg,
+        rgba(0,0,0,.65),
+        transparent
+    );
 }
 
 .logo{
     display:flex;
     align-items:center;
-    gap:12px;
+    gap:13px;
 }
 
-.logo-globe{
-    width:52px;
-    height:52px;
-    border:3px solid #00aaff;
+.logo-icon{
+    width:48px;
+    height:48px;
     border-radius:50%;
+    border:2px solid #00bfff;
     display:flex;
-    align-items:center;
     justify-content:center;
-    font-size:28px;
+    align-items:center;
+    font-size:26px;
     box-shadow:
-        0 0 15px #008cff,
-        inset 0 0 15px rgba(0,150,255,.3);
+        0 0 10px #00aaff,
+        inset 0 0 12px rgba(0,180,255,.3);
 }
 
-.logo-text{
-    font-weight:800;
-    font-size:25px;
-    letter-spacing:-1px;
+.logo-name{
+    font-size:22px;
+    font-weight:900;
+    letter-spacing:-.7px;
 }
 
-.logo-text span{
-    color:#00aaff;
+.logo-name span{
+    color:#00baff;
 }
 
 .logo-sub{
-    font-size:13px;
-    color:#d8e9ff;
-    margin-top:2px;
+    color:#c5d8ef;
+    font-size:10px;
+    letter-spacing:1.5px;
+    margin-top:3px;
 }
 
-nav{
+.nav{
     display:flex;
-    gap:34px;
     align-items:center;
+    gap:30px;
 }
 
-nav a{
+.nav a{
     color:#fff;
     text-decoration:none;
-    font-size:15px;
-    font-weight:600;
+    font-size:14px;
+    font-weight:700;
 }
 
-nav a:hover{
-    color:#00c8ff;
+.nav a:hover{
+    color:#00c5ff;
 }
 
 .menu{
     display:none;
-    font-size:31px;
+    font-size:28px;
     cursor:pointer;
 }
 
-/* =========================
+/* ==============================
    HERO
-========================= */
+============================== */
 
 .hero{
-    min-height:430px;
+    min-height:500px;
     position:relative;
-    overflow:hidden;
     display:flex;
     align-items:flex-end;
-    padding:130px 3% 32px;
+    padding:0 4% 48px;
+    overflow:hidden;
+
     background:
         linear-gradient(
             90deg,
-            rgba(0,8,25,.96) 0%,
-            rgba(0,12,35,.82) 32%,
-            rgba(0,20,50,.30) 65%,
-            rgba(0,0,0,.10) 100%
+            rgba(0,5,20,.97) 0%,
+            rgba(0,12,32,.82) 28%,
+            rgba(0,10,30,.38) 65%,
+            rgba(0,0,0,.22) 100%
         ),
         url("https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=2200&q=90")
         center/cover no-repeat;
@@ -144,157 +133,166 @@ nav a:hover{
 .hero:after{
     content:"";
     position:absolute;
-    inset:0;
-    background:
-        linear-gradient(180deg,transparent 55%,#020817 100%);
-    pointer-events:none;
+    left:0;
+    right:0;
+    bottom:0;
+    height:180px;
+    background:linear-gradient(
+        transparent,
+        #020817
+    );
 }
 
 .hero-content{
     position:relative;
-    z-index:2;
-    max-width:700px;
+    z-index:5;
+    width:720px;
+    max-width:100%;
 }
 
-.hero h1{
-    font-size:62px;
-    line-height:.98;
+.hero-title{
+    font-size:66px;
     font-weight:900;
-    letter-spacing:-3px;
-    margin-bottom:18px;
+    line-height:.95;
+    letter-spacing:-4px;
+    margin-bottom:20px;
 }
 
-.hero h1 span{
+.hero-title .blue{
     display:block;
     background:linear-gradient(
         90deg,
-        #00b7ff,
-        #426cff,
-        #a83cff
+        #00bfff,
+        #3678ff,
+        #9a42ff
     );
     -webkit-background-clip:text;
     color:transparent;
 }
 
-.hero p{
-    font-size:20px;
-    line-height:1.45;
-    color:#e0ecff;
+.hero-description{
     max-width:620px;
+    color:#d8e8ff;
+    font-size:18px;
+    line-height:1.45;
 }
 
-.search-box{
-    position:relative;
-    z-index:3;
+.search{
+    height:60px;
     margin-top:28px;
     width:100%;
-    height:58px;
     display:flex;
-    border:2px solid #00b7ff;
+    align-items:center;
+    border:2px solid #00aaff;
     border-radius:40px;
-    background:rgba(0,20,50,.78);
-    box-shadow:
-        0 0 15px rgba(0,160,255,.55),
-        inset 0 0 20px rgba(0,100,255,.18);
     overflow:hidden;
+    background:rgba(2,20,48,.86);
+    box-shadow:
+        0 0 20px rgba(0,160,255,.5),
+        inset 0 0 18px rgba(0,100,255,.18);
 }
 
 .search-icon{
     width:65px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:28px;
+    text-align:center;
+    font-size:24px;
 }
 
-.search-box input{
+.search input{
     flex:1;
-    background:transparent;
-    border:0;
-    outline:none;
-    color:white;
-    font-size:16px;
     min-width:0;
+    border:0;
+    outline:0;
+    color:#fff;
+    background:transparent;
+    font-size:15px;
 }
 
-.search-box input::placeholder{
-    color:#d3e1f8;
+.search input::placeholder{
+    color:#b8cbe5;
 }
 
-.search-box button{
-    width:165px;
+.search button{
+    width:145px;
+    height:100%;
     border:0;
     color:#fff;
-    font-size:16px;
-    font-weight:700;
+    font-weight:800;
+    font-size:14px;
     cursor:pointer;
     background:linear-gradient(
         90deg,
-        #009dff,
-        #743cff
+        #009eff,
+        #703bff
     );
 }
 
-/* =========================
+/* ==============================
    MAIN
-========================= */
+============================== */
 
-main{
-    width:100%;
-    padding:0 2.5% 50px;
+.main{
+    position:relative;
+    z-index:5;
+    padding:0 2.5% 55px;
+    background:
+        radial-gradient(
+            circle at 20% 0%,
+            rgba(0,130,255,.08),
+            transparent 35%
+        );
+}
+
+.section-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:20px;
 }
 
 .section-title{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin:12px 0 18px;
-}
-
-.title-left{
     display:flex;
     align-items:center;
     gap:13px;
 }
 
-.title-icon{
-    width:49px;
-    height:49px;
-    border:2px solid #00aaff;
+.section-globe{
+    width:46px;
+    height:46px;
     border-radius:50%;
+    border:2px solid #00aaff;
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:26px;
-    box-shadow:0 0 14px rgba(0,170,255,.6);
+    font-size:24px;
+    box-shadow:0 0 13px rgba(0,170,255,.6);
 }
 
 .section-title h2{
-    font-size:31px;
+    font-size:29px;
 }
 
-.country-count{
-    min-width:65px;
-    height:43px;
-    padding:0 18px;
+.badge{
+    height:42px;
+    min-width:66px;
+    padding:0 17px;
+    border-radius:25px;
     display:flex;
     align-items:center;
     justify-content:center;
-    border-radius:25px;
+    font-weight:900;
     background:linear-gradient(
         135deg,
-        #006eff,
-        #5e28ff
+        #007fff,
+        #6533ff
     );
-    border:1px solid #00aaff;
-    box-shadow:0 0 14px rgba(0,100,255,.5);
-    font-size:17px;
-    font-weight:800;
+    border:1px solid #00baff;
+    box-shadow:0 0 15px rgba(50,100,255,.45);
 }
 
-/* =========================
+/* ==============================
    COUNTRY GRID
-========================= */
+============================== */
 
 .country-grid{
     display:grid;
@@ -302,239 +300,244 @@ main{
     gap:8px;
 }
 
-.country-card{
-    height:173px;
-    min-width:0;
+.country{
     position:relative;
+    height:175px;
     overflow:hidden;
     border-radius:10px;
-    border:1px solid rgba(0,174,255,.75);
-    background:#06152d;
+    background:#07182f;
+    border:1px solid rgba(0,171,255,.72);
     cursor:pointer;
-    transition:
-        transform .2s ease,
-        box-shadow .2s ease,
-        border-color .2s ease;
+    transition:.25s;
 }
 
-.country-card:hover{
+.country:hover{
     transform:translateY(-4px);
     border-color:#00d0ff;
     box-shadow:
-        0 0 18px rgba(0,170,255,.55),
-        0 10px 25px rgba(0,0,0,.5);
+        0 0 20px rgba(0,180,255,.55);
 }
 
-.country-card img{
+.country img{
     width:100%;
     height:100%;
     object-fit:cover;
     display:block;
-    transition:transform .35s ease;
+    transition:.35s;
 }
 
-.country-card:hover img{
-    transform:scale(1.07);
+.country:hover img{
+    transform:scale(1.08);
 }
 
-.country-card:after{
+.country:after{
     content:"";
     position:absolute;
     inset:0;
     background:
         linear-gradient(
             180deg,
-            rgba(0,0,0,.02) 25%,
-            rgba(0,7,20,.25) 45%,
-            rgba(0,7,20,.95) 100%
+            rgba(0,0,0,.03) 20%,
+            rgba(0,5,18,.18) 40%,
+            rgba(0,5,18,.96) 100%
         );
 }
 
 .flag{
     position:absolute;
+    z-index:3;
     top:8px;
     left:8px;
-    z-index:3;
-    width:34px;
-    height:23px;
+    width:35px;
+    height:24px;
     border-radius:5px;
-    background:rgba(255,255,255,.95);
+    background:#fff;
     display:flex;
-    align-items:center;
     justify-content:center;
+    align-items:center;
     font-size:18px;
-    box-shadow:0 2px 7px rgba(0,0,0,.45);
+    box-shadow:0 2px 7px rgba(0,0,0,.55);
 }
 
 .country-info{
     position:absolute;
     z-index:3;
     left:9px;
-    right:7px;
+    right:8px;
     bottom:8px;
 }
 
 .country-name{
-    font-size:14px;
-    font-weight:800;
+    font-size:13px;
+    font-weight:900;
     line-height:1.05;
-    min-height:29px;
+    min-height:28px;
     display:flex;
     align-items:flex-end;
     text-shadow:0 2px 5px #000;
 }
 
-.country-meta{
+.country-bottom{
     display:flex;
-    align-items:center;
     justify-content:space-between;
-    margin-top:6px;
+    align-items:center;
     gap:3px;
+    margin-top:6px;
 }
 
 .code{
-    border:1px solid #00baff;
-    background:rgba(0,30,65,.8);
-    border-radius:12px;
     padding:3px 7px;
-    font-size:10px;
-    font-weight:700;
+    border-radius:15px;
+    border:1px solid #00baff;
+    background:rgba(0,28,60,.8);
+    font-size:9px;
+    font-weight:800;
 }
 
-.brands{
-    font-size:10px;
-    color:#fff;
+.brand-number{
+    font-size:9px;
     white-space:nowrap;
 }
 
-/* loading */
+/* ==============================
+   IMAGE LOADING
+============================== */
 
-.image-loading{
+.loading{
     position:absolute;
     inset:0;
     z-index:2;
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:25px;
     background:
         linear-gradient(
             135deg,
-            #061b3a,
-            #0b315e,
-            #07142b
+            #071b3a,
+            #092d55,
+            #081329
         );
+    font-size:25px;
 }
 
-/* =========================
-   VIEW ALL
-========================= */
+/* ==============================
+   BUTTON
+============================== */
 
-.view-all{
-    display:flex;
-    justify-content:center;
-    margin:18px 0 26px;
+.view-more{
+    text-align:center;
+    margin:20px 0 30px;
 }
 
-.view-all button{
-    border:1px solid #00baff;
+.view-more button{
+    padding:11px 27px;
     border-radius:30px;
-    background:rgba(0,60,120,.35);
+    border:1px solid #00aaff;
+    background:rgba(0,70,130,.3);
     color:#fff;
-    padding:12px 30px;
-    font-size:14px;
     cursor:pointer;
-    box-shadow:0 0 12px rgba(0,150,255,.3);
+    font-size:13px;
 }
 
-.view-all button:hover{
-    background:linear-gradient(90deg,#008dff,#6338ff);
+.view-more button:hover{
+    background:linear-gradient(
+        90deg,
+        #008eff,
+        #6b38ff
+    );
 }
 
-/* =========================
+/* ==============================
    ADD BRAND
-========================= */
+============================== */
 
 .add-brand{
-    position:relative;
-    min-height:125px;
-    border:1px solid #008cff;
+    min-height:140px;
     border-radius:20px;
-    overflow:hidden;
+    border:1px solid #008eff;
+    padding:24px 34px;
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding:22px 35px;
+    gap:25px;
+    overflow:hidden;
     background:
         linear-gradient(
             90deg,
-            rgba(0,55,110,.92),
-            rgba(23,0,70,.82)
+            rgba(0,70,130,.9),
+            rgba(35,0,90,.86)
         ),
-        url("https://images.unsplash.com/photo-1521292270410-a8c4d716d518?auto=format&fit=crop&w=1800&q=80")
+        url("https://images.unsplash.com/photo-1521292270410-a8c4d716d518?auto=format&fit=crop&w=1800&q=85")
         center/cover;
     box-shadow:
-        0 0 20px rgba(0,130,255,.3),
-        inset 0 0 40px rgba(0,120,255,.18);
+        0 0 25px rgba(0,120,255,.3);
 }
 
-.add-brand-left{
+.add-left{
     display:flex;
     align-items:center;
-    gap:18px;
+    gap:17px;
 }
 
-.diamond{
-    font-size:48px;
+.add-icon{
+    font-size:45px;
 }
 
-.add-brand h3{
-    font-size:30px;
-    margin-bottom:5px;
+.add-left h3{
+    font-size:28px;
+    margin-bottom:6px;
 }
 
-.add-brand p{
-    color:#dceaff;
-    font-size:15px;
+.add-left p{
+    color:#d3e5ff;
+    font-size:14px;
 }
 
 .price{
-    font-size:42px;
+    font-size:39px;
     font-weight:900;
-    background:linear-gradient(90deg,#fff,#00c8ff,#8d5cff);
+    white-space:nowrap;
+    background:linear-gradient(
+        90deg,
+        #fff,
+        #00c5ff,
+        #a35cff
+    );
     -webkit-background-clip:text;
     color:transparent;
-    white-space:nowrap;
 }
 
 .add-button{
     border:0;
-    padding:14px 32px;
     border-radius:30px;
+    padding:14px 30px;
     color:#fff;
     background:linear-gradient(
         90deg,
         #00aaff,
-        #743cff
+        #7139ff
     );
-    font-weight:800;
-    font-size:15px;
+    font-weight:900;
     cursor:pointer;
-    box-shadow:0 0 15px rgba(80,80,255,.45);
+    white-space:nowrap;
 }
 
-/* =========================
+/* ==============================
    FOOTER
-========================= */
+============================== */
 
-footer{
-    margin-top:25px;
-    border-top:1px solid rgba(0,130,255,.35);
-    padding:25px 3%;
-    background:rgba(0,5,20,.65);
+.footer{
+    border-top:1px solid rgba(0,145,255,.35);
+    background:
+        linear-gradient(
+            180deg,
+            rgba(0,7,22,.85),
+            #010611
+        );
+    padding:28px 3%;
 }
 
-.footer-inner{
+.footer-top{
     display:flex;
     justify-content:space-between;
     align-items:center;
@@ -548,21 +551,22 @@ footer{
 }
 
 .footer-globe{
-    font-size:30px;
+    font-size:32px;
 }
 
 .footer-title{
-    font-weight:800;
     font-size:19px;
+    font-weight:900;
 }
 
 .footer-title span{
-    color:#00aaff;
+    color:#00baff;
 }
 
 .footer-sub{
-    font-size:11px;
-    color:#bdd0ed;
+    color:#91a9c8;
+    font-size:10px;
+    margin-top:3px;
 }
 
 .footer-links{
@@ -571,73 +575,72 @@ footer{
 }
 
 .footer-links a{
-    color:#dce8ff;
+    color:#c7d7ed;
     text-decoration:none;
-    font-size:13px;
+    font-size:12px;
 }
 
 .footer-links a:hover{
-    color:#00c4ff;
+    color:#00c3ff;
 }
 
 .footer-bottom{
-    border-top:1px solid rgba(100,150,255,.15);
+    border-top:1px solid rgba(100,150,255,.12);
     margin-top:20px;
     padding-top:15px;
     display:flex;
     justify-content:space-between;
-    color:#9db0ce;
-    font-size:11px;
+    color:#8296b4;
+    font-size:10px;
 }
 
-/* =========================
+/* ==============================
    MODAL
-========================= */
+============================== */
 
 .modal{
     position:fixed;
     inset:0;
-    z-index:100;
+    z-index:200;
     display:none;
-    align-items:center;
     justify-content:center;
+    align-items:center;
     padding:20px;
-    background:rgba(0,0,15,.82);
+    background:rgba(0,0,12,.85);
     backdrop-filter:blur(8px);
 }
 
-.modal.active{
+.modal.show{
     display:flex;
 }
 
 .modal-box{
     width:100%;
-    max-width:550px;
+    max-width:540px;
     max-height:90vh;
     overflow:auto;
-    border:1px solid #00aaff;
-    border-radius:20px;
     padding:28px;
+    border-radius:20px;
+    border:1px solid #00aaff;
     background:
         radial-gradient(
             circle at top right,
-            rgba(70,0,255,.2),
+            rgba(80,0,255,.22),
             transparent 40%
         ),
-        #06142b;
-    box-shadow:
-        0 0 35px rgba(0,130,255,.4);
+        #06152c;
+    box-shadow:0 0 35px rgba(0,130,255,.45);
 }
 
-.modal-head{
+.modal-header{
     display:flex;
-    justify-content:space-between;
     align-items:center;
+    justify-content:space-between;
     margin-bottom:20px;
 }
 
-.modal-head h2{
-    font-size:25px;
+.modal-header h2{
+    font-size:24px;
 }
 
 .close{
@@ -645,97 +648,104 @@ footer{
     height:35px;
     border:0;
     border-radius:50%;
-    background:#102c50;
+    background:#102b4c;
     color:#fff;
-    font-size:20px;
+    font-size:21px;
     cursor:pointer;
 }
 
-.form-group{
+.field{
     margin-bottom:14px;
 }
 
-.form-group label{
+.field label{
     display:block;
+    color:#d2e2f8;
+    font-size:12px;
     margin-bottom:6px;
-    font-size:13px;
-    color:#d5e4fb;
 }
 
-.form-group input,
-.form-group select,
-.form-group textarea{
+.field input,
+.field select,
+.field textarea{
     width:100%;
-    border:1px solid #18588b;
-    border-radius:10px;
     padding:12px;
+    border:1px solid #185d91;
+    border-radius:10px;
+    outline:none;
     background:#031126;
     color:#fff;
-    outline:none;
     font-size:14px;
 }
 
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus{
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
     border-color:#00baff;
-    box-shadow:0 0 8px rgba(0,180,255,.25);
 }
 
-.form-group textarea{
-    min-height:100px;
+.field textarea{
+    min-height:95px;
     resize:vertical;
 }
 
-.submit-btn{
+.submit{
     width:100%;
-    padding:14px;
     border:0;
-    border-radius:12px;
-    background:linear-gradient(90deg,#00aaff,#733cff);
+    border-radius:11px;
+    padding:14px;
+    margin-top:5px;
+    background:linear-gradient(
+        90deg,
+        #00aaff,
+        #7139ff
+    );
     color:#fff;
-    font-size:16px;
-    font-weight:800;
+    font-size:15px;
+    font-weight:900;
     cursor:pointer;
-    margin-top:8px;
 }
 
-.form-note{
+.note{
+    text-align:center;
+    color:#8ea9c9;
+    font-size:10px;
     margin-top:10px;
-    color:#9fb8da;
-    font-size:11px;
-    text-align:center;
 }
 
-.form-message{
-    margin-top:12px;
+.message{
     text-align:center;
-    font-size:13px;
+    font-size:12px;
+    margin-top:10px;
 }
 
-/* =========================
-   SCROLL TOP
-========================= */
+/* ==============================
+   TOP BUTTON
+============================== */
 
-.scroll-top{
+.top{
     position:fixed;
-    right:20px;
-    bottom:20px;
-    width:45px;
-    height:45px;
-    border:1px solid #00aaff;
+    right:18px;
+    bottom:18px;
+    z-index:100;
+    width:43px;
+    height:43px;
     border-radius:50%;
-    background:linear-gradient(135deg,#008dff,#7138ff);
+    border:1px solid #00aaff;
+    background:linear-gradient(
+        135deg,
+        #008fff,
+        #6e39ff
+    );
     color:#fff;
-    font-size:23px;
+    font-size:22px;
     cursor:pointer;
     display:none;
-    z-index:50;
 }
 
-/* =========================
+/* ==============================
    TABLET
-========================= */
+============================== */
 
 @media(max-width:1100px){
 
@@ -744,27 +754,27 @@ footer{
         gap:6px;
     }
 
-    .country-card{
+    .country{
         height:145px;
     }
 
     .country-name{
-        font-size:11px;
+        font-size:10px;
     }
 
-    .brands{
-        font-size:9px;
+    .brand-number{
+        font-size:8px;
     }
 
     .code{
-        font-size:9px;
+        font-size:8px;
     }
 
-    .hero h1{
-        font-size:50px;
+    .hero-title{
+        font-size:52px;
     }
 
-    nav{
+    .nav{
         display:none;
     }
 
@@ -773,108 +783,103 @@ footer{
     }
 }
 
-/* =========================
-   PHONE — EXACTLY 5
-========================= */
+/* ==============================
+   PHONE — 5 COLUMNS
+============================== */
 
 @media(max-width:700px){
 
-    header{
-        padding:13px 4%;
+    .header{
+        height:65px;
+        padding:0 4%;
     }
 
-    .logo-globe{
-        width:40px;
-        height:40px;
-        font-size:22px;
-    }
-
-    .logo-text{
-        font-size:18px;
-    }
-
-    .logo-sub{
-        font-size:9px;
-    }
-
-    .menu{
-        font-size:27px;
-    }
-
-    .hero{
-        min-height:460px;
-        padding:
-            110px 4% 22px;
-        background-position:center;
-    }
-
-    .hero h1{
-        font-size:39px;
-        letter-spacing:-2px;
-    }
-
-    .hero p{
-        font-size:15px;
-    }
-
-    .search-box{
-        height:52px;
-    }
-
-    .search-icon{
-        width:45px;
-        font-size:22px;
-    }
-
-    .search-box input{
-        font-size:12px;
-        padding-left:4px;
-    }
-
-    .search-box button{
-        width:82px;
-        font-size:12px;
-    }
-
-    main{
-        padding:
-            0 3% 30px;
-    }
-
-    .section-title{
-        margin-top:5px;
-    }
-
-    .title-icon{
+    .logo-icon{
         width:38px;
         height:38px;
         font-size:21px;
     }
 
-    .section-title h2{
+    .logo-name{
+        font-size:17px;
+    }
+
+    .logo-sub{
+        font-size:8px;
+    }
+
+    .hero{
+        min-height:470px;
+        padding:105px 4% 25px;
+    }
+
+    .hero-title{
+        font-size:39px;
+        letter-spacing:-2px;
+    }
+
+    .hero-description{
+        font-size:14px;
+    }
+
+    .search{
+        height:52px;
+        margin-top:22px;
+    }
+
+    .search-icon{
+        width:42px;
+        font-size:19px;
+    }
+
+    .search input{
+        font-size:11px;
+    }
+
+    .search button{
+        width:78px;
+        font-size:11px;
+    }
+
+    .main{
+        padding:0 3% 35px;
+    }
+
+    .section-head{
+        margin-bottom:12px;
+    }
+
+    .section-globe{
+        width:37px;
+        height:37px;
         font-size:20px;
     }
 
-    .country-count{
-        min-width:50px;
-        height:34px;
-        padding:0 10px;
-        font-size:13px;
+    .section-title h2{
+        font-size:19px;
     }
 
-    /* 5 COLUMNS ON PHONE */
+    .badge{
+        height:34px;
+        min-width:50px;
+        padding:0 10px;
+        font-size:12px;
+    }
+
+    /* EXACTLY 5 PER ROW */
+
     .country-grid{
         grid-template-columns:repeat(5,minmax(0,1fr));
         gap:5px;
     }
 
-    .country-card{
+    .country{
         height:105px;
         border-radius:7px;
     }
 
     .flag{
-        width:24px;
+        width:23px;
         height:17px;
         top:5px;
         left:5px;
@@ -889,83 +894,74 @@ footer{
     }
 
     .country-name{
-        font-size:9px;
-        line-height:1;
-        min-height:19px;
+        font-size:8px;
+        min-height:18px;
     }
 
-    .country-meta{
+    .country-bottom{
         margin-top:3px;
     }
 
     .code{
         padding:2px 4px;
-        font-size:7px;
+        font-size:6px;
     }
 
-    .brands{
-        font-size:7px;
-    }
-
-    .view-all button{
-        padding:9px 18px;
-        font-size:11px;
+    .brand-number{
+        font-size:6px;
     }
 
     .add-brand{
         flex-direction:column;
         text-align:center;
-        padding:22px 14px;
-        gap:12px;
+        padding:22px 15px;
     }
 
-    .add-brand-left{
+    .add-left{
         flex-direction:column;
-        gap:6px;
     }
 
-    .diamond{
+    .add-icon{
         font-size:34px;
     }
 
-    .add-brand h3{
-        font-size:23px;
+    .add-left h3{
+        font-size:22px;
     }
 
-    .add-brand p{
-        font-size:12px;
+    .add-left p{
+        font-size:11px;
     }
 
     .price{
-        font-size:35px;
+        font-size:34px;
     }
 
     .add-button{
         width:100%;
-        padding:12px;
     }
 
-    .footer-inner{
+    .footer-top{
         flex-direction:column;
         text-align:center;
     }
 
     .footer-links{
-        gap:14px;
         flex-wrap:wrap;
         justify-content:center;
+        gap:15px;
     }
 
     .footer-bottom{
         flex-direction:column;
-        gap:7px;
         text-align:center;
+        gap:7px;
     }
 }
 
-/* =========================
-   VERY SMALL PHONE
-========================= */
+/* ==============================
+   SMALL PHONE
+============================== */
 
 @media(max-width:380px){
 
@@ -974,7 +970,7 @@ footer{
         gap:4px;
     }
 
-    .country-card{
+    .country{
         height:92px;
     }
 
@@ -982,100 +978,121 @@ footer{
         font-size:7px;
     }
 
-    .brands{
-        font-size:6px;
+    .brand-number{
+        font-size:5px;
     }
 
     .code{
-        font-size:6px;
+        font-size:5px;
         padding:1px 3px;
     }
 
     .flag{
-        width:21px;
-        height:15px;
+        width:20px;
+        height:14px;
         font-size:10px;
     }
 
-    .hero h1{
+    .hero-title{
         font-size:34px;
     }
 }
 </style>
 </head>
 
+
 <body>
 
-<!-- =========================
+<!-- ==============================
      HEADER
-========================= -->
+============================== -->
 
-<header>
+<header class="header">
 
     <div class="logo">
 
-        <div class="logo-globe">
+        <div class="logo-icon">
             🌐
         </div>
 
         <div>
-            <div class="logo-text">
+            <div class="logo-name">
                 ALL WORLD <span>BRANDS</span>
             </div>
 
             <div class="logo-sub">
-                Global Brand Directory
+                GLOBAL BRAND DIRECTORY
             </div>
         </div>
 
     </div>
 
-    <nav>
-        <a href="/">Home</a>
-        <a href="#countries">Countries</a>
-        <a href="#add-brand">Add Brand</a>
-        <a href="#about">About</a>
+
+    <nav class="nav">
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="#countries">
+            Countries
+        </a>
+
+        <a href="#add-brand">
+            Add Brand
+        </a>
+
+        <a href="#about">
+            About
+        </a>
+
     </nav>
 
-    <div class="menu" onclick="toggleMenu()">
+
+    <div
+        class="menu"
+        onclick="toggleMenu()">
         ☰
     </div>
 
 </header>
 
 
-<!-- =========================
+<!-- ==============================
      HERO
-========================= -->
+============================== -->
 
 <section class="hero">
 
     <div class="hero-content">
 
-        <h1>
+        <h1 class="hero-title">
             Discover brands
-            <span>around the world.</span>
+            <span class="blue">
+                around the world.
+            </span>
         </h1>
 
-        <p>
-            Countries, territories and dependencies —
-            all in one global directory.
+        <p class="hero-description">
+            Explore brands, businesses and companies
+            from countries and territories around the globe.
         </p>
 
-        <div class="search-box">
+
+        <div class="search">
 
             <div class="search-icon">
                 🔍
             </div>
 
             <input
-                id="searchInput"
+                id="search"
                 type="text"
-                placeholder="Search brand, country or territory..."
-                oninput="searchCountries()"
-            >
+                placeholder="Search country or territory..."
+                oninput="searchCountries()">
 
-            <button onclick="searchCountries()">
+            <button
+                onclick="searchCountries()">
                 Search
             </button>
 
@@ -1086,20 +1103,20 @@ footer{
 </section>
 
 
-<!-- =========================
+<!-- ==============================
      MAIN
-========================= -->
+============================== -->
 
-<main>
+<main class="main">
 
 <section id="countries">
 
-    <div class="section-title">
+    <div class="section-head">
 
-        <div class="title-left">
+        <div class="section-title">
 
-            <div class="title-icon">
-                🌐
+            <div class="section-globe">
+                🌍
             </div>
 
             <h2>
@@ -1108,9 +1125,10 @@ footer{
 
         </div>
 
+
         <div
-            class="country-count"
-            id="countryCount">
+            class="badge"
+            id="countryBadge">
             250
         </div>
 
@@ -1118,15 +1136,16 @@ footer{
 
 
     <div
-        class="country-grid"
-        id="countryGrid">
+        id="countryGrid"
+        class="country-grid">
     </div>
 
 
-    <div class="view-all">
+    <div class="view-more">
 
-        <button onclick="showAllCountries()">
-            View All 250 Countries →
+        <button
+            onclick="showAll()">
+            View All Countries →
         </button>
 
     </div>
@@ -1134,17 +1153,17 @@ footer{
 </section>
 
 
-<!-- =========================
+<!-- ==============================
      ADD BRAND
-========================= -->
+============================== -->
 
 <section id="add-brand">
 
     <div class="add-brand">
 
-        <div class="add-brand-left">
+        <div class="add-left">
 
-            <div class="diamond">
+            <div class="add-icon">
                 💎
             </div>
 
@@ -1155,21 +1174,25 @@ footer{
                 </h3>
 
                 <p>
-                    Put your brand in the ALL WORLD BRANDS global directory.
+                    Get your brand listed in the global directory.
                 </p>
 
             </div>
 
         </div>
 
+
         <div class="price">
             $1.00
         </div>
 
+
         <button
             class="add-button"
             onclick="openModal()">
+
             Add Your Brand
+
         </button>
 
     </div>
@@ -1179,32 +1202,30 @@ footer{
 </main>
 
 
-<!-- =========================
+<!-- ==============================
      FOOTER
-========================= -->
+============================== -->
 
-<footer id="about">
+<footer
+    class="footer"
+    id="about">
 
-    <div class="footer-inner">
+    <div class="footer-top">
 
-        <div>
+        <div class="footer-logo">
 
-            <div class="footer-logo">
+            <div class="footer-globe">
+                🌐
+            </div>
 
-                <div class="footer-globe">
-                    🌐
+            <div>
+
+                <div class="footer-title">
+                    ALL WORLD <span>BRANDS</span>
                 </div>
 
-                <div>
-
-                    <div class="footer-title">
-                        ALL WORLD <span>BRANDS</span>
-                    </div>
-
-                    <div class="footer-sub">
-                        Global Brand Directory
-                    </div>
-
+                <div class="footer-sub">
+                    GLOBAL BRAND DIRECTORY
                 </div>
 
             </div>
@@ -1242,7 +1263,7 @@ footer{
         </span>
 
         <span>
-            © 2026 ALL WORLD BRANDS. All rights reserved.
+            © 2026 ALL WORLD BRANDS
         </span>
 
         <span>
@@ -1254,18 +1275,18 @@ footer{
 </footer>
 
 
-<!-- =========================
-     ADD BRAND MODAL
-========================= -->
+<!-- ==============================
+     MODAL
+============================== -->
 
 <div
+    id="modal"
     class="modal"
-    id="brandModal"
-    onclick="closeModalOutside(event)">
+    onclick="outsideModal(event)">
 
     <div class="modal-box">
 
-        <div class="modal-head">
+        <div class="modal-header">
 
             <h2>
                 Add Your Brand
@@ -1282,9 +1303,10 @@ footer{
 
         <form
             id="brandForm"
-            onsubmit="submitApplication(event)">
+            onsubmit="submitBrand(event)">
 
-            <div class="form-group">
+
+            <div class="field">
 
                 <label>
                     Brand name
@@ -1299,7 +1321,7 @@ footer{
             </div>
 
 
-            <div class="form-group">
+            <div class="field">
 
                 <label>
                     Country
@@ -1318,7 +1340,7 @@ footer{
             </div>
 
 
-            <div class="form-group">
+            <div class="field">
 
                 <label>
                     Website
@@ -1332,7 +1354,7 @@ footer{
             </div>
 
 
-            <div class="form-group">
+            <div class="field">
 
                 <label>
                     Your name
@@ -1347,7 +1369,7 @@ footer{
             </div>
 
 
-            <div class="form-group">
+            <div class="field">
 
                 <label>
                     Email
@@ -1362,35 +1384,36 @@ footer{
             </div>
 
 
-            <div class="form-group">
+            <div class="field">
 
                 <label>
                     Brand description
                 </label>
 
                 <textarea
-                    id="brandDescription"
-                    placeholder="Tell us about your brand...">
-                </textarea>
+                    id="description"
+                    placeholder="Tell us about your brand..."></textarea>
 
             </div>
 
 
             <button
-                class="submit-btn"
-                type="submit">
+                type="submit"
+                class="submit">
 
                 Submit Brand — $1.00
 
             </button>
 
-            <div class="form-note">
+
+            <div class="note">
                 Your application will be reviewed before publication.
             </div>
 
+
             <div
-                class="form-message"
-                id="formMessage">
+                id="message"
+                class="message">
             </div>
 
         </form>
@@ -1400,13 +1423,9 @@ footer{
 </div>
 
 
-<!-- =========================
-     SCROLL TOP
-========================= -->
-
 <button
-    class="scroll-top"
-    id="scrollTop"
+    id="topButton"
+    class="top"
     onclick="window.scrollTo({top:0,behavior:'smooth'})">
 
     ↑
@@ -1416,19 +1435,17 @@ footer{
 
 <script>
 
-/* =========================================================
-   GLOBAL VARIABLES
-========================================================= */
+/* ==========================================================
+   VARIABLES
+========================================================== */
 
-let allCountries = [];
-let filteredCountries = [];
-
-let showingAll = true;
+let countries = [];
+let filtered = [];
 
 
-/* =========================================================
-   COUNTRY FLAG MAP
-========================================================= */
+/* ==========================================================
+   FLAGS
+========================================================== */
 
 const flags = {
 
@@ -1593,7 +1610,6 @@ const flags = {
     Somalia:"🇸🇴",
     "South Africa":"🇿🇦",
     "South Korea":"🇰🇷",
-    SouthSudan:"🇸🇸",
     Spain:"🇪🇸",
     SriLanka:"🇱🇰",
     Sudan:"🇸🇩",
@@ -1634,170 +1650,71 @@ const flags = {
 };
 
 
-/* =========================================================
-   IMAGE ALIASES
-========================================================= */
-
-const imageAliases = {
-
-    "United States":"United States",
-    "United Kingdom":"United Kingdom",
-    "South Korea":"South Korea",
-    "North Korea":"North Korea",
-    "United Arab Emirates":"United Arab Emirates",
-    "Czech Republic":"Czech Republic",
-    "Russia":"Russia",
-    "Turkey":"Turkey",
-    "Iran":"Iran",
-    "Vietnam":"Vietnam",
-    "Laos":"Laos",
-    "Bolivia":"Bolivia",
-    "Venezuela":"Venezuela",
-    "Tanzania":"Tanzania",
-    "Syria":"Syria",
-    "Palestine":"Palestine",
-    "Moldova":"Moldova",
-    "Micronesia":"Micronesia",
-    "Brunei":"Brunei",
-    "Cape Verde":"Cape Verde",
-    "Democratic Republic of the Congo":
-        "Democratic Republic of the Congo",
-    "Vatican City":"Vatican City"
-};
-
-
-/* =========================================================
+/* ==========================================================
    FALLBACK IMAGE
-========================================================= */
+========================================================== */
 
 const fallbackImage =
-"https://images.unsplash.com/photo-1521292270410-a8c4d716d518?auto=format&fit=crop&w=900&q=75";
+"https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=900&q=70";
 
 
-/* =========================================================
-   LOAD COUNTRIES
-========================================================= */
+/* ==========================================================
+   COUNTRY NAME
+========================================================== */
 
-async function loadCountries(){
+function nameOf(c){
 
-    const grid =
-        document.getElementById("countryGrid");
-
-    grid.innerHTML = `
-        <div style="
-            grid-column:1/-1;
-            text-align:center;
-            padding:50px;
-            color:#9db9df;
-        ">
-            🌍 Loading countries...
-        </div>
-    `;
-
-    try{
-
-        const response =
-            await fetch("/api/countries");
-
-        if(!response.ok){
-            throw new Error("Countries API error");
-        }
-
-        const data =
-            await response.json();
-
-        if(Array.isArray(data)){
-            allCountries = data;
-        }
-        else if(Array.isArray(data.countries)){
-            allCountries = data.countries;
-        }
-        else{
-            allCountries = [];
-        }
-
-        filteredCountries = [...allCountries];
-
-        document.getElementById("countryCount").textContent =
-            allCountries.length || 250;
-
-        fillCountrySelect();
-
-        renderCountries();
-
-    }catch(error){
-
-        console.error(error);
-
-        grid.innerHTML = `
-            <div style="
-                grid-column:1/-1;
-                text-align:center;
-                padding:50px;
-                color:#ff9c9c;
-            ">
-                Countries could not be loaded.
-                <br>
-                Please refresh the page.
-            </div>
-        `;
+    if(typeof c === "string"){
+        return c;
     }
+
+    return c.name ||
+           c.country ||
+           c.title ||
+           "Unknown";
 }
 
 
-/* =========================================================
-   GET COUNTRY DATA
-========================================================= */
+/* ==========================================================
+   COUNTRY CODE
+========================================================== */
 
-function getCountryName(country){
+function codeOf(c){
 
-    if(typeof country === "string"){
-        return country;
-    }
-
-    return (
-        country.name ||
-        country.country ||
-        country.title ||
-        "Unknown"
-    );
-}
-
-
-function getCountryCode(country){
-
-    if(typeof country === "string"){
+    if(typeof c === "string"){
         return "";
     }
 
-    return (
-        country.code ||
-        country.iso2 ||
-        country.isoCode ||
-        country.iso ||
-        ""
-    );
+    return c.code ||
+           c.iso2 ||
+           c.iso ||
+           c.isoCode ||
+           "";
 }
 
 
-function getBrandCount(country){
+/* ==========================================================
+   BRAND COUNT
+========================================================== */
 
-    if(typeof country === "string"){
+function countOf(c){
+
+    if(typeof c === "string"){
         return 0;
     }
 
     return Number(
-        country.brandCount ??
-        country.brands ??
-        country.count ??
+        c.brandCount ??
+        c.brands ??
+        c.count ??
         0
     );
 }
 
 
-/* =========================================================
-   FLAG
-========================================================= */
+/* ==========================================================
+   GET FLAG
+========================================================== */
 
 function getFlag(name){
 
@@ -1805,13 +1722,18 @@ function getFlag(name){
         return flags[name];
     }
 
-    for(const key in flags){
+    for(
+        const key in flags
+    ){
 
         if(
-            name.toLowerCase().includes(
+            name
+            .toLowerCase()
+            .includes(
                 key.toLowerCase()
             )
         ){
+
             return flags[key];
         }
     }
@@ -1820,24 +1742,83 @@ function getFlag(name){
 }
 
 
-/* =========================================================
-   WIKIMEDIA IMAGE
-========================================================= */
+/* ==========================================================
+   ESCAPE
+========================================================== */
 
-async function getCountryImage(countryName){
+function escapeHtml(text){
+
+    return String(text)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+
+/* ==========================================================
+   WIKIPEDIA COUNTRY IMAGE
+========================================================== */
+
+async function getImage(country){
+
+    const aliases = {
+
+        "United States":
+            "United States",
+
+        "United Kingdom":
+            "United Kingdom",
+
+        "South Korea":
+            "South Korea",
+
+        "North Korea":
+            "North Korea",
+
+        "United Arab Emirates":
+            "United Arab Emirates",
+
+        "Czech Republic":
+            "Czech Republic",
+
+        "Russia":
+            "Russia",
+
+        "Turkey":
+            "Turkey",
+
+        "Iran":
+            "Iran",
+
+        "Vietnam":
+            "Vietnam",
+
+        "Laos":
+            "Laos",
+
+        "Palestine":
+            "Palestine",
+
+        "Vatican City":
+            "Vatican City",
+
+        "Democratic Republic of the Congo":
+            "Democratic Republic of the Congo"
+    };
 
     const title =
-        imageAliases[countryName] ||
-        countryName;
+        aliases[country] ||
+        country;
 
     try{
 
-        const url =
-            "https://en.wikipedia.org/api/rest_v1/page/summary/" +
-            encodeURIComponent(title);
-
         const response =
-            await fetch(url);
+            await fetch(
+                "https://en.wikipedia.org/api/rest_v1/page/summary/" +
+                encodeURIComponent(title)
+            );
 
         if(!response.ok){
             return fallbackImage;
@@ -1847,7 +1828,6 @@ async function getCountryImage(countryName){
             await response.json();
 
         if(
-            data &&
             data.thumbnail &&
             data.thumbnail.source
         ){
@@ -1858,8 +1838,8 @@ async function getCountryImage(countryName){
     }catch(error){
 
         console.log(
-            "Wikipedia image error:",
-            countryName
+            "Image error:",
+            country
         );
     }
 
@@ -1867,25 +1847,117 @@ async function getCountryImage(countryName){
 }
 
 
-/* =========================================================
-   RENDER COUNTRIES
-========================================================= */
+/* ==========================================================
+   LOAD COUNTRIES
+========================================================== */
 
-function renderCountries(){
+async function loadCountries(){
 
     const grid =
-        document.getElementById("countryGrid");
+        document.getElementById(
+            "countryGrid"
+        );
+
+    grid.innerHTML = `
+        <div style="
+            grid-column:1/-1;
+            text-align:center;
+            padding:50px;
+            color:#a9c0dc;
+        ">
+            🌍 Loading countries...
+        </div>
+    `;
+
+    try{
+
+        const response =
+            await fetch(
+                "/api/countries"
+            );
+
+        if(!response.ok){
+            throw new Error(
+                "API error"
+            );
+        }
+
+        const data =
+            await response.json();
+
+        if(Array.isArray(data)){
+
+            countries = data;
+
+        }else if(
+            Array.isArray(
+                data.countries
+            )
+        ){
+
+            countries =
+                data.countries;
+
+        }else{
+
+            countries = [];
+        }
+
+        filtered =
+            [...countries];
+
+        document
+            .getElementById(
+                "countryBadge"
+            )
+            .textContent =
+            countries.length || 250;
+
+        fillCountrySelect();
+
+        render();
+
+    }catch(error){
+
+        console.error(error);
+
+        grid.innerHTML = `
+            <div style="
+                grid-column:1/-1;
+                padding:50px;
+                text-align:center;
+                color:#ff9999;
+            ">
+                Countries could not be loaded.
+                <br><br>
+                Refresh the page.
+            </div>
+        `;
+    }
+}
+
+
+/* ==========================================================
+   RENDER
+========================================================== */
+
+function render(){
+
+    const grid =
+        document.getElementById(
+            "countryGrid"
+        );
 
     grid.innerHTML = "";
 
-    if(!filteredCountries.length){
+    if(!filtered.length){
 
         grid.innerHTML = `
             <div style="
                 grid-column:1/-1;
                 text-align:center;
                 padding:45px;
-                color:#a9c0df;
+                color:#a9c0dc;
             ">
                 No countries found.
             </div>
@@ -1894,37 +1966,41 @@ function renderCountries(){
         return;
     }
 
-    filteredCountries.forEach(
+
+    filtered.forEach(
         (country,index)=>{
 
             const name =
-                getCountryName(country);
+                nameOf(country);
 
             const code =
-                getCountryCode(country);
+                codeOf(country);
 
-            const brandCount =
-                getBrandCount(country);
+            const count =
+                countOf(country);
+
 
             const card =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
             card.className =
-                "country-card";
+                "country";
+
 
             card.innerHTML = `
 
-                <div class="image-loading"
-                     id="loading-${index}">
+                <div
+                    class="loading"
+                    id="loading-${index}">
                     🌍
                 </div>
 
                 <img
-                    id="country-image-${index}"
+                    id="image-${index}"
                     alt="${escapeHtml(name)}"
-                    loading="lazy"
-                    style="display:none;"
-                >
+                    style="display:none;">
 
                 <div class="flag">
                     ${getFlag(name)}
@@ -1936,14 +2012,14 @@ function renderCountries(){
                         ${escapeHtml(name)}
                     </div>
 
-                    <div class="country-meta">
+                    <div class="country-bottom">
 
                         <span class="code">
                             ${escapeHtml(code)}
                         </span>
 
-                        <span class="brands">
-                            🏷 ${brandCount} br
+                        <span class="brand-number">
+                            🏷 ${count} brands
                         </span>
 
                     </div>
@@ -1951,138 +2027,143 @@ function renderCountries(){
                 </div>
             `;
 
+
             card.onclick =
-                ()=>openCountry(name);
+                function(){
+
+                    openCountry(name);
+                };
+
 
             grid.appendChild(card);
+
 
             loadCardImage(
                 name,
                 index
             );
+
         }
     );
 }
 
 
-/* =========================================================
+/* ==========================================================
    LOAD CARD IMAGE
-========================================================= */
+========================================================== */
 
 async function loadCardImage(
-    countryName,
+    name,
     index
 ){
 
-    const img =
+    const image =
         document.getElementById(
-            `country-image-${index}`
+            "image-" + index
         );
 
     const loading =
         document.getElementById(
-            `loading-${index}`
+            "loading-" + index
         );
 
-    if(!img){
-        return;
-    }
 
-    const image =
-        await getCountryImage(countryName);
+    const src =
+        await getImage(name);
 
-    img.onload = function(){
 
-        img.style.display =
-            "block";
+    image.onload =
+        function(){
 
-        if(loading){
+            image.style.display =
+                "block";
+
             loading.style.display =
                 "none";
-        }
-    };
+        };
 
-    img.onerror = function(){
 
-        img.src =
-            fallbackImage;
+    image.onerror =
+        function(){
 
-        img.style.display =
-            "block";
+            image.src =
+                fallbackImage;
 
-        if(loading){
+            image.style.display =
+                "block";
+
             loading.style.display =
                 "none";
-        }
-    };
+        };
 
-    img.src = image;
+
+    image.src = src;
 }
 
 
-/* =========================================================
+/* ==========================================================
    SEARCH
-========================================================= */
+========================================================== */
 
 function searchCountries(){
 
     const input =
         document.getElementById(
-            "searchInput"
+            "search"
         );
 
-    const query =
+    const q =
         input.value
         .trim()
         .toLowerCase();
 
-    if(!query){
 
-        filteredCountries =
-            [...allCountries];
+    if(!q){
+
+        filtered =
+            [...countries];
 
     }else{
 
-        filteredCountries =
-            allCountries.filter(
+        filtered =
+            countries.filter(
                 country=>{
 
                     const name =
-                        getCountryName(
-                            country
-                        ).toLowerCase();
+                        nameOf(country)
+                        .toLowerCase();
 
                     const code =
-                        getCountryCode(
-                            country
-                        ).toLowerCase();
+                        codeOf(country)
+                        .toLowerCase();
 
                     return (
-                        name.includes(query) ||
-                        code.includes(query)
+                        name.includes(q) ||
+                        code.includes(q)
                     );
                 }
             );
     }
 
-    renderCountries();
+
+    render();
 }
 
 
-/* =========================================================
-   VIEW ALL
-========================================================= */
+/* ==========================================================
+   SHOW ALL
+========================================================== */
 
-function showAllCountries(){
+function showAll(){
 
     document.getElementById(
-        "searchInput"
+        "search"
     ).value = "";
 
-    filteredCountries =
-        [...allCountries];
+    filtered =
+        [...countries];
 
-    renderCountries();
+    render();
 
     document.getElementById(
         "countries"
@@ -2092,9 +2173,9 @@ function showAllCountries(){
 }
 
 
-/* =========================================================
+/* ==========================================================
    COUNTRY PAGE
-========================================================= */
+========================================================== */
 
 function openCountry(name){
 
@@ -2104,9 +2185,9 @@ function openCountry(name){
 }
 
 
-/* =========================================================
-   BRAND SELECT
-========================================================= */
+/* ==========================================================
+   COUNTRY SELECT
+========================================================== */
 
 function fillCountrySelect(){
 
@@ -2121,33 +2202,41 @@ function fillCountrySelect(){
         </option>
     `;
 
-    allCountries.forEach(
+
+    countries.forEach(
         country=>{
 
             const name =
-                getCountryName(country);
+                nameOf(country);
 
             const option =
-                document.createElement("option");
+                document.createElement(
+                    "option"
+                );
 
-            option.value = name;
-            option.textContent = name;
+            option.value =
+                name;
 
-            select.appendChild(option);
+            option.textContent =
+                name;
+
+            select.appendChild(
+                option
+            );
         }
     );
 }
 
 
-/* =========================================================
+/* ==========================================================
    MODAL
-========================================================= */
+========================================================== */
 
 function openModal(){
 
     document
-        .getElementById("brandModal")
-        .classList.add("active");
+        .getElementById("modal")
+        .classList.add("show");
 
     document.body.style.overflow =
         "hidden";
@@ -2157,19 +2246,19 @@ function openModal(){
 function closeModal(){
 
     document
-        .getElementById("brandModal")
-        .classList.remove("active");
+        .getElementById("modal")
+        .classList.remove("show");
 
     document.body.style.overflow =
         "";
 }
 
 
-function closeModalOutside(event){
+function outsideModal(event){
 
     if(
         event.target.id ===
-        "brandModal"
+        "modal"
     ){
 
         closeModal();
@@ -2177,24 +2266,25 @@ function closeModalOutside(event){
 }
 
 
-/* =========================================================
-   SUBMIT APPLICATION
-========================================================= */
+/* ==========================================================
+   SUBMIT BRAND
+========================================================== */
 
-async function submitApplication(event){
+async function submitBrand(event){
 
     event.preventDefault();
 
     const message =
         document.getElementById(
-            "formMessage"
+            "message"
         );
 
     message.textContent =
         "Sending...";
 
     message.style.color =
-        "#8fd8ff";
+        "#80d8ff";
+
 
     const data = {
 
@@ -2225,7 +2315,7 @@ async function submitApplication(event){
 
         description:
             document.getElementById(
-                "brandDescription"
+                "description"
             ).value.trim(),
 
         price:1.00
@@ -2252,8 +2342,11 @@ async function submitApplication(event){
 
 
         const result =
-            await response.json()
-            .catch(()=>({}));
+            await response
+                .json()
+                .catch(
+                    ()=>({})
+                );
 
 
         if(!response.ok){
@@ -2273,7 +2366,9 @@ async function submitApplication(event){
 
 
         document
-            .getElementById("brandForm")
+            .getElementById(
+                "brandForm"
+            )
             .reset();
 
 
@@ -2291,14 +2386,17 @@ async function submitApplication(event){
 }
 
 
-/* =========================================================
+/* ==========================================================
    MOBILE MENU
-========================================================= */
+========================================================== */
 
 function toggleMenu(){
 
     const nav =
-        document.querySelector("nav");
+        document.querySelector(
+            ".nav"
+        );
+
 
     if(
         nav.style.display ===
@@ -2308,62 +2406,48 @@ function toggleMenu(){
         nav.style.display =
             "";
 
-    }else{
-
-        nav.style.position =
-            "absolute";
-
-        nav.style.top =
-            "70px";
-
-        nav.style.right =
-            "4%";
-
-        nav.style.padding =
-            "18px";
-
-        nav.style.border =
-            "1px solid #008cff";
-
-        nav.style.borderRadius =
-            "15px";
-
-        nav.style.background =
-            "#03132c";
-
-        nav.style.flexDirection =
-            "column";
-
-        nav.style.alignItems =
-            "flex-start";
-
-        nav.style.gap =
-            "15px";
-
-        nav.style.display =
-            "flex";
+        return;
     }
+
+
+    nav.style.position =
+        "absolute";
+
+    nav.style.top =
+        "62px";
+
+    nav.style.right =
+        "4%";
+
+    nav.style.padding =
+        "18px";
+
+    nav.style.display =
+        "flex";
+
+    nav.style.flexDirection =
+        "column";
+
+    nav.style.alignItems =
+        "flex-start";
+
+    nav.style.gap =
+        "15px";
+
+    nav.style.border =
+        "1px solid #00aaff";
+
+    nav.style.borderRadius =
+        "15px";
+
+    nav.style.background =
+        "#03152d";
 }
 
 
-/* =========================================================
-   ESCAPE HTML
-========================================================= */
-
-function escapeHtml(value){
-
-    return String(value)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
-}
-
-
-/* =========================================================
-   SCROLL TOP
-========================================================= */
+/* ==========================================================
+   TOP BUTTON
+========================================================== */
 
 window.addEventListener(
     "scroll",
@@ -2371,10 +2455,12 @@ window.addEventListener(
 
         const button =
             document.getElementById(
-                "scrollTop"
+                "topButton"
             );
 
-        if(window.scrollY > 400){
+        if(
+            window.scrollY > 400
+        ){
 
             button.style.display =
                 "block";
@@ -2388,15 +2474,18 @@ window.addEventListener(
 );
 
 
-/* =========================================================
-   ESC CLOSE MODAL
-========================================================= */
+/* ==========================================================
+   ESCAPE CLOSE
+========================================================== */
 
 document.addEventListener(
     "keydown",
     function(event){
 
-        if(event.key === "Escape"){
+        if(
+            event.key ===
+            "Escape"
+        ){
 
             closeModal();
         }
@@ -2404,9 +2493,9 @@ document.addEventListener(
 );
 
 
-/* =========================================================
+/* ==========================================================
    START
-========================================================= */
+========================================================== */
 
 loadCountries();
 
