@@ -3,241 +3,686 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ALL WORLD BRANDS</title>
+
+<title>ALL WORLD BRANDS — Global Brand Directory</title>
 
 <style>
-*{box-sizing:border-box}
-
-body{
- margin:0;
- font:16px system-ui,-apple-system,Segoe UI,sans-serif;
- background:#f5f7fb;
- color:#182235
+*{
+  box-sizing:border-box;
 }
 
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  color:#eef4ff;
+  background:
+    radial-gradient(circle at 10% 5%,rgba(37,93,242,.28),transparent 30%),
+    radial-gradient(circle at 90% 15%,rgba(112,75,255,.22),transparent 28%),
+    radial-gradient(circle at 50% 100%,rgba(0,180,255,.12),transparent 35%),
+    #060a13;
+  min-height:100vh;
+}
+
+/* =========================
+   HEADER
+========================= */
+
 header{
- background:#101827;
- color:#fff;
- padding:18px 5%;
- position:sticky;
- top:0;
- z-index:10
+  position:sticky;
+  top:0;
+  z-index:100;
+  padding:18px 5%;
+  background:rgba(5,9,18,.78);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(255,255,255,.08);
 }
 
 .nav{
- max-width:1200px;
- margin:auto;
- display:flex;
- justify-content:space-between;
- align-items:center;
- gap:20px
+  max-width:1250px;
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
 }
 
 .logo{
- font-weight:900;
- font-size:18px
+  font-size:20px;
+  font-weight:950;
+  letter-spacing:.5px;
+  color:#fff;
 }
 
 .logo span{
- color:#72a0ff
+  background:linear-gradient(
+    90deg,
+    #72a0ff,
+    #9f7cff,
+    #45d9ff
+  );
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
 }
 
+.domain{
+  color:#9eabc1;
+  font-size:13px;
+  letter-spacing:.5px;
+}
+
+/* =========================
+   MAIN
+========================= */
+
 main{
- max-width:1200px;
- margin:auto;
- padding:32px 5% 60px
+  max-width:1250px;
+  margin:auto;
+  padding:65px 5% 90px;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+  position:relative;
+  padding:55px 0 45px;
+  max-width:900px;
+}
+
+.hero::before{
+  content:"";
+  position:absolute;
+  width:260px;
+  height:260px;
+  left:-100px;
+  top:-40px;
+  background:#315df5;
+  opacity:.12;
+  filter:blur(80px);
+  border-radius:50%;
+  pointer-events:none;
+}
+
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 13px;
+  border:1px solid rgba(114,160,255,.25);
+  border-radius:30px;
+  background:rgba(40,72,150,.16);
+  color:#9bb9ff;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+.eyebrow-dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#55d6ff;
+  box-shadow:0 0 14px #55d6ff;
 }
 
 h1{
- font-size:clamp(36px,6vw,64px);
- line-height:1.02;
- margin:10px 0
+  position:relative;
+  font-size:clamp(42px,7vw,78px);
+  line-height:.98;
+  letter-spacing:-3px;
+  margin:22px 0 20px;
+  max-width:850px;
+  font-weight:950;
 }
 
-h2{
- margin-top:34px
+.gradient-title{
+  background:linear-gradient(
+    100deg,
+    #ffffff 15%,
+    #9cbcff 48%,
+    #b28cff 75%,
+    #63ddff
+  );
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
 }
 
-.muted{
- color:#6c7789;
- font-size:14px
+.subtitle{
+  color:#9ba8bc;
+  font-size:17px;
+  line-height:1.7;
+  max-width:680px;
+  margin:0;
 }
 
-.search{
- display:flex;
- gap:10px;
- max-width:760px;
- margin:22px 0
+/* =========================
+   SEARCH
+========================= */
+
+.search-box{
+  margin-top:32px;
+  max-width:820px;
+  display:flex;
+  padding:7px;
+  gap:7px;
+  border-radius:17px;
+  background:rgba(255,255,255,.055);
+  border:1px solid rgba(255,255,255,.10);
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.25),
+    inset 0 1px rgba(255,255,255,.05);
 }
 
-.search input,
-input,
-select{
- padding:14px;
- border:1px solid #dfe4ec;
- border-radius:12px;
- flex:1;
- width:100%;
- font:inherit
+.search-box input{
+  flex:1;
+  min-width:0;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:#fff;
+  padding:15px 17px;
+  font-size:15px;
 }
+
+.search-box input::placeholder{
+  color:#68758a;
+}
+
+/* =========================
+   BUTTON
+========================= */
 
 .btn{
- background:#215df2;
- color:#fff;
- border:0;
- padding:13px 18px;
- border-radius:12px;
- font-weight:800;
- cursor:pointer
+  border:0;
+  cursor:pointer;
+  color:white;
+  padding:13px 20px;
+  border-radius:12px;
+  font-weight:850;
+  font-size:14px;
+  background:
+    linear-gradient(
+      135deg,
+      #2864ff,
+      #684cff
+    );
+  box-shadow:
+    0 8px 25px rgba(49,93,245,.28);
+  transition:.2s ease;
 }
 
 .btn:hover{
- opacity:.9
+  transform:translateY(-2px);
+  box-shadow:
+    0 12px 32px rgba(49,93,245,.40);
 }
 
-.grid{
- display:grid;
- grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
- gap:14px
+.btn:active{
+  transform:translateY(0);
 }
 
-.card,.panel{
- background:#fff;
- border:1px solid #e1e6ee;
- border-radius:16px;
- padding:18px
+/* =========================
+   PANELS
+========================= */
+
+.panel{
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.075),
+      rgba(255,255,255,.035)
+    );
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:20px;
+  padding:22px;
+  box-shadow:
+    0 18px 50px rgba(0,0,0,.20);
+  backdrop-filter:blur(12px);
 }
 
-.card{
- cursor:pointer;
- transition:.15s;
- min-height:130px
+/* =========================
+   SECTION
+========================= */
+
+section{
+  margin-top:55px;
 }
 
-.card:hover{
- transform:translateY(-2px);
- box-shadow:0 7px 22px rgba(0,0,0,.08)
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  gap:15px;
+  margin-bottom:20px;
 }
 
-.flag{
- font-size:42px;
- line-height:1;
- margin-bottom:12px
+h2{
+  margin:0;
+  font-size:30px;
+  letter-spacing:-1px;
 }
 
-.country-name{
- font-size:17px;
- font-weight:800;
- margin-bottom:5px
-}
-
-.type{
- font-size:12px;
- color:#6c7789
-}
-
-.badge{
- background:#edf2ff;
- color:#2551bd;
- border-radius:20px;
- padding:5px 8px;
- font-size:11px
-}
-
-.price{
- font-size:32px;
- font-weight:900;
- margin:8px 0
-}
-
-.form{
- display:grid;
- gap:12px;
- max-width:650px
-}
-
-.hidden{
- display:none
-}
-
-.success{
- margin-top:10px;
- padding:12px;
- background:#eaf8ef;
- color:#18733a;
- border-radius:10px
-}
-
-.error{
- margin-top:10px;
- padding:12px;
- background:#fff0f0;
- color:#b42318;
- border-radius:10px
-}
-
-.back{
- margin-bottom:18px
-}
-
-.brand-card{
- cursor:pointer
-}
-
-.brand-card:hover{
- box-shadow:0 5px 20px rgba(0,0,0,.06)
-}
-
-.result-row{
- padding:12px;
- border-bottom:1px solid #eee;
- cursor:pointer
-}
-
-.result-row:last-child{
- border-bottom:0
+.section-description{
+  color:#718096;
+  font-size:13px;
+  margin-top:6px;
 }
 
 .count{
- display:inline-block;
- margin-left:8px;
- background:#e9eef8;
- padding:4px 9px;
- border-radius:20px;
- font-size:12px
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:35px;
+  height:26px;
+  padding:0 9px;
+  margin-left:7px;
+  border-radius:20px;
+  background:rgba(80,115,255,.14);
+  border:1px solid rgba(100,130,255,.20);
+  color:#8facff;
+  font-size:12px;
+  vertical-align:middle;
 }
 
-@media(max-width:600px){
- .nav{
-  flex-direction:column;
-  align-items:flex-start
- }
+/* =========================
+   COUNTRY GRID
+========================= */
 
- .search{
-  flex-direction:column
- }
+.grid{
+  display:grid;
+  grid-template-columns:
+    repeat(auto-fill,minmax(185px,1fr));
+  gap:14px;
+}
 
- .search .btn{
-  width:100%
- }
+.card{
+  position:relative;
+  overflow:hidden;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.075),
+      rgba(255,255,255,.025)
+    );
+  border:1px solid rgba(255,255,255,.085);
+  border-radius:18px;
+  padding:19px;
+  min-height:145px;
+  cursor:pointer;
+  transition:
+    transform .22s ease,
+    border-color .22s ease,
+    box-shadow .22s ease,
+    background .22s ease;
+}
 
- .grid{
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:10px
- }
+.card::after{
+  content:"";
+  position:absolute;
+  width:100px;
+  height:100px;
+  right:-50px;
+  bottom:-50px;
+  border-radius:50%;
+  background:#3f6cff;
+  opacity:0;
+  filter:blur(30px);
+  transition:.25s;
+}
 
- .card{
-  padding:14px;
-  min-height:120px
- }
+.card:hover{
+  transform:translateY(-5px);
+  border-color:rgba(110,145,255,.35);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(45,75,160,.20),
+      rgba(255,255,255,.045)
+    );
+  box-shadow:
+    0 18px 38px rgba(0,0,0,.28);
+}
 
- .flag{
-  font-size:36px
- }
+.card:hover::after{
+  opacity:.25;
+}
 
- .country-name{
-  font-size:15px
- }
+.flag{
+  font-size:39px;
+  line-height:1;
+  margin-bottom:16px;
+  filter:drop-shadow(0 5px 8px rgba(0,0,0,.25));
+}
+
+.country-name{
+  position:relative;
+  z-index:2;
+  font-size:15px;
+  font-weight:850;
+  color:#edf3ff;
+  line-height:1.3;
+  margin-bottom:8px;
+}
+
+.type{
+  position:relative;
+  z-index:2;
+  color:#69778d;
+  font-size:11px;
+  font-weight:650;
+}
+
+/* =========================
+   BRAND CARDS
+========================= */
+
+.brand-card{
+  min-height:125px;
+}
+
+.brand-card h3{
+  margin:0 0 15px;
+  font-size:19px;
+  color:#fff;
+}
+
+.badge{
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:20px;
+  font-size:10px;
+  font-weight:850;
+  letter-spacing:.5px;
+  text-transform:uppercase;
+  background:rgba(75,110,255,.14);
+  border:1px solid rgba(90,120,255,.18);
+  color:#9db3ff;
+}
+
+/* =========================
+   FORMS
+========================= */
+
+.form{
+  display:grid;
+  gap:12px;
+  max-width:650px;
+}
+
+.form input,
+.form select{
+  width:100%;
+  padding:15px 16px;
+  border-radius:13px;
+  border:1px solid rgba(255,255,255,.10);
+  outline:none;
+  background:rgba(0,0,0,.20);
+  color:#fff;
+  font:inherit;
+  transition:.2s;
+}
+
+.form input:focus,
+.form select:focus{
+  border-color:rgba(91,130,255,.65);
+  box-shadow:0 0 0 3px rgba(55,95,255,.10);
+}
+
+.form input::placeholder{
+  color:#68758a;
+}
+
+.form select option{
+  background:#101827;
+  color:white;
+}
+
+/* =========================
+   PRICE
+========================= */
+
+.price{
+  font-size:44px;
+  line-height:1;
+  font-weight:950;
+  margin:20px 0 7px;
+  background:linear-gradient(
+    90deg,
+    #fff,
+    #8eb0ff,
+    #b18bff
+  );
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+.price-label{
+  color:#758399;
+  font-size:13px;
+  margin-bottom:20px;
+}
+
+/* =========================
+   SEARCH RESULTS
+========================= */
+
+.result-row{
+  padding:15px 8px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+  cursor:pointer;
+  color:#dfe7f7;
+  transition:.15s;
+}
+
+.result-row:hover{
+  padding-left:14px;
+  color:#8eb0ff;
+}
+
+.result-row:last-child{
+  border-bottom:0;
+}
+
+/* =========================
+   DETAIL
+========================= */
+
+#detail h2{
+  margin-bottom:15px;
+}
+
+#detail p{
+  color:#9aa8bc;
+  line-height:1.7;
+}
+
+#detail a{
+  color:#83a8ff;
+  text-decoration:none;
+  font-weight:750;
+}
+
+#detail a:hover{
+  text-decoration:underline;
+}
+
+/* =========================
+   BACK BUTTON
+========================= */
+
+.back{
+  margin-bottom:20px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.10);
+  box-shadow:none;
+}
+
+.back:hover{
+  background:rgba(255,255,255,.11);
+}
+
+/* =========================
+   MESSAGES
+========================= */
+
+.success,
+.error{
+  margin-top:10px;
+  padding:13px 15px;
+  border-radius:12px;
+  font-size:13px;
+}
+
+.success{
+  background:rgba(40,190,105,.10);
+  border:1px solid rgba(50,210,120,.18);
+  color:#6ee49c;
+}
+
+.error{
+  background:rgba(240,70,70,.10);
+  border:1px solid rgba(255,80,80,.18);
+  color:#ff9292;
+}
+
+/* =========================
+   HIDDEN
+========================= */
+
+.hidden{
+  display:none!important;
+}
+
+/* =========================
+   ADD BRAND
+========================= */
+
+.add-card{
+  max-width:850px;
+}
+
+.add-title{
+  font-size:25px;
+  margin:0 0 8px;
+}
+
+.add-description{
+  color:#77859a;
+  line-height:1.6;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:700px){
+
+  header{
+    padding:15px 5%;
+  }
+
+  .nav{
+    align-items:center;
+  }
+
+  .logo{
+    font-size:16px;
+  }
+
+  .domain{
+    display:none;
+  }
+
+  main{
+    padding:35px 5% 65px;
+  }
+
+  .hero{
+    padding:30px 0 25px;
+  }
+
+  h1{
+    font-size:clamp(40px,12vw,58px);
+    letter-spacing:-2px;
+  }
+
+  .subtitle{
+    font-size:15px;
+  }
+
+  .search-box{
+    flex-direction:column;
+    padding:7px;
+  }
+
+  .search-box .btn{
+    width:100%;
+  }
+
+  .grid{
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
+    gap:10px;
+  }
+
+  .card{
+    padding:14px;
+    min-height:125px;
+  }
+
+  .flag{
+    font-size:33px;
+    margin-bottom:12px;
+  }
+
+  .country-name{
+    font-size:13px;
+  }
+
+  .type{
+    font-size:10px;
+  }
+
+  h2{
+    font-size:24px;
+  }
+
+  .section-head{
+    align-items:start;
+    flex-direction:column;
+  }
+
+  .panel{
+    padding:17px;
+    border-radius:17px;
+  }
+}
+
+@media(max-width:380px){
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  h1{
+    font-size:40px;
+  }
 }
 </style>
 </head>
@@ -245,131 +690,248 @@ select{
 <body>
 
 <header>
-<div class="nav">
-<div class="logo">ALL <span>WORLD BRANDS</span></div>
-<div>allworldbrands.net</div>
-</div>
+  <div class="nav">
+
+    <div class="logo">
+      ALL <span>WORLD BRANDS</span>
+    </div>
+
+    <div class="domain">
+      allworldbrands.net
+    </div>
+
+  </div>
 </header>
+
 
 <main>
 
-<h1>Discover brands around the world.</h1>
+<!-- HERO -->
 
-<p class="muted">
-Countries, territories and dependencies — all in one world directory.
-</p>
+<div class="hero">
 
-<div class="search">
-<input
- id="q"
- placeholder="Search brand, country or territory"
- onkeydown="if(event.key==='Enter')searchBrands()"
->
-<button class="btn" onclick="searchBrands()">Search</button>
+  <div class="eyebrow">
+    <span class="eyebrow-dot"></span>
+    Global Brand Directory
+  </div>
+
+  <h1>
+    Discover
+    <span class="gradient-title">
+      brands
+    </span>
+    around the world.
+  </h1>
+
+  <p class="subtitle">
+    Explore countries, territories and dependencies
+    in one global directory. Discover brands,
+    companies and businesses from around the world.
+  </p>
+
+
+  <div class="search-box">
+
+    <input
+      id="q"
+      placeholder="Search brand, country or territory..."
+      onkeydown="if(event.key==='Enter')searchBrands()"
+    >
+
+    <button
+      class="btn"
+      onclick="searchBrands()"
+    >
+      Search
+    </button>
+
+  </div>
+
 </div>
 
-<div id="results" class="panel hidden"></div>
+
+<!-- SEARCH RESULTS -->
+
+<div
+  id="results"
+  class="panel hidden"
+></div>
+
+
+<!-- COUNTRIES -->
 
 <section id="countries">
 
-<h2>
-Countries & Territories
-<span id="countryCount" class="count">0</span>
-</h2>
+  <div class="section-head">
 
-<div id="cg" class="grid"></div>
+    <div>
+      <h2>
+        🌍 Countries & Territories
+        <span
+          id="countryCount"
+          class="count"
+        >
+          0
+        </span>
+      </h2>
+
+      <div class="section-description">
+        Explore brands by location
+      </div>
+    </div>
+
+  </div>
+
+  <div
+    id="cg"
+    class="grid"
+  ></div>
 
 </section>
 
-<section id="brandsSection" class="hidden">
 
-<button class="btn back" onclick="backToCountries()">
-← Countries & Territories
-</button>
+<!-- BRANDS -->
 
-<h2 id="ct"></h2>
+<section
+  id="brandsSection"
+  class="hidden"
+>
 
-<div id="bg" class="grid"></div>
+  <button
+    class="btn back"
+    onclick="backToCountries()"
+  >
+    ← Countries & Territories
+  </button>
 
-<div
- id="detail"
- class="panel hidden"
- style="margin-top:20px"
-></div>
+  <div class="section-head">
+
+    <div>
+      <h2 id="ct"></h2>
+
+      <div class="section-description">
+        Brands listed in this location
+      </div>
+    </div>
+
+  </div>
+
+  <div
+    id="bg"
+    class="grid"
+  ></div>
+
+  <div
+    id="detail"
+    class="panel hidden"
+    style="margin-top:20px"
+  ></div>
 
 </section>
+
+
+<!-- ADD BRAND -->
 
 <section id="add">
 
-<h2>Add your brand</h2>
+  <div class="section-head">
 
-<div class="panel">
+    <div>
+      <h2>
+        🏷️ Add your brand
+      </h2>
 
-<p class="muted">
-Submit your brand for review and listing.
-</p>
+      <div class="section-description">
+        Submit your brand for review and listing
+      </div>
+    </div>
 
-<div class="price">$1.00</div>
+  </div>
 
-<p class="muted">
-One-time submission fee
-</p>
 
-<form class="form" onsubmit="apply(event)">
+  <div class="panel add-card">
 
-<input
- id="bn"
- placeholder="Brand name"
- required
->
+    <p class="add-description">
+      Get your brand submitted to the
+      ALL WORLD BRANDS global directory.
+    </p>
 
-<input
- id="co"
- placeholder="Country / Territory"
- required
->
+    <div class="price">
+      $1.00
+    </div>
 
-<input
- id="em"
- type="email"
- placeholder="Owner email"
- required
->
+    <div class="price-label">
+      One-time submission fee
+    </div>
 
-<input
- id="ph"
- placeholder="Phone number"
->
 
-<input
- id="web"
- placeholder="Official website"
->
+    <form
+      class="form"
+      onsubmit="apply(event)"
+    >
 
-<select id="pk">
-<option value="Basic">
-Basic — $1.00
-</option>
-</select>
+      <input
+        id="bn"
+        placeholder="Brand name"
+        required
+      >
 
-<button
- class="btn"
- type="submit"
->
-Submit for $1.00
-</button>
+      <input
+        id="co"
+        placeholder="Country / Territory"
+        required
+      >
 
-<div id="msg"></div>
+      <input
+        id="em"
+        type="email"
+        placeholder="Owner email"
+        required
+      >
 
-</form>
+      <input
+        id="ph"
+        placeholder="Phone number"
+      >
 
-</div>
+      <input
+        id="web"
+        placeholder="Official website"
+      >
+
+      <select id="pk">
+
+        <option value="Basic">
+          Basic — $1.00
+        </option>
+
+      </select>
+
+
+      <button
+        class="btn"
+        type="submit"
+      >
+        Submit for $1.00 →
+      </button>
+
+
+      <div id="msg"></div>
+
+    </form>
+
+  </div>
 
 </section>
 
 </main>
 
+
 <script>
+
+/* =========================
+   COUNTRY FLAGS
+========================= */
 
 const codes={
 
@@ -401,10 +963,11 @@ const codes={
 "Bulgaria":"BG",
 "Burkina Faso":"BF",
 "Burundi":"BI",
+"Cabo Verde":"CV",
+"Cape Verde":"CV",
 "Cambodia":"KH",
 "Cameroon":"CM",
 "Canada":"CA",
-"Cape Verde":"CV",
 "Central African Republic":"CF",
 "Chad":"TD",
 "Chile":"CL",
@@ -413,6 +976,7 @@ const codes={
 "Comoros":"KM",
 "Congo":"CG",
 "Costa Rica":"CR",
+"Côte d'Ivoire":"CI",
 "Croatia":"HR",
 "Cuba":"CU",
 "Cyprus":"CY",
@@ -460,6 +1024,7 @@ const codes={
 "Kazakhstan":"KZ",
 "Kenya":"KE",
 "Kiribati":"KI",
+"Kosovo":"XK",
 "Kuwait":"KW",
 "Kyrgyzstan":"KG",
 "Laos":"LA",
@@ -503,6 +1068,7 @@ const codes={
 "Oman":"OM",
 "Pakistan":"PK",
 "Palau":"PW",
+"Palestine":"PS",
 "Panama":"PA",
 "Papua New Guinea":"PG",
 "Paraguay":"PY",
@@ -566,9 +1132,15 @@ const codes={
 "Zambia":"ZM",
 "Zimbabwe":"ZW",
 
+"Åland Islands":"AX",
+"American Samoa":"AS",
+"Anguilla":"AI",
+"Antarctica":"AQ",
 "Aruba":"AW",
 "Bermuda":"BM",
 "Bonaire, Sint Eustatius and Saba":"BQ",
+"Bouvet Island":"BV",
+"British Indian Ocean Territory":"IO",
 "British Virgin Islands":"VG",
 "Cayman Islands":"KY",
 "Christmas Island":"CX",
@@ -579,11 +1151,13 @@ const codes={
 "Faroe Islands":"FO",
 "French Guiana":"GF",
 "French Polynesia":"PF",
+"French Southern Territories":"TF",
 "Gibraltar":"GI",
 "Greenland":"GL",
 "Guadeloupe":"GP",
 "Guam":"GU",
 "Guernsey":"GG",
+"Heard Island and McDonald Islands":"HM",
 "Hong Kong":"HK",
 "Isle of Man":"IM",
 "Jersey":"JE",
@@ -603,381 +1177,484 @@ const codes={
 "Saint Martin":"MF",
 "Saint Pierre and Miquelon":"PM",
 "Sint Maarten":"SX",
-"South Georgia and the South Sandwich Islands":"GS",
+"South Georgia and South Sandwich Islands":"GS",
+"Svalbard and Jan Mayen":"SJ",
 "Tokelau":"TK",
 "Turks and Caicos Islands":"TC",
 "U.S. Virgin Islands":"VI",
+"United States Minor Outlying Islands":"UM",
 "Wallis and Futuna":"WF",
 "Western Sahara":"EH"
 
 };
 
+
+/* =========================
+   FLAG FUNCTION
+========================= */
+
 function flagFor(name){
 
- const code=codes[name];
+  const code=codes[name];
 
- if(!code) return "🌍";
+  if(!code){
+    return "🌍";
+  }
 
- return code
- .toUpperCase()
- .split("")
- .map(function(c){
-  return String.fromCodePoint(
-   127397+c.charCodeAt(0)
-  );
- })
- .join("");
+  return code
+    .toUpperCase()
+    .split("")
+    .map(function(c){
 
+      return String.fromCodePoint(
+        127397+c.charCodeAt(0)
+      );
+
+    })
+    .join("");
 }
+
+
+/* =========================
+   HTML ESCAPE
+========================= */
 
 function esc(value){
 
- return String(value??"")
- .replace(/[&<>"']/g,function(m){
+  return String(value ?? "")
+    .replace(/[&<>"']/g,function(m){
 
-  return {
-   "&":"&amp;",
-   "<":"&lt;",
-   ">":"&gt;",
-   '"':"&quot;",
-   "'":"&#039;"
-  }[m];
+      return {
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+      }[m];
 
- });
-
+    });
 }
+
+
+/* =========================
+   LOAD COUNTRIES
+========================= */
 
 async function loadCountries(){
 
- try{
+  try{
 
-  const response=await fetch("/api/countries");
-  const data=await response.json();
+    const response=
+      await fetch("/api/countries");
 
-  document.getElementById("countryCount").textContent=data.length;
+    const data=
+      await response.json();
 
-  document.getElementById("cg").innerHTML=data.map(function(c){
+    document.getElementById(
+      "countryCount"
+    ).textContent=data.length;
 
-   return `
-   <div
-    class="card"
-    onclick="loadBrands(${c.id}, '${esc(c.name)}')"
-   >
 
-    <div class="flag">
-     ${flagFor(c.name)}
-    </div>
+    document.getElementById(
+      "cg"
+    ).innerHTML=data.map(function(c){
 
-    <div class="country-name">
-     ${esc(c.name)}
-    </div>
+      return `
+        <div
+          class="card"
+          onclick="loadBrands(${c.id}, '${esc(c.name)}')"
+        >
 
-    <div class="type">
-     ${codes[c.name]
-       ?"Country / Territory"
-       :"Region / territory"}
-    </div>
+          <div class="flag">
+            ${flagFor(c.name)}
+          </div>
 
-   </div>`;
+          <div class="country-name">
+            ${esc(c.name)}
+          </div>
 
-  }).join("");
+          <div class="type">
+            ${c.brand_count || 0} brand(s)
+          </div>
 
- }catch(error){
+        </div>
+      `;
 
-  console.error(error);
+    }).join("");
 
- }
+  }catch(error){
 
-}
+    console.error(error);
 
-async function loadBrands(id,countryName){
-
- document.getElementById("countries")
- .classList.add("hidden");
-
- document.getElementById("add")
- .classList.add("hidden");
-
- document.getElementById("brandsSection")
- .classList.remove("hidden");
-
- document.getElementById("ct").innerHTML=
- `${flagFor(countryName)} ${esc(countryName)}`;
-
- try{
-
-  const response=
-   await fetch("/api/countries/"+id+"/brands");
-
-  const data=await response.json();
-
-  document.getElementById("bg").innerHTML=
-   data.length
-
-   ?
-
-   data.map(function(b){
-
-    return `
-    <div
-     class="card brand-card"
-     onclick="showBrand(${b.id})"
-    >
-
-     <h3>${esc(b.name)}</h3>
-
-     <span class="badge">
-      Brand
-     </span>
-
-    </div>`;
-
-   }).join("")
-
-   :
-
-   `<div class="panel">
-    No brands listed yet.
-   </div>`;
-
- }catch(error){
-
-  console.error(error);
-
- }
-
-}
-
-async function showBrand(id){
-
- try{
-
-  const response=
-   await fetch("/api/brands/"+id);
-
-  const b=await response.json();
-
-  const detail=
-   document.getElementById("detail");
-
-  detail.classList.remove("hidden");
-
-  detail.innerHTML=`
-
-   <h2>
-    ${esc(b.name)}
-   </h2>
-
-   <p>
-    ${esc(
-     b.description||
-     "No description available."
-    )}
-   </p>
-
-   <p>
-    <b>Country:</b>
-    ${flagFor(b.country_name||"")}
-    ${esc(b.country_name||"")}
-   </p>
-
-   ${
-    b.website
-
-    ?
-
-    `<p>
-      <a
-       href="${esc(b.website)}"
-       target="_blank"
-       rel="noopener"
-      >
-       Official website
-      </a>
-     </p>`
-
-    :
-
-    ""
-   }
-
-  `;
-
- }catch(error){
-
-  console.error(error);
-
- }
-
-}
-
-function backToCountries(){
-
- document.getElementById("brandsSection")
- .classList.add("hidden");
-
- document.getElementById("countries")
- .classList.remove("hidden");
-
- document.getElementById("add")
- .classList.remove("hidden");
-
- document.getElementById("detail")
- .classList.add("hidden");
-
-}
-
-async function searchBrands(){
-
- const value=
-  document.getElementById("q")
-  .value
-  .trim();
-
- if(!value)return;
-
- try{
-
-  const response=
-   await fetch(
-    "/api/search?q="+
-    encodeURIComponent(value)
-   );
-
-  const data=await response.json();
-
-  const results=
-   document.getElementById("results");
-
-  results.classList.remove("hidden");
-
-  results.innerHTML=
-
-   data.length
-
-   ?
-
-   data.map(function(b){
-
-    return `
-    <div
-     class="result-row"
-     onclick="showBrand(${b.id})"
-    >
-
-     <b>
-      ${flagFor(b.country_name||"")}
-      ${esc(b.name)}
-     </b>
-
-     · ${esc(b.country_name||"")}
-
-    </div>`;
-
-   }).join("")
-
-   :
-
-   "No results.";
-
- }catch(error){
-
-  console.error(error);
-
- }
-
-}
-
-async function apply(event){
-
- event.preventDefault();
-
- const msg=
-  document.getElementById("msg");
-
- msg.className="";
- msg.textContent="Sending...";
-
- const data={
-
-  name:
-   document.getElementById("bn").value,
-
-  email:
-   document.getElementById("em").value,
-
-  phone:
-   document.getElementById("ph").value,
-
-  message:
-
-   "Brand: "+
-   document.getElementById("bn").value+
-
-   "\nCountry: "+
-   document.getElementById("co").value+
-
-   "\nWebsite: "+
-   document.getElementById("web").value+
-
-   "\nPackage: "+
-   document.getElementById("pk").value+
-
-   "\nPrice: $1.00"
-
- };
-
- try{
-
-  const response=
-   await fetch(
-    "/api/applications",
-    {
-     method:"POST",
-     headers:{
-      "Content-Type":
-      "application/json"
-     },
-     body:JSON.stringify(data)
-    }
-   );
-
-  const result=
-   await response.json();
-
-  if(response.ok){
-
-   msg.className="success";
-
-   msg.textContent=
-    "Application #"+
-    result.id+
-    " submitted successfully.";
-
-   event.target.reset();
-
-  }else{
-
-   msg.className="error";
-
-   msg.textContent=
-    result.error||
-    "Something went wrong.";
+    document.getElementById("cg").innerHTML=
+      `<div class="panel">
+        Unable to load countries.
+      </div>`;
 
   }
 
- }catch(error){
+}
 
-  console.error(error);
 
-  msg.className="error";
+/* =========================
+   LOAD BRANDS
+========================= */
 
-  msg.textContent=
-   "Connection error. Please try again.";
+async function loadBrands(id,countryName){
 
- }
+  document
+    .getElementById("countries")
+    .classList.add("hidden");
+
+  document
+    .getElementById("add")
+    .classList.add("hidden");
+
+  document
+    .getElementById("brandsSection")
+    .classList.remove("hidden");
+
+  document
+    .getElementById("ct")
+    .innerHTML=
+      `${flagFor(countryName)}
+       ${esc(countryName)}`;
+
+
+  try{
+
+    const response=
+      await fetch(
+        "/api/countries/"+id+"/brands"
+      );
+
+    const data=
+      await response.json();
+
+
+    document.getElementById(
+      "bg"
+    ).innerHTML=
+
+      data.length
+
+      ?
+
+      data.map(function(b){
+
+        return `
+          <div
+            class="card brand-card"
+            onclick="showBrand(${b.id})"
+          >
+
+            <h3>
+              ${esc(b.name)}
+            </h3>
+
+            <span class="badge">
+              Brand
+            </span>
+
+          </div>
+        `;
+
+      }).join("")
+
+      :
+
+      `<div class="panel">
+        No brands listed yet.
+      </div>`;
+
+  }catch(error){
+
+    console.error(error);
+
+  }
 
 }
+
+
+/* =========================
+   SHOW BRAND
+========================= */
+
+async function showBrand(id){
+
+  try{
+
+    const response=
+      await fetch(
+        "/api/brands/"+id
+      );
+
+    const b=
+      await response.json();
+
+    const detail=
+      document.getElementById("detail");
+
+    detail.classList.remove("hidden");
+
+    detail.innerHTML=`
+
+      <h2>
+        ${esc(b.name)}
+      </h2>
+
+      <p>
+        ${esc(
+          b.description ||
+          "No description available."
+        )}
+      </p>
+
+      <p>
+        <b>Country:</b>
+        ${flagFor(b.country || "")}
+        ${esc(b.country || "")}
+      </p>
+
+      ${
+        b.website
+
+        ?
+
+        `<p>
+          <a
+            href="${esc(b.website)}"
+            target="_blank"
+            rel="noopener"
+          >
+            Visit official website →
+          </a>
+        </p>`
+
+        :
+
+        ""
+      }
+
+    `;
+
+    detail.scrollIntoView({
+      behavior:"smooth",
+      block:"start"
+    });
+
+  }catch(error){
+
+    console.error(error);
+
+  }
+
+}
+
+
+/* =========================
+   BACK
+========================= */
+
+function backToCountries(){
+
+  document
+    .getElementById("brandsSection")
+    .classList.add("hidden");
+
+  document
+    .getElementById("countries")
+    .classList.remove("hidden");
+
+  document
+    .getElementById("add")
+    .classList.remove("hidden");
+
+  document
+    .getElementById("detail")
+    .classList.add("hidden");
+
+}
+
+
+/* =========================
+   SEARCH
+========================= */
+
+async function searchBrands(){
+
+  const value=
+    document
+      .getElementById("q")
+      .value
+      .trim();
+
+  if(!value){
+    return;
+  }
+
+
+  try{
+
+    const response=
+      await fetch(
+        "/api/search?q="+
+        encodeURIComponent(value)
+      );
+
+    const data=
+      await response.json();
+
+    const results=
+      document.getElementById("results");
+
+    results.classList.remove("hidden");
+
+
+    results.innerHTML=
+
+      data.length
+
+      ?
+
+      data.map(function(b){
+
+        return `
+          <div
+            class="result-row"
+            onclick="showBrand(${b.id})"
+          >
+
+            <b>
+              ${flagFor(b.country || "")}
+              ${esc(b.name)}
+            </b>
+
+            · ${esc(b.country || "")}
+
+          </div>
+        `;
+
+      }).join("")
+
+      :
+
+      `<div style="color:#7d8ba0">
+        No results found.
+      </div>`;
+
+  }catch(error){
+
+    console.error(error);
+
+  }
+
+}
+
+
+/* =========================
+   APPLICATION
+========================= */
+
+async function apply(event){
+
+  event.preventDefault();
+
+  const msg=
+    document.getElementById("msg");
+
+  msg.className="";
+  msg.textContent="Sending...";
+
+
+  const data={
+
+    brand_name:
+      document.getElementById("bn").value,
+
+    country:
+      document.getElementById("co").value,
+
+    owner_name:"",
+
+    email:
+      document.getElementById("em").value,
+
+    phone:
+      document.getElementById("ph").value,
+
+    website:
+      document.getElementById("web").value,
+
+    description:
+      "Package: "+
+      document.getElementById("pk").value+
+      " | Price: $1.00"
+
+  };
+
+
+  try{
+
+    const response=
+      await fetch(
+        "/api/applications",
+        {
+          method:"POST",
+
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+
+          body:
+            JSON.stringify(data)
+        }
+      );
+
+
+    const result=
+      await response.json();
+
+
+    if(response.ok){
+
+      msg.className="success";
+
+      msg.textContent=
+        "Application #"+
+        result.id+
+        " submitted successfully.";
+
+      event.target.reset();
+
+    }else{
+
+      msg.className="error";
+
+      msg.textContent=
+        result.error ||
+        "Something went wrong.";
+
+    }
+
+  }catch(error){
+
+    console.error(error);
+
+    msg.className="error";
+
+    msg.textContent=
+      "Connection error. Please try again.";
+
+  }
+
+}
+
+
+/* =========================
+   START
+========================= */
 
 loadCountries();
 
