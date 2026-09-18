@@ -311,6 +311,98 @@ app.use(
 
 
 // ==================================================
+// ADMIN AUTHENTICATION
+// ==================================================
+
+const ADMIN_USER =
+  process.env.ADMIN_USER || "admin";
+
+const ADMIN_PASSWORD =
+  process.env.ADMIN_PASSWORD;
+
+function adminAuth(req, res, next) {
+
+  if (!ADMIN_PASSWORD) {
+
+    return res
+      .status(500)
+      .send("Admin password is not configured.");
+
+  }
+
+  const auth =
+    req.headers.authorization || "";
+
+  if (!auth.startsWith("Basic ")) {
+
+    res.setHeader(
+      "WWW-Authenticate",
+      'Basic realm="ALL WORLD BRANDS ADMIN"'
+    );
+
+    return res
+      .status(401)
+      .send("Admin login required.");
+
+  }
+
+  const encoded =
+    auth.split(" ")[1];
+
+  let decoded;
+
+  try {
+
+    decoded = Buffer
+      .from(encoded, "base64")
+      .toString("utf8");
+
+  } catch (error) {
+
+    return res
+      .status(401)
+      .send("Invalid authentication.");
+
+  }
+
+  const separator =
+    decoded.indexOf(":");
+
+  if (separator === -1) {
+
+    return res
+      .status(401)
+      .send("Invalid authentication.");
+
+  }
+
+  const username =
+    decoded.slice(0, separator);
+
+  const password =
+    decoded.slice(separator + 1);
+
+  if (
+    username !== ADMIN_USER ||
+    password !== ADMIN_PASSWORD
+  ) {
+
+    res.setHeader(
+      "WWW-Authenticate",
+      'Basic realm="ALL WORLD BRANDS ADMIN"'
+    );
+
+    return res
+      .status(401)
+      .send("Wrong username or password.");
+
+  }
+
+  next();
+}
+
+
+// ==================================================
 // PUBLIC WEBSITE
 // ==================================================
 
@@ -325,89 +417,107 @@ app.use(
 // ADMIN PAGE
 // ==================================================
 
-app.get("/admin", (req, res) => {
+app.get(
+  "/admin",
+  adminAuth,
+  (req, res) => {
 
-  res.sendFile(
-    path.join(
-      __dirname,
-      "public",
-      "admin",
-      "admin.html"
-    )
-  );
+    res.sendFile(
+      path.join(
+        __dirname,
+        "public",
+        "admin",
+        "admin.html"
+      )
+    );
 
-});
+  }
+);
 
-app.get("/admin/", (req, res) => {
+app.get(
+  "/admin/",
+  adminAuth,
+  (req, res) => {
 
-  res.sendFile(
-    path.join(
-      __dirname,
-      "public",
-      "admin",
-      "admin.html"
-    )
-  );
+    res.sendFile(
+      path.join(
+        __dirname,
+        "public",
+        "admin",
+        "admin.html"
+      )
+    );
 
-});
+  }
+);
 
-app.get("/admin/admin.html", (req, res) => {
+app.get(
+  "/admin/admin.html",
+  adminAuth,
+  (req, res) => {
 
-  res.sendFile(
-    path.join(
-      __dirname,
-      "public",
-      "admin",
-      "admin.html"
-    )
-  );
+    res.sendFile(
+      path.join(
+        __dirname,
+        "public",
+        "admin",
+        "admin.html"
+      )
+    );
 
-});
+  }
+);
 
 
 // ==================================================
 // API HEALTH
 // ==================================================
 
-app.get("/api/health", (req, res) => {
+app.get(
+  "/api/health",
+  (req, res) => {
 
-  res.json({
-    ok: true,
-    service: "ALL WORLD BRANDS API"
-  });
+    res.json({
+      ok: true,
+      service: "ALL WORLD BRANDS API"
+    });
 
-});
+  }
+);
 
 
 // ==================================================
 // COUNTRIES API
 // ==================================================
 
-app.get("/api/countries", (req, res) => {
+app.get(
+  "/api/countries",
+  (req, res) => {
 
-  try {
+    try {
 
-    const rows = db
-      .prepare(`
-        SELECT *
-        FROM countries
-        ORDER BY name COLLATE NOCASE
-      `)
-      .all();
+      const rows = db
+        .prepare(`
+          SELECT *
+          FROM countries
+          ORDER BY name COLLATE NOCASE
+        `)
+        .all();
 
-    res.json(rows);
+      res.json(rows);
 
-  } catch (error) {
+    } catch (error) {
 
-    console.error(error);
+      console.error(error);
 
-    res.status(500).json({
-      error: "Failed to load countries"
-    });
+      res.status(500).json({
+        error: "Failed to load countries"
+      });
+
+    }
 
   }
-
-});
+);
 
 
 // ==================================================
@@ -505,200 +615,546 @@ app.get(
 // SEARCH API
 // ==================================================
 
-app.get("/api/search", (req, res) => {
+app.get(
+  "/api/search",
+  (req, res) => {
 
-  try {
+    try {
 
-    const q =
-      String(req.query.q || "")
-        .trim();
+      const q =
+        String(req.query.q || "")
+          .trim();
 
-    if (!q) {
-      return res.json([]);
+      if (!q) {
+        return res.json([]);
+      }
+
+      const s = `%${q}%`;
+
+      const rows = db
+        .prepare(`
+          SELECT
+            b.id,
+            b.name,
+            b.category,
+            b.description,
+            b.website,
+            b.verification,
+            c.name AS country,
+            c.code AS country_code
+          FROM brands b
+          JOIN countries c
+            ON c.id = b.country_id
+          WHERE b.name LIKE ?
+             OR b.category LIKE ?
+             OR b.description LIKE ?
+             OR c.name LIKE ?
+          ORDER BY b.name COLLATE NOCASE
+          LIMIT 50
+        `)
+        .all(s, s, s, s);
+
+      res.json(rows);
+
+    } catch (error) {
+
+      console.error(error);
+
+      res.status(500).json({
+        error: "Search failed"
+      });
+
     }
 
-    const s = `%${q}%`;
+  }
+);
 
-    const rows = db
-      .prepare(`
-        SELECT
-          b.id,
-          b.name,
-          b.category,
-          b.description,
-          b.website,
-          b.verification,
-          c.name AS country,
-          c.code AS country_code
-        FROM brands b
-        JOIN countries c
-          ON c.id = b.country_id
-        WHERE b.name LIKE ?
-           OR b.category LIKE ?
-           OR b.description LIKE ?
-           OR c.name LIKE ?
-        ORDER BY b.name COLLATE NOCASE
-        LIMIT 50
-      `)
-      .all(s, s, s, s);
 
-    res.json(rows);
+// ==================================================
+// APPLICATIONS — PUBLIC
+// ==================================================
 
-  } catch (error) {
+app.post(
+  "/api/applications",
+  (req, res) => {
 
-    console.error(error);
+    try {
 
-    res.status(500).json({
-      error: "Search failed"
-    });
+      const {
+        brand_name,
+        country,
+        owner_email,
+        website,
+        package: packageName
+      } = req.body || {};
+
+      if (!brand_name) {
+
+        return res.status(400).json({
+          error: "Brand name is required"
+        });
+
+      }
+
+      if (!country) {
+
+        return res.status(400).json({
+          error: "Country is required"
+        });
+
+      }
+
+      if (!owner_email) {
+
+        return res.status(400).json({
+          error: "Owner email is required"
+        });
+
+      }
+
+      const result = db
+        .prepare(`
+          INSERT INTO applications
+          (
+            brand_name,
+            country,
+            owner_email,
+            website,
+            package,
+            status
+          )
+          VALUES (?, ?, ?, ?, ?, 'pending')
+        `)
+        .run(
+          String(brand_name).trim(),
+          String(country).trim(),
+          String(owner_email).trim(),
+          String(website || "").trim(),
+          String(packageName || "Basic").trim()
+        );
+
+      res.status(201).json({
+        success: true,
+        message: "Application submitted successfully",
+        id: result.lastInsertRowid
+      });
+
+    } catch (error) {
+
+      console.error(error);
+
+      res.status(500).json({
+        error: "Failed to submit application"
+      });
+
+    }
 
   }
-
-});
+);
 
 
 // ==================================================
 // ADMIN — GET ALL BRANDS
 // ==================================================
 
-app.get("/api/admin/brands", (req, res) => {
+app.get(
+  "/api/admin/brands",
+  adminAuth,
+  (req, res) => {
 
-  try {
+    try {
 
-    const rows = db
-      .prepare(`
-        SELECT
-          b.id,
-          b.name,
-          b.category,
-          b.description,
-          b.website,
-          b.verification,
-          c.name AS country,
-          c.code AS country_code
-        FROM brands b
-        JOIN countries c
-          ON c.id = b.country_id
-        ORDER BY b.name COLLATE NOCASE
-      `)
-      .all();
+      const rows = db
+        .prepare(`
+          SELECT
+            b.id,
+            b.name,
+            b.category,
+            b.description,
+            b.website,
+            b.verification,
+            c.name AS country,
+            c.code AS country_code
+          FROM brands b
+          JOIN countries c
+            ON c.id = b.country_id
+          ORDER BY b.name COLLATE NOCASE
+        `)
+        .all();
 
-    res.json(rows);
+      res.json(rows);
 
-  } catch (error) {
+    } catch (error) {
 
-    console.error(error);
+      console.error(error);
 
-    res.status(500).json({
-      error: "Failed to load brands"
-    });
+      res.status(500).json({
+        error: "Failed to load brands"
+      });
+
+    }
 
   }
-
-});
+);
 
 
 // ==================================================
 // ADMIN — ADD BRAND
 // ==================================================
 
-app.post("/api/admin/brands", (req, res) => {
+app.post(
+  "/api/admin/brands",
+  adminAuth,
+  (req, res) => {
 
-  try {
+    try {
 
-    const {
-      name,
-      country_code,
-      category,
-      description,
-      website,
-      verification
-    } = req.body || {};
+      const {
+        name,
+        country_code,
+        category,
+        description,
+        website,
+        verification
+      } = req.body || {};
 
-    if (!name) {
+      if (!name) {
 
-      return res.status(400).json({
-        error: "Brand name is required"
+        return res.status(400).json({
+          error: "Brand name is required"
+        });
+
+      }
+
+      if (!country_code) {
+
+        return res.status(400).json({
+          error: "Country code is required"
+        });
+
+      }
+
+      const code =
+        String(country_code)
+          .trim()
+          .toUpperCase();
+
+      const country = db
+        .prepare(`
+          SELECT id, name, code
+          FROM countries
+          WHERE code = ?
+        `)
+        .get(code);
+
+      if (!country) {
+
+        return res.status(400).json({
+          error: "Country code not found: " + code
+        });
+
+      }
+
+      const result = db
+        .prepare(`
+          INSERT INTO brands
+          (
+            country_id,
+            name,
+            category,
+            description,
+            website,
+            verification
+          )
+          VALUES (?, ?, ?, ?, ?, ?)
+        `)
+        .run(
+          country.id,
+          String(name).trim(),
+          String(category || "").trim(),
+          String(description || "").trim(),
+          String(website || "").trim(),
+          String(
+            verification || "Unverified"
+          ).trim()
+        );
+
+      res.status(201).json({
+        success: true,
+        message: "Brand added successfully",
+        id: result.lastInsertRowid
+      });
+
+    } catch (error) {
+
+      console.error(error);
+
+      res.status(500).json({
+        error: "Failed to add brand"
       });
 
     }
-
-    if (!country_code) {
-
-      return res.status(400).json({
-        error: "Country code is required"
-      });
-
-    }
-
-    const code = String(country_code)
-      .trim()
-      .toUpperCase();
-
-    const country = db
-      .prepare(`
-        SELECT id, name, code
-        FROM countries
-        WHERE code = ?
-      `)
-      .get(code);
-
-    if (!country) {
-
-      return res.status(400).json({
-        error: "Country code not found: " + code
-      });
-
-    }
-
-    const result = db
-      .prepare(`
-        INSERT INTO brands
-        (
-          country_id,
-          name,
-          category,
-          description,
-          website,
-          verification
-        )
-        VALUES (?, ?, ?, ?, ?, ?)
-      `)
-      .run(
-        country.id,
-        String(name).trim(),
-        String(category || "").trim(),
-        String(description || "").trim(),
-        String(website || "").trim(),
-        String(verification || "Unverified").trim()
-      );
-
-       res.status(201).json({
-      ok: true,
-      id: result.lastInsertRowid
-    });
-
-  } catch (error) {
-
-    console.error(error);
-
-    res.status(500).json({
-      error: "Failed to add brand"
-    });
 
   }
+);
 
-});
+
+// ==================================================
+// ADMIN — DELETE BRAND
+// ==================================================
+
+app.delete(
+  "/api/admin/brands/:id",
+  adminAuth,
+  (req, res) => {
+
+    try {
+
+      const brandId = req.params.id;
+
+      const brand = db
+        .prepare(`
+          SELECT id
+          FROM brands
+          WHERE id = ?
+        `)
+        .get(brandId);
+
+      if (!brand) {
+
+        return res.status(404).json({
+          error: "Brand not found"
+        });
+
+      }
+
+      db.prepare(`
+        DELETE FROM factories
+        WHERE brand_id = ?
+      `).run(brandId);
+
+      db.prepare(`
+        DELETE FROM brands
+        WHERE id = ?
+      `).run(brandId);
+
+      res.json({
+        success: true,
+        message: "Brand deleted successfully"
+      });
+
+    } catch (error) {
+
+      console.error(error);
+
+      res.status(500).json({
+        error: "Failed to delete brand"
+      });
+
+    }
+
+  }
+);
+
+
+// ==================================================
+// ADMIN — GET APPLICATIONS
+// ==================================================
+
+app.get(
+  "/api/admin/applications",
+  adminAuth,
+  (req, res) => {
+
+    try {
+
+      const rows = db
+        .prepare(`
+          SELECT *
+          FROM applications
+          ORDER BY id DESC
+        `)
+        .all();
+
+      res.json(rows);
+
+    } catch (error) {
+
+      console.error(error);
+
+      res.status(500).json({
+        error: "Failed to load applications"
+      });
+
+    }
+
+  }
+);
+
+
+// ==================================================
+// ADMIN — UPDATE APPLICATION STATUS
+// ==================================================
+
+app.patch(
+  "/api/admin/applications/:id",
+  adminAuth,
+  (req, res) => {
+
+    try {
+
+      const {
+        status
+      } = req.body || {};
+
+      if (!status) {
+
+        return res.status(400).json({
+          error: "Status is required"
+        });
+
+      }
+
+      const allowedStatuses = [
+        "pending",
+        "approved",
+        "rejected"
+      ];
+
+      if (
+        !allowedStatuses.includes(
+          String(status)
+        )
+      ) {
+
+        return res.status(400).json({
+          error: "Invalid status"
+        });
+
+      }
+
+      const result = db
+        .prepare(`
+          UPDATE applications
+          SET status = ?
+          WHERE id = ?
+        `)
+        .run(
+          String(status),
+          req.params.id
+        );
+
+      if (result.changes === 0) {
+
+        return res.status(404).json({
+          error: "Application not found"
+        });
+
+      }
+
+      res.json({
+        success: true,
+        message: "Application updated successfully"
+      });
+
+    } catch (error) {
+
+      console.error(error);
+
+      res.status(500).json({
+        error: "Failed to update application"
+      });
+
+    }
+
+  }
+);
+
+
+// ==================================================
+// ADMIN — DELETE APPLICATION
+// ==================================================
+
+app.delete(
+  "/api/admin/applications/:id",
+  adminAuth,
+  (req, res) => {
+
+    try {
+
+      const result = db
+        .prepare(`
+          DELETE FROM applications
+          WHERE id = ?
+        `)
+        .run(req.params.id);
+
+      if (result.changes === 0) {
+
+        return res.status(404).json({
+          error: "Application not found"
+        });
+
+      }
+
+      res.json({
+        success: true,
+        message: "Application deleted successfully"
+      });
+
+    } catch (error) {
+
+      console.error(error);
+
+      res.status(500).json({
+        error: "Failed to delete application"
+      });
+
+    }
+
+  }
+);
+
+
+// ==================================================
+// PUBLIC WEBSITE FALLBACK
+// ==================================================
+
+app.get(
+  "*",
+  (req, res, next) => {
+
+    if (
+      req.path.startsWith("/api/") ||
+      req.path.startsWith("/admin")
+    ) {
+      return next();
+    }
+
+    res.sendFile(
+      path.join(
+        __dirname,
+        "public",
+        "index.html"
+      )
+    );
+
+  }
+);
 
 
 // ==================================================
 // START SERVER
 // ==================================================
 
-app.listen(PORT, "0.0.0.0", () => {
+app.listen(
+  PORT,
+  "0.0.0.0",
+  () => {
 
-  console.log(
-    `ALL WORLD BRANDS server running on port ${PORT}`
-  );
+    console.log(
+      `ALL WORLD BRANDS running on port ${PORT}`
+    );
 
-});
+  }
+);
