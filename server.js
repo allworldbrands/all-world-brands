@@ -673,4 +673,32 @@ app.post("/api/admin/brands", (req, res) => {
         String(verification || "Unverified").trim()
       );
 
-   
+       res.status(201).json({
+      ok: true,
+      id: result.lastInsertRowid
+    });
+
+  } catch (error) {
+
+    console.error(error);
+
+    res.status(500).json({
+      error: "Failed to add brand"
+    });
+
+  }
+
+});
+
+
+// ==================================================
+// START SERVER
+// ==================================================
+
+app.listen(PORT, "0.0.0.0", () => {
+
+  console.log(
+    `ALL WORLD BRANDS server running on port ${PORT}`
+  );
+
+});
