@@ -17,7 +17,14 @@ app.use(
 
 app.use(morgan("combined"));
 app.use(express.json({ limit: "50kb" }));
-app.use(express.urlencoded({ extended: true, limit: "50kb" }));
+app.use(express.urlencoded({
+  extended: true,
+  limit: "50kb"
+}));
+
+/* =====================================================
+   DATABASE
+   ===================================================== */
 
 const db = new sqlite3.Database(
   path.join(__dirname, "allworldbrands.db")
@@ -281,7 +288,7 @@ const countries = [
 ];
 
 /* =====================================================
-   DATABASE
+   DATABASE TABLES
    ===================================================== */
 
 db.serialize(() => {
@@ -300,8 +307,10 @@ db.serialize(() => {
       country_id INTEGER NOT NULL,
       name TEXT NOT NULL,
       logo TEXT DEFAULT '',
+      category TEXT DEFAULT '',
       description TEXT,
       website TEXT,
+      verification TEXT DEFAULT 'Unverified',
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY(country_id) REFERENCES countries(id)
     )
@@ -336,7 +345,9 @@ db.serialize(() => {
     )
   `);
 
-  /* Existing database migration */
+  /* ===================================================
+     MIGRATIONS
+     =================================================== */
 
   db.all(
     `PRAGMA table_info(brands)`,
@@ -344,72 +355,37 @@ db.serialize(() => {
     (err, columns) => {
 
       if (err) {
-        console.error("Could not inspect brands table:", err);
+        console.error(err);
         return;
       }
 
-      const hasLogo = columns.some(
-        column => column.name === "logo"
+      const existing = columns.map(
+        column => column.name
       );
 
-      if (!hasLogo) {
+      if (!existing.includes("logo")) {
         db.run(
-          `ALTER TABLE brands ADD COLUMN logo TEXT DEFAULT ''`,
-          err => {
-            if (err) {
-              console.error(
-                "Could not add logo column:",
-                err
-              );
-            } else {
-              console.log(
-                "Logo column added to brands table."
-              );
-            }
-          }
+          `ALTER TABLE brands ADD COLUMN logo TEXT DEFAULT ''`
+        );
+      }
+
+      if (!existing.includes("category")) {
+        db.run(
+          `ALTER TABLE brands ADD COLUMN category TEXT DEFAULT ''`
+        );
+      }
+
+      if (!existing.includes("verification")) {
+        db.run(
+          `ALTER TABLE brands ADD COLUMN verification TEXT DEFAULT 'Unverified'`
         );
       }
     }
   );
 
-  db.all(
-    `PRAGMA table_info(applications)`,
-    [],
-    (err, columns) => {
-
-      if (err) {
-        console.error(
-          "Could not inspect applications table:",
-          err
-        );
-        return;
-      }
-
-      const hasLogo = columns.some(
-        column => column.name === "logo"
-      );
-
-      if (!hasLogo) {
-        db.run(
-          `ALTER TABLE applications ADD COLUMN logo TEXT DEFAULT ''`,
-          err => {
-            if (err) {
-              console.error(
-                "Could not add application logo column:",
-                err
-              );
-            } else {
-              console.log(
-                "Logo column added to applications table."
-              );
-            }
-          }
-        );
-      }
-    }
-  );
-
-  /* Insert countries */
+  /* ===================================================
+     INSERT COUNTRIES
+     =================================================== */
 
   const insertCountry = db.prepare(`
     INSERT OR IGNORE INTO countries
@@ -423,13 +399,16 @@ db.serialize(() => {
 
   insertCountry.finalize();
 
-  /* Starter brands */
+  /* ===================================================
+     STARTER BRANDS
+     =================================================== */
 
   const starterBrands = [
     [
       "Apple",
       "United States",
       "",
+      "Technology",
       "Technology company",
       "https://www.apple.com"
     ],
@@ -437,6 +416,7 @@ db.serialize(() => {
       "Nike",
       "United States",
       "",
+      "Sportswear",
       "Sportswear brand",
       "https://www.nike.com"
     ],
@@ -444,6 +424,7 @@ db.serialize(() => {
       "Burberry",
       "United Kingdom",
       "",
+      "Fashion",
       "Luxury fashion brand",
       "https://www.burberry.com"
     ],
@@ -451,6 +432,7 @@ db.serialize(() => {
       "BMW",
       "Germany",
       "",
+      "Automotive",
       "Automobile manufacturer",
       "https://www.bmw.com"
     ],
@@ -458,6 +440,7 @@ db.serialize(() => {
       "L'Oréal",
       "France",
       "",
+      "Beauty",
       "Beauty and cosmetics company",
       "https://www.loreal.com"
     ],
@@ -465,6 +448,7 @@ db.serialize(() => {
       "Ferrari",
       "Italy",
       "",
+      "Automotive",
       "Automobile manufacturer",
       "https://www.ferrari.com"
     ],
@@ -472,6 +456,7 @@ db.serialize(() => {
       "Arçelik",
       "Turkey",
       "",
+      "Home Appliances",
       "Home appliances",
       "https://www.arcelik.com"
     ],
@@ -479,6 +464,7 @@ db.serialize(() => {
       "Artel",
       "Uzbekistan",
       "",
+      "Electronics",
       "Electronics and home appliances",
       "https://artelelectronics.com"
     ],
@@ -486,6 +472,7 @@ db.serialize(() => {
       "Toyota",
       "Japan",
       "",
+      "Automotive",
       "Automobile manufacturer",
       "https://www.toyota.com"
     ],
@@ -493,6 +480,7 @@ db.serialize(() => {
       "Samsung",
       "South Korea",
       "",
+      "Electronics",
       "Electronics company",
       "https://www.samsung.com"
     ],
@@ -500,6 +488,7 @@ db.serialize(() => {
       "Huawei",
       "China",
       "",
+      "Technology",
       "Technology company",
       "https://www.huawei.com"
     ],
@@ -508,19 +497,31 @@ db.serialize(() => {
       "India",
       "",
       "Conglomerate",
+      "Conglomerate",
       "https://www.tata.com"
     ]
   ];
 
   starterBrands.forEach(
-    ([name, country, logo, description, website]) => {
+    (
+      [
+        name,
+        country,
+        logo,
+        category,
+        description,
+        website
+      ]
+    ) => {
 
       db.get(
         `SELECT id FROM countries WHERE name = ?`,
         [country],
         (err, row) => {
 
-          if (err || !row) return;
+          if (err || !row) {
+            return;
+          }
 
           db.run(
             `
@@ -529,10 +530,12 @@ db.serialize(() => {
               country_id,
               name,
               logo,
+              category,
               description,
-              website
+              website,
+              verification
             )
-            SELECT ?, ?, ?, ?, ?
+            SELECT ?, ?, ?, ?, ?, ?, ?
             WHERE NOT EXISTS (
               SELECT 1
               FROM brands
@@ -544,8 +547,10 @@ db.serialize(() => {
               row.id,
               name,
               logo,
+              category,
               description,
               website,
+              "Official source",
               row.id,
               name
             ]
@@ -562,7 +567,8 @@ db.serialize(() => {
 
 function adminAuth(req, res, next) {
 
-  const auth = req.headers.authorization || "";
+  const auth =
+    req.headers.authorization || "";
 
   if (!auth.startsWith("Basic ")) {
 
@@ -581,32 +587,33 @@ function adminAuth(req, res, next) {
   let decoded;
 
   try {
+
     decoded = Buffer
       .from(encoded, "base64")
       .toString("utf8");
-  } catch (e) {
+
+  } catch (error) {
 
     return res
       .status(401)
       .send("Invalid authentication");
   }
 
-  const separator = decoded.indexOf(":");
+  const separator =
+    decoded.indexOf(":");
 
   if (separator === -1) {
+
     return res
       .status(401)
       .send("Invalid authentication");
   }
 
-  const username = decoded.slice(
-    0,
-    separator
-  );
+  const username =
+    decoded.slice(0, separator);
 
-  const password = decoded.slice(
-    separator + 1
-  );
+  const password =
+    decoded.slice(separator + 1);
 
   if (
     username !== process.env.ADMIN_USER ||
@@ -641,7 +648,7 @@ app.get("/api/health", (req, res) => {
 });
 
 /* =====================================================
-   COUNTRIES API
+   COUNTRIES
    ===================================================== */
 
 app.get("/api/countries", (req, res) => {
@@ -676,53 +683,54 @@ app.get("/api/countries", (req, res) => {
       res.json(rows);
     }
   );
-
 });
 
 /* =====================================================
-   SINGLE COUNTRY API
+   SINGLE COUNTRY
    ===================================================== */
 
-app.get("/api/countries/:id", (req, res) => {
+app.get(
+  "/api/countries/:id",
+  (req, res) => {
 
-  db.get(
-    `
-    SELECT
-      id,
-      name,
-      code
-    FROM countries
-    WHERE id = ?
-    `,
-    [req.params.id],
-    (err, row) => {
+    db.get(
+      `
+      SELECT
+        id,
+        name,
+        code
+      FROM countries
+      WHERE id = ?
+      `,
+      [req.params.id],
+      (err, row) => {
 
-      if (err) {
+        if (err) {
 
-        return res
-          .status(500)
-          .json({
-            error: "Database error"
-          });
+          return res
+            .status(500)
+            .json({
+              error: "Database error"
+            });
+        }
+
+        if (!row) {
+
+          return res
+            .status(404)
+            .json({
+              error: "Country not found"
+            });
+        }
+
+        res.json(row);
       }
-
-      if (!row) {
-
-        return res
-          .status(404)
-          .json({
-            error: "Country not found"
-          });
-      }
-
-      res.json(row);
-    }
-  );
-
-});
+    );
+  }
+);
 
 /* =====================================================
-   BRANDS FOR COUNTRY
+   COUNTRY BRANDS
    ===================================================== */
 
 app.get(
@@ -735,8 +743,10 @@ app.get(
         b.id,
         b.name,
         b.logo,
+        b.category,
         b.description,
         b.website,
+        b.verification,
         b.created_at,
         c.id AS country_id,
         c.name AS country,
@@ -764,7 +774,6 @@ app.get(
         res.json(rows);
       }
     );
-
   }
 );
 
@@ -772,209 +781,103 @@ app.get(
    BRAND BY ID
    ===================================================== */
 
-app.get("/api/brands/:id", (req, res) => {
+app.get(
+  "/api/brands/:id",
+  (req, res) => {
 
-  db.get(
-    `
-    SELECT
-      b.id,
-      b.name,
-      b.logo,
-      b.description,
-      b.website,
-      b.created_at,
-      c.id AS country_id,
-      c.name AS country,
-      c.code AS country_code
-    FROM brands b
-    JOIN countries c
-      ON c.id = b.country_id
-    WHERE b.id = ?
-    `,
-    [req.params.id],
-    (err, row) => {
+    db.get(
+      `
+      SELECT
+        b.id,
+        b.name,
+        b.logo,
+        b.category,
+        b.description,
+        b.website,
+        b.verification,
+        b.created_at,
+        c.id AS country_id,
+        c.name AS country,
+        c.code AS country_code
+      FROM brands b
+      JOIN countries c
+        ON c.id = b.country_id
+      WHERE b.id = ?
+      `,
+      [req.params.id],
+      (err, row) => {
 
-      if (err) {
+        if (err) {
 
-        return res
-          .status(500)
-          .json({
-            error: "Database error"
-          });
+          return res
+            .status(500)
+            .json({
+              error: "Database error"
+            });
+        }
+
+        if (!row) {
+
+          return res
+            .status(404)
+            .json({
+              error: "Brand not found"
+            });
+        }
+
+        res.json(row);
       }
-
-      if (!row) {
-
-        return res
-          .status(404)
-          .json({
-            error: "Brand not found"
-          });
-      }
-
-      res.json(row);
-    }
-  );
-
-});
+    );
+  }
+);
 
 /* =====================================================
    SEARCH
    ===================================================== */
 
-app.get("/api/search", (req, res) => {
-
-  const q = String(
-    req.query.q || ""
-  ).trim();
-
-  if (!q) {
-    return res.json([]);
-  }
-
-  const like = `%${q}%`;
-
-  db.all(
-    `
-    SELECT
-      b.id,
-      b.name,
-      b.logo,
-      b.description,
-      b.website,
-      c.id AS country_id,
-      c.name AS country,
-      c.code AS country_code
-    FROM brands b
-    JOIN countries c
-      ON c.id = b.country_id
-    WHERE
-      b.name LIKE ?
-      OR b.description LIKE ?
-      OR c.name LIKE ?
-    ORDER BY b.name COLLATE NOCASE
-    LIMIT 100
-    `,
-    [
-      like,
-      like,
-      like
-    ],
-    (err, rows) => {
-
-      if (err) {
-
-        return res
-          .status(500)
-          .json({
-            error: "Database error"
-          });
-      }
-
-      res.json(rows);
-    }
-  );
-
-});
-
-/* =====================================================
-   BRAND APPLICATION
-   ===================================================== */
-
-app.post("/api/applications", (req, res) => {
-
-  const {
-    brand_name,
-    country,
-    owner_name,
-    email,
-    phone,
-    website,
-    logo,
-    description
-  } = req.body;
-
-  if (
-    !brand_name ||
-    !email
-  ) {
-
-    return res
-      .status(400)
-      .json({
-        ok: false,
-        error:
-          "Brand name and email are required"
-      });
-  }
-
-  db.run(
-    `
-    INSERT INTO applications
-    (
-      brand_name,
-      country,
-      owner_name,
-      email,
-      phone,
-      website,
-      logo,
-      description
-    )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    `,
-    [
-      brand_name.trim(),
-      country || "",
-      owner_name || "",
-      email.trim(),
-      phone || "",
-      website || "",
-      logo || "",
-      description || ""
-    ],
-    function (err) {
-
-      if (err) {
-
-        console.error(err);
-
-        return res
-          .status(500)
-          .json({
-            ok: false,
-            error:
-              "Could not save application"
-          });
-      }
-
-      res.json({
-        ok: true,
-        id: this.lastID,
-        message:
-          "Application received. Payment is not processed automatically yet."
-      });
-    }
-  );
-
-});
-
-/* =====================================================
-   ADMIN — APPLICATIONS
-   ===================================================== */
-
 app.get(
-  "/api/admin/applications",
-  adminAuth,
+  "/api/search",
   (req, res) => {
+
+    const q =
+      String(req.query.q || "").trim();
+
+    if (!q) {
+      return res.json([]);
+    }
+
+    const like = `%${q}%`;
 
     db.all(
       `
-      SELECT *
-      FROM applications
-      ORDER BY id DESC
+      SELECT
+        b.id,
+        b.name,
+        b.logo,
+        b.category,
+        b.description,
+        b.website,
+        b.verification,
+        c.id AS country_id,
+        c.name AS country,
+        c.code AS country_code
+      FROM brands b
+      JOIN countries c
+        ON c.id = b.country_id
+      WHERE
+        b.name LIKE ?
+        OR b.description LIKE ?
+        OR b.category LIKE ?
+        OR c.name LIKE ?
+      ORDER BY b.name COLLATE NOCASE
+      LIMIT 100
       `,
-      [],
+      [
+        like,
+        like,
+        like,
+        like
+      ],
       (err, rows) => {
 
         if (err) {
@@ -989,7 +892,139 @@ app.get(
         res.json(rows);
       }
     );
+  }
+);
 
+/* =====================================================
+   PUBLIC APPLICATION
+   ===================================================== */
+
+app.post(
+  "/api/applications",
+  (req, res) => {
+
+    const {
+      brand_name,
+      country,
+      owner_name,
+      email,
+      phone,
+      website,
+      logo,
+      description
+    } = req.body;
+
+    if (
+      !brand_name ||
+      !email
+    ) {
+
+      return res
+        .status(400)
+        .json({
+          ok: false,
+          error:
+            "Brand name and email are required"
+        });
+    }
+
+    db.run(
+      `
+      INSERT INTO applications
+      (
+        brand_name,
+        country,
+        owner_name,
+        email,
+        phone,
+        website,
+        logo,
+        description
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      `,
+      [
+        brand_name.trim(),
+        country || "",
+        owner_name || "",
+        email.trim(),
+        phone || "",
+        website || "",
+        logo || "",
+        description || ""
+      ],
+      function (err) {
+
+        if (err) {
+
+          console.error(err);
+
+          return res
+            .status(500)
+            .json({
+              ok: false,
+              error:
+                "Could not save application"
+            });
+        }
+
+        res.json({
+          ok: true,
+          id: this.lastID,
+          message:
+            "Application received. Payment is not processed automatically yet."
+        });
+      }
+    );
+  }
+);
+
+/* =====================================================
+   ADMIN — APPLICATIONS
+   ===================================================== */
+
+app.get(
+  "/api/admin/applications",
+  adminAuth,
+  (req, res) => {
+
+    db.all(
+      `
+      SELECT
+        id,
+        brand_name,
+        country,
+        owner_name,
+        owner_name AS owner_email,
+        email,
+        email AS applicant_email,
+        phone,
+        website,
+        logo,
+        description,
+        status,
+        created_at,
+        'Basic' AS package
+      FROM applications
+      ORDER BY id DESC
+      `,
+      [],
+      (err, rows) => {
+
+        if (err) {
+
+          console.error(err);
+
+          return res
+            .status(500)
+            .json({
+              error: "Database error"
+            });
+        }
+
+        res.json(rows);
+      }
+    );
   }
 );
 
@@ -1008,8 +1043,11 @@ app.get(
         b.id,
         b.name,
         b.logo,
+        b.category,
         b.description,
         b.website,
+        b.verification,
+        b.created_at,
         c.id AS country_id,
         c.name AS country,
         c.code AS country_code
@@ -1023,6 +1061,8 @@ app.get(
 
         if (err) {
 
+          console.error(err);
+
           return res
             .status(500)
             .json({
@@ -1033,7 +1073,6 @@ app.get(
         res.json(rows);
       }
     );
-
   }
 );
 
@@ -1048,65 +1087,134 @@ app.post(
 
     const {
       country_id,
+      country_code,
       name,
       logo,
+      category,
       description,
-      website
+      website,
+      verification
     } = req.body;
 
-    if (
-      !country_id ||
-      !name
-    ) {
+    if (!name) {
 
       return res
         .status(400)
         .json({
           error:
-            "Country and brand name are required"
+            "Brand name is required"
         });
     }
 
-    db.run(
-      `
-      INSERT INTO brands
-      (
-        country_id,
-        name,
-        logo,
-        description,
-        website
-      )
-      VALUES (?, ?, ?, ?, ?)
-      `,
-      [
-        country_id,
-        name.trim(),
-        logo || "",
-        description || "",
-        website || ""
-      ],
-      function (err) {
+    /* -----------------------------------------------
+       Find country by ID or country code
+       ----------------------------------------------- */
 
-        if (err) {
+    function createBrand(countryId) {
 
-          console.error(err);
+      if (!countryId) {
 
-          return res
-            .status(500)
-            .json({
-              error:
-                "Could not create brand"
-            });
-        }
-
-        res.json({
-          ok: true,
-          id: this.lastID
-        });
+        return res
+          .status(400)
+          .json({
+            error:
+              "Valid country is required"
+          });
       }
-    );
 
+      db.run(
+        `
+        INSERT INTO brands
+        (
+          country_id,
+          name,
+          logo,
+          category,
+          description,
+          website,
+          verification
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+        `,
+        [
+          countryId,
+          name.trim(),
+          logo || "",
+          category || "",
+          description || "",
+          website || "",
+          verification || "Unverified"
+        ],
+        function (err) {
+
+          if (err) {
+
+            console.error(err);
+
+            return res
+              .status(500)
+              .json({
+                error:
+                  "Could not create brand"
+              });
+          }
+
+          res.json({
+            ok: true,
+            id: this.lastID
+          });
+        }
+      );
+    }
+
+    if (country_id) {
+      return createBrand(country_id);
+    }
+
+    if (country_code) {
+
+      db.get(
+        `
+        SELECT id
+        FROM countries
+        WHERE UPPER(code) = UPPER(?)
+        `,
+        [country_code],
+        (err, row) => {
+
+          if (err) {
+
+            return res
+              .status(500)
+              .json({
+                error:
+                  "Database error"
+              });
+          }
+
+          if (!row) {
+
+            return res
+              .status(400)
+              .json({
+                error:
+                  "Country code not found"
+              });
+          }
+
+          createBrand(row.id);
+        }
+      );
+
+      return;
+    }
+
+    return res
+      .status(400)
+      .json({
+        error:
+          "Country or country code is required"
+      });
   }
 );
 
@@ -1121,50 +1229,120 @@ app.put(
 
     const {
       country_id,
+      country_code,
       name,
       logo,
+      category,
       description,
-      website
+      website,
+      verification
     } = req.body;
 
-    db.run(
-      `
-      UPDATE brands
-      SET
-        country_id = ?,
-        name = ?,
-        logo = ?,
-        description = ?,
-        website = ?
-      WHERE id = ?
-      `,
-      [
-        country_id,
-        name,
-        logo || "",
-        description || "",
-        website || "",
-        req.params.id
-      ],
-      function (err) {
+    function updateBrand(countryId) {
 
-        if (err) {
+      if (!countryId || !name) {
 
-          return res
-            .status(500)
-            .json({
-              error:
-                "Could not update brand"
-            });
-        }
-
-        res.json({
-          ok: true,
-          changes: this.changes
-        });
+        return res
+          .status(400)
+          .json({
+            error:
+              "Country and brand name are required"
+          });
       }
-    );
 
+      db.run(
+        `
+        UPDATE brands
+        SET
+          country_id = ?,
+          name = ?,
+          logo = ?,
+          category = ?,
+          description = ?,
+          website = ?,
+          verification = ?
+        WHERE id = ?
+        `,
+        [
+          countryId,
+          name.trim(),
+          logo || "",
+          category || "",
+          description || "",
+          website || "",
+          verification || "Unverified",
+          req.params.id
+        ],
+        function (err) {
+
+          if (err) {
+
+            console.error(err);
+
+            return res
+              .status(500)
+              .json({
+                error:
+                  "Could not update brand"
+              });
+          }
+
+          res.json({
+            ok: true,
+            changes: this.changes
+          });
+        }
+      );
+    }
+
+    if (country_id) {
+      return updateBrand(country_id);
+    }
+
+    if (country_code) {
+
+      db.get(
+        `
+        SELECT id
+        FROM countries
+        WHERE UPPER(code) = UPPER(?)
+        `,
+        [country_code],
+        (err, row) => {
+
+          if (err) {
+
+            return res
+              .status(500)
+              .json({
+                error:
+                  "Database error"
+              });
+          }
+
+          if (!row) {
+
+            return res
+              .status(400)
+              .json({
+                error:
+                  "Country code not found"
+              });
+          }
+
+          updateBrand(row.id);
+        }
+      );
+
+      return;
+    }
+
+    return res
+      .status(400)
+      .json({
+        error:
+          "Country is required"
+      });
   }
 );
 
@@ -1187,6 +1365,8 @@ app.delete(
 
         if (err) {
 
+          console.error(err);
+
           return res
             .status(500)
             .json({
@@ -1201,7 +1381,6 @@ app.delete(
         });
       }
     );
-
   }
 );
 
@@ -1247,6 +1426,8 @@ app.put(
 
         if (err) {
 
+          console.error(err);
+
           return res
             .status(500)
             .json({
@@ -1261,7 +1442,6 @@ app.put(
         });
       }
     );
-
   }
 );
 
@@ -1269,16 +1449,36 @@ app.put(
    ADMIN PAGE
    ===================================================== */
 
-appapp.get("/admin", adminAuth, (req, res) => {
-  res.sendFile(
-    path.join(__dirname, "public", "admin", "index.html")
-  );
-});
+/* MUHIM: bu yerda appapp emas, app.get */
+
+app.get(
+  "/admin",
+  adminAuth,
+  (req, res) => {
+
+    res.sendFile(
+      path.join(
+        __dirname,
+        "public",
+        "admin",
+        "index.html"
+      )
+    );
+  }
+);
+
+/* ADMIN STATIC FILES */
 
 app.use(
   "/admin",
   adminAuth,
-  express.static(path.join(__dirname, "public", "admin"))
+  express.static(
+    path.join(
+      __dirname,
+      "public",
+      "admin"
+    )
+  )
 );
 
 /* =====================================================
@@ -1298,44 +1498,48 @@ app.use(
    FALLBACK
    ===================================================== */
 
-app.get("*", (req, res) => {
+app.get(
+  "*",
+  (req, res) => {
 
-  res.sendFile(
-    path.join(
-      __dirname,
-      "public",
-      "index.html"
-    )
-  );
-
-});
+    res.sendFile(
+      path.join(
+        __dirname,
+        "public",
+        "index.html"
+      )
+    );
+  }
+);
 
 /* =====================================================
-   START
+   START SERVER
    ===================================================== */
 
-app.listen(PORT, () => {
+app.listen(
+  PORT,
+  () => {
 
-  console.log(
-    "================================="
-  );
+    console.log(
+      "================================="
+    );
 
-  console.log(
-    "ALL WORLD BRANDS"
-  );
+    console.log(
+      "ALL WORLD BRANDS"
+    );
 
-  console.log(
-    "Server running on port:",
-    PORT
-  );
+    console.log(
+      "Server running on port:",
+      PORT
+    );
 
-  console.log(
-    "World entries loaded:",
-    countries.length
-  );
+    console.log(
+      "World entries loaded:",
+      countries.length
+    );
 
-  console.log(
-    "================================="
-  );
-
-});
+    console.log(
+      "================================="
+    );
+  }
+);
