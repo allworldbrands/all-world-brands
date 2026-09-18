@@ -7,17 +7,40 @@ const sqlite3 = require("sqlite3").verbose();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const SITE_URL = "https://allworldbrands.net";
-
 app.disable("x-powered-by");
+
+app.use(
+  helmet({
+    contentSecurityPolicy: false
+  })
+);
+
+app.use(morgan("combined"));
+
+app.use(express.json({ limit: "50kb" }));
+
+app.use(
+  express.urlencoded({
+    extended: true,
+    limit: "50kb"
+  })
+);
 
 /* =====================================================
 DATABASE
 ===================================================== */
 
 const db = new sqlite3.Database(
-  path.join(__dirname, "allworldbrands.db")
+  path.join(__dirname, "allworldbrands.db"),
+  (err) => {
+    if (err) {
+      console.error("Database connection error:", err.message);
+      process.exit(1);
+    }
+  }
 );
+
+db.run("PRAGMA foreign_keys = ON");
 
 /* =====================================================
 COUNTRIES + TERRITORIES
@@ -277,7 +300,7 @@ const countries = [
 ];
 
 /* =====================================================
-DATABASE TABLES
+DATABASE TABLES + MIGRATIONS
 ===================================================== */
 
 db.serialize(() => {
@@ -334,42 +357,130 @@ db.serialize(() => {
     )
   `);
 
-  /* ===================================================
-  MIGRATIONS
-  =================================================== */
+  function addColumnIfMissing(table, column, definition) {
 
-  db.all(
-    `PRAGMA table_info(brands)`,
-    [],
-    (err, columns) => {
+    db.all(
+      `PRAGMA table_info(${table})`,
+      [],
+      (err, columns) => {
 
-      if (err) {
-        console.error(err);
-        return;
-      }
+        if (err) {
+          console.error(
+            `Schema check failed for ${table}:`,
+            err.message
+          );
+          return;
+        }
 
-      const existing = columns.map(
-        column => column.name
-      );
-
-      if (!existing.includes("logo")) {
-        db.run(
-          `ALTER TABLE brands ADD COLUMN logo TEXT DEFAULT ''`
+        const exists = columns.some(
+          (c) => c.name === column
         );
-      }
 
-      if (!existing.includes("category")) {
-        db.run(
-          `ALTER TABLE brands ADD COLUMN category TEXT DEFAULT ''`
-        );
-      }
+        if (!exists) {
 
-      if (!existing.includes("verification")) {
-        db.run(
-          `ALTER TABLE brands ADD COLUMN verification TEXT DEFAULT 'Unverified'`
-        );
+          db.run(
+            `ALTER TABLE ${table} ADD COLUMN ${column} ${definition}`,
+            (alterErr) => {
+
+              if (alterErr) {
+                console.error(
+                  `Could not add ${table}.${column}:`,
+                  alterErr.message
+                );
+              }
+
+            }
+          );
+
+        }
+
       }
-    }
+    );
+
+  }
+
+  addColumnIfMissing(
+    "brands",
+    "logo",
+    "TEXT DEFAULT ''"
+  );
+
+  addColumnIfMissing(
+    "brands",
+    "category",
+    "TEXT DEFAULT ''"
+  );
+
+  addColumnIfMissing(
+    "brands",
+    "verification",
+    "TEXT DEFAULT 'Unverified'"
+  );
+
+  addColumnIfMissing(
+    "brands",
+    "created_at",
+    "DATETIME DEFAULT CURRENT_TIMESTAMP"
+  );
+
+  addColumnIfMissing(
+    "applications",
+    "brand_name",
+    "TEXT"
+  );
+
+  addColumnIfMissing(
+    "applications",
+    "country",
+    "TEXT"
+  );
+
+  addColumnIfMissing(
+    "applications",
+    "owner_name",
+    "TEXT"
+  );
+
+  addColumnIfMissing(
+    "applications",
+    "email",
+    "TEXT"
+  );
+
+  addColumnIfMissing(
+    "applications",
+    "phone",
+    "TEXT"
+  );
+
+  addColumnIfMissing(
+    "applications",
+    "website",
+    "TEXT"
+  );
+
+  addColumnIfMissing(
+    "applications",
+    "logo",
+    "TEXT DEFAULT ''"
+  );
+
+  addColumnIfMissing(
+    "applications",
+    "description",
+    "TEXT"
+  );
+
+  addColumnIfMissing(
+    "applications",
+    "status",
+    "TEXT DEFAULT 'new'"
+  );
+
+  addColumnIfMissing(
+    "applications",
+    "created_at",
+    "DATETIME DEFAULT CURRENT_TIMESTAMP"
   );
 
   /* ===================================================
@@ -393,6 +504,7 @@ db.serialize(() => {
   =================================================== */
 
   const starterBrands = [
+
     [
       "Apple",
       "United States",
@@ -401,6 +513,7 @@ db.serialize(() => {
       "Technology company",
       "https://www.apple.com"
     ],
+
     [
       "Nike",
       "United States",
@@ -409,6 +522,7 @@ db.serialize(() => {
       "Sportswear brand",
       "https://www.nike.com"
     ],
+
     [
       "Burberry",
       "United Kingdom",
@@ -417,6 +531,7 @@ db.serialize(() => {
       "Luxury fashion brand",
       "https://www.burberry.com"
     ],
+
     [
       "BMW",
       "Germany",
@@ -425,6 +540,7 @@ db.serialize(() => {
       "Automobile manufacturer",
       "https://www.bmw.com"
     ],
+
     [
       "L'Oréal",
       "France",
@@ -433,6 +549,7 @@ db.serialize(() => {
       "Beauty and cosmetics company",
       "https://www.loreal.com"
     ],
+
     [
       "Ferrari",
       "Italy",
@@ -441,6 +558,7 @@ db.serialize(() => {
       "Automobile manufacturer",
       "https://www.ferrari.com"
     ],
+
     [
       "Arçelik",
       "Turkey",
@@ -449,6 +567,7 @@ db.serialize(() => {
       "Home appliances",
       "https://www.arcelik.com"
     ],
+
     [
       "Artel",
       "Uzbekistan",
@@ -457,6 +576,7 @@ db.serialize(() => {
       "Electronics and home appliances",
       "https://artelelectronics.com"
     ],
+
     [
       "Toyota",
       "Japan",
@@ -465,6 +585,7 @@ db.serialize(() => {
       "Automobile manufacturer",
       "https://www.toyota.com"
     ],
+
     [
       "Samsung",
       "South Korea",
@@ -473,6 +594,7 @@ db.serialize(() => {
       "Electronics company",
       "https://www.samsung.com"
     ],
+
     [
       "Huawei",
       "China",
@@ -481,6 +603,7 @@ db.serialize(() => {
       "Technology company",
       "https://www.huawei.com"
     ],
+
     [
       "Tata",
       "India",
@@ -489,6 +612,7 @@ db.serialize(() => {
       "Conglomerate",
       "https://www.tata.com"
     ]
+
   ];
 
   starterBrands.forEach(
@@ -504,7 +628,11 @@ db.serialize(() => {
     ) => {
 
       db.get(
-        `SELECT id FROM countries WHERE name = ?`,
+        `
+        SELECT id
+        FROM countries
+        WHERE name = ?
+        `,
         [country],
         (err, row) => {
 
@@ -544,79 +672,20 @@ db.serialize(() => {
               name
             ]
           );
+
         }
       );
+
     }
   );
-});
 
-/* =====================================================
-MIDDLEWARE
-===================================================== */
-
-app.use(
-  helmet({
-    contentSecurityPolicy: false
-  })
-);
-
-app.use(morgan("combined"));
-
-app.use(
-  express.json({
-    limit: "50kb"
-  })
-);
-
-app.use(
-  express.urlencoded({
-    extended: true,
-    limit: "50kb"
-  })
-);
-
-/* =====================================================
-MAIN DOMAIN REDIRECT
-===================================================== */
-
-app.use((req, res, next) => {
-
-  const host = String(
-    req.headers.host || ""
-  )
-    .toLowerCase()
-    .split(":")[0];
-
-  if (
-    host === "dbrands.net" ||
-    host === "www.dbrands.net"
-  ) {
-    return res.redirect(
-      301,
-      SITE_URL + req.originalUrl
-    );
-  }
-
-  next();
 });
 
 /* =====================================================
 ADMIN AUTH
 ===================================================== */
 
-const ADMIN_USER =
-  process.env.ADMIN_USER || "admin";
-
-const ADMIN_PASSWORD =
-  process.env.ADMIN_PASSWORD;
-
 function adminAuth(req, res, next) {
-
-  if (!ADMIN_PASSWORD) {
-    return res
-      .status(500)
-      .send("Admin password is not configured.");
-  }
 
   const auth =
     req.headers.authorization || "";
@@ -630,30 +699,27 @@ function adminAuth(req, res, next) {
 
     return res
       .status(401)
-      .send("Admin login required.");
+      .send("Authentication required");
+
   }
 
-  const encoded =
-    auth.substring(6);
+  const encoded = auth.slice(6);
 
   let decoded;
 
   try {
 
-    decoded = Buffer
-      .from(encoded, "base64")
-      .toString("utf8");
+    decoded =
+      Buffer
+        .from(encoded, "base64")
+        .toString("utf8");
 
   } catch (error) {
 
-    res.setHeader(
-      "WWW-Authenticate",
-      'Basic realm="ALL WORLD BRANDS ADMIN"'
-    );
-
     return res
       .status(401)
-      .send("Invalid authentication.");
+      .send("Invalid authentication");
+
   }
 
   const separator =
@@ -661,25 +727,21 @@ function adminAuth(req, res, next) {
 
   if (separator === -1) {
 
-    res.setHeader(
-      "WWW-Authenticate",
-      'Basic realm="ALL WORLD BRANDS ADMIN"'
-    );
-
     return res
       .status(401)
-      .send("Invalid authentication.");
+      .send("Invalid authentication");
+
   }
 
   const username =
-    decoded.substring(0, separator);
+    decoded.slice(0, separator);
 
   const password =
-    decoded.substring(separator + 1);
+    decoded.slice(separator + 1);
 
   if (
-    username !== ADMIN_USER ||
-    password !== ADMIN_PASSWORD
+    username !== process.env.ADMIN_USER ||
+    password !== process.env.ADMIN_PASSWORD
   ) {
 
     res.setHeader(
@@ -689,10 +751,12 @@ function adminAuth(req, res, next) {
 
     return res
       .status(401)
-      .send("Wrong username or password.");
+      .send("Wrong username or password");
+
   }
 
   next();
+
 }
 
 /* =====================================================
@@ -708,115 +772,6 @@ app.get(
       service: "ALL WORLD BRANDS",
       countries: countries.length
     });
-
-  }
-);
-
-/* =====================================================
-ROBOTS.TXT
-===================================================== */
-
-app.get(
-  "/robots.txt",
-  (req, res) => {
-
-    res.type("text/plain");
-
-    res.send(
-`User-agent: *
-Allow: /
-Disallow: /admin
-Disallow: /api
-
-Sitemap: ${SITE_URL}/sitemap.xml
-`
-    );
-
-  }
-);
-
-/* =====================================================
-SITEMAP.XML
-===================================================== */
-
-app.get(
-  "/sitemap.xml",
-  (req, res) => {
-
-    db.all(
-      `
-      SELECT id
-      FROM countries
-      ORDER BY id
-      `,
-      [],
-      (countryError, countryRows) => {
-
-        if (countryError) {
-
-          return res
-            .status(500)
-            .send("Sitemap database error.");
-        }
-
-        db.all(
-          `
-          SELECT id
-          FROM brands
-          ORDER BY id
-          `,
-          [],
-          (brandError, brandRows) => {
-
-            if (brandError) {
-
-              return res
-                .status(500)
-                .send("Sitemap database error.");
-            }
-
-            let urls =
-              `<url>
-                <loc>${SITE_URL}/</loc>
-                <changefreq>daily</changefreq>
-                <priority>1.0</priority>
-              </url>`;
-
-            countryRows.forEach(country => {
-
-              urls += `
-              <url>
-                <loc>${SITE_URL}/country/${country.id}</loc>
-                <changefreq>weekly</changefreq>
-                <priority>0.8</priority>
-              </url>`;
-            });
-
-            brandRows.forEach(brand => {
-
-              urls += `
-              <url>
-                <loc>${SITE_URL}/brand/${brand.id}</loc>
-                <changefreq>weekly</changefreq>
-                <priority>0.7</priority>
-              </url>`;
-            });
-
-            res
-              .type("application/xml")
-              .send(
-`<?xml version="1.0" encoding="UTF-8"?>
-<urlset
-xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls}
-</urlset>`
-              );
-
-          }
-        );
-
-      }
-    );
 
   }
 );
@@ -854,9 +809,11 @@ app.get(
             .json({
               error: "Database error"
             });
+
         }
 
         res.json(rows);
+
       }
     );
 
@@ -890,6 +847,7 @@ app.get(
             .json({
               error: "Database error"
             });
+
         }
 
         if (!row) {
@@ -899,9 +857,11 @@ app.get(
             .json({
               error: "Country not found"
             });
+
         }
 
         res.json(row);
+
       }
     );
 
@@ -948,9 +908,11 @@ app.get(
             .json({
               error: "Database error"
             });
+
         }
 
         res.json(rows);
+
       }
     );
 
@@ -994,6 +956,7 @@ app.get(
             .json({
               error: "Database error"
             });
+
         }
 
         if (!row) {
@@ -1003,9 +966,11 @@ app.get(
             .json({
               error: "Brand not found"
             });
+
         }
 
         res.json(row);
+
       }
     );
 
@@ -1021,7 +986,8 @@ app.get(
   (req, res) => {
 
     const q =
-      String(req.query.q || "").trim();
+      String(req.query.q || "")
+        .trim();
 
     if (!q) {
       return res.json([]);
@@ -1068,9 +1034,11 @@ app.get(
             .json({
               error: "Database error"
             });
+
         }
 
         res.json(rows);
+
       }
     );
 
@@ -1108,59 +1076,7 @@ app.post(
           error:
             "Brand name and email are required"
         });
-    }
 
-    const cleanBrand =
-      String(brand_name)
-        .trim()
-        .slice(0, 200);
-
-    const cleanEmail =
-      String(email)
-        .trim()
-        .slice(0, 200);
-
-    const cleanCountry =
-      String(country || "")
-        .trim()
-        .slice(0, 200);
-
-    const cleanOwner =
-      String(owner_name || "")
-        .trim()
-        .slice(0, 200);
-
-    const cleanPhone =
-      String(phone || "")
-        .trim()
-        .slice(0, 80);
-
-    const cleanWebsite =
-      String(website || "")
-        .trim()
-        .slice(0, 500);
-
-    const cleanLogo =
-      String(logo || "")
-        .trim()
-        .slice(0, 500);
-
-    const cleanDescription =
-      String(description || "")
-        .slice(0, 3000);
-
-    if (
-      !cleanBrand ||
-      !cleanEmail
-    ) {
-
-      return res
-        .status(400)
-        .json({
-          ok: false,
-          error:
-            "Brand name and email are required"
-        });
     }
 
     db.run(
@@ -1179,14 +1095,14 @@ app.post(
       VALUES (?, ?, ?, ?, ?, ?, ?, ?)
       `,
       [
-        cleanBrand,
-        cleanCountry,
-        cleanOwner,
-        cleanEmail,
-        cleanPhone,
-        cleanWebsite,
-        cleanLogo,
-        cleanDescription
+        String(brand_name).trim(),
+        country || "",
+        owner_name || "",
+        String(email).trim(),
+        phone || "",
+        website || "",
+        logo || "",
+        description || ""
       ],
       function (err) {
 
@@ -1201,6 +1117,7 @@ app.post(
               error:
                 "Could not save application"
             });
+
         }
 
         res.json({
@@ -1257,9 +1174,11 @@ app.get(
             .json({
               error: "Database error"
             });
+
         }
 
         res.json(rows);
+
       }
     );
 
@@ -1306,9 +1225,11 @@ app.get(
             .json({
               error: "Database error"
             });
+
         }
 
         res.json(rows);
+
       }
     );
 
@@ -1343,6 +1264,7 @@ app.post(
           error:
             "Brand name is required"
         });
+
     }
 
     function createBrand(countryId) {
@@ -1355,6 +1277,7 @@ app.post(
             error:
               "Valid country is required"
           });
+
       }
 
       db.run(
@@ -1373,14 +1296,12 @@ app.post(
         `,
         [
           countryId,
-          String(name).trim().slice(0, 200),
-          String(logo || "").trim().slice(0, 500),
-          String(category || "").trim().slice(0, 200),
-          String(description || "").slice(0, 3000),
-          String(website || "").trim().slice(0, 500),
-          String(
-            verification || "Unverified"
-          ).slice(0, 100)
+          String(name).trim(),
+          logo || "",
+          category || "",
+          description || "",
+          website || "",
+          verification || "Unverified"
         ],
         function (err) {
 
@@ -1394,6 +1315,7 @@ app.post(
                 error:
                   "Could not create brand"
               });
+
           }
 
           res.json({
@@ -1403,6 +1325,7 @@ app.post(
 
         }
       );
+
     }
 
     if (country_id) {
@@ -1428,6 +1351,7 @@ app.post(
                 error:
                   "Database error"
               });
+
           }
 
           if (!row) {
@@ -1438,9 +1362,11 @@ app.post(
                 error:
                   "Country code not found"
               });
+
           }
 
           createBrand(row.id);
+
         }
       );
 
@@ -1487,6 +1413,7 @@ app.put(
             error:
               "Country and brand name are required"
           });
+
       }
 
       db.run(
@@ -1504,14 +1431,12 @@ app.put(
         `,
         [
           countryId,
-          String(name).trim().slice(0, 200),
-          String(logo || "").trim().slice(0, 500),
-          String(category || "").trim().slice(0, 200),
-          String(description || "").slice(0, 3000),
-          String(website || "").trim().slice(0, 500),
-          String(
-            verification || "Unverified"
-          ).slice(0, 100),
+          String(name).trim(),
+          logo || "",
+          category || "",
+          description || "",
+          website || "",
+          verification || "Unverified",
           req.params.id
         ],
         function (err) {
@@ -1526,6 +1451,7 @@ app.put(
                 error:
                   "Could not update brand"
               });
+
           }
 
           res.json({
@@ -1535,6 +1461,7 @@ app.put(
 
         }
       );
+
     }
 
     if (country_id) {
@@ -1560,6 +1487,7 @@ app.put(
                 error:
                   "Database error"
               });
+
           }
 
           if (!row) {
@@ -1570,9 +1498,11 @@ app.put(
                 error:
                   "Country code not found"
               });
+
           }
 
           updateBrand(row.id);
+
         }
       );
 
@@ -1616,6 +1546,7 @@ app.delete(
               error:
                 "Could not delete brand"
             });
+
         }
 
         res.json({
@@ -1655,6 +1586,7 @@ app.put(
           error:
             "Invalid status"
         });
+
     }
 
     db.run(
@@ -1679,6 +1611,7 @@ app.put(
               error:
                 "Could not update application"
             });
+
         }
 
         res.json({
@@ -1693,353 +1626,13 @@ app.put(
 );
 
 /* =====================================================
-SEO HELPERS
-===================================================== */
-
-function htmlEscape(value) {
-
-  return String(value ?? "")
-    .replace(
-      /[&<>"]/g,
-      m => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;"
-      }[m])
-    );
-}
-
-/* =====================================================
-SEO COUNTRY PAGE
-===================================================== */
-
-app.get(
-  "/country/:id",
-  (req, res) => {
-
-    db.get(
-      `
-      SELECT
-        id,
-        name,
-        code
-      FROM countries
-      WHERE id = ?
-      `,
-      [req.params.id],
-      (err, country) => {
-
-        if (err) {
-          return res
-            .status(500)
-            .send("Database error");
-        }
-
-        if (!country) {
-          return res
-            .status(404)
-            .send("Country not found");
-        }
-
-        db.all(
-          `
-          SELECT
-            id,
-            name,
-            category,
-            description,
-            website,
-            logo
-          FROM brands
-          WHERE country_id = ?
-          ORDER BY name COLLATE NOCASE
-          `,
-          [country.id],
-          (brandErr, brands) => {
-
-            if (brandErr) {
-              return res
-                .status(500)
-                .send("Database error");
-            }
-
-            const countryName =
-              htmlEscape(country.name);
-
-            const title =
-              `${countryName} Brands | ALL WORLD BRANDS`;
-
-            const description =
-              `Discover brands from ${countryName} on ALL WORLD BRANDS.`;
-
-            const brandList =
-              brands
-                .map(
-                  brand =>
-                    `<li><a href="/brand/${brand.id}">${htmlEscape(brand.name)}</a></li>`
-                )
-                .join("");
-
-            res.send(
-`<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>${htmlEscape(title)}</title>
-
-<meta
-name="description"
-content="${htmlEscape(description)}"
->
-
-<meta name="robots" content="index,follow">
-
-<link
-rel="canonical"
-href="${SITE_URL}/country/${country.id}"
->
-
-<meta
-property="og:type"
-content="website"
->
-
-<meta
-property="og:title"
-content="${htmlEscape(title)}"
->
-
-<meta
-property="og:description"
-content="${htmlEscape(description)}"
->
-
-<meta
-property="og:url"
-content="${SITE_URL}/country/${country.id}"
->
-
-</head>
-
-<body>
-
-<h1>${countryName} Brands</h1>
-
-<p>
-Brands registered/listed from
-${countryName}.
-</p>
-
-<ul>
-${brandList || "<li>No brands listed yet.</li>"}
-</ul>
-
-<p>
-<a href="/">ALL WORLD BRANDS</a>
-</p>
-
-</body>
-</html>`
-            );
-          }
-        );
-
-      }
-    );
-
-  }
-);
-
-/* =====================================================
-SEO BRAND PAGE
-===================================================== */
-
-app.get(
-  "/brand/:id",
-  (req, res) => {
-
-    db.get(
-      `
-      SELECT
-        b.id,
-        b.name,
-        b.logo,
-        b.category,
-        b.description,
-        b.website,
-        b.verification,
-        c.name AS country,
-        c.code AS country_code
-      FROM brands b
-      JOIN countries c
-        ON c.id = b.country_id
-      WHERE b.id = ?
-      `,
-      [req.params.id],
-      (err, brand) => {
-
-        if (err) {
-          return res
-            .status(500)
-            .send("Database error");
-        }
-
-        if (!brand) {
-          return res
-            .status(404)
-            .send("Brand not found");
-        }
-
-        const brandName =
-          htmlEscape(brand.name);
-
-        const countryName =
-          htmlEscape(brand.country);
-
-        const rawDescription =
-          brand.description ||
-          `Information about ${brand.name} from ${brand.country}.`;
-
-        const description =
-          htmlEscape(rawDescription);
-
-        const title =
-          `${brand.name} | ${brand.country} | ALL WORLD BRANDS`;
-
-        const website =
-          brand.website
-            ? htmlEscape(brand.website)
-            : "";
-
-        const logo =
-          brand.logo
-            ? htmlEscape(brand.logo)
-            : "";
-
-        res.send(
-`<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-<meta charset="UTF-8">
-
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0"
->
-
-<title>${htmlEscape(title)}</title>
-
-<meta
-name="description"
-content="${description}"
->
-
-<meta
-name="robots"
-content="index,follow"
->
-
-<link
-rel="canonical"
-href="${SITE_URL}/brand/${brand.id}"
->
-
-<meta
-property="og:type"
-content="website"
->
-
-<meta
-property="og:title"
-content="${htmlEscape(title)}"
->
-
-<meta
-property="og:description"
-content="${description}"
->
-
-<meta
-property="og:url"
-content="${SITE_URL}/brand/${brand.id}"
->
-
-${
-  logo
-    ? `<meta property="og:image" content="${logo}">`
-    : ""
-}
-
-</head>
-
-<body>
-
-<main>
-
-<h1>${brandName}</h1>
-
-<p>
-Country: ${countryName}
-</p>
-
-${
-  brand.category
-    ? `<p>Category: ${htmlEscape(brand.category)}</p>`
-    : ""
-}
-
-<p>
-${description}
-</p>
-
-${
-  website
-    ? `<p><a href="${website}" rel="noopener noreferrer">Official website</a></p>`
-    : ""
-}
-
-<p>
-Verification:
-${htmlEscape(brand.verification || "Unverified")}
-</p>
-
-<p>
-<a href="/">ALL WORLD BRANDS</a>
-</p>
-
-</main>
-
-</body>
-
-</html>`
-        );
-
-      }
-    );
-
-  }
-);
-
-/* =====================================================
 ADMIN PAGE
 ===================================================== */
-
-/* MUHIM: app.get ishlatiladi */
 
 app.get(
   "/admin",
   adminAuth,
   (req, res) => {
-
-    res.setHeader(
-      "Cache-Control",
-      "no-store"
-    );
 
     res.sendFile(
       path.join(
@@ -2087,8 +1680,9 @@ FALLBACK
 ===================================================== */
 
 /*
-  Express 5 da app.get("*") o'rniga /.*/
-  ishlatilmoqda.
+ IMPORTANT:
+ Express 5 does not accept app.get("*", ...).
+ Regex works with Express 4 and Express 5.
 */
 
 app.get(
@@ -2107,13 +1701,16 @@ app.get(
 );
 
 /* =====================================================
-404 / ERROR
+ERROR HANDLER
 ===================================================== */
 
 app.use(
   (err, req, res, next) => {
 
-    console.error(err);
+    console.error(
+      "Unhandled server error:",
+      err
+    );
 
     if (res.headersSent) {
       return next(err);
@@ -2122,7 +1719,9 @@ app.use(
     res
       .status(500)
       .json({
-        error: "Internal server error"
+        ok: false,
+        error:
+          "Internal server error"
       });
 
   }
@@ -2153,11 +1752,6 @@ app.listen(
     console.log(
       "World entries loaded:",
       countries.length
-    );
-
-    console.log(
-      "Canonical domain:",
-      SITE_URL
     );
 
     console.log(
