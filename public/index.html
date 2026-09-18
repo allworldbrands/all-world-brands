@@ -4,2377 +4,2162 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<meta name="description"
+      content="ALL WORLD BRANDS — Discover brands, companies and factories from around the world.">
+
+<meta name="theme-color" content="#07152f">
+
 <title>ALL WORLD BRANDS</title>
 
 <style>
-*{
-  box-sizing:border-box;
+
+* {
+    box-sizing: border-box;
 }
 
-html{
-  scroll-behavior:smooth;
+html {
+    scroll-behavior: smooth;
 }
 
-body{
-  margin:0;
-  font-family:Arial,Helvetica,sans-serif;
-  background:#020817;
-  color:white;
-}
-
-button,
-input,
-textarea,
-select{
-  font:inherit;
-}
-
-a{
-  color:inherit;
+body {
+    margin: 0;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+    background: #07152f;
+    color: #ffffff;
 }
 
 /* =========================
    HEADER
 ========================= */
 
-.header{
-  position:absolute;
-  top:0;
-  left:0;
-  right:0;
-  height:72px;
-  z-index:20;
+header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
 
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-  padding:0 5%;
+    padding: 16px 25px;
+
+    background: #06122a;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
 }
 
-.logo{
-  font-size:18px;
-  font-weight:900;
+.logo {
+    font-size: 21px;
+    font-weight: 800;
+    letter-spacing: 1px;
 }
 
-.logo span{
-  color:#20a9ff;
+nav {
+    display: flex;
+    gap: 20px;
 }
 
-.nav{
-  display:flex;
-  gap:25px;
-  font-size:13px;
-  font-weight:bold;
+nav a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 15px;
+    cursor: pointer;
 }
 
-.nav a{
-  text-decoration:none;
-}
-
-.nav a:hover{
-  color:#35b5ff;
+nav a:hover {
+    text-decoration: underline;
 }
 
 /* =========================
    HERO
 ========================= */
 
-.hero{
-  min-height:570px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  text-align:center;
-
-  position:relative;
-  overflow:hidden;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(2,8,23,.15),
-      #020817 94%
-    ),
-    url("https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?auto=format&fit=crop&w=2200&q=85")
-    center/cover;
+.hero {
+    text-align: center;
+    padding: 75px 20px 45px;
 }
 
-.hero:before{
-  content:"";
-  position:absolute;
-  inset:0;
+.hero h1 {
+    margin: 0 0 18px;
 
-  background:
-    radial-gradient(
-      circle at 50% 40%,
-      rgba(39,112,255,.22),
-      transparent 38%
-    );
+    font-size: 48px;
+    line-height: 1.1;
 }
 
-.hero-content{
-  position:relative;
-  z-index:2;
+.hero p {
+    margin: 0 auto;
 
-  width:min(850px,92%);
-  padding-top:50px;
-}
+    max-width: 700px;
 
-.hero h1{
-  margin:0;
-
-  font-size:clamp(40px,6vw,76px);
-  line-height:.98;
-  letter-spacing:-3px;
-  font-weight:900;
-}
-
-.hero h1 span{
-  color:#19a9ff;
-}
-
-.hero p{
-  margin:24px auto 28px;
-
-  max-width:700px;
-
-  color:#c4d0e7;
-  font-size:16px;
+    color: #b9c5dc;
+    font-size: 18px;
+    line-height: 1.6;
 }
 
 /* =========================
    SEARCH
 ========================= */
 
-.search{
-  display:flex;
-
-  max-width:640px;
-  margin:auto;
-
-  padding:5px;
-
-  border-radius:40px;
-
-  background:rgba(20,40,85,.7);
-
-  border:1px solid rgba(93,128,255,.5);
-
-  box-shadow:
-    0 0 35px rgba(52,79,255,.25);
+.search-box {
+    max-width: 650px;
+    margin: 35px auto 0;
 }
 
-.search input{
-  flex:1;
-  min-width:0;
+.search-box input {
+    width: 100%;
 
-  border:0;
-  outline:0;
+    padding: 17px 20px;
 
-  background:transparent;
+    border: none;
+    outline: none;
+    border-radius: 14px;
 
-  color:white;
-
-  padding:15px 20px;
-}
-
-.search input::placeholder{
-  color:#9aa9c6;
-}
-
-.search button,
-.primary{
-  border:0;
-
-  border-radius:30px;
-
-  padding:13px 25px;
-
-  color:white;
-
-  cursor:pointer;
-
-  font-weight:800;
-
-  background:
-    linear-gradient(
-      90deg,
-      #15b8ff,
-      #7d5cff
-    );
-
-  box-shadow:
-    0 0 22px rgba(80,100,255,.3);
+    font-size: 17px;
 }
 
 /* =========================
-   SECTION
+   CONTAINER
 ========================= */
 
-.section{
-  width:min(1500px,92%);
-  margin:auto;
+.container {
+    width: 100%;
+    max-width: 1200px;
 
-  padding:40px 0;
+    margin: 0 auto;
+
+    padding: 20px;
 }
 
-.section-title{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+.section-title {
+    margin-bottom: 20px;
 
-  margin-bottom:22px;
-}
-
-.section-title h2{
-  margin:0;
-  font-size:25px;
-}
-
-.badge{
-  padding:6px 13px;
-
-  border-radius:20px;
-
-  background:rgba(40,58,110,.35);
-
-  border:1px solid rgba(111,130,255,.45);
-
-  font-size:13px;
-  font-weight:800;
+    font-size: 28px;
 }
 
 /* =========================
-   COUNTRIES
-   COMPUTER = 10
+   COUNTRY GRID
 ========================= */
 
-.country-grid{
-  display:grid;
+.country-grid {
+    display: grid;
 
-  grid-template-columns:
-    repeat(10,minmax(0,1fr));
+    grid-template-columns:
+        repeat(auto-fit, minmax(180px, 1fr));
 
-  gap:10px;
+    gap: 16px;
 }
 
-.country-card{
-  height:175px;
+.country-card {
+    min-height: 130px;
 
-  position:relative;
+    padding: 20px;
 
-  overflow:hidden;
+    background: #102347;
 
-  cursor:pointer;
+    border-radius: 16px;
 
-  border-radius:13px;
+    cursor: pointer;
 
-  border:1px solid rgba(91,115,190,.24);
-
-  background:#081226;
-
-  transition:.22s ease;
+    transition:
+        transform 0.2s,
+        background 0.2s;
 }
 
-.country-card:hover{
-  transform:translateY(-4px);
+.country-card:hover {
+    transform: translateY(-4px);
 
-  border-color:
-    rgba(62,175,255,.65);
-
-  box-shadow:
-    0 10px 35px
-    rgba(31,123,255,.2);
+    background: #17345f;
 }
 
-.country-image{
-  position:absolute;
+.country-flag {
+    font-size: 38px;
 
-  inset:0;
-
-  width:100%;
-  height:100%;
-
-  object-fit:cover;
-
-  background:#0a1630;
+    margin-bottom: 12px;
 }
 
-.country-card:after{
-  content:"";
+.country-card h3 {
+    margin: 0;
 
-  position:absolute;
-
-  inset:0;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(0,0,0,.02) 20%,
-      rgba(0,0,0,.85) 100%
-    );
+    font-size: 17px;
 }
 
-.country-info{
-  position:absolute;
+.country-card p {
+    margin: 8px 0 0;
 
-  z-index:2;
+    color: #9eabc5;
 
-  left:10px;
-  right:10px;
-  bottom:9px;
-}
-
-.country-name{
-  font-size:13px;
-  font-weight:850;
-
-  line-height:1.15;
-
-  min-height:29px;
-
-  text-shadow:
-    0 2px 10px #000;
-}
-
-.country-meta{
-  display:flex;
-
-  justify-content:space-between;
-  align-items:center;
-
-  margin-top:5px;
-
-  color:#d4ddf3;
-
-  font-size:10px;
-}
-
-.flag{
-  font-size:18px;
-}
-
-.loading{
-  grid-column:1/-1;
-
-  min-height:180px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  color:#8e9dbb;
-}
-
-.empty{
-  padding:55px 20px;
-
-  text-align:center;
-
-  color:#93a0b9;
-
-  border:1px dashed
-    rgba(109,130,180,.3);
-
-  border-radius:18px;
+    font-size: 13px;
 }
 
 /* =========================
-   PROMO
+   COUNTRY DETAIL
 ========================= */
 
-.promo{
-  margin:28px 0 35px;
-
-  border-radius:18px;
-
-  padding:25px 28px;
-
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-
-  gap:20px;
-
-  background:
-    linear-gradient(
-      100deg,
-      #1737c9,
-      #3247dc 45%,
-      #573be0
-    );
-
-  box-shadow:
-    0 15px 45px
-    rgba(34,55,220,.22);
+.detail-view {
+    display: none;
 }
 
-.promo h3{
-  margin:0 0 5px;
-  font-size:20px;
+.back-button {
+    margin-bottom: 25px;
+
+    padding: 12px 18px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #1b396c;
+    color: #ffffff;
+
+    cursor: pointer;
+
+    font-size: 15px;
 }
 
-.promo p{
-  margin:0;
-
-  color:#d7ddff;
-
-  font-size:13px;
+.back-button:hover {
+    background: #244b88;
 }
 
-/* =========================
-   FOOTER
-========================= */
+.country-detail-title {
+    margin-top: 0;
 
-.footer{
-  min-height:220px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  text-align:center;
-
-  background:
-    linear-gradient(
-      180deg,
-      #07112d,
-      #020817
-    ),
-    url("https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1800&q=80")
-    center/cover;
-}
-
-.footer h2{
-  margin:0 0 10px;
-  font-size:28px;
-}
-
-.footer p{
-  margin:0;
-
-  color:#9ca9c2;
-
-  font-size:13px;
-}
-
-/* =========================
-   MODAL
-========================= */
-
-.modal{
-  position:fixed;
-
-  inset:0;
-
-  z-index:100;
-
-  display:none;
-
-  align-items:center;
-  justify-content:center;
-
-  padding:20px;
-
-  background:rgba(0,0,0,.72);
-
-  backdrop-filter:blur(8px);
-}
-
-.modal.open{
-  display:flex;
-}
-
-.modal-box{
-  width:min(620px,100%);
-
-  max-height:90vh;
-
-  overflow:auto;
-
-  border-radius:22px;
-
-  padding:28px;
-
-  background:#081328;
-
-  border:1px solid
-    rgba(99,130,255,.35);
-
-  box-shadow:
-    0 25px 90px
-    rgba(0,0,0,.6);
-}
-
-.modal-head{
-  display:flex;
-
-  align-items:center;
-
-  justify-content:space-between;
-}
-
-.modal h2{
-  margin:0 0 5px;
-}
-
-.close{
-  width:38px;
-  height:38px;
-
-  border-radius:50%;
-
-  border:1px solid #304266;
-
-  background:#101e38;
-
-  color:white;
-
-  cursor:pointer;
-
-  font-size:22px;
-}
-
-.form{
-  display:grid;
-
-  gap:13px;
-
-  margin-top:18px;
-}
-
-.form input,
-.form textarea,
-.form select{
-  width:100%;
-
-  border:1px solid #263b61;
-
-  outline:0;
-
-  background:#050d1e;
-
-  color:white;
-
-  border-radius:11px;
-
-  padding:13px 14px;
-}
-
-.form textarea{
-  min-height:110px;
-  resize:vertical;
-}
-
-.form small{
-  color:#8d9bb5;
-}
-
-/* =========================
-   COUNTRY PAGE
-========================= */
-
-#countryView{
-  display:none;
-}
-
-#countryView.active{
-  display:block;
-}
-
-#homeView.hidden{
-  display:none;
-}
-
-.country-page{
-  min-height:100vh;
-
-  padding:105px 0 60px;
-
-  background:
-    radial-gradient(
-      circle at 50% 0%,
-      rgba(40,86,220,.22),
-      transparent 35%
-    ),
-    #020817;
-}
-
-.back{
-  border:1px solid #31466e;
-
-  background:#0b1830;
-
-  color:#dce7ff;
-
-  border-radius:25px;
-
-  padding:10px 16px;
-
-  cursor:pointer;
-
-  margin-bottom:25px;
-}
-
-.country-hero{
-  min-height:230px;
-
-  position:relative;
-
-  overflow:hidden;
-
-  border-radius:24px;
-
-  background:#0a1429;
-
-  border:1px solid
-    rgba(91,125,210,.3);
-}
-
-.country-hero img{
-  position:absolute;
-
-  inset:0;
-
-  width:100%;
-  height:100%;
-
-  min-height:230px;
-
-  object-fit:cover;
-}
-
-.country-hero:after{
-  content:"";
-
-  position:absolute;
-
-  inset:0;
-
-  background:
-    linear-gradient(
-      90deg,
-      rgba(1,7,19,.9),
-      rgba(1,7,19,.2)
-    );
-}
-
-.country-hero-info{
-  position:relative;
-
-  z-index:2;
-
-  padding:50px 45px;
-}
-
-.country-hero-info h1{
-  margin:0 0 10px;
-
-  font-size:clamp(34px,6vw,62px);
-}
-
-.country-hero-info p{
-  margin:0;
-
-  color:#b8c6df;
+    font-size: 32px;
 }
 
 /* =========================
    BRANDS
 ========================= */
 
-.brand-grid{
-  display:grid;
+.brand-list {
+    display: grid;
 
-  grid-template-columns:
-    repeat(3,minmax(0,1fr));
-
-  gap:18px;
-
-  margin-top:25px;
+    gap: 15px;
 }
 
-.brand-card{
-  min-height:190px;
+.brand-card {
+    padding: 22px;
 
-  padding:22px;
+    background: #102347;
 
-  border-radius:18px;
-
-  border:1px solid
-    rgba(88,116,183,.28);
-
-  background:
-    linear-gradient(
-      145deg,
-      #0b172d,
-      #071022
-    );
+    border-radius: 16px;
 }
 
-.brand-logo{
-  width:60px;
-  height:60px;
-
-  border-radius:15px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  background:
-    linear-gradient(
-      135deg,
-      #123a76,
-      #432f8d
-    );
-
-  font-size:24px;
-  font-weight:900;
-
-  margin-bottom:15px;
+.brand-card h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
 }
 
-.brand-card h3{
-  margin:0 0 8px;
+.brand-card p {
+    color: #b7c2d8;
 
-  font-size:20px;
+    line-height: 1.6;
 }
 
-.brand-card p{
-  margin:0 0 14px;
+.brand-card a {
+    color: #70a9ff;
 
-  color:#aab8d0;
-
-  line-height:1.5;
-
-  font-size:13px;
+    text-decoration: none;
 }
 
-.brand-card a{
-  color:#35b5ff;
-
-  text-decoration:none;
-
-  font-size:13px;
-
-  font-weight:800;
-}
-
-.country-empty{
-  margin-top:25px;
-
-  padding:50px 20px;
-
-  text-align:center;
-
-  border:1px dashed
-    rgba(88,119,183,.4);
-
-  border-radius:20px;
-}
-
-.country-empty h3{
-  margin:0 0 8px;
-
-  font-size:22px;
-}
-
-.country-empty p{
-  color:#98a7c0;
+.brand-card a:hover {
+    text-decoration: underline;
 }
 
 /* =========================
-   TOP BUTTON
+   PROMO
 ========================= */
 
-.top{
-  position:fixed;
+.promo {
+    margin: 65px 0;
 
-  right:18px;
-  bottom:18px;
+    padding: 45px 25px;
 
-  z-index:30;
+    text-align: center;
 
-  width:43px;
-  height:43px;
+    background: #123267;
 
-  border-radius:50%;
+    border-radius: 22px;
+}
 
-  border:1px solid #34508a;
+.promo h2 {
+    margin-top: 0;
 
-  background:#0b1c3b;
+    font-size: 32px;
+}
 
-  color:white;
+.promo p {
+    color: #c0cbe0;
 
-  cursor:pointer;
+    line-height: 1.6;
+}
+
+.price {
+    margin: 20px 0;
+
+    font-size: 34px;
+    font-weight: 800;
+}
+
+.primary-button {
+    padding: 15px 25px;
+
+    border: none;
+    border-radius: 12px;
+
+    background: #ffffff;
+    color: #07152f;
+
+    cursor: pointer;
+
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.primary-button:hover {
+    opacity: 0.9;
 }
 
 /* =========================
-   TABLET
+   MODAL
 ========================= */
 
-@media(max-width:1200px){
+.modal {
+    display: none;
 
-  .country-grid{
-    grid-template-columns:
-      repeat(7,minmax(0,1fr));
-  }
+    position: fixed;
+    z-index: 1000;
 
+    inset: 0;
+
+    padding: 20px;
+
+    background: rgba(0,0,0,0.78);
+
+    overflow-y: auto;
+}
+
+.modal-box {
+    width: 100%;
+    max-width: 680px;
+
+    margin: 35px auto;
+
+    padding: 30px;
+
+    background: #ffffff;
+    color: #111111;
+
+    border-radius: 20px;
+}
+
+.modal-header {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 20px;
+}
+
+.modal-header h2 {
+    margin: 0;
+
+    font-size: 27px;
+}
+
+.close-button {
+    width: 40px;
+    height: 40px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #eeeeee;
+
+    cursor: pointer;
+
+    font-size: 18px;
 }
 
 /* =========================
-   PHONE = 5
+   FORM
 ========================= */
 
-@media(max-width:800px){
+.form-group {
+    margin-bottom: 16px;
+}
 
-  .hero{
-    min-height:520px;
-  }
+.form-group label {
+    display: block;
 
-  .nav{
-    gap:12px;
-  }
+    margin-bottom: 7px;
 
-  .country-grid{
-    grid-template-columns:
-      repeat(5,minmax(0,1fr));
+    font-weight: 700;
+}
 
-    gap:7px;
-  }
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
 
-  .country-card{
-    height:105px;
+    padding: 13px 14px;
 
-    border-radius:9px;
-  }
+    border: 1px solid #cccccc;
+    border-radius: 10px;
 
-  .country-info{
-    left:6px;
-    right:6px;
-    bottom:6px;
-  }
+    outline: none;
 
-  .country-name{
-    font-size:10px;
+    font-size: 15px;
+}
 
-    min-height:23px;
-  }
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #326ed8;
+}
 
-  .country-meta{
-    font-size:8px;
-  }
+.form-group textarea {
+    min-height: 110px;
 
-  .flag{
-    font-size:13px;
-  }
+    resize: vertical;
+}
 
-  .promo{
-    padding:20px;
+.required-note {
+    margin-bottom: 20px;
 
-    align-items:flex-start;
+    color: #666666;
 
-    flex-direction:column;
-  }
-
-  .brand-grid{
-    grid-template-columns:1fr;
-  }
-
-  .country-hero-info{
-    padding:35px 25px;
-  }
+    font-size: 13px;
 }
 
 /* =========================
-   SMALL PHONE
+   CHECKOUT
 ========================= */
 
-@media(max-width:450px){
+.checkout {
+    display: none;
 
-  .header{
-    padding:0 20px;
-  }
+    margin-top: 30px;
 
-  .logo{
-    font-size:15px;
-  }
+    padding: 25px;
 
-  .nav{
-    font-size:11px;
-  }
+    background: #f2f5fa;
 
-  .hero-content{
-    padding-top:45px;
-  }
-
-  .hero h1{
-    letter-spacing:-1.5px;
-  }
-
-  .hero p{
-    font-size:13px;
-  }
-
-  .search input{
-    padding:12px;
-  }
-
-  .search button{
-    padding:11px 15px;
-  }
-
-  .section{
-    width:94%;
-  }
-
-  .country-card{
-    height:92px;
-  }
+    border-radius: 16px;
 }
+
+.checkout h3 {
+    margin-top: 0;
+
+    font-size: 24px;
+}
+
+.checkout-description {
+    color: #555555;
+
+    line-height: 1.5;
+}
+
+.order-summary {
+    margin: 20px 0;
+
+    padding: 18px;
+
+    background: #ffffff;
+
+    border-radius: 12px;
+
+    border: 1px solid #dddddd;
+}
+
+.order-row {
+    display: flex;
+
+    justify-content: space-between;
+
+    padding: 8px 0;
+}
+
+.order-total {
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-top: 12px;
+    padding-top: 14px;
+
+    border-top: 1px solid #dddddd;
+
+    font-size: 22px;
+    font-weight: 800;
+}
+
+/* =========================
+   GOOGLE PAY AREA
+========================= */
+
+.payment-title {
+    margin-top: 25px;
+
+    color: #222222;
+
+    font-size: 18px;
+    font-weight: 700;
+}
+
+#google-pay-button {
+    margin-top: 15px;
+}
+
+.test-notice {
+    margin-top: 15px;
+
+    padding: 13px;
+
+    background: #fff4d6;
+
+    color: #6b4e00;
+
+    border-radius: 10px;
+
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* =========================
+   STATUS
+========================= */
+
+.status {
+    display: none;
+
+    margin-top: 18px;
+
+    padding: 14px;
+
+    border-radius: 10px;
+
+    line-height: 1.5;
+}
+
+.status.success {
+    display: block;
+
+    background: #dff6e5;
+
+    color: #155724;
+}
+
+.status.error {
+    display: block;
+
+    background: #ffe0e0;
+
+    color: #721c24;
+}
+
+.status.info {
+    display: block;
+
+    background: #e3efff;
+
+    color: #174d8c;
+}
+
+/* =========================
+   LOADING
+========================= */
+
+.loading {
+    padding: 30px;
+
+    text-align: center;
+
+    color: #aebbd2;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    margin-top: 50px;
+
+    padding: 45px 20px;
+
+    text-align: center;
+
+    color: #8190ab;
+
+    border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 700px) {
+
+    header {
+        padding: 14px 15px;
+    }
+
+    .logo {
+        font-size: 16px;
+    }
+
+    nav {
+        gap: 10px;
+    }
+
+    nav a {
+        font-size: 13px;
+    }
+
+    .hero {
+        padding-top: 55px;
+    }
+
+    .hero h1 {
+        font-size: 35px;
+    }
+
+    .hero p {
+        font-size: 16px;
+    }
+
+    .promo h2 {
+        font-size: 26px;
+    }
+
+    .modal-box {
+        margin: 15px auto;
+        padding: 22px;
+    }
+}
+
 </style>
 </head>
 
 <body>
 
-<!-- ==================================================
-     HOME PAGE
-================================================== -->
 
-<div id="homeView">
+<!-- =========================
+     HEADER
+========================= -->
 
-<header class="header">
+<header>
 
-  <div class="logo">
-    ALL <span>WORLD</span> BRANDS
-  </div>
+    <div class="logo">
+        ALL WORLD BRANDS
+    </div>
 
-  <nav class="nav">
+    <nav>
 
-    <a href="#countries">
-      Countries
-    </a>
+        <a href="#" onclick="showHome(); return false;">
+            Countries
+        </a>
 
-    <a
-      href="#"
-      onclick="openAddBrand();return false"
-    >
-      Add Brand
-    </a>
+        <a href="#" onclick="openAddBrand(); return false;">
+            Add Brand
+        </a>
 
-  </nav>
+    </nav>
 
 </header>
 
 
-<!-- ==================================================
+<!-- =========================
      HERO
-================================================== -->
+========================= -->
 
 <section class="hero">
 
-  <div class="hero-content">
-
     <h1>
-      Discover brands<br>
-      <span>around the world.</span>
+        Discover brands around the world
     </h1>
 
     <p>
-      Explore brands, companies and businesses
-      from countries and territories around the globe.
+        Explore companies, brands and factories
+        from different countries around the world.
     </p>
 
-    <form
-      class="search"
-      onsubmit="doSearch(event)"
-    >
+    <div class="search-box">
 
-      <input
-        id="searchInput"
-        placeholder="Search countries or brands..."
-        autocomplete="off"
-      >
+        <input
+            id="searchInput"
+            type="search"
+            placeholder="Search country..."
+            autocomplete="off"
+            oninput="filterCountries()"
+        >
 
-      <button type="submit">
-        Search
-      </button>
-
-    </form>
-
-  </div>
+    </div>
 
 </section>
 
 
-<!-- ==================================================
-     COUNTRIES
-================================================== -->
+<!-- =========================
+     MAIN
+========================= -->
 
-<main
-  class="section"
-  id="countries"
->
+<main class="container">
 
-  <div class="section-title">
 
-    <h2>
-      Countries &amp; Territories
-    </h2>
+    <!-- COUNTRIES -->
 
-    <div
-      class="badge"
-      id="countryCount"
+    <section id="countryView">
+
+        <h2 class="section-title">
+            Countries
+        </h2>
+
+        <div
+            id="countries"
+            class="country-grid"
+        >
+            <div class="loading">
+                Loading countries...
+            </div>
+        </div>
+
+    </section>
+
+
+    <!-- COUNTRY DETAIL -->
+
+    <section
+        id="detailView"
+        class="detail-view"
     >
-      250
-    </div>
 
-  </div>
+        <button
+            class="back-button"
+            onclick="showHome()"
+        >
+            ← Back to countries
+        </button>
+
+        <h2
+            id="countryTitle"
+            class="country-detail-title"
+        ></h2>
+
+        <div
+            id="brands"
+            class="brand-list"
+        >
+            <div class="loading">
+                Loading brands...
+            </div>
+        </div>
+
+    </section>
 
 
-  <div
-    id="countryGrid"
-    class="country-grid"
-  >
+    <!-- =========================
+         ADD BRAND PROMO
+    ========================= -->
 
-    <div class="loading">
-      Loading countries...
-    </div>
+    <section class="promo">
 
-  </div>
+        <h2>
+            Add your brand to the world
+        </h2>
 
+        <p>
+            Publish your brand on
+            ALL WORLD BRANDS and make it visible
+            to visitors from around the world.
+        </p>
 
-  <!-- PROMO -->
+        <div class="price">
+            $1.00
+        </div>
 
-  <div class="promo">
+        <button
+            class="primary-button"
+            onclick="openAddBrand()"
+        >
+            Add Your Brand — $1.00
+        </button>
 
-    <div>
+    </section>
 
-      <h3>
-        Add your brand to the world
-      </h3>
-
-      <p>
-        Put your brand in front of people
-        around the world.
-        Starting from <b>$1.00</b>
-      </p>
-
-    </div>
-
-    <button
-      class="primary"
-      onclick="openAddBrand()"
-    >
-      Add Your Brand — $1.00
-    </button>
-
-  </div>
 
 </main>
 
 
-<!-- ==================================================
-     FOOTER
-================================================== -->
-
-<footer class="footer">
-
-  <div>
-
-    <h2>
-      One world. Countless brands.
-    </h2>
-
-    <p>
-      ALL WORLD BRANDS
-    </p>
-
-  </div>
-
-</footer>
-
-</div>
-
-
-<!-- ==================================================
-     COUNTRY PAGE
-================================================== -->
-
-<div id="countryView">
-
-  <div class="country-page">
-
-    <div class="section">
-
-      <button
-        class="back"
-        onclick="goHome()"
-      >
-        ← Back to countries
-      </button>
-
-
-      <div id="countryHero"></div>
-
-
-      <div id="brandArea"></div>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- ==================================================
+<!-- =========================
      ADD BRAND MODAL
-================================================== -->
+========================= -->
 
 <div
-  class="modal"
-  id="addModal"
-  onclick="modalOutside(event)"
+    id="brandModal"
+    class="modal"
 >
 
-  <div class="modal-box">
+    <div class="modal-box">
 
-    <div class="modal-head">
 
-      <div>
+        <div class="modal-header">
 
-        <h2>
-          Add Your Brand
-        </h2>
+            <h2>
+                Add Your Brand
+            </h2>
 
-        <div
-          style="
-            color:#91a0ba;
-            font-size:13px
-          "
-        >
-          Submit your brand for review —
-          $1.00
+            <button
+                class="close-button"
+                onclick="closeAddBrand()"
+            >
+                ✕
+            </button>
+
         </div>
 
-      </div>
 
-      <button
-        class="close"
-        onclick="closeAddBrand()"
-      >
-        ×
-      </button>
+        <p class="required-note">
+            Fields marked with * are required.
+        </p>
+
+
+        <!-- =========================
+             BRAND FORM
+        ========================= -->
+
+        <form
+            id="brandForm"
+            onsubmit="startCheckout(event)"
+        >
+
+
+            <div class="form-group">
+
+                <label for="brandName">
+                    Brand name *
+                </label>
+
+                <input
+                    id="brandName"
+                    name="brandName"
+                    type="text"
+                    required
+                    maxlength="150"
+                    placeholder="Your brand name"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="countrySelect">
+                    Country *
+                </label>
+
+                <select
+                    id="countrySelect"
+                    name="countryId"
+                    required
+                >
+
+                    <option value="">
+                        Loading countries...
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="website">
+                    Website
+                </label>
+
+                <input
+                    id="website"
+                    name="website"
+                    type="url"
+                    maxlength="500"
+                    placeholder="https://example.com"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="yourName">
+                    Your name *
+                </label>
+
+                <input
+                    id="yourName"
+                    name="yourName"
+                    type="text"
+                    required
+                    maxlength="150"
+                    placeholder="Your full name"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="email">
+                    Email *
+                </label>
+
+                <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    required
+                    maxlength="200"
+                    placeholder="you@example.com"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="phone">
+                    Phone
+                </label>
+
+                <input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    maxlength="50"
+                    placeholder="+998..."
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="description">
+                    Brand description
+                </label>
+
+                <textarea
+                    id="description"
+                    name="description"
+                    maxlength="2000"
+                    placeholder="Tell us about your brand..."
+                ></textarea>
+
+            </div>
+
+
+            <button
+                class="primary-button"
+                type="submit"
+            >
+                Continue to payment — $1.00
+            </button>
+
+
+        </form>
+
+
+        <!-- =========================
+             CHECKOUT
+        ========================= -->
+
+        <section
+            id="checkout"
+            class="checkout"
+        >
+
+            <h3>
+                Checkout
+            </h3>
+
+            <p class="checkout-description">
+                Review your order before continuing
+                to payment.
+            </p>
+
+
+            <div class="order-summary">
+
+                <div class="order-row">
+
+                    <span>
+                        Service
+                    </span>
+
+                    <strong>
+                        Brand listing
+                    </strong>
+
+                </div>
+
+
+                <div class="order-row">
+
+                    <span>
+                        Quantity
+                    </span>
+
+                    <strong>
+                        1
+                    </strong>
+
+                </div>
+
+
+                <div class="order-total">
+
+                    <span>
+                        Total
+                    </span>
+
+                    <span>
+                        $1.00 USD
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="payment-title">
+                Payment method
+            </div>
+
+
+            <div id="google-pay-button"></div>
+
+
+            <div class="test-notice">
+
+                <strong>TEST MODE</strong><br>
+
+                Google Pay is currently connected
+                in TEST mode. No real money will be
+                charged at this stage.
+
+                The real payment gateway will be
+                connected after the supported PSP
+                is selected.
+
+            </div>
+
+
+            <div
+                id="paymentStatus"
+                class="status"
+            ></div>
+
+
+        </section>
+
 
     </div>
-
-
-    <form
-      class="form"
-      onsubmit="submitBrand(event)"
-    >
-
-      <input
-        id="brandName"
-        required
-        placeholder="Brand name"
-      >
-
-
-      <select
-        id="brandCountry"
-        required
-      >
-
-        <option value="">
-          Select country
-        </option>
-
-      </select>
-
-
-      <input
-        id="brandWebsite"
-        placeholder="Website (https://...)"
-      >
-
-
-      <input
-        id="ownerName"
-        placeholder="Your name"
-      >
-
-
-      <input
-        id="ownerEmail"
-        type="email"
-        required
-        placeholder="Email"
-      >
-
-
-      <input
-        id="ownerPhone"
-        placeholder="Phone (optional)"
-      >
-
-
-      <textarea
-        id="brandDescription"
-        placeholder="Brand description"
-      ></textarea>
-
-
-      <small>
-        Payment is not processed automatically yet.
-        Your application will be sent for review.
-      </small>
-
-
-      <button
-        class="primary"
-        type="submit"
-      >
-        Submit Brand — $1.00
-      </button>
-
-    </form>
-
-  </div>
 
 </div>
 
 
-<!-- TOP -->
+<!-- =========================
+     GOOGLE PAY SCRIPT
+========================= -->
 
-<button
-  class="top"
-  onclick="
-    window.scrollTo({
-      top:0,
-      behavior:'smooth'
-    })
-  "
->
-  ↑
-</button>
+<script
+    async
+    src="https://pay.google.com/gp/p/js/pay.js"
+    onload="onGooglePayLoaded()"
+></script>
 
 
 <script>
 
-/* ==================================================
-   IMAGE
-================================================== */
+/* =====================================================
+   GLOBAL VARIABLES
+===================================================== */
 
-const FALLBACK_IMAGE =
-  "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1000&q=75";
+let countriesData = [];
 
+let paymentsClient = null;
 
-/* ==================================================
-   FLAGS
-================================================== */
-
-const flagOverrides = {
-
-  "Kosovo":"🇽🇰",
-
-  "United States Minor Outlying Islands":"🇺🇸",
-
-  "U.S. Virgin Islands":"🇻🇮",
-
-  "Holy See (Vatican City State)":"🇻🇦",
-
-  "Cabo Verde":"🇨🇻",
-
-  "Côte d'Ivoire":"🇨🇮",
-
-  "Curaçao":"🇨🇼",
-
-  "Réunion":"🇷🇪",
-
-  "São Tomé and Príncipe":"🇸🇹",
-
-  "Åland Islands":"🇦🇽"
-
-};
+let googlePayAvailable = false;
 
 
-let countries = [];
+/*
+    Google Pay Merchant ID from your console.
 
-let countryById = new Map();
+    Your current Merchant ID:
+    BCR2DN6D5KRLJTLN
+*/
+
+const GOOGLE_MERCHANT_ID =
+    "BCR2DN6D5KRLJTLN";
 
 
-/* ==================================================
-   FLAG FUNCTION
-================================================== */
+/*
+    ALL WORLD BRANDS payment amount.
+*/
 
-function flagFromCode(code,name){
+const PAYMENT_AMOUNT =
+    "1.00";
 
-  if(flagOverrides[name]){
-    return flagOverrides[name];
-  }
 
-  if(
-    !code ||
-    code.length !== 2
-  ){
-    return "🌍";
-  }
+const PAYMENT_CURRENCY =
+    "USD";
 
-  return code
-    .toUpperCase()
-    .split("")
-    .map(letter =>
-      String.fromCodePoint(
-        127397 +
-        letter.charCodeAt(0)
-      )
-    )
-    .join("");
+
+/* =====================================================
+   HTML SECURITY HELPERS
+===================================================== */
+
+function escapeHtml(value) {
+
+    return String(value || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
 }
 
 
-/* ==================================================
-   WIKIPEDIA COUNTRY IMAGE
-================================================== */
+function escapeAttribute(value) {
 
-function wikipediaName(name){
+    return escapeHtml(value);
 
-  const aliases = {
-
-    "Cabo Verde":
-      "Cape Verde",
-
-    "Holy See (Vatican City State)":
-      "Vatican City",
-
-    "Turkey":
-      "Turkey",
-
-    "Russia":
-      "Russia",
-
-    "Iran":
-      "Iran",
-
-    "North Korea":
-      "North Korea",
-
-    "South Korea":
-      "South Korea",
-
-    "Vietnam":
-      "Vietnam",
-
-    "Macau":
-      "Macau"
-
-  };
-
-  return aliases[name] || name;
 }
 
 
-async function getImage(name){
-
-  try{
-
-    const url =
-      "https://en.wikipedia.org/api/rest_v1/page/summary/" +
-      encodeURIComponent(
-        wikipediaName(name)
-      );
-
-    const response =
-      await fetch(url,{
-        headers:{
-          "Accept":
-            "application/json"
-        }
-      });
-
-    if(!response.ok){
-      throw new Error("Wikipedia error");
-    }
-
-    const data =
-      await response.json();
-
-    if(
-      data &&
-      data.thumbnail &&
-      data.thumbnail.source
-    ){
-
-      return data.thumbnail.source;
-
-    }
-
-  }catch(error){
-
-    console.log(
-      "Image unavailable:",
-      name
-    );
-
-  }
-
-  return FALLBACK_IMAGE;
-}
-
-
-/* ==================================================
+/* =====================================================
    LOAD COUNTRIES
-================================================== */
+===================================================== */
 
-async function loadCountries(){
+async function loadCountries() {
 
-  const grid =
-    document.getElementById(
-      "countryGrid"
-    );
+    try {
 
-  try{
+        const response =
+            await fetch("/api/countries");
 
-    const response =
-      await fetch(
-        "/api/countries",
-        {
-          cache:"no-store"
+        if (!response.ok) {
+
+            throw new Error(
+                "Countries request failed"
+            );
+
         }
-      );
 
-    if(!response.ok){
+        countriesData =
+            await response.json();
 
-      throw new Error(
-        "HTTP " +
-        response.status
-      );
-
-    }
-
-    const data =
-      await response.json();
-
-
-    if(!Array.isArray(data)){
-
-      throw new Error(
-        "Invalid countries data"
-      );
-
-    }
-
-
-    countries = data;
-
-
-    countryById =
-      new Map(
-        data.map(country => [
-          String(country.id),
-          country
-        ])
-      );
-
-
-    document
-      .getElementById("countryCount")
-      .textContent =
-      data.length;
-
-
-    if(!data.length){
-
-      grid.innerHTML = `
-        <div class="empty">
-          No countries found.
-        </div>
-      `;
-
-      return;
-    }
-
-
-    /* CLEAR LOADING */
-
-    grid.innerHTML = "";
-
-
-    /* CREATE ALL COUNTRY CARDS */
-
-    data.forEach(country => {
-
-      const card =
-        document.createElement(
-          "article"
+        renderCountries(
+            countriesData
         );
 
+        populateCountrySelect();
 
-      card.className =
-        "country-card";
+    }
 
+    catch (error) {
 
-      card.dataset.name =
-        String(
-          country.name || ""
-        ).toLowerCase();
+        console.error(
+            "Countries error:",
+            error
+        );
 
+        document.getElementById(
+            "countries"
+        ).innerHTML = `
+            <div class="loading">
+                Unable to load countries.
+                Please refresh the page.
+            </div>
+        `;
 
-      card.innerHTML = `
-
-        <img
-          class="country-image"
-          src="${FALLBACK_IMAGE}"
-          alt="${escapeHtml(country.name)}"
-          loading="lazy"
-        >
-
-        <div class="country-info">
-
-          <div class="country-name">
-
-            ${flagFromCode(
-              country.code,
-              country.name
-            )}
-
-            ${escapeHtml(
-              country.name
-            )}
-
-          </div>
-
-          <div class="country-meta">
-
-            <span>
-              ${escapeHtml(
-                country.code || ""
-              )}
-            </span>
-
-            <span>
-
-              ${Number(
-                country.brand_count || 0
-              )}
-
-              brand${
-                Number(
-                  country.brand_count || 0
-                ) === 1
-                  ? ""
-                  : "s"
-              }
-
-            </span>
-
-          </div>
-
-        </div>
-      `;
-
-
-      /* COUNTRY CLICK */
-
-      card.addEventListener(
-        "click",
-        () =>
-          openCountry(
-            country.id
-          )
-      );
-
-
-      grid.appendChild(card);
-
-
-      /* COUNTRY IMAGE */
-
-      getImage(
-        country.name
-      ).then(image => {
-
-        const img =
-          card.querySelector(
-            ".country-image"
-          );
-
-        if(img){
-
-          img.src = image;
-
-        }
-
-      });
-
-    });
-
-
-    /* COUNTRY SELECT */
-
-    const select =
-      document.getElementById(
-        "brandCountry"
-      );
-
-
-    select.innerHTML =
-      '<option value="">Select country</option>' +
-
-      data
-        .map(country => `
-
-          <option
-            value="${escapeAttr(
-              country.name
-            )}"
-          >
-            ${escapeHtml(
-              country.name
-            )}
-          </option>
-
-        `)
-        .join("");
-
-
-  }catch(error){
-
-    console.error(
-      "Countries error:",
-      error
-    );
-
-
-    grid.innerHTML = `
-
-      <div class="empty">
-
-        <b>
-          Countries could not be displayed.
-        </b>
-
-        <br>
-
-        <span
-          style="
-            font-size:12px
-          "
-        >
-          Please refresh the page.
-        </span>
-
-      </div>
-
-    `;
-
-  }
+    }
 
 }
 
 
-/* ==================================================
-   HTML SECURITY
-================================================== */
+/* =====================================================
+   RENDER COUNTRIES
+===================================================== */
 
-function escapeHtml(value){
+function renderCountries(list) {
 
-  return String(
-    value ?? ""
-  ).replace(
-    /[&<>"']/g,
-    function(char){
+    const container =
+        document.getElementById(
+            "countries"
+        );
 
-      return {
+    container.innerHTML = "";
 
-        "&":"&amp;",
-        "<":"&lt;",
-        ">":"&gt;",
-        '"':"&quot;",
-        "'":"&#39;"
 
-      }[char];
+    if (!list || !list.length) {
 
-    }
-  );
+        container.innerHTML = `
+            <div class="loading">
+                No countries found.
+            </div>
+        `;
 
-}
-
-
-function escapeAttr(value){
-
-  return escapeHtml(value);
-
-}
-
-
-/* ==================================================
-   SEARCH
-================================================== */
-
-function doSearch(event){
-
-  event.preventDefault();
-
-
-  const query =
-    document
-      .getElementById(
-        "searchInput"
-      )
-      .value
-      .trim()
-      .toLowerCase();
-
-
-  const cards =
-    document.querySelectorAll(
-      ".country-card"
-    );
-
-
-  if(!query){
-
-    cards.forEach(card => {
-
-      card.style.display =
-        "block";
-
-    });
-
-    return;
-
-  }
-
-
-  cards.forEach(card => {
-
-    const name =
-      card.dataset.name || "";
-
-
-    card.style.display =
-      name.includes(query)
-        ? "block"
-        : "none";
-
-  });
-
-
-  document
-    .getElementById(
-      "countries"
-    )
-    .scrollIntoView({
-      behavior:"smooth"
-    });
-
-}
-
-
-/* ==================================================
-   OPEN COUNTRY
-================================================== */
-
-async function openCountry(id){
-
-  const country =
-    countryById.get(
-      String(id)
-    );
-
-
-  if(!country){
-    return;
-  }
-
-
-  document
-    .getElementById(
-      "homeView"
-    )
-    .classList.add("hidden");
-
-
-  document
-    .getElementById(
-      "countryView"
-    )
-    .classList.add("active");
-
-
-  window.scrollTo(
-    0,
-    0
-  );
-
-
-  const hero =
-    document.getElementById(
-      "countryHero"
-    );
-
-
-  const area =
-    document.getElementById(
-      "brandArea"
-    );
-
-
-  /* COUNTRY HERO */
-
-  hero.innerHTML = `
-
-    <div class="country-hero">
-
-      <img
-        src="${FALLBACK_IMAGE}"
-        alt="${escapeHtml(
-          country.name
-        )}"
-      >
-
-      <div class="country-hero-info">
-
-        <h1>
-
-          ${flagFromCode(
-            country.code,
-            country.name
-          )}
-
-          ${escapeHtml(
-            country.name
-          )}
-
-        </h1>
-
-        <p>
-
-          ${escapeHtml(
-            country.code || ""
-          )}
-
-          ·
-
-          ${Number(
-            country.brand_count || 0
-          )}
-
-          listed brand${
-            Number(
-              country.brand_count || 0
-            ) === 1
-              ? ""
-              : "s"
-          }
-
-        </p>
-
-      </div>
-
-    </div>
-
-  `;
-
-
-  /* COUNTRY IMAGE */
-
-  getImage(
-    country.name
-  ).then(image => {
-
-    const img =
-      hero.querySelector(
-        "img"
-      );
-
-    if(img){
-      img.src = image;
-    }
-
-  });
-
-
-  /* BRAND LOADING */
-
-  area.innerHTML = `
-
-    <div
-      class="loading"
-      style="margin-top:20px"
-    >
-      Loading brands...
-    </div>
-
-  `;
-
-
-  try{
-
-    const response =
-      await fetch(
-        "/api/countries/" +
-        encodeURIComponent(
-          country.id
-        ) +
-        "/brands",
-        {
-          cache:"no-store"
-        }
-      );
-
-
-    if(!response.ok){
-
-      throw new Error(
-        "HTTP " +
-        response.status
-      );
+        return;
 
     }
 
 
-    const brands =
-      await response.json();
+    list.forEach(country => {
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "country-card";
 
 
-    /* NO BRANDS */
-
-    if(
-      !Array.isArray(brands) ||
-      brands.length === 0
-    ){
-
-      area.innerHTML = `
-
-        <div class="country-empty">
-
-          <h3>
-            No brands listed yet
-          </h3>
-
-          <p>
-            Be the first brand to appear
-            in
-            ${escapeHtml(
-              country.name
-            )}.
-          </p>
-
-          <button
-            class="primary"
-            onclick="openAddForCountry('${escapeAttr(country.name)}')"
-          >
-            Add Your Brand — $1.00
-          </button>
-
-        </div>
-
-      `;
-
-      return;
-
-    }
+        const flag =
+            country.flag || "🌍";
 
 
-    /* BRANDS */
+        card.innerHTML = `
 
-    area.innerHTML = `
-
-      <div
-        class="section-title"
-        style="margin-top:30px"
-      >
-
-        <h2>
-          Brands in
-          ${escapeHtml(
-            country.name
-          )}
-        </h2>
-
-        <div class="badge">
-          ${brands.length}
-        </div>
-
-      </div>
-
-
-      <div class="brand-grid">
-
-        ${brands.map(brand => `
-
-          <article class="brand-card">
-
-            <div class="brand-logo">
-
-              ${escapeHtml(
-                (
-                  brand.name ||
-                  "B"
-                )
-                .charAt(0)
-                .toUpperCase()
-              )}
-
+            <div class="country-flag">
+                ${escapeHtml(flag)}
             </div>
 
             <h3>
-              ${escapeHtml(
-                brand.name
-              )}
+                ${escapeHtml(country.name)}
             </h3>
 
             <p>
-              ${escapeHtml(
-                brand.description ||
-                "Brand listed on ALL WORLD BRANDS."
-              )}
+                Explore brands
             </p>
 
-            ${
-              brand.website
-                ? `
-                  <a
-                    href="${safeUrl(
-                      brand.website
-                    )}"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Visit website →
-                  </a>
-                `
-                : ""
+        `;
+
+
+        card.addEventListener(
+            "click",
+            function() {
+
+                openCountry(
+                    country.id,
+                    country.name
+                );
+
             }
+        );
 
-          </article>
 
-        `).join("")}
+        container.appendChild(card);
 
-      </div>
+    });
 
+}
+
+
+/* =====================================================
+   COUNTRY SELECT
+===================================================== */
+
+function populateCountrySelect() {
+
+    const select =
+        document.getElementById(
+            "countrySelect"
+        );
+
+    select.innerHTML = `
+        <option value="">
+            Select country
+        </option>
     `;
 
 
-  }catch(error){
+    countriesData.forEach(country => {
 
-    console.error(
-      "Brands error:",
-      error
-    );
+        const option =
+            document.createElement("option");
 
+        option.value =
+            country.id;
 
-    area.innerHTML = `
+        option.textContent =
+            country.name;
 
-      <div class="country-empty">
+        select.appendChild(option);
 
-        <h3>
-          Brands are temporarily unavailable
-        </h3>
-
-        <p>
-          Please refresh the page
-          and try again.
-        </p>
-
-      </div>
-
-    `;
-
-  }
+    });
 
 }
 
 
-/* ==================================================
-   SAFE WEBSITE
-================================================== */
+/* =====================================================
+   SEARCH COUNTRIES
+===================================================== */
 
-function safeUrl(url){
+function filterCountries() {
 
-  const value =
-    String(
-      url || ""
-    ).trim();
+    const input =
+        document.getElementById(
+            "searchInput"
+        );
 
 
-  if(
-    /^https?:\/\//i.test(
-      value
-    )
-  ){
+    const text =
+        input.value
+            .trim()
+            .toLowerCase();
 
-    return escapeAttr(
-      value
-    );
 
-  }
+    if (!text) {
 
+        renderCountries(
+            countriesData
+        );
 
-  return "#";
-
-}
-
-
-/* ==================================================
-   BACK HOME
-================================================== */
-
-function goHome(){
-
-  document
-    .getElementById(
-      "countryView"
-    )
-    .classList.remove(
-      "active"
-    );
-
-
-  document
-    .getElementById(
-      "homeView"
-    )
-    .classList.remove(
-      "hidden"
-    );
-
-
-  window.scrollTo(
-    0,
-    0
-  );
-
-}
-
-
-/* ==================================================
-   ADD BRAND
-================================================== */
-
-function openAddBrand(){
-
-  document
-    .getElementById(
-      "addModal"
-    )
-    .classList.add(
-      "open"
-    );
-
-}
-
-
-function closeAddBrand(){
-
-  document
-    .getElementById(
-      "addModal"
-    )
-    .classList.remove(
-      "open"
-    );
-
-}
-
-
-function modalOutside(event){
-
-  if(
-    event.target.id ===
-    "addModal"
-  ){
-
-    closeAddBrand();
-
-  }
-
-}
-
-
-/* ==================================================
-   ADD BRAND FOR SELECTED COUNTRY
-================================================== */
-
-function openAddForCountry(country){
-
-  openAddBrand();
-
-
-  setTimeout(() => {
-
-    document
-      .getElementById(
-        "brandCountry"
-      )
-      .value = country;
-
-  },50);
-
-}
-
-
-/* ==================================================
-   SUBMIT APPLICATION
-================================================== */
-
-async function submitBrand(event){
-
-  event.preventDefault();
-
-
-  const payload = {
-
-    brand_name:
-      document
-        .getElementById(
-          "brandName"
-        )
-        .value
-        .trim(),
-
-    country:
-      document
-        .getElementById(
-          "brandCountry"
-        )
-        .value,
-
-    owner_name:
-      document
-        .getElementById(
-          "ownerName"
-        )
-        .value
-        .trim(),
-
-    email:
-      document
-        .getElementById(
-          "ownerEmail"
-        )
-        .value
-        .trim(),
-
-    phone:
-      document
-        .getElementById(
-          "ownerPhone"
-        )
-        .value
-        .trim(),
-
-    website:
-      document
-        .getElementById(
-          "brandWebsite"
-        )
-        .value
-        .trim(),
-
-    description:
-      document
-        .getElementById(
-          "brandDescription"
-        )
-        .value
-        .trim()
-
-  };
-
-
-  if(
-    !payload.brand_name ||
-    !payload.country ||
-    !payload.email
-  ){
-
-    alert(
-      "Brand name, country and email are required."
-    );
-
-    return;
-
-  }
-
-
-  try{
-
-    const response =
-      await fetch(
-        "/api/applications",
-        {
-          method:"POST",
-
-          headers:{
-            "Content-Type":
-              "application/json"
-          },
-
-          body:
-            JSON.stringify(
-              payload
-            )
-        }
-      );
-
-
-    const data =
-      await response.json();
-
-
-    if(
-      !response.ok ||
-      !data.ok
-    ){
-
-      throw new Error(
-        data.error ||
-        "Could not submit"
-      );
+        return;
 
     }
 
 
-    alert(
-      "Application received. Payment is not processed automatically yet."
-    );
+    const filtered =
+        countriesData.filter(
+            country =>
+                country.name
+                    .toLowerCase()
+                    .includes(text)
+        );
 
 
-    event.target.reset();
-
-
-    closeAddBrand();
-
-
-  }catch(error){
-
-    console.error(
-      error
-    );
-
-
-    alert(
-      "Could not send application. Please try again."
-    );
-
-  }
+    renderCountries(filtered);
 
 }
 
 
-/* ==================================================
-   START
-================================================== */
+/* =====================================================
+   OPEN COUNTRY
+===================================================== */
+
+async function openCountry(
+    id,
+    name
+) {
+
+    document.getElementById(
+        "countryView"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "detailView"
+    ).style.display = "block";
+
+
+    document.getElementById(
+        "countryTitle"
+    ).textContent = name;
+
+
+    const brands =
+        document.getElementById(
+            "brands"
+        );
+
+
+    brands.innerHTML = `
+        <div class="loading">
+            Loading brands...
+        </div>
+    `;
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/countries/"
+                + encodeURIComponent(id)
+                + "/brands"
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Brands request failed"
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        brands.innerHTML = "";
+
+
+        if (!data.length) {
+
+            brands.innerHTML = `
+                <div class="loading">
+                    No brands listed yet.
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        data.forEach(brand => {
+
+            const card =
+                document.createElement("div");
+
+            card.className =
+                "brand-card";
+
+
+            let websiteHtml = "";
+
+
+            if (brand.website) {
+
+                websiteHtml = `
+
+                    <p>
+                        <a
+                            href="${escapeAttribute(brand.website)}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Visit website →
+                        </a>
+                    </p>
+
+                `;
+
+            }
+
+
+            card.innerHTML = `
+
+                <h3>
+                    ${escapeHtml(brand.name)}
+                </h3>
+
+                <p>
+                    ${escapeHtml(
+                        brand.description || ""
+                    )}
+                </p>
+
+                ${websiteHtml}
+
+            `;
+
+
+            brands.appendChild(card);
+
+        });
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Brands error:",
+            error
+        );
+
+
+        brands.innerHTML = `
+            <div class="loading">
+                Unable to load brands.
+            </div>
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   SHOW HOME
+===================================================== */
+
+function showHome() {
+
+    document.getElementById(
+        "countryView"
+    ).style.display = "block";
+
+
+    document.getElementById(
+        "detailView"
+    ).style.display = "none";
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+
+/* =====================================================
+   OPEN ADD BRAND
+===================================================== */
+
+function openAddBrand() {
+
+    const modal =
+        document.getElementById(
+            "brandModal"
+        );
+
+
+    modal.style.display = "block";
+
+
+    document.body.style.overflow =
+        "hidden";
+
+
+    document.getElementById(
+        "checkout"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "paymentStatus"
+    ).className = "status";
+
+
+    document.getElementById(
+        "paymentStatus"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "brandName"
+    ).focus();
+
+}
+
+
+/* =====================================================
+   CLOSE ADD BRAND
+===================================================== */
+
+function closeAddBrand() {
+
+    document.getElementById(
+        "brandModal"
+    ).style.display = "none";
+
+
+    document.body.style.overflow =
+        "";
+
+}
+
+
+/* =====================================================
+   CLICK OUTSIDE MODAL
+===================================================== */
+
+document.getElementById(
+    "brandModal"
+).addEventListener(
+    "click",
+    function(event) {
+
+        if (
+            event.target === this
+        ) {
+
+            closeAddBrand();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   START CHECKOUT
+===================================================== */
+
+function startCheckout(event) {
+
+    event.preventDefault();
+
+
+    const brandName =
+        document.getElementById(
+            "brandName"
+        ).value.trim();
+
+
+    const country =
+        document.getElementById(
+            "countrySelect"
+        ).value;
+
+
+    const yourName =
+        document.getElementById(
+            "yourName"
+        ).value.trim();
+
+
+    const email =
+        document.getElementById(
+            "email"
+        ).value.trim();
+
+
+    if (
+        !brandName ||
+        !country ||
+        !yourName ||
+        !email
+    ) {
+
+        showPaymentError(
+            "Please complete all required fields."
+        );
+
+        return;
+
+    }
+
+
+    document.getElementById(
+        "checkout"
+    ).style.display = "block";
+
+
+    document.getElementById(
+        "checkout"
+    ).scrollIntoView({
+        behavior: "smooth"
+    });
+
+
+    if (paymentsClient) {
+
+        renderGooglePayButton();
+
+    }
+
+}
+
+
+/* =====================================================
+   GOOGLE PAY LOADED
+===================================================== */
+
+function onGooglePayLoaded() {
+
+    try {
+
+        paymentsClient =
+            new google.payments.api.PaymentsClient({
+
+                environment: "TEST"
+
+            });
+
+
+        checkGooglePayAvailability();
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Google Pay initialization error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   BASIC CARD METHOD
+===================================================== */
+
+function getBaseCardPaymentMethod() {
+
+    return {
+
+        type: "CARD",
+
+        parameters: {
+
+            allowedAuthMethods: [
+
+                "PAN_ONLY",
+
+                "CRYPTOGRAM_3DS"
+
+            ],
+
+            allowedCardNetworks: [
+
+                "AMEX",
+
+                "DISCOVER",
+
+                "INTERAC",
+
+                "JCB",
+
+                "MASTERCARD",
+
+                "VISA"
+
+            ]
+
+        }
+
+    };
+
+}
+
+
+/* =====================================================
+   TOKENIZED CARD METHOD
+===================================================== */
+
+function getCardPaymentMethod() {
+
+    return {
+
+        ...getBaseCardPaymentMethod(),
+
+        tokenizationSpecification: {
+
+            type: "PAYMENT_GATEWAY",
+
+            parameters: {
+
+                /*
+                    IMPORTANT
+
+                    This is a placeholder for now.
+
+                    "example" is NOT a real payment gateway.
+
+                    We will replace it after selecting
+                    a real Google Pay supported PSP.
+                */
+
+                gateway: "example",
+
+                gatewayMerchantId:
+                    "exampleGatewayMerchantId"
+
+            }
+
+        }
+
+    };
+
+}
+
+
+/* =====================================================
+   IS READY TO PAY REQUEST
+===================================================== */
+
+function getIsReadyToPayRequest() {
+
+    return {
+
+        apiVersion: 2,
+
+        apiVersionMinor: 0,
+
+        allowedPaymentMethods: [
+
+            getBaseCardPaymentMethod()
+
+        ]
+
+    };
+
+}
+
+
+/* =====================================================
+   PAYMENT REQUEST
+===================================================== */
+
+function getPaymentDataRequest() {
+
+    return {
+
+        apiVersion: 2,
+
+        apiVersionMinor: 0,
+
+
+        merchantInfo: {
+
+            merchantName:
+                "ALL WORLD BRANDS",
+
+            merchantId:
+                GOOGLE_MERCHANT_ID
+
+        },
+
+
+        allowedPaymentMethods: [
+
+            getCardPaymentMethod()
+
+        ],
+
+
+        transactionInfo: {
+
+            totalPriceStatus:
+                "FINAL",
+
+            totalPrice:
+                PAYMENT_AMOUNT,
+
+            currencyCode:
+                PAYMENT_CURRENCY
+
+        },
+
+
+        emailRequired: true
+
+    };
+
+}
+
+
+/* =====================================================
+   CHECK GOOGLE PAY AVAILABILITY
+===================================================== */
+
+function checkGooglePayAvailability() {
+
+    if (!paymentsClient) {
+
+        return;
+
+    }
+
+
+    paymentsClient
+        .isReadyToPay(
+            getIsReadyToPayRequest()
+        )
+
+        .then(result => {
+
+            googlePayAvailable =
+                !!result.result;
+
+
+            if (
+                googlePayAvailable
+            ) {
+
+                renderGooglePayButton();
+
+            }
+
+        })
+
+        .catch(error => {
+
+            console.error(
+                "Google Pay availability error:",
+                error
+            );
+
+        });
+
+}
+
+
+/* =====================================================
+   RENDER GOOGLE PAY BUTTON
+===================================================== */
+
+function renderGooglePayButton() {
+
+    const container =
+        document.getElementById(
+            "google-pay-button"
+        );
+
+
+    if (!container) {
+
+        return;
+
+    }
+
+
+    container.innerHTML = "";
+
+
+    if (!paymentsClient) {
+
+        return;
+
+    }
+
+
+    const button =
+        paymentsClient.createButton({
+
+            onClick:
+                payWithGooglePay,
+
+            buttonColor:
+                "default",
+
+            buttonType:
+                "buy",
+
+            buttonSizeMode:
+                "fill"
+
+        });
+
+
+    container.appendChild(button);
+
+}
+
+
+/* =====================================================
+   GOOGLE PAY PAYMENT
+===================================================== */
+
+async function payWithGooglePay() {
+
+    if (!paymentsClient) {
+
+        showPaymentError(
+            "Google Pay is not ready yet."
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        const paymentData =
+            await paymentsClient
+                .loadPaymentData(
+                    getPaymentDataRequest()
+                );
+
+
+        console.log(
+            "Google Pay TEST payment data:",
+            paymentData
+        );
+
+
+        /*
+            IMPORTANT:
+
+            At this stage this is TEST MODE.
+
+            The returned payment token is NOT sent
+            to a real payment processor.
+
+            After we connect the real PSP:
+
+            Google Pay
+                ↓
+            payment token
+                ↓
+            our server
+                ↓
+            real payment gateway
+                ↓
+            payment confirmation
+                ↓
+            application created
+        */
+
+
+        showPaymentSuccess();
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Google Pay payment error:",
+            error
+        );
+
+
+        if (
+            error &&
+            error.statusCode === "CANCELED"
+        ) {
+
+            return;
+
+        }
+
+
+        showPaymentError(
+            "Google Pay payment could not be completed."
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   SUCCESS
+===================================================== */
+
+function showPaymentSuccess() {
+
+    const status =
+        document.getElementById(
+            "paymentStatus"
+        );
+
+
+    status.className =
+        "status success";
+
+
+    status.style.display =
+        "block";
+
+
+    status.innerHTML = `
+
+        <strong>
+            Google Pay TEST payment completed.
+        </strong>
+
+        <br><br>
+
+        No real money was charged.
+
+        <br><br>
+
+        The real payment gateway still needs
+        to be connected before production.
+
+    `;
+
+}
+
+
+/* =====================================================
+   ERROR
+===================================================== */
+
+function showPaymentError(message) {
+
+    const status =
+        document.getElementById(
+            "paymentStatus"
+        );
+
+
+    status.className =
+        "status error";
+
+
+    status.style.display =
+        "block";
+
+
+    status.textContent =
+        message;
+
+
+    status.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
+
+}
+
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
 
 loadCountries();
+
+
+/* =====================================================
+   ESCAPE KEY
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            const modal =
+                document.getElementById(
+                    "brandModal"
+                );
+
+
+            if (
+                modal.style.display === "block"
+            ) {
+
+                closeAddBrand();
+
+            }
+
+        }
+
+    }
+);
 
 </script>
 
