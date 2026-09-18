@@ -9,6 +9,10 @@ const PORT = process.env.PORT || 3000;
 
 app.disable("x-powered-by");
 
+/* =====================================================
+SECURITY
+===================================================== */
+
 app.use(
   helmet({
     contentSecurityPolicy: false
@@ -27,16 +31,201 @@ app.use(
 );
 
 /* =====================================================
+18+ CONTENT PROTECTION
+===================================================== */
+
+const ADULT_CONTENT_WORDS = [
+  "porn",
+  "porno",
+  "pornography",
+  "pornographic",
+  "xxx",
+  "nsfw",
+  "sex video",
+  "sexvideo",
+  "nude",
+  "nudity",
+  "naked",
+  "adult video",
+  "adultvideo",
+  "explicit content",
+  "explicit video",
+  "onlyfans",
+  "pornhub",
+  "xvideos",
+  "xnxx",
+  "redtube",
+  "brazzers",
+  "hentai",
+  "sexual content",
+  "sex content"
+];
+
+function normalizeForModeration(value) {
+  return String(value || "")
+    .toLowerCase()
+    .normalize("NFKC")
+    .replace(/[\u0000-\u001F\u007F]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function containsAdultContent(value) {
+  const text = normalizeForModeration(value);
+
+  if (!text) {
+    return false;
+  }
+
+  return ADULT_CONTENT_WORDS.some((word) => {
+    const escaped = word.replace(
+      /[.*+?^${}()|[\]\\]/g,
+      "\\$&"
+    );
+
+    const regex = new RegExp(
+      `(^|[^a-z0-9])${escaped}([^a-z0-9]|$)`,
+      "i"
+    );
+
+    return regex.test(text);
+  });
+}
+
+function isBlockedContent(body) {
+  const fields = [
+    body.brand_name,
+    body.owner_name,
+    body.name,
+    body.category,
+    body.description,
+    body.website,
+    body.logo
+  ];
+
+  return fields.some(containsAdultContent);
+}
+
+/* =====================================================
+URL PROTECTION
+===================================================== */
+
+function isSafeUrl(value) {
+  if (!value) {
+    return true;
+  }
+
+  const text = String(value).trim();
+
+  if (!text) {
+    return true;
+  }
+
+  if (text.length > 2048) {
+    return false;
+  }
+
+  const lower = text.toLowerCase();
+
+  if (
+    lower.startsWith("javascript:") ||
+    lower.startsWith("data:") ||
+    lower.startsWith("vbscript:") ||
+    lower.startsWith("file:") ||
+    lower.startsWith("blob:")
+  ) {
+    return false;
+  }
+
+  /*
+   Allow normal HTTPS/HTTP URLs.
+   Also allow empty values because logo/website are optional.
+  */
+
+  try {
+    const url = new URL(text);
+
+    if (
+      url.protocol !== "http:" &&
+      url.protocol !== "https:"
+    ) {
+      return false;
+    }
+
+    return true;
+
+  } catch (error) {
+    return false;
+  }
+}
+
+function validateUrls(body) {
+  const website = body.website;
+  const logo = body.logo;
+
+  if (website && !isSafeUrl(website)) {
+    return "Invalid or unsafe website URL";
+  }
+
+  if (logo && !isSafeUrl(logo)) {
+    return "Invalid or unsafe logo URL";
+  }
+
+  return null;
+}
+
+/* =====================================================
+MODERATION MIDDLEWARE
+===================================================== */
+
+function rejectAdultContent(req, res, next) {
+
+  if (isBlockedContent(req.body || {})) {
+
+    return res
+      .status(400)
+      .json({
+        ok: false,
+        error:
+          "This content is not allowed on ALL WORLD BRANDS."
+      });
+
+  }
+
+  const urlError = validateUrls(req.body || {});
+
+  if (urlError) {
+
+    return res
+      .status(400)
+      .json({
+        ok: false,
+        error: urlError
+      });
+
+  }
+
+  next();
+}
+
+/* =====================================================
 DATABASE
 ===================================================== */
 
 const db = new sqlite3.Database(
   path.join(__dirname, "allworldbrands.db"),
   (err) => {
+
     if (err) {
-      console.error("Database connection error:", err.message);
+
+      console.error(
+        "Database connection error:",
+        err.message
+      );
+
       process.exit(1);
     }
+
   }
 );
 
@@ -357,7 +546,11 @@ db.serialize(() => {
     )
   `);
 
-  function addColumnIfMissing(table, column, definition) {
+  function addColumnIfMissing(
+    table,
+    column,
+    definition
+  ) {
 
     db.all(
       `PRAGMA table_info(${table})`,
@@ -365,10 +558,12 @@ db.serialize(() => {
       (err, columns) => {
 
         if (err) {
+
           console.error(
             `Schema check failed for ${table}:`,
             err.message
           );
+
           return;
         }
 
@@ -379,14 +574,19 @@ db.serialize(() => {
         if (!exists) {
 
           db.run(
-            `ALTER TABLE ${table} ADD COLUMN ${column} ${definition}`,
+            `
+            ALTER TABLE ${table}
+            ADD COLUMN ${column} ${definition}
+            `,
             (alterErr) => {
 
               if (alterErr) {
+
                 console.error(
                   `Could not add ${table}.${column}:`,
                   alterErr.message
                 );
+
               }
 
             }
@@ -616,16 +816,14 @@ db.serialize(() => {
   ];
 
   starterBrands.forEach(
-    (
-      [
-        name,
-        country,
-        logo,
-        category,
-        description,
-        website
-      ]
-    ) => {
+    ([
+      name,
+      country,
+      logo,
+      category,
+      description,
+      website
+    ]) => {
 
       db.get(
         `
@@ -756,7 +954,6 @@ function adminAuth(req, res, next) {
   }
 
   next();
-
 }
 
 /* =====================================================
@@ -770,7 +967,8 @@ app.get(
     res.json({
       ok: true,
       service: "ALL WORLD BRANDS",
-      countries: countries.length
+      countries: countries.length,
+      contentProtection: true
     });
 
   }
@@ -993,6 +1191,15 @@ app.get(
       return res.json([]);
     }
 
+    /*
+      If somebody searches for explicit adult content,
+      return no results.
+    */
+
+    if (containsAdultContent(q)) {
+      return res.json([]);
+    }
+
     const like = `%${q}%`;
 
     db.all(
@@ -1051,6 +1258,7 @@ PUBLIC APPLICATION
 
 app.post(
   "/api/applications",
+  rejectAdultContent,
   (req, res) => {
 
     const {
@@ -1096,13 +1304,13 @@ app.post(
       `,
       [
         String(brand_name).trim(),
-        country || "",
-        owner_name || "",
+        String(country || "").trim(),
+        String(owner_name || "").trim(),
         String(email).trim(),
-        phone || "",
-        website || "",
-        logo || "",
-        description || ""
+        String(phone || "").trim(),
+        String(website || "").trim(),
+        String(logo || "").trim(),
+        String(description || "").trim()
       ],
       function (err) {
 
@@ -1243,6 +1451,7 @@ ADMIN — ADD BRAND
 app.post(
   "/api/admin/brands",
   adminAuth,
+  rejectAdultContent,
   (req, res) => {
 
     const {
@@ -1297,11 +1506,11 @@ app.post(
         [
           countryId,
           String(name).trim(),
-          logo || "",
-          category || "",
-          description || "",
-          website || "",
-          verification || "Unverified"
+          String(logo || "").trim(),
+          String(category || "").trim(),
+          String(description || "").trim(),
+          String(website || "").trim(),
+          String(verification || "Unverified").trim()
         ],
         function (err) {
 
@@ -1390,6 +1599,7 @@ ADMIN — UPDATE BRAND
 app.put(
   "/api/admin/brands/:id",
   adminAuth,
+  rejectAdultContent,
   (req, res) => {
 
     const {
@@ -1432,11 +1642,11 @@ app.put(
         [
           countryId,
           String(name).trim(),
-          logo || "",
-          category || "",
-          description || "",
-          website || "",
-          verification || "Unverified",
+          String(logo || "").trim(),
+          String(category || "").trim(),
+          String(description || "").trim(),
+          String(website || "").trim(),
+          String(verification || "Unverified").trim(),
           req.params.id
         ],
         function (err) {
@@ -1752,6 +1962,14 @@ app.listen(
     console.log(
       "World entries loaded:",
       countries.length
+    );
+
+    console.log(
+      "18+ content protection: ENABLED"
+    );
+
+    console.log(
+      "Unsafe URL protection: ENABLED"
     );
 
     console.log(
