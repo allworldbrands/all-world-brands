@@ -9,8 +9,6 @@
 <style>
 *{
   box-sizing:border-box;
-  margin:0;
-  padding:0;
 }
 
 html{
@@ -18,10 +16,10 @@ html{
 }
 
 body{
+  margin:0;
   font-family:Arial,Helvetica,sans-serif;
   background:#020817;
-  color:#fff;
-  min-height:100vh;
+  color:white;
 }
 
 button,
@@ -31,55 +29,51 @@ select{
   font:inherit;
 }
 
+a{
+  color:inherit;
+}
+
 /* =========================
    HEADER
 ========================= */
 
-header{
-  position:fixed;
+.header{
+  position:absolute;
   top:0;
   left:0;
   right:0;
-  z-index:1000;
-
   height:72px;
+  z-index:20;
 
   display:flex;
   align-items:center;
   justify-content:space-between;
 
   padding:0 5%;
-
-  background:rgba(2,8,23,.82);
-  backdrop-filter:blur(16px);
-
-  border-bottom:1px solid rgba(80,150,255,.12);
 }
 
 .logo{
-  font-size:20px;
-  font-weight:800;
-  letter-spacing:1.5px;
-  color:#fff;
+  font-size:18px;
+  font-weight:900;
 }
 
 .logo span{
-  color:#5da9ff;
+  color:#20a9ff;
 }
 
-nav{
+.nav{
   display:flex;
   gap:25px;
+  font-size:13px;
+  font-weight:bold;
 }
 
-nav a{
-  color:#c9d7ef;
+.nav a{
   text-decoration:none;
-  font-size:14px;
 }
 
-nav a:hover{
-  color:#6db3ff;
+.nav a:hover{
+  color:#35b5ff;
 }
 
 /* =========================
@@ -87,137 +81,144 @@ nav a:hover{
 ========================= */
 
 .hero{
-  min-height:620px;
+  min-height:570px;
 
   display:flex;
   align-items:center;
   justify-content:center;
-  text-align:center;
 
-  padding:130px 20px 80px;
+  text-align:center;
 
   position:relative;
   overflow:hidden;
 
   background:
     linear-gradient(
-      rgba(2,8,23,.55),
-      rgba(2,8,23,.92)
+      180deg,
+      rgba(2,8,23,.15),
+      #020817 94%
     ),
     url("https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?auto=format&fit=crop&w=2200&q=85")
-    center/cover no-repeat;
+    center/cover;
 }
 
-.hero:after{
+.hero:before{
   content:"";
   position:absolute;
   inset:0;
 
   background:
     radial-gradient(
-      circle at center,
-      rgba(49,128,255,.20),
-      transparent 55%
+      circle at 50% 40%,
+      rgba(39,112,255,.22),
+      transparent 38%
     );
-
-  pointer-events:none;
 }
 
 .hero-content{
   position:relative;
   z-index:2;
-  max-width:900px;
+
+  width:min(850px,92%);
+  padding-top:50px;
 }
 
 .hero h1{
-  font-size:clamp(42px,6vw,78px);
-  line-height:1.05;
-  font-weight:800;
+  margin:0;
 
-  margin-bottom:25px;
-
-  text-shadow:
-    0 0 30px rgba(60,150,255,.25);
+  font-size:clamp(40px,6vw,76px);
+  line-height:.98;
+  letter-spacing:-3px;
+  font-weight:900;
 }
 
 .hero h1 span{
-  color:#64b5ff;
+  color:#19a9ff;
 }
 
 .hero p{
-  color:#aebed8;
-  font-size:18px;
-  margin-bottom:35px;
+  margin:24px auto 28px;
+
+  max-width:700px;
+
+  color:#c4d0e7;
+  font-size:16px;
 }
 
 /* =========================
    SEARCH
 ========================= */
 
-.search-box{
-  width:min(680px,100%);
+.search{
+  display:flex;
+
+  max-width:640px;
   margin:auto;
 
-  display:flex;
-  align-items:center;
+  padding:5px;
 
-  background:rgba(8,19,40,.82);
+  border-radius:40px;
 
-  border:1px solid rgba(94,171,255,.35);
+  background:rgba(20,40,85,.7);
 
-  border-radius:50px;
-
-  padding:7px;
+  border:1px solid rgba(93,128,255,.5);
 
   box-shadow:
-    0 0 30px rgba(39,130,255,.12);
+    0 0 35px rgba(52,79,255,.25);
 }
 
-.search-box input{
+.search input{
   flex:1;
+  min-width:0;
 
-  background:transparent;
   border:0;
   outline:0;
+
+  background:transparent;
 
   color:white;
 
   padding:15px 20px;
-
-  font-size:16px;
 }
 
-.search-box input::placeholder{
-  color:#7185a6;
+.search input::placeholder{
+  color:#9aa9c6;
 }
 
-.search-box button{
+.search button,
+.primary{
   border:0;
+
+  border-radius:30px;
+
+  padding:13px 25px;
+
+  color:white;
+
   cursor:pointer;
 
-  padding:14px 25px;
-
-  border-radius:40px;
-
-  color:#fff;
+  font-weight:800;
 
   background:
     linear-gradient(
-      135deg,
-      #2176ff,
-      #7b4dff
+      90deg,
+      #15b8ff,
+      #7d5cff
     );
+
+  box-shadow:
+    0 0 22px rgba(80,100,255,.3);
 }
 
 /* =========================
-   MAIN
+   SECTION
 ========================= */
 
-main{
-  width:min(1500px,94%);
+.section{
+  width:min(1500px,92%);
   margin:auto;
 
-  padding:70px 0 90px;
+  padding:40px 0;
 }
 
 .section-title{
@@ -225,29 +226,30 @@ main{
   align-items:center;
   justify-content:space-between;
 
-  margin-bottom:28px;
+  margin-bottom:22px;
 }
 
 .section-title h2{
-  font-size:30px;
+  margin:0;
+  font-size:25px;
 }
 
 .badge{
-  padding:8px 14px;
+  padding:6px 13px;
 
   border-radius:20px;
 
-  color:#72b7ff;
+  background:rgba(40,58,110,.35);
 
-  background:rgba(50,120,255,.12);
+  border:1px solid rgba(111,130,255,.45);
 
-  border:1px solid rgba(90,160,255,.25);
-
-  font-size:14px;
+  font-size:13px;
+  font-weight:800;
 }
 
 /* =========================
-   COUNTRY GRID
+   COUNTRIES
+   COMPUTER = 10
 ========================= */
 
 .country-grid{
@@ -256,460 +258,207 @@ main{
   grid-template-columns:
     repeat(10,minmax(0,1fr));
 
-  gap:12px;
+  gap:10px;
 }
 
 .country-card{
-  position:relative;
-
   height:175px;
+
+  position:relative;
 
   overflow:hidden;
 
-  border-radius:14px;
-
   cursor:pointer;
 
-  background:#071329;
+  border-radius:13px;
 
-  border:1px solid rgba(100,160,255,.12);
+  border:1px solid rgba(91,115,190,.24);
 
-  transition:
-    transform .25s ease,
-    border-color .25s ease,
-    box-shadow .25s ease;
+  background:#081226;
+
+  transition:.22s ease;
 }
 
 .country-card:hover{
-  transform:translateY(-5px);
+  transform:translateY(-4px);
 
   border-color:
-    rgba(82,169,255,.55);
+    rgba(62,175,255,.65);
 
   box-shadow:
-    0 12px 30px
-    rgba(25,115,255,.18);
+    0 10px 35px
+    rgba(31,123,255,.2);
 }
 
-.country-card img{
+.country-image{
+  position:absolute;
+
+  inset:0;
+
   width:100%;
   height:100%;
 
   object-fit:cover;
 
-  display:block;
-
-  opacity:.65;
-
-  transition:
-    transform .35s ease,
-    opacity .35s ease;
+  background:#0a1630;
 }
 
-.country-card:hover img{
-  transform:scale(1.07);
-  opacity:.82;
-}
+.country-card:after{
+  content:"";
 
-.country-overlay{
   position:absolute;
+
   inset:0;
-
-  display:flex;
-  flex-direction:column;
-  justify-content:flex-end;
-
-  padding:12px;
 
   background:
     linear-gradient(
-      transparent 20%,
-      rgba(2,8,23,.92) 100%
+      180deg,
+      rgba(0,0,0,.02) 20%,
+      rgba(0,0,0,.85) 100%
     );
 }
 
-.country-flag{
-  font-size:20px;
-  margin-bottom:4px;
+.country-info{
+  position:absolute;
+
+  z-index:2;
+
+  left:10px;
+  right:10px;
+  bottom:9px;
 }
 
 .country-name{
-  font-size:14px;
-  font-weight:700;
+  font-size:13px;
+  font-weight:850;
 
   line-height:1.15;
 
-  text-shadow:0 2px 8px #000;
+  min-height:29px;
+
+  text-shadow:
+    0 2px 10px #000;
 }
 
 .country-meta{
   display:flex;
-  align-items:center;
+
   justify-content:space-between;
+  align-items:center;
 
-  margin-top:6px;
+  margin-top:5px;
 
-  color:#8fa6c9;
+  color:#d4ddf3;
 
   font-size:10px;
 }
 
-.brand-count{
-  color:#65b3ff;
+.flag{
+  font-size:18px;
+}
+
+.loading{
+  grid-column:1/-1;
+
+  min-height:180px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  color:#8e9dbb;
+}
+
+.empty{
+  padding:55px 20px;
+
+  text-align:center;
+
+  color:#93a0b9;
+
+  border:1px dashed
+    rgba(109,130,180,.3);
+
+  border-radius:18px;
 }
 
 /* =========================
-   ADD BRAND BANNER
+   PROMO
 ========================= */
 
-.add-banner{
-  margin-top:60px;
+.promo{
+  margin:28px 0 35px;
 
-  padding:35px;
+  border-radius:18px;
 
-  border-radius:22px;
+  padding:25px 28px;
 
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:25px;
+
+  gap:20px;
 
   background:
     linear-gradient(
-      135deg,
-      rgba(19,55,111,.7),
-      rgba(54,26,103,.65)
-    );
-
-  border:1px solid rgba(92,158,255,.25);
-
-  box-shadow:
-    0 15px 50px rgba(0,0,0,.25);
-}
-
-.add-banner h3{
-  font-size:25px;
-  margin-bottom:8px;
-}
-
-.add-banner p{
-  color:#9fb2d0;
-}
-
-.price{
-  color:#66b4ff;
-  font-weight:800;
-}
-
-.add-btn{
-  border:0;
-  cursor:pointer;
-
-  white-space:nowrap;
-
-  padding:15px 24px;
-
-  border-radius:30px;
-
-  color:#fff;
-
-  background:
-    linear-gradient(
-      135deg,
-      #267cff,
-      #754cff
+      100deg,
+      #1737c9,
+      #3247dc 45%,
+      #573be0
     );
 
   box-shadow:
-    0 8px 25px rgba(57,112,255,.25);
+    0 15px 45px
+    rgba(34,55,220,.22);
+}
+
+.promo h3{
+  margin:0 0 5px;
+  font-size:20px;
+}
+
+.promo p{
+  margin:0;
+
+  color:#d7ddff;
+
+  font-size:13px;
 }
 
 /* =========================
    FOOTER
 ========================= */
 
-footer{
-  padding:70px 20px;
-
-  text-align:center;
-
-  background:
-    radial-gradient(
-      circle at center,
-      rgba(33,88,180,.20),
-      transparent 60%
-    );
-
-  border-top:1px solid rgba(80,140,255,.1);
-}
-
-footer h3{
-  font-size:30px;
-  margin-bottom:10px;
-}
-
-footer p{
-  color:#7185a6;
-}
-
-/* =========================
-   COUNTRY PAGE
-========================= */
-
-.country-page{
-  display:none;
-
-  min-height:100vh;
-
-  padding:110px 5% 80px;
-
-  background:
-    radial-gradient(
-      circle at top,
-      rgba(40,100,220,.15),
-      transparent 45%
-    ),
-    #020817;
-}
-
-.country-page.active{
-  display:block;
-}
-
-.country-page-inner{
-  width:min(1200px,100%);
-  margin:auto;
-}
-
-.back-btn{
-  border:1px solid rgba(93,165,255,.25);
-
-  background:rgba(15,30,55,.75);
-
-  color:#9fc8ff;
-
-  padding:11px 18px;
-
-  border-radius:30px;
-
-  cursor:pointer;
-
-  margin-bottom:30px;
-}
-
-.country-hero{
-  position:relative;
-
-  min-height:270px;
-
-  display:flex;
-  align-items:flex-end;
-
-  overflow:hidden;
-
-  border-radius:25px;
-
-  margin-bottom:45px;
-
-  border:1px solid rgba(91,157,255,.2);
-
-  background:#071329;
-}
-
-.country-hero img{
-  position:absolute;
-  inset:0;
-
-  width:100%;
-  height:100%;
-
-  object-fit:cover;
-
-  opacity:.48;
-}
-
-.country-hero-overlay{
-  position:absolute;
-  inset:0;
-
-  background:
-    linear-gradient(
-      transparent 15%,
-      rgba(2,8,23,.95)
-    );
-}
-
-.country-hero-content{
-  position:relative;
-  z-index:2;
-
-  padding:35px;
-}
-
-.country-hero-content .flag{
-  font-size:45px;
-  margin-bottom:8px;
-}
-
-.country-hero-content h1{
-  font-size:clamp(35px,5vw,60px);
-}
-
-.country-code{
-  color:#6eb9ff;
-  margin-top:8px;
-}
-
-.brands-title{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-
-  margin-bottom:25px;
-}
-
-.brands-title h2{
-  font-size:28px;
-}
-
-.brands-grid{
-  display:grid;
-
-  grid-template-columns:
-    repeat(3,minmax(0,1fr));
-
-  gap:20px;
-}
-
-.brand-card{
-  padding:22px;
-
+.footer{
   min-height:220px;
-
-  border-radius:20px;
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(10,26,53,.95),
-      rgba(7,15,32,.95)
-    );
-
-  border:1px solid rgba(90,155,255,.15);
-
-  box-shadow:
-    0 10px 30px rgba(0,0,0,.2);
-
-  transition:
-    transform .25s ease,
-    border-color .25s ease;
-}
-
-.brand-card:hover{
-  transform:translateY(-4px);
-
-  border-color:
-    rgba(92,166,255,.45);
-}
-
-.brand-logo{
-  width:70px;
-  height:70px;
-
-  border-radius:16px;
 
   display:flex;
   align-items:center;
   justify-content:center;
 
-  overflow:hidden;
-
-  margin-bottom:18px;
-
-  background:#fff;
-
-  color:#111;
-
-  font-weight:800;
-
-  font-size:25px;
-}
-
-.brand-logo img{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-}
-
-.brand-card h3{
-  font-size:21px;
-  margin-bottom:9px;
-}
-
-.brand-card p{
-  color:#8ea4c5;
-
-  line-height:1.5;
-
-  font-size:14px;
-
-  margin-bottom:15px;
-}
-
-.brand-website{
-  color:#62b2ff;
-
-  text-decoration:none;
-
-  font-size:14px;
-
-  word-break:break-all;
-}
-
-.empty-state{
   text-align:center;
-
-  padding:70px 25px;
-
-  border-radius:22px;
-
-  border:1px dashed rgba(91,157,255,.25);
-
-  background:rgba(8,20,40,.6);
-}
-
-.empty-state .empty-icon{
-  font-size:55px;
-  margin-bottom:15px;
-}
-
-.empty-state h3{
-  font-size:26px;
-  margin-bottom:10px;
-}
-
-.empty-state p{
-  color:#8094b5;
-  margin-bottom:25px;
-}
-
-.empty-add-btn{
-  border:0;
-
-  cursor:pointer;
-
-  color:#fff;
-
-  padding:14px 25px;
-
-  border-radius:30px;
 
   background:
     linear-gradient(
-      135deg,
-      #2176ff,
-      #784dff
-    );
+      180deg,
+      #07112d,
+      #020817
+    ),
+    url("https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1800&q=80")
+    center/cover;
+}
+
+.footer h2{
+  margin:0 0 10px;
+  font-size:28px;
+}
+
+.footer p{
+  margin:0;
+
+  color:#9ca9c2;
+
+  font-size:13px;
 }
 
 /* =========================
@@ -718,9 +467,10 @@ footer p{
 
 .modal{
   position:fixed;
+
   inset:0;
 
-  z-index:2000;
+  z-index:100;
 
   display:none;
 
@@ -734,148 +484,337 @@ footer p{
   backdrop-filter:blur(8px);
 }
 
-.modal.active{
+.modal.open{
   display:flex;
 }
 
 .modal-box{
-  width:min(600px,100%);
+  width:min(620px,100%);
 
   max-height:90vh;
 
   overflow:auto;
 
-  padding:30px;
-
   border-radius:22px;
 
-  background:#071329;
+  padding:28px;
 
-  border:1px solid rgba(89,158,255,.25);
+  background:#081328;
+
+  border:1px solid
+    rgba(99,130,255,.35);
 
   box-shadow:
-    0 20px 70px rgba(0,0,0,.55);
+    0 25px 90px
+    rgba(0,0,0,.6);
 }
 
-.modal-header{
+.modal-head{
   display:flex;
-  align-items:center;
-  justify-content:space-between;
 
-  margin-bottom:25px;
+  align-items:center;
+
+  justify-content:space-between;
 }
 
-.modal-header h2{
-  font-size:25px;
+.modal h2{
+  margin:0 0 5px;
 }
 
 .close{
-  border:0;
-  background:none;
+  width:38px;
+  height:38px;
 
-  color:#8296b7;
+  border-radius:50%;
 
-  font-size:30px;
+  border:1px solid #304266;
+
+  background:#101e38;
+
+  color:white;
 
   cursor:pointer;
+
+  font-size:22px;
 }
 
-.form-group{
-  margin-bottom:17px;
+.form{
+  display:grid;
+
+  gap:13px;
+
+  margin-top:18px;
 }
 
-.form-group label{
-  display:block;
-
-  margin-bottom:7px;
-
-  color:#b5c7e1;
-
-  font-size:14px;
-}
-
-.form-group input,
-.form-group textarea,
-.form-group select{
+.form input,
+.form textarea,
+.form select{
   width:100%;
 
-  border:1px solid rgba(94,158,255,.18);
+  border:1px solid #263b61;
 
   outline:0;
 
-  border-radius:12px;
+  background:#050d1e;
 
-  background:#020b1b;
+  color:white;
 
-  color:#fff;
+  border-radius:11px;
 
   padding:13px 14px;
 }
 
-.form-group textarea{
+.form textarea{
   min-height:110px;
   resize:vertical;
 }
 
-.form-submit{
-  width:100%;
+.form small{
+  color:#8d9bb5;
+}
 
-  border:0;
+/* =========================
+   COUNTRY PAGE
+========================= */
+
+#countryView{
+  display:none;
+}
+
+#countryView.active{
+  display:block;
+}
+
+#homeView.hidden{
+  display:none;
+}
+
+.country-page{
+  min-height:100vh;
+
+  padding:105px 0 60px;
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(40,86,220,.22),
+      transparent 35%
+    ),
+    #020817;
+}
+
+.back{
+  border:1px solid #31466e;
+
+  background:#0b1830;
+
+  color:#dce7ff;
+
+  border-radius:25px;
+
+  padding:10px 16px;
 
   cursor:pointer;
 
-  padding:15px;
+  margin-bottom:25px;
+}
 
-  border-radius:13px;
+.country-hero{
+  min-height:230px;
 
-  color:#fff;
+  position:relative;
+
+  overflow:hidden;
+
+  border-radius:24px;
+
+  background:#0a1429;
+
+  border:1px solid
+    rgba(91,125,210,.3);
+}
+
+.country-hero img{
+  position:absolute;
+
+  inset:0;
+
+  width:100%;
+  height:100%;
+
+  min-height:230px;
+
+  object-fit:cover;
+}
+
+.country-hero:after{
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(1,7,19,.9),
+      rgba(1,7,19,.2)
+    );
+}
+
+.country-hero-info{
+  position:relative;
+
+  z-index:2;
+
+  padding:50px 45px;
+}
+
+.country-hero-info h1{
+  margin:0 0 10px;
+
+  font-size:clamp(34px,6vw,62px);
+}
+
+.country-hero-info p{
+  margin:0;
+
+  color:#b8c6df;
+}
+
+/* =========================
+   BRANDS
+========================= */
+
+.brand-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(3,minmax(0,1fr));
+
+  gap:18px;
+
+  margin-top:25px;
+}
+
+.brand-card{
+  min-height:190px;
+
+  padding:22px;
+
+  border-radius:18px;
+
+  border:1px solid
+    rgba(88,116,183,.28);
+
+  background:
+    linear-gradient(
+      145deg,
+      #0b172d,
+      #071022
+    );
+}
+
+.brand-logo{
+  width:60px;
+  height:60px;
+
+  border-radius:15px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
 
   background:
     linear-gradient(
       135deg,
-      #2176ff,
-      #784dff
+      #123a76,
+      #432f8d
     );
+
+  font-size:24px;
+  font-weight:900;
+
+  margin-bottom:15px;
 }
 
-.form-note{
-  color:#7186a8;
+.brand-card h3{
+  margin:0 0 8px;
 
-  font-size:12px;
+  font-size:20px;
+}
+
+.brand-card p{
+  margin:0 0 14px;
+
+  color:#aab8d0;
+
+  line-height:1.5;
+
+  font-size:13px;
+}
+
+.brand-card a{
+  color:#35b5ff;
+
+  text-decoration:none;
+
+  font-size:13px;
+
+  font-weight:800;
+}
+
+.country-empty{
+  margin-top:25px;
+
+  padding:50px 20px;
 
   text-align:center;
 
-  margin-top:12px;
+  border:1px dashed
+    rgba(88,119,183,.4);
+
+  border-radius:20px;
+}
+
+.country-empty h3{
+  margin:0 0 8px;
+
+  font-size:22px;
+}
+
+.country-empty p{
+  color:#98a7c0;
 }
 
 /* =========================
    TOP BUTTON
 ========================= */
 
-.top-btn{
+.top{
   position:fixed;
 
-  right:20px;
-  bottom:20px;
+  right:18px;
+  bottom:18px;
 
-  width:45px;
-  height:45px;
+  z-index:30;
+
+  width:43px;
+  height:43px;
 
   border-radius:50%;
 
-  border:1px solid rgba(94,165,255,.25);
+  border:1px solid #34508a;
 
-  background:#07162e;
+  background:#0b1c3b;
 
-  color:#6fb9ff;
+  color:white;
 
   cursor:pointer;
-
-  z-index:900;
 }
 
 /* =========================
-   RESPONSIVE
+   TABLET
 ========================= */
 
 @media(max-width:1200px){
@@ -887,144 +826,154 @@ footer p{
 
 }
 
+/* =========================
+   PHONE = 5
+========================= */
+
 @media(max-width:800px){
 
-  header{
-    padding:0 4%;
-  }
-
-  nav{
-    display:none;
-  }
-
   .hero{
-    min-height:570px;
+    min-height:520px;
   }
 
-  main{
-    width:92%;
+  .nav{
+    gap:12px;
   }
 
   .country-grid{
     grid-template-columns:
       repeat(5,minmax(0,1fr));
 
-    gap:8px;
+    gap:7px;
   }
 
   .country-card{
     height:105px;
-    border-radius:10px;
+
+    border-radius:9px;
   }
 
-  .country-overlay{
-    padding:7px;
-  }
-
-  .country-flag{
-    font-size:16px;
+  .country-info{
+    left:6px;
+    right:6px;
+    bottom:6px;
   }
 
   .country-name{
     font-size:10px;
+
+    min-height:23px;
   }
 
   .country-meta{
     font-size:8px;
   }
 
-  .add-banner{
-    flex-direction:column;
+  .flag{
+    font-size:13px;
+  }
+
+  .promo{
+    padding:20px;
+
     align-items:flex-start;
+
+    flex-direction:column;
   }
 
-  .brands-grid{
-    grid-template-columns:
-      repeat(2,minmax(0,1fr));
+  .brand-grid{
+    grid-template-columns:1fr;
   }
 
+  .country-hero-info{
+    padding:35px 25px;
+  }
 }
 
-@media(max-width:500px){
+/* =========================
+   SMALL PHONE
+========================= */
 
-  .hero h1{
-    font-size:40px;
+@media(max-width:450px){
+
+  .header{
+    padding:0 20px;
   }
 
-  .hero p{
+  .logo{
     font-size:15px;
   }
 
-  .search-box button{
-    padding:13px 17px;
+  .nav{
+    font-size:11px;
   }
 
-  .section-title h2{
-    font-size:22px;
+  .hero-content{
+    padding-top:45px;
+  }
+
+  .hero h1{
+    letter-spacing:-1.5px;
+  }
+
+  .hero p{
+    font-size:13px;
+  }
+
+  .search input{
+    padding:12px;
+  }
+
+  .search button{
+    padding:11px 15px;
+  }
+
+  .section{
+    width:94%;
   }
 
   .country-card{
     height:92px;
   }
-
-  .country-name{
-    font-size:9px;
-  }
-
-  .brands-grid{
-    grid-template-columns:1fr;
-  }
-
-  .country-hero-content{
-    padding:25px;
-  }
-
-  .country-hero{
-    min-height:230px;
-  }
-
-  .add-banner{
-    padding:25px;
-  }
-
-}
-
-/* =========================
-   LOADING
-========================= */
-
-.loading{
-  grid-column:1/-1;
-
-  text-align:center;
-
-  padding:50px;
-
-  color:#6d83a5;
 }
 </style>
 </head>
 
 <body>
 
-<!-- =========================
-     MAIN SITE
-========================= -->
+<!-- ==================================================
+     HOME PAGE
+================================================== -->
 
-<div id="mainSite">
+<div id="homeView">
 
-<header>
+<header class="header">
 
   <div class="logo">
     ALL <span>WORLD</span> BRANDS
   </div>
 
-  <nav>
-    <a href="#countries">Countries</a>
-    <a href="#add-brand">Add Brand</a>
+  <nav class="nav">
+
+    <a href="#countries">
+      Countries
+    </a>
+
+    <a
+      href="#"
+      onclick="openAddBrand();return false"
+    >
+      Add Brand
+    </a>
+
   </nav>
 
 </header>
+
+
+<!-- ==================================================
+     HERO
+================================================== -->
 
 <section class="hero">
 
@@ -1036,60 +985,72 @@ footer p{
     </h1>
 
     <p>
-      Explore brands, companies and businesses from countries and territories around the globe.
+      Explore brands, companies and businesses
+      from countries and territories around the globe.
     </p>
 
-    <div class="search-box">
+    <form
+      class="search"
+      onsubmit="doSearch(event)"
+    >
 
       <input
         id="searchInput"
-        type="text"
         placeholder="Search countries or brands..."
         autocomplete="off"
       >
 
-      <button onclick="performSearch()">
+      <button type="submit">
         Search
       </button>
 
-    </div>
+    </form>
 
   </div>
 
 </section>
 
-<main id="countries">
+
+<!-- ==================================================
+     COUNTRIES
+================================================== -->
+
+<main
+  class="section"
+  id="countries"
+>
 
   <div class="section-title">
 
     <h2>
-      Countries & Territories
+      Countries &amp; Territories
     </h2>
 
-    <div class="badge">
-      <span id="countryCount">250</span>
+    <div
+      class="badge"
+      id="countryCount"
+    >
+      250
     </div>
 
   </div>
+
 
   <div
     id="countryGrid"
     class="country-grid"
   >
+
     <div class="loading">
       Loading countries...
     </div>
+
   </div>
 
-  <div
-    id="searchResults"
-    style="display:none;margin-top:30px;"
-  ></div>
 
-  <div
-    id="add-brand"
-    class="add-banner"
-  >
+  <!-- PROMO -->
+
+  <div class="promo">
 
     <div>
 
@@ -1098,16 +1059,16 @@ footer p{
       </h3>
 
       <p>
-        Put your brand in front of people around the world.
-        Starting from
-        <span class="price">$1.00</span>
+        Put your brand in front of people
+        around the world.
+        Starting from <b>$1.00</b>
       </p>
 
     </div>
 
     <button
-      class="add-btn"
-      onclick="openAddModal()"
+      class="primary"
+      onclick="openAddBrand()"
     >
       Add Your Brand — $1.00
     </button>
@@ -1116,237 +1077,170 @@ footer p{
 
 </main>
 
-<footer>
 
-  <h3>
-    One world. Countless brands.
-  </h3>
+<!-- ==================================================
+     FOOTER
+================================================== -->
 
-  <p>
-    ALL WORLD BRANDS
-  </p>
+<footer class="footer">
+
+  <div>
+
+    <h2>
+      One world. Countless brands.
+    </h2>
+
+    <p>
+      ALL WORLD BRANDS
+    </p>
+
+  </div>
 
 </footer>
 
 </div>
 
 
-<!-- =========================
+<!-- ==================================================
      COUNTRY PAGE
-========================= -->
+================================================== -->
 
-<section
-  id="countryPage"
-  class="country-page"
->
+<div id="countryView">
 
-  <div class="country-page-inner">
+  <div class="country-page">
 
-    <button
-      class="back-btn"
-      onclick="backToHome()"
-    >
-      ← Back to all countries
-    </button>
+    <div class="section">
 
-    <div class="country-hero">
-
-      <img
-        id="countryHeroImage"
-        src=""
-        alt=""
+      <button
+        class="back"
+        onclick="goHome()"
       >
+        ← Back to countries
+      </button>
 
-      <div class="country-hero-overlay"></div>
 
-      <div class="country-hero-content">
+      <div id="countryHero"></div>
 
-        <div
-          id="countryHeroFlag"
-          class="flag"
-        >
-          🌍
-        </div>
 
-        <h1 id="countryHeroName">
-          Country
-        </h1>
-
-        <div
-          id="countryHeroCode"
-          class="country-code"
-        >
-          --
-        </div>
-
-      </div>
+      <div id="brandArea"></div>
 
     </div>
-
-    <div class="brands-title">
-
-      <h2>
-        Brands in
-        <span id="brandsCountryName">
-          this country
-        </span>
-      </h2>
-
-    </div>
-
-    <div
-      id="brandsGrid"
-      class="brands-grid"
-    ></div>
 
   </div>
 
-</section>
+</div>
 
 
-<!-- =========================
+<!-- ==================================================
      ADD BRAND MODAL
-========================= -->
+================================================== -->
 
 <div
-  id="brandModal"
   class="modal"
+  id="addModal"
+  onclick="modalOutside(event)"
 >
 
   <div class="modal-box">
 
-    <div class="modal-header">
+    <div class="modal-head">
 
-      <h2>
-        Add Your Brand
-      </h2>
+      <div>
+
+        <h2>
+          Add Your Brand
+        </h2>
+
+        <div
+          style="
+            color:#91a0ba;
+            font-size:13px
+          "
+        >
+          Submit your brand for review —
+          $1.00
+        </div>
+
+      </div>
 
       <button
         class="close"
-        onclick="closeAddModal()"
+        onclick="closeAddBrand()"
       >
         ×
       </button>
 
     </div>
 
+
     <form
-      id="brandForm"
+      class="form"
       onsubmit="submitBrand(event)"
     >
 
-      <div class="form-group">
+      <input
+        id="brandName"
+        required
+        placeholder="Brand name"
+      >
 
-        <label>
-          Brand name *
-        </label>
 
-        <input
-          id="brandName"
-          required
-          placeholder="Your brand name"
-        >
+      <select
+        id="brandCountry"
+        required
+      >
 
-      </div>
+        <option value="">
+          Select country
+        </option>
 
-      <div class="form-group">
+      </select>
 
-        <label>
-          Country *
-        </label>
 
-        <select
-          id="brandCountry"
-          required
-        >
-          <option value="">
-            Select country
-          </option>
-        </select>
+      <input
+        id="brandWebsite"
+        placeholder="Website (https://...)"
+      >
 
-      </div>
 
-      <div class="form-group">
+      <input
+        id="ownerName"
+        placeholder="Your name"
+      >
 
-        <label>
-          Website
-        </label>
 
-        <input
-          id="brandWebsite"
-          type="url"
-          placeholder="https://example.com"
-        >
+      <input
+        id="ownerEmail"
+        type="email"
+        required
+        placeholder="Email"
+      >
 
-      </div>
 
-      <div class="form-group">
+      <input
+        id="ownerPhone"
+        placeholder="Phone (optional)"
+      >
 
-        <label>
-          Your name *
-        </label>
 
-        <input
-          id="ownerName"
-          required
-          placeholder="Your name"
-        >
+      <textarea
+        id="brandDescription"
+        placeholder="Brand description"
+      ></textarea>
 
-      </div>
 
-      <div class="form-group">
+      <small>
+        Payment is not processed automatically yet.
+        Your application will be sent for review.
+      </small>
 
-        <label>
-          Email *
-        </label>
-
-        <input
-          id="ownerEmail"
-          type="email"
-          required
-          placeholder="you@example.com"
-        >
-
-      </div>
-
-      <div class="form-group">
-
-        <label>
-          Brand logo URL
-        </label>
-
-        <input
-          id="brandLogo"
-          type="url"
-          placeholder="https://example.com/logo.png"
-        >
-
-      </div>
-
-      <div class="form-group">
-
-        <label>
-          Brand description
-        </label>
-
-        <textarea
-          id="brandDescription"
-          placeholder="Tell people about your brand..."
-        ></textarea>
-
-      </div>
 
       <button
-        class="form-submit"
+        class="primary"
         type="submit"
       >
         Submit Brand — $1.00
       </button>
-
-      <div class="form-note">
-        Your application will be reviewed before publication.
-        Payment is not processed automatically yet.
-      </div>
 
     </form>
 
@@ -1355,9 +1249,16 @@ footer p{
 </div>
 
 
+<!-- TOP -->
+
 <button
-  class="top-btn"
-  onclick="window.scrollTo({top:0,behavior:'smooth'})"
+  class="top"
+  onclick="
+    window.scrollTo({
+      top:0,
+      behavior:'smooth'
+    })
+  "
 >
   ↑
 </button>
@@ -1365,637 +1266,710 @@ footer p{
 
 <script>
 
-/* =====================================================
-   GLOBAL DATA
-===================================================== */
+/* ==================================================
+   IMAGE
+================================================== */
+
+const FALLBACK_IMAGE =
+  "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1000&q=75";
+
+
+/* ==================================================
+   FLAGS
+================================================== */
+
+const flagOverrides = {
+
+  "Kosovo":"🇽🇰",
+
+  "United States Minor Outlying Islands":"🇺🇸",
+
+  "U.S. Virgin Islands":"🇻🇮",
+
+  "Holy See (Vatican City State)":"🇻🇦",
+
+  "Cabo Verde":"🇨🇻",
+
+  "Côte d'Ivoire":"🇨🇮",
+
+  "Curaçao":"🇨🇼",
+
+  "Réunion":"🇷🇪",
+
+  "São Tomé and Príncipe":"🇸🇹",
+
+  "Åland Islands":"🇦🇽"
+
+};
+
 
 let countries = [];
 
-let currentCountry = null;
+let countryById = new Map();
 
 
-/* =====================================================
-   FLAGS
-===================================================== */
+/* ==================================================
+   FLAG FUNCTION
+================================================== */
 
-const flags = {
+function flagFromCode(code,name){
 
-  AF:"🇦🇫",
-  AX:"🇦🇽",
-  AL:"🇦🇱",
-  DZ:"🇩🇿",
-  AS:"🇦🇸",
-  AD:"🇦🇩",
-  AO:"🇦🇴",
-  AI:"🇦🇮",
-  AQ:"🇦🇶",
-  AG:"🇦🇬",
-  AR:"🇦🇷",
-  AM:"🇦🇲",
-  AW:"🇦🇼",
-  AU:"🇦🇺",
-  AT:"🇦🇹",
-  AZ:"🇦🇿",
+  if(flagOverrides[name]){
+    return flagOverrides[name];
+  }
 
-  BS:"🇧🇸",
-  BH:"🇧🇭",
-  BD:"🇧🇩",
-  BB:"🇧🇧",
-  BY:"🇧🇾",
-  BE:"🇧🇪",
-  BZ:"🇧🇿",
-  BJ:"🇧🇯",
-  BM:"🇧🇲",
-  BT:"🇧🇹",
-  BO:"🇧🇴",
-  BQ:"🇧🇶",
-  BA:"🇧🇦",
-  BW:"🇧🇼",
-  BV:"🇧🇻",
-  BR:"🇧🇷",
-  IO:"🇮🇴",
-  VG:"🇻🇬",
-  BN:"🇧🇳',
-  BG:"🇧🇬",
-  BF:"🇧🇫",
-  BI:"🇧🇮",
+  if(
+    !code ||
+    code.length !== 2
+  ){
+    return "🌍";
+  }
 
-  CV:"🇨🇻",
-  KH:"🇰🇭",
-  CM:"🇨🇲",
-  CA:"🇨🇦",
-  KY:"🇰🇾",
-  CF:"🇨🇫",
-  TD:"🇹🇩",
-  CL:"🇨🇱",
-  CN:"🇨🇳",
-  CX:"🇨🇽",
-  CC:"🇨🇨",
-  CO:"🇨🇴",
-  KM:"🇰🇲",
-  CG:"🇨🇬",
-  CK:"🇨🇰",
-  CR:"🇨🇷",
-  CI:"🇨🇮",
-  HR:"🇭🇷",
-  CU:"🇨🇺",
-  CW:"🇨🇼",
-  CY:"🇨🇾",
-  CZ:"🇨🇿",
-
-  CD:"🇨🇩",
-  DK:"🇩🇰",
-  DJ:"🇩🇯",
-  DM:"🇩🇲",
-  DO:"🇩🇴",
-
-  EC:"🇪🇨",
-  EG:"🇪🇬",
-  SV:"🇸🇻",
-  GQ:"🇬🇶",
-  ER:"🇪🇷",
-  EE:"🇪🇪",
-  SZ:"🇸🇿",
-  ET:"🇪🇹",
-
-  FK:"🇫🇰",
-  FO:"🇫🇴",
-  FJ:"🇫🇯",
-  FI:"🇫🇮",
-  FR:"🇫🇷",
-  GF:"🇬🇫",
-  PF:"🇵🇫",
-  TF:"🇹🇫',
-
-  GA:"🇬🇦",
-  GM:"🇬🇲",
-  GE:"🇬🇪",
-  DE:"🇩🇪",
-  GH:"🇬🇭",
-  GI:"🇬🇮",
-  GR:"🇬🇷",
-  GL:"🇬🇱",
-  GD:"🇬🇩",
-  GP:"🇬🇵",
-  GU:"🇬🇺",
-  GT:"🇬🇹",
-  GG:"🇬🇬",
-  GN:"🇬🇳",
-  GW:"🇬🇼",
-  GY:"🇬🇾",
-
-  HT:"🇭🇹",
-  HM:"🇭🇲",
-  VA:"🇻🇦",
-  HN:"🇭🇳",
-  HK:"🇭🇰",
-  HU:"🇭🇺",
-
-  IS:"🇮🇸",
-  IN:"🇮🇳",
-  ID:"🇮🇩",
-  IR:"🇮🇷",
-  IQ:"🇮🇶",
-  IE:"🇮🇪",
-  IM:"🇮🇲",
-  IL:"🇮🇱",
-  IT:"🇮🇹",
-
-  JM:"🇯🇲",
-  JP:"🇯🇵",
-  JE:"🇯🇪",
-  JO:"🇯🇴",
-
-  KZ:"🇰🇿",
-  KE:"🇰🇪",
-  KI:"🇰🇮",
-  KP:"🇰🇵",
-  KR:"🇰🇷",
-  XK:"🇽🇰",
-  KW:"🇰🇼",
-  KG:"🇰🇬",
-
-  LA:"🇱🇦",
-  LV:"🇱🇻",
-  LB:"🇱🇧",
-  LS:"🇱🇸",
-  LR:"🇱🇷",
-  LY:"🇱🇾",
-  LI:"🇱🇮",
-  LT:"🇱🇹",
-  LU:"🇱🇺",
-
-  MO:"🇲🇴",
-  MG:"🇲🇬",
-  MW:"🇲🇼",
-  MY:"🇲🇾",
-  MV:"🇲🇻",
-  ML:"🇲🇱",
-  MT:"🇲🇹",
-  MH:"🇲🇭",
-  MQ:"🇲🇶",
-  MR:"🇲🇷",
-  MU:"🇲🇺",
-  YT:"🇾🇹',
-  MX:"🇲🇽",
-  FM:"🇫🇲",
-  MD:"🇲🇩",
-  MC:"🇲🇨",
-  MN:"🇲🇳",
-  ME:"🇲🇪",
-  MS:"🇲🇸",
-  MA:"🇲🇦",
-  MZ:"🇲🇿",
-  MM:"🇲🇲",
-
-  NA:"🇳🇦",
-  NR:"🇳🇷",
-  NP:"🇳🇵",
-  NL:"🇳🇱",
-  NC:"🇳🇨",
-  NZ:"🇳🇿",
-  NI:"🇳🇮",
-  NE:"🇳🇪",
-  NG:"🇳🇬",
-  NU:"🇳🇺",
-  NF:"🇳🇫",
-  MK:"🇲🇰",
-  MP:"🇲🇵",
-  NO:"🇳🇴",
-
-  OM:"🇴🇲",
-
-  PK:"🇵🇰",
-  PW:"🇵🇼",
-  PS:"🇵🇸",
-  PA:"🇵🇦",
-  PG:"🇵🇬",
-  PY:"🇵🇾",
-  PE:"🇵🇪",
-  PH:"🇵🇭",
-  PN:"🇵🇳",
-  PL:"🇵🇱",
-  PT:"🇵🇹",
-  PR:"🇵🇷",
-
-  QA:"🇶🇦",
-
-  RE:"🇷🇪",
-  RO:"🇷🇴",
-  RU:"🇷🇺",
-  RW:"🇷🇼",
-
-  BL:"🇧🇱",
-  SH:"🇸🇭",
-  KN:"🇰🇳",
-  LC:"🇱🇨",
-  MF:"🇲🇫",
-  PM:"🇵🇲",
-  VC:"🇻🇨",
-  WS:"🇼🇸",
-  SM:"🇸🇲",
-  ST:"🇸🇹",
-  SA:"🇸🇦",
-  SN:"🇸🇳",
-  RS:"🇷🇸",
-  SC:"🇸🇨",
-  SL:"🇸🇱",
-  SG:"🇸🇬",
-  SX:"🇸🇽",
-  SK:"🇸🇰",
-  SI:"🇸🇮",
-  SB:"🇸🇧",
-  SO:"🇸🇴",
-  ZA:"🇿🇦",
-  GS:"🇬🇸",
-  SS:"🇸🇸",
-  ES:"🇪🇸",
-  LK:"🇱🇰",
-  SD:"🇸🇩",
-  SR:"🇸🇷",
-  SJ:"🇸🇯",
-  SE:"🇸🇪",
-  CH:"🇨🇭",
-  SY:"🇸🇾",
-
-  TW:"🇹🇼",
-  TJ:"🇹🇯",
-  TZ:"🇹🇿",
-  TH:"🇹🇭",
-  TL:"🇹🇱",
-  TG:"🇹🇬",
-  TK:"🇹🇰",
-  TO:"🇹🇴",
-  TT:"🇹🇹",
-  TN:"🇹🇳",
-  TR:"🇹🇷",
-  TM:"🇹🇲",
-  TC:"🇹🇨",
-  TV:"🇹🇻",
-
-  UG:"🇺🇬",
-  UA:"🇺🇦",
-  AE:"🇦🇪",
-  GB:"🇬🇧",
-  US:"🇺🇸",
-  UM:"🇺🇲",
-  VI:"🇻🇮",
-  UY:"🇺🇾",
-  UZ:"🇺🇿",
-
-  VU:"🇻🇺",
-  VE:"🇻🇪",
-  VN:"🇻🇳",
-
-  WF:"🇼🇫",
-  EH:"🇪🇭",
-  YE:"🇾🇪",
-  ZM:"🇿🇲",
-  ZW:"🇿🇼"
-
-};
-
-
-/* =====================================================
-   COUNTRY IMAGE
-===================================================== */
-
-const imageAliases = {
-
-  "Cabo Verde":"Cape Verde",
-  "Czech Republic":"Czech Republic",
-  "Holy See (Vatican City State)":"Vatican City",
-  "Iran":"Iran",
-  "North Korea":"North Korea",
-  "South Korea":"South Korea",
-  "Turkey":"Turkey",
-  "Russia":"Russia",
-  "Laos":"Laos",
-  "Macau":"Macau",
-  "Micronesia":"Micronesia",
-  "Moldova":"Moldova",
-  "Palestine":"Palestine",
-  "Syria":"Syria",
-  "Tanzania":"Tanzania",
-  "Venezuela":"Venezuela",
-  "Vietnam":"Vietnam"
-};
-
-function getImage(countryName){
-
-  const query =
-    imageAliases[countryName] ||
-    countryName;
-
-  return new Promise(resolve => {
-
-    fetch(
-      "https://en.wikipedia.org/api/rest_v1/page/summary/" +
-      encodeURIComponent(query)
+  return code
+    .toUpperCase()
+    .split("")
+    .map(letter =>
+      String.fromCodePoint(
+        127397 +
+        letter.charCodeAt(0)
+      )
     )
-    .then(r => {
-
-      if(!r.ok){
-        throw new Error("Image not found");
-      }
-
-      return r.json();
-
-    })
-    .then(data => {
-
-      if(
-        data &&
-        data.thumbnail &&
-        data.thumbnail.source
-      ){
-
-        resolve(data.thumbnail.source);
-
-      }else{
-
-        resolve(
-          "https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&w=900&q=80"
-        );
-
-      }
-
-    })
-    .catch(() => {
-
-      resolve(
-        "https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&w=900&q=80"
-      );
-
-    });
-
-  });
-
+    .join("");
 }
 
 
-/* =====================================================
-   LOAD COUNTRIES
-===================================================== */
+/* ==================================================
+   WIKIPEDIA COUNTRY IMAGE
+================================================== */
 
-async function loadCountries(){
+function wikipediaName(name){
+
+  const aliases = {
+
+    "Cabo Verde":
+      "Cape Verde",
+
+    "Holy See (Vatican City State)":
+      "Vatican City",
+
+    "Turkey":
+      "Turkey",
+
+    "Russia":
+      "Russia",
+
+    "Iran":
+      "Iran",
+
+    "North Korea":
+      "North Korea",
+
+    "South Korea":
+      "South Korea",
+
+    "Vietnam":
+      "Vietnam",
+
+    "Macau":
+      "Macau"
+
+  };
+
+  return aliases[name] || name;
+}
+
+
+async function getImage(name){
 
   try{
 
+    const url =
+      "https://en.wikipedia.org/api/rest_v1/page/summary/" +
+      encodeURIComponent(
+        wikipediaName(name)
+      );
+
     const response =
-      await fetch("/api/countries");
+      await fetch(url,{
+        headers:{
+          "Accept":
+            "application/json"
+        }
+      });
 
     if(!response.ok){
-      throw new Error("Countries API error");
+      throw new Error("Wikipedia error");
     }
 
-    countries =
+    const data =
       await response.json();
 
-    document.getElementById(
-      "countryCount"
-    ).textContent =
-      countries.length;
+    if(
+      data &&
+      data.thumbnail &&
+      data.thumbnail.source
+    ){
 
-    renderCountries();
+      return data.thumbnail.source;
 
-    fillCountrySelect();
+    }
 
   }catch(error){
 
-    console.error(error);
-
-    document.getElementById(
-      "countryGrid"
-    ).innerHTML = `
-      <div class="loading">
-        Could not load countries.
-        Please refresh the page.
-      </div>
-    `;
+    console.log(
+      "Image unavailable:",
+      name
+    );
 
   }
 
+  return FALLBACK_IMAGE;
 }
 
 
-/* =====================================================
-   RENDER COUNTRIES
-===================================================== */
+/* ==================================================
+   LOAD COUNTRIES
+================================================== */
 
-function renderCountries(list = countries){
+async function loadCountries(){
 
   const grid =
     document.getElementById(
       "countryGrid"
-    );
-
-  grid.innerHTML = "";
-
-  if(!list.length){
-
-    grid.innerHTML = `
-      <div class="loading">
-        No countries found.
-      </div>
-    `;
-
-    return;
-  }
-
-  list.forEach(country => {
-
-    const card =
-      document.createElement("div");
-
-    card.className =
-      "country-card";
-
-    const flag =
-      flags[country.code] ||
-      "🌍";
-
-    card.innerHTML = `
-
-      <img
-        src=""
-        alt="${escapeHtml(country.name)}"
-        loading="lazy"
-      >
-
-      <div class="country-overlay">
-
-        <div class="country-flag">
-          ${flag}
-        </div>
-
-        <div class="country-name">
-          ${escapeHtml(country.name)}
-        </div>
-
-        <div class="country-meta">
-
-          <span>
-            ${escapeHtml(country.code)}
-          </span>
-
-          <span class="brand-count">
-            ${country.brand_count || 0}
-            brands
-          </span>
-
-        </div>
-
-      </div>
-
-    `;
-
-    card.addEventListener(
-      "click",
-      () => openCountry(country)
-    );
-
-    grid.appendChild(card);
-
-    const image =
-      card.querySelector("img");
-
-    getImage(country.name)
-      .then(src => {
-
-        image.src = src;
-
-      });
-
-  });
-
-}
-
-
-/* =====================================================
-   OPEN COUNTRY
-===================================================== */
-
-async function openCountry(country){
-
-  currentCountry =
-    country;
-
-  document.getElementById(
-    "mainSite"
-  ).style.display =
-    "none";
-
-  document.getElementById(
-    "countryPage"
-  ).classList.add("active");
-
-  document.getElementById(
-    "countryHeroName"
-  ).textContent =
-    country.name;
-
-  document.getElementById(
-    "brandsCountryName"
-  ).textContent =
-    country.name;
-
-  document.getElementById(
-    "countryHeroCode"
-  ).textContent =
-    country.code;
-
-  document.getElementById(
-    "countryHeroFlag"
-  ).textContent =
-    flags[country.code] ||
-    "🌍";
-
-  document.getElementById(
-    "brandsGrid"
-  ).innerHTML = `
-    <div class="loading">
-      Loading brands...
-    </div>
-  `;
-
-  window.scrollTo({
-    top:0,
-    behavior:"instant"
-  });
-
-  getImage(country.name)
-    .then(src => {
-
-      document.getElementById(
-        "countryHeroImage"
-      ).src = src;
-
-    });
-
-  await loadCountryBrands(
-    country.id,
-    country.name
-  );
-
-}
-
-
-/* =====================================================
-   LOAD COUNTRY BRANDS
-===================================================== */
-
-async function loadCountryBrands(
-  countryId,
-  countryName
-){
-
-  const grid =
-    document.getElementById(
-      "brandsGrid"
     );
 
   try{
 
     const response =
       await fetch(
-        "/api/countries/" +
-        encodeURIComponent(countryId) +
-        "/brands"
+        "/api/countries",
+        {
+          cache:"no-store"
+        }
       );
 
     if(!response.ok){
-      throw new Error("Brand API error");
+
+      throw new Error(
+        "HTTP " +
+        response.status
+      );
+
     }
+
+    const data =
+      await response.json();
+
+
+    if(!Array.isArray(data)){
+
+      throw new Error(
+        "Invalid countries data"
+      );
+
+    }
+
+
+    countries = data;
+
+
+    countryById =
+      new Map(
+        data.map(country => [
+          String(country.id),
+          country
+        ])
+      );
+
+
+    document
+      .getElementById("countryCount")
+      .textContent =
+      data.length;
+
+
+    if(!data.length){
+
+      grid.innerHTML = `
+        <div class="empty">
+          No countries found.
+        </div>
+      `;
+
+      return;
+    }
+
+
+    /* CLEAR LOADING */
+
+    grid.innerHTML = "";
+
+
+    /* CREATE ALL COUNTRY CARDS */
+
+    data.forEach(country => {
+
+      const card =
+        document.createElement(
+          "article"
+        );
+
+
+      card.className =
+        "country-card";
+
+
+      card.dataset.name =
+        String(
+          country.name || ""
+        ).toLowerCase();
+
+
+      card.innerHTML = `
+
+        <img
+          class="country-image"
+          src="${FALLBACK_IMAGE}"
+          alt="${escapeHtml(country.name)}"
+          loading="lazy"
+        >
+
+        <div class="country-info">
+
+          <div class="country-name">
+
+            ${flagFromCode(
+              country.code,
+              country.name
+            )}
+
+            ${escapeHtml(
+              country.name
+            )}
+
+          </div>
+
+          <div class="country-meta">
+
+            <span>
+              ${escapeHtml(
+                country.code || ""
+              )}
+            </span>
+
+            <span>
+
+              ${Number(
+                country.brand_count || 0
+              )}
+
+              brand${
+                Number(
+                  country.brand_count || 0
+                ) === 1
+                  ? ""
+                  : "s"
+              }
+
+            </span>
+
+          </div>
+
+        </div>
+      `;
+
+
+      /* COUNTRY CLICK */
+
+      card.addEventListener(
+        "click",
+        () =>
+          openCountry(
+            country.id
+          )
+      );
+
+
+      grid.appendChild(card);
+
+
+      /* COUNTRY IMAGE */
+
+      getImage(
+        country.name
+      ).then(image => {
+
+        const img =
+          card.querySelector(
+            ".country-image"
+          );
+
+        if(img){
+
+          img.src = image;
+
+        }
+
+      });
+
+    });
+
+
+    /* COUNTRY SELECT */
+
+    const select =
+      document.getElementById(
+        "brandCountry"
+      );
+
+
+    select.innerHTML =
+      '<option value="">Select country</option>' +
+
+      data
+        .map(country => `
+
+          <option
+            value="${escapeAttr(
+              country.name
+            )}"
+          >
+            ${escapeHtml(
+              country.name
+            )}
+          </option>
+
+        `)
+        .join("");
+
+
+  }catch(error){
+
+    console.error(
+      "Countries error:",
+      error
+    );
+
+
+    grid.innerHTML = `
+
+      <div class="empty">
+
+        <b>
+          Countries could not be displayed.
+        </b>
+
+        <br>
+
+        <span
+          style="
+            font-size:12px
+          "
+        >
+          Please refresh the page.
+        </span>
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/* ==================================================
+   HTML SECURITY
+================================================== */
+
+function escapeHtml(value){
+
+  return String(
+    value ?? ""
+  ).replace(
+    /[&<>"']/g,
+    function(char){
+
+      return {
+
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#39;"
+
+      }[char];
+
+    }
+  );
+
+}
+
+
+function escapeAttr(value){
+
+  return escapeHtml(value);
+
+}
+
+
+/* ==================================================
+   SEARCH
+================================================== */
+
+function doSearch(event){
+
+  event.preventDefault();
+
+
+  const query =
+    document
+      .getElementById(
+        "searchInput"
+      )
+      .value
+      .trim()
+      .toLowerCase();
+
+
+  const cards =
+    document.querySelectorAll(
+      ".country-card"
+    );
+
+
+  if(!query){
+
+    cards.forEach(card => {
+
+      card.style.display =
+        "block";
+
+    });
+
+    return;
+
+  }
+
+
+  cards.forEach(card => {
+
+    const name =
+      card.dataset.name || "";
+
+
+    card.style.display =
+      name.includes(query)
+        ? "block"
+        : "none";
+
+  });
+
+
+  document
+    .getElementById(
+      "countries"
+    )
+    .scrollIntoView({
+      behavior:"smooth"
+    });
+
+}
+
+
+/* ==================================================
+   OPEN COUNTRY
+================================================== */
+
+async function openCountry(id){
+
+  const country =
+    countryById.get(
+      String(id)
+    );
+
+
+  if(!country){
+    return;
+  }
+
+
+  document
+    .getElementById(
+      "homeView"
+    )
+    .classList.add("hidden");
+
+
+  document
+    .getElementById(
+      "countryView"
+    )
+    .classList.add("active");
+
+
+  window.scrollTo(
+    0,
+    0
+  );
+
+
+  const hero =
+    document.getElementById(
+      "countryHero"
+    );
+
+
+  const area =
+    document.getElementById(
+      "brandArea"
+    );
+
+
+  /* COUNTRY HERO */
+
+  hero.innerHTML = `
+
+    <div class="country-hero">
+
+      <img
+        src="${FALLBACK_IMAGE}"
+        alt="${escapeHtml(
+          country.name
+        )}"
+      >
+
+      <div class="country-hero-info">
+
+        <h1>
+
+          ${flagFromCode(
+            country.code,
+            country.name
+          )}
+
+          ${escapeHtml(
+            country.name
+          )}
+
+        </h1>
+
+        <p>
+
+          ${escapeHtml(
+            country.code || ""
+          )}
+
+          ·
+
+          ${Number(
+            country.brand_count || 0
+          )}
+
+          listed brand${
+            Number(
+              country.brand_count || 0
+            ) === 1
+              ? ""
+              : "s"
+          }
+
+        </p>
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  /* COUNTRY IMAGE */
+
+  getImage(
+    country.name
+  ).then(image => {
+
+    const img =
+      hero.querySelector(
+        "img"
+      );
+
+    if(img){
+      img.src = image;
+    }
+
+  });
+
+
+  /* BRAND LOADING */
+
+  area.innerHTML = `
+
+    <div
+      class="loading"
+      style="margin-top:20px"
+    >
+      Loading brands...
+    </div>
+
+  `;
+
+
+  try{
+
+    const response =
+      await fetch(
+        "/api/countries/" +
+        encodeURIComponent(
+          country.id
+        ) +
+        "/brands",
+        {
+          cache:"no-store"
+        }
+      );
+
+
+    if(!response.ok){
+
+      throw new Error(
+        "HTTP " +
+        response.status
+      );
+
+    }
+
 
     const brands =
       await response.json();
 
-    if(!brands.length){
 
-      grid.innerHTML = `
+    /* NO BRANDS */
 
-        <div
-          class="empty-state"
-          style="grid-column:1/-1;"
-        >
+    if(
+      !Array.isArray(brands) ||
+      brands.length === 0
+    ){
 
-          <div class="empty-icon">
-            🌎
-          </div>
+      area.innerHTML = `
+
+        <div class="country-empty">
 
           <h3>
-            No brands yet
+            No brands listed yet
           </h3>
 
           <p>
-            Be the first brand to be listed in
-            ${escapeHtml(countryName)}.
+            Be the first brand to appear
+            in
+            ${escapeHtml(
+              country.name
+            )}.
           </p>
 
           <button
-            class="empty-add-btn"
-            onclick="openAddModalForCountry('${escapeJs(countryName)}')"
+            class="primary"
+            onclick="openAddForCountry('${escapeAttr(country.name)}')"
           >
             Add Your Brand — $1.00
           </button>
@@ -2005,121 +1979,109 @@ async function loadCountryBrands(
       `;
 
       return;
+
     }
 
-    grid.innerHTML = "";
 
-    brands.forEach(brand => {
+    /* BRANDS */
 
-      const card =
-        document.createElement("div");
+    area.innerHTML = `
 
-      card.className =
-        "brand-card";
+      <div
+        class="section-title"
+        style="margin-top:30px"
+      >
 
-      const firstLetter =
-        (brand.name || "B")
-          .charAt(0)
-          .toUpperCase();
+        <h2>
+          Brands in
+          ${escapeHtml(
+            country.name
+          )}
+        </h2>
 
-      let logoHtml = `
-        <div class="brand-logo">
-          ${escapeHtml(firstLetter)}
+        <div class="badge">
+          ${brands.length}
         </div>
-      `;
 
-      if(brand.logo){
+      </div>
 
-        logoHtml = `
-          <div class="brand-logo">
 
-            <img
-              src="${escapeHtml(brand.logo)}"
-              alt="${escapeHtml(brand.name)}"
-              onerror="this.style.display='none';this.parentElement.textContent='${escapeJs(firstLetter)}';"
-            >
+      <div class="brand-grid">
 
-          </div>
-        `;
+        ${brands.map(brand => `
 
-      }
+          <article class="brand-card">
 
-      let websiteHtml = "";
+            <div class="brand-logo">
 
-      if(brand.website){
+              ${escapeHtml(
+                (
+                  brand.name ||
+                  "B"
+                )
+                .charAt(0)
+                .toUpperCase()
+              )}
 
-        let url =
-          brand.website.trim();
+            </div>
 
-        if(
-          !url.startsWith("http://") &&
-          !url.startsWith("https://")
-        ){
+            <h3>
+              ${escapeHtml(
+                brand.name
+              )}
+            </h3>
 
-          url =
-            "https://" + url;
+            <p>
+              ${escapeHtml(
+                brand.description ||
+                "Brand listed on ALL WORLD BRANDS."
+              )}
+            </p>
 
-        }
+            ${
+              brand.website
+                ? `
+                  <a
+                    href="${safeUrl(
+                      brand.website
+                    )}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Visit website →
+                  </a>
+                `
+                : ""
+            }
 
-        websiteHtml = `
-          <a
-            class="brand-website"
-            href="${escapeHtml(url)}"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Visit website →
-          </a>
-        `;
+          </article>
 
-      }
+        `).join("")}
 
-      card.innerHTML = `
+      </div>
 
-        ${logoHtml}
+    `;
 
-        <h3>
-          ${escapeHtml(brand.name)}
-        </h3>
-
-        <p>
-          ${
-            escapeHtml(
-              brand.description ||
-              "Brand listed on ALL WORLD BRANDS."
-            )
-          }
-        </p>
-
-        ${websiteHtml}
-
-      `;
-
-      grid.appendChild(card);
-
-    });
 
   }catch(error){
 
-    console.error(error);
+    console.error(
+      "Brands error:",
+      error
+    );
 
-    grid.innerHTML = `
 
-      <div
-        class="empty-state"
-        style="grid-column:1/-1;"
-      >
+    area.innerHTML = `
 
-        <div class="empty-icon">
-          ⚠️
-        </div>
+      <div class="country-empty">
 
         <h3>
-          Could not load brands
+          Brands are temporarily unavailable
         </h3>
 
         <p>
-          Please refresh the page and try again.
+          Please refresh the page
+          and try again.
         </p>
 
       </div>
@@ -2131,180 +2093,217 @@ async function loadCountryBrands(
 }
 
 
-/* =====================================================
-   BACK TO HOME
-===================================================== */
+/* ==================================================
+   SAFE WEBSITE
+================================================== */
 
-function backToHome(){
+function safeUrl(url){
 
-  document.getElementById(
-    "countryPage"
-  ).classList.remove("active");
-
-  document.getElementById(
-    "mainSite"
-  ).style.display =
-    "block";
-
-  window.scrollTo({
-    top:0,
-    behavior:"instant"
-  });
-
-  currentCountry = null;
-
-}
+  const value =
+    String(
+      url || ""
+    ).trim();
 
 
-/* =====================================================
-   COUNTRY SELECT
-===================================================== */
+  if(
+    /^https?:\/\//i.test(
+      value
+    )
+  ){
 
-function fillCountrySelect(){
-
-  const select =
-    document.getElementById(
-      "brandCountry"
+    return escapeAttr(
+      value
     );
 
-  select.innerHTML = `
-    <option value="">
-      Select country
-    </option>
-  `;
+  }
 
-  countries.forEach(country => {
 
-    const option =
-      document.createElement("option");
-
-    option.value =
-      country.name;
-
-    option.textContent =
-      (
-        flags[country.code] ||
-        "🌍"
-      ) +
-      " " +
-      country.name;
-
-    select.appendChild(option);
-
-  });
+  return "#";
 
 }
 
 
-/* =====================================================
-   OPEN ADD MODAL
-===================================================== */
+/* ==================================================
+   BACK HOME
+================================================== */
 
-function openAddModal(){
+function goHome(){
 
-  document.getElementById(
-    "brandModal"
-  ).classList.add("active");
-
-  document.body.style.overflow =
-    "hidden";
-
-}
-
-
-/* =====================================================
-   OPEN MODAL FOR COUNTRY
-===================================================== */
-
-function openAddModalForCountry(
-  countryName
-){
-
-  openAddModal();
-
-  const select =
-    document.getElementById(
-      "brandCountry"
+  document
+    .getElementById(
+      "countryView"
+    )
+    .classList.remove(
+      "active"
     );
 
-  select.value =
-    countryName;
+
+  document
+    .getElementById(
+      "homeView"
+    )
+    .classList.remove(
+      "hidden"
+    );
+
+
+  window.scrollTo(
+    0,
+    0
+  );
 
 }
 
 
-/* =====================================================
-   CLOSE MODAL
-===================================================== */
+/* ==================================================
+   ADD BRAND
+================================================== */
 
-function closeAddModal(){
+function openAddBrand(){
 
-  document.getElementById(
-    "brandModal"
-  ).classList.remove("active");
-
-  document.body.style.overflow =
-    "";
+  document
+    .getElementById(
+      "addModal"
+    )
+    .classList.add(
+      "open"
+    );
 
 }
 
 
-/* =====================================================
-   SUBMIT BRAND
-===================================================== */
+function closeAddBrand(){
+
+  document
+    .getElementById(
+      "addModal"
+    )
+    .classList.remove(
+      "open"
+    );
+
+}
+
+
+function modalOutside(event){
+
+  if(
+    event.target.id ===
+    "addModal"
+  ){
+
+    closeAddBrand();
+
+  }
+
+}
+
+
+/* ==================================================
+   ADD BRAND FOR SELECTED COUNTRY
+================================================== */
+
+function openAddForCountry(country){
+
+  openAddBrand();
+
+
+  setTimeout(() => {
+
+    document
+      .getElementById(
+        "brandCountry"
+      )
+      .value = country;
+
+  },50);
+
+}
+
+
+/* ==================================================
+   SUBMIT APPLICATION
+================================================== */
 
 async function submitBrand(event){
 
   event.preventDefault();
 
-  const button =
-    document.querySelector(
-      ".form-submit"
-    );
 
-  button.disabled = true;
-
-  button.textContent =
-    "Submitting...";
-
-  const data = {
+  const payload = {
 
     brand_name:
-      document.getElementById(
-        "brandName"
-      ).value.trim(),
+      document
+        .getElementById(
+          "brandName"
+        )
+        .value
+        .trim(),
 
     country:
-      document.getElementById(
-        "brandCountry"
-      ).value,
+      document
+        .getElementById(
+          "brandCountry"
+        )
+        .value,
 
     owner_name:
-      document.getElementById(
-        "ownerName"
-      ).value.trim(),
+      document
+        .getElementById(
+          "ownerName"
+        )
+        .value
+        .trim(),
 
     email:
-      document.getElementById(
-        "ownerEmail"
-      ).value.trim(),
+      document
+        .getElementById(
+          "ownerEmail"
+        )
+        .value
+        .trim(),
+
+    phone:
+      document
+        .getElementById(
+          "ownerPhone"
+        )
+        .value
+        .trim(),
 
     website:
-      document.getElementById(
-        "brandWebsite"
-      ).value.trim(),
-
-    logo:
-      document.getElementById(
-        "brandLogo"
-      ).value.trim(),
+      document
+        .getElementById(
+          "brandWebsite"
+        )
+        .value
+        .trim(),
 
     description:
-      document.getElementById(
-        "brandDescription"
-      ).value.trim()
+      document
+        .getElementById(
+          "brandDescription"
+        )
+        .value
+        .trim()
 
   };
+
+
+  if(
+    !payload.brand_name ||
+    !payload.country ||
+    !payload.email
+  ){
+
+    alert(
+      "Brand name, country and email are required."
+    );
+
+    return;
+
+  }
+
 
   try{
 
@@ -2320,292 +2319,60 @@ async function submitBrand(event){
           },
 
           body:
-            JSON.stringify(data)
+            JSON.stringify(
+              payload
+            )
         }
       );
 
-    const result =
+
+    const data =
       await response.json();
 
-    if(!response.ok){
+
+    if(
+      !response.ok ||
+      !data.ok
+    ){
 
       throw new Error(
-        result.error ||
-        "Could not submit application"
+        data.error ||
+        "Could not submit"
       );
 
     }
 
+
     alert(
-      "Your brand application has been received. Payment is not processed automatically yet."
+      "Application received. Payment is not processed automatically yet."
     );
 
-    document.getElementById(
-      "brandForm"
-    ).reset();
 
-    closeAddModal();
+    event.target.reset();
+
+
+    closeAddBrand();
+
 
   }catch(error){
 
-    console.error(error);
+    console.error(
+      error
+    );
+
 
     alert(
-      error.message ||
-      "Something went wrong."
+      "Could not send application. Please try again."
     );
 
-  }finally{
-
-    button.disabled = false;
-
-    button.textContent =
-      "Submit Brand — $1.00";
-
   }
 
 }
 
 
-/* =====================================================
-   SEARCH
-===================================================== */
-
-async function performSearch(){
-
-  const input =
-    document.getElementById(
-      "searchInput"
-    );
-
-  const q =
-    input.value.trim();
-
-  if(!q){
-
-    renderCountries();
-
-    document.getElementById(
-      "searchResults"
-    ).style.display =
-      "none";
-
-    return;
-  }
-
-  try{
-
-    const response =
-      await fetch(
-        "/api/search?q=" +
-        encodeURIComponent(q)
-      );
-
-    const results =
-      await response.json();
-
-    showSearchResults(results);
-
-  }catch(error){
-
-    console.error(error);
-
-  }
-
-}
-
-
-function showSearchResults(results){
-
-  const resultsBox =
-    document.getElementById(
-      "searchResults"
-    );
-
-  resultsBox.style.display =
-    "block";
-
-  if(!results.length){
-
-    resultsBox.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">
-          🔎
-        </div>
-
-        <h3>
-          No results found
-        </h3>
-
-        <p>
-          Try another country or brand name.
-        </p>
-      </div>
-    `;
-
-    return;
-  }
-
-  resultsBox.innerHTML = `
-
-    <div class="brands-grid">
-
-      ${
-        results.map(brand => {
-
-          const letter =
-            (brand.name || "B")
-              .charAt(0)
-              .toUpperCase();
-
-          return `
-
-            <div class="brand-card">
-
-              <div class="brand-logo">
-
-                ${
-                  brand.logo
-                  ?
-                  `<img
-                    src="${escapeHtml(brand.logo)}"
-                    alt="${escapeHtml(brand.name)}"
-                  >`
-                  :
-                  escapeHtml(letter)
-                }
-
-              </div>
-
-              <h3>
-                ${escapeHtml(brand.name)}
-              </h3>
-
-              <p>
-                ${escapeHtml(
-                  brand.description ||
-                  "Brand"
-                )}
-              </p>
-
-              <p style="color:#65b3ff;">
-                🌍 ${escapeHtml(
-                  brand.country
-                )}
-              </p>
-
-              ${
-                brand.website
-                ?
-                `<a
-                  class="brand-website"
-                  href="${escapeHtml(
-                    brand.website
-                  )}"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Visit website →
-                </a>`
-                :
-                ""
-              }
-
-            </div>
-
-          `;
-
-        }).join("")
-
-      }
-
-    </div>
-
-  `;
-
-  window.scrollTo({
-    top:
-      resultsBox.offsetTop - 100,
-    behavior:"smooth"
-  });
-
-}
-
-
-/* =====================================================
-   SEARCH ENTER
-===================================================== */
-
-document
-  .getElementById("searchInput")
-  .addEventListener(
-    "keydown",
-    event => {
-
-      if(event.key === "Enter"){
-
-        performSearch();
-
-      }
-
-    }
-  );
-
-
-/* =====================================================
-   ESCAPE HTML
-===================================================== */
-
-function escapeHtml(value){
-
-  return String(value ?? "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
-
-}
-
-
-function escapeJs(value){
-
-  return String(value ?? "")
-    .replace(/\\/g,"\\\\")
-    .replace(/'/g,"\\'")
-    .replace(/"/g,'\\"')
-    .replace(/\n/g,"\\n")
-    .replace(/\r/g,"\\r");
-
-}
-
-
-/* =====================================================
-   CLOSE MODAL BY BACKDROP
-===================================================== */
-
-document
-  .getElementById("brandModal")
-  .addEventListener(
-    "click",
-    event => {
-
-      if(
-        event.target.id ===
-        "brandModal"
-      ){
-
-        closeAddModal();
-
-      }
-
-    }
-  );
-
-
-/* =====================================================
-   INITIALIZE
-===================================================== */
+/* ==================================================
+   START
+================================================== */
 
 loadCountries();
 
