@@ -3,18 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<meta name="description"
-      content="ALL WORLD BRANDS — Discover brands, companies and factories from around the world.">
-
-<meta name="theme-color" content="#07152f">
+<meta name="description" content="ALL WORLD BRANDS — Discover brands from around the world">
+<meta name="theme-color" content="#050914">
 
 <title>ALL WORLD BRANDS</title>
 
 <style>
-
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 html {
@@ -22,764 +20,529 @@ html {
 }
 
 body {
-    margin: 0;
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-    background: #07152f;
-    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+    background:
+        radial-gradient(circle at top left, #10204b 0%, transparent 35%),
+        radial-gradient(circle at bottom right, #24134c 0%, transparent 35%),
+        #050914;
+    color: #fff;
+    min-height: 100vh;
 }
 
-/* =========================
-   HEADER
-========================= */
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
 
 header {
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 1000;
+    background: rgba(5, 9, 20, 0.94);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+}
 
+.nav {
+    max-width: 1250px;
+    margin: auto;
+    padding: 18px 25px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    padding: 16px 25px;
-
-    background: #06122a;
-    border-bottom: 1px solid rgba(255,255,255,0.12);
 }
 
 .logo {
     font-size: 21px;
-    font-weight: 800;
+    font-weight: 900;
     letter-spacing: 1px;
 }
 
-nav {
+.nav-links {
     display: flex;
-    gap: 20px;
+    gap: 12px;
 }
 
-nav a {
-    color: #ffffff;
-    text-decoration: none;
-    font-size: 15px;
-    cursor: pointer;
+.nav-links button {
+    border: 0;
+    background: transparent;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 10px;
 }
 
-nav a:hover {
-    text-decoration: underline;
+.nav-links button:hover {
+    background: rgba(255,255,255,.08);
 }
-
-/* =========================
-   HERO
-========================= */
 
 .hero {
+    max-width: 1250px;
+    margin: auto;
+    padding: 90px 25px 60px;
     text-align: center;
-    padding: 75px 20px 45px;
 }
 
 .hero h1 {
-    margin: 0 0 18px;
+    font-size: clamp(42px, 7vw, 78px);
+    line-height: 1;
+    font-weight: 900;
+    margin-bottom: 25px;
+}
 
-    font-size: 48px;
-    line-height: 1.1;
+.gradient {
+    background: linear-gradient(90deg,#19c8ff,#7c5cff,#ff4fd8);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
 .hero p {
-    margin: 0 auto;
-
     max-width: 700px;
-
-    color: #b9c5dc;
-    font-size: 18px;
+    margin: auto;
+    color: #aab4cb;
+    font-size: 19px;
     line-height: 1.6;
 }
-
-/* =========================
-   SEARCH
-========================= */
 
 .search-box {
     max-width: 650px;
     margin: 35px auto 0;
+    display: flex;
+    background: #0c1425;
+    border: 1px solid #263450;
+    border-radius: 18px;
+    overflow: hidden;
 }
 
 .search-box input {
     width: 100%;
-
-    padding: 17px 20px;
-
-    border: none;
+    border: 0;
     outline: none;
-    border-radius: 14px;
-
-    font-size: 17px;
+    background: transparent;
+    color: #fff;
+    padding: 18px 20px;
 }
 
-/* =========================
-   CONTAINER
-========================= */
+.search-box button {
+    border: 0;
+    padding: 0 25px;
+    background: linear-gradient(90deg,#12bde8,#704cff);
+    color: white;
+    font-weight: bold;
+}
 
 .container {
-    width: 100%;
-    max-width: 1200px;
-
-    margin: 0 auto;
-
-    padding: 20px;
+    max-width: 1250px;
+    margin: auto;
+    padding: 20px 25px 80px;
 }
 
 .section-title {
-    margin-bottom: 20px;
-
-    font-size: 28px;
+    font-size: 30px;
+    margin: 25px 0;
 }
 
-/* =========================
-   COUNTRY GRID
-========================= */
-
-.country-grid {
+.countries-grid {
     display: grid;
-
-    grid-template-columns:
-        repeat(auto-fit, minmax(180px, 1fr));
-
-    gap: 16px;
+    grid-template-columns: repeat(auto-fill,minmax(210px,1fr));
+    gap: 18px;
 }
 
 .country-card {
-    min-height: 130px;
-
-    padding: 20px;
-
-    background: #102347;
-
-    border-radius: 16px;
-
-    cursor: pointer;
-
-    transition:
-        transform 0.2s,
-        background 0.2s;
+    background: rgba(13,21,39,.85);
+    border: 1px solid #202d48;
+    border-radius: 18px;
+    padding: 18px;
+    min-height: 145px;
+    transition: .2s;
 }
 
 .country-card:hover {
     transform: translateY(-4px);
-
-    background: #17345f;
+    border-color: #566dff;
+    box-shadow: 0 15px 40px rgba(50,70,255,.15);
 }
 
 .country-flag {
     font-size: 38px;
-
     margin-bottom: 12px;
 }
 
 .country-card h3 {
-    margin: 0;
-
-    font-size: 17px;
+    margin-bottom: 7px;
 }
 
-.country-card p {
-    margin: 8px 0 0;
-
-    color: #9eabc5;
-
-    font-size: 13px;
+.country-card small {
+    color: #8d9ab3;
 }
-
-/* =========================
-   COUNTRY DETAIL
-========================= */
-
-.detail-view {
-    display: none;
-}
-
-.back-button {
-    margin-bottom: 25px;
-
-    padding: 12px 18px;
-
-    border: none;
-    border-radius: 10px;
-
-    background: #1b396c;
-    color: #ffffff;
-
-    cursor: pointer;
-
-    font-size: 15px;
-}
-
-.back-button:hover {
-    background: #244b88;
-}
-
-.country-detail-title {
-    margin-top: 0;
-
-    font-size: 32px;
-}
-
-/* =========================
-   BRANDS
-========================= */
-
-.brand-list {
-    display: grid;
-
-    gap: 15px;
-}
-
-.brand-card {
-    padding: 22px;
-
-    background: #102347;
-
-    border-radius: 16px;
-}
-
-.brand-card h3 {
-    margin-top: 0;
-    margin-bottom: 10px;
-}
-
-.brand-card p {
-    color: #b7c2d8;
-
-    line-height: 1.6;
-}
-
-.brand-card a {
-    color: #70a9ff;
-
-    text-decoration: none;
-}
-
-.brand-card a:hover {
-    text-decoration: underline;
-}
-
-/* =========================
-   PROMO
-========================= */
 
 .promo {
-    margin: 65px 0;
-
-    padding: 45px 25px;
-
+    margin-top: 60px;
+    padding: 45px 30px;
+    border-radius: 28px;
+    background:
+        linear-gradient(135deg,
+        rgba(17,188,230,.15),
+        rgba(108,76,255,.18),
+        rgba(255,70,220,.12));
+    border: 1px solid rgba(111,120,255,.3);
     text-align: center;
-
-    background: #123267;
-
-    border-radius: 22px;
 }
 
 .promo h2 {
-    margin-top: 0;
-
-    font-size: 32px;
+    font-size: 38px;
+    margin-bottom: 12px;
 }
 
 .promo p {
-    color: #c0cbe0;
-
-    line-height: 1.6;
+    color: #aeb9ce;
+    margin-bottom: 25px;
 }
 
-.price {
-    margin: 20px 0;
-
-    font-size: 34px;
+.primary-btn {
+    border: 0;
+    border-radius: 15px;
+    padding: 16px 28px;
+    color: white;
     font-weight: 800;
+    background: linear-gradient(90deg,#0dbde8,#764bff,#e849d6);
+    box-shadow: 0 10px 35px rgba(91,74,255,.25);
 }
 
-.primary-button {
-    padding: 15px 25px;
-
-    border: none;
-    border-radius: 12px;
-
-    background: #ffffff;
-    color: #07152f;
-
-    cursor: pointer;
-
-    font-size: 16px;
-    font-weight: 700;
+.primary-btn:hover {
+    transform: translateY(-2px);
 }
 
-.primary-button:hover {
-    opacity: 0.9;
+footer {
+    border-top: 1px solid rgba(255,255,255,.08);
+    color: #75819a;
+    text-align: center;
+    padding: 30px 20px;
 }
 
-/* =========================
-   MODAL
-========================= */
+/* MODAL */
 
 .modal {
     display: none;
-
     position: fixed;
-    z-index: 1000;
-
     inset: 0;
-
-    padding: 20px;
-
-    background: rgba(0,0,0,0.78);
-
+    z-index: 5000;
+    background: rgba(0,0,0,.78);
+    backdrop-filter: blur(10px);
     overflow-y: auto;
+    padding: 25px;
+}
+
+.modal.show {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .modal-box {
     width: 100%;
-    max-width: 680px;
-
-    margin: 35px auto;
-
+    max-width: 650px;
+    background: #080e1c;
+    border: 1px solid #23314e;
+    border-radius: 25px;
     padding: 30px;
-
-    background: #ffffff;
-    color: #111111;
-
-    border-radius: 20px;
+    position: relative;
+    box-shadow: 0 30px 100px rgba(0,0,0,.6);
 }
 
-.modal-header {
-    display: flex;
-
-    align-items: center;
-    justify-content: space-between;
-
-    margin-bottom: 20px;
-}
-
-.modal-header h2 {
-    margin: 0;
-
-    font-size: 27px;
-}
-
-.close-button {
-    width: 40px;
-    height: 40px;
-
-    border: none;
+.close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
-
-    background: #eeeeee;
-
-    cursor: pointer;
-
-    font-size: 18px;
+    border: 1px solid #26334d;
+    background: #0d1526;
+    color: #fff;
+    font-size: 25px;
 }
 
-/* =========================
-   FORM
-========================= */
+.modal h2 {
+    font-size: 32px;
+    margin-bottom: 7px;
+}
+
+.subtitle {
+    color: #8795af;
+    margin-bottom: 25px;
+}
 
 .form-group {
-    margin-bottom: 16px;
+    margin-bottom: 15px;
 }
 
 .form-group label {
     display: block;
-
+    color: #b8c2d5;
+    font-size: 14px;
     margin-bottom: 7px;
-
-    font-weight: 700;
 }
 
 .form-group input,
 .form-group select,
 .form-group textarea {
     width: 100%;
-
-    padding: 13px 14px;
-
-    border: 1px solid #cccccc;
-    border-radius: 10px;
-
+    border: 1px solid #25334e;
+    background: #0c1425;
+    color: white;
+    border-radius: 13px;
+    padding: 14px;
     outline: none;
+}
 
-    font-size: 15px;
+.form-group textarea {
+    min-height: 120px;
+    resize: vertical;
 }
 
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
-    border-color: #326ed8;
+    border-color: #596dff;
 }
 
-.form-group textarea {
-    min-height: 110px;
-
-    resize: vertical;
-}
-
-.required-note {
-    margin-bottom: 20px;
-
-    color: #666666;
-
-    font-size: 13px;
-}
-
-/* =========================
-   CHECKOUT
-========================= */
-
-.checkout {
-    display: none;
-
-    margin-top: 30px;
-
-    padding: 25px;
-
-    background: #f2f5fa;
-
-    border-radius: 16px;
-}
-
-.checkout h3 {
-    margin-top: 0;
-
-    font-size: 24px;
-}
-
-.checkout-description {
-    color: #555555;
-
-    line-height: 1.5;
-}
-
-.order-summary {
+.price-box {
     margin: 20px 0;
+    padding: 20px;
+    border-radius: 15px;
+    background: #0c1425;
+    border: 1px solid #273652;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-    padding: 18px;
+.price {
+    font-size: 27px;
+    font-weight: 900;
+}
 
-    background: #ffffff;
+.checkout-btn {
+    width: 100%;
+    border: 0;
+    padding: 17px;
+    border-radius: 15px;
+    color: white;
+    font-weight: 900;
+    background: linear-gradient(90deg,#0bbce5,#754bff);
+}
 
-    border-radius: 12px;
+.checkout-btn:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
 
-    border: 1px solid #dddddd;
+/* CHECKOUT */
+
+.checkout-screen {
+    display: none;
+}
+
+.checkout-screen.active {
+    display: block;
+}
+
+.checkout-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.back-btn {
+    border: 0;
+    background: transparent;
+    color: #aeb9cc;
+    font-size: 15px;
+}
+
+.order-card {
+    background: #0c1425;
+    border: 1px solid #263450;
+    border-radius: 17px;
+    padding: 20px;
+    margin-bottom: 20px;
 }
 
 .order-row {
     display: flex;
-
     justify-content: space-between;
-
-    padding: 8px 0;
+    padding: 9px 0;
 }
 
-.order-total {
-    display: flex;
+.order-row.total {
+    border-top: 1px solid #263450;
+    margin-top: 10px;
+    padding-top: 17px;
+    font-size: 20px;
+    font-weight: 900;
+}
 
-    justify-content: space-between;
+.google-pay-area {
+    margin-top: 20px;
+}
 
-    margin-top: 12px;
-    padding-top: 14px;
-
-    border-top: 1px solid #dddddd;
-
-    font-size: 22px;
+.google-pay-button {
+    width: 100%;
+    min-height: 55px;
+    border: 0;
+    border-radius: 12px;
+    background: #fff;
+    color: #000;
     font-weight: 800;
+    font-size: 17px;
 }
 
-/* =========================
-   GOOGLE PAY AREA
-========================= */
-
-.payment-title {
-    margin-top: 25px;
-
-    color: #222222;
-
-    font-size: 18px;
-    font-weight: 700;
+.google-pay-button:hover {
+    background: #e9e9e9;
 }
 
-#google-pay-button {
-    margin-top: 15px;
-}
-
-.test-notice {
-    margin-top: 15px;
-
-    padding: 13px;
-
-    background: #fff4d6;
-
-    color: #6b4e00;
-
-    border-radius: 10px;
-
+.payment-note {
+    color: #78869f;
     font-size: 13px;
     line-height: 1.5;
+    margin-top: 14px;
 }
 
-/* =========================
-   STATUS
-========================= */
+/* RESULT */
 
-.status {
-    display: none;
-
-    margin-top: 18px;
-
-    padding: 14px;
-
-    border-radius: 10px;
-
-    line-height: 1.5;
-}
-
-.status.success {
-    display: block;
-
-    background: #dff6e5;
-
-    color: #155724;
-}
-
-.status.error {
-    display: block;
-
-    background: #ffe0e0;
-
-    color: #721c24;
-}
-
-.status.info {
-    display: block;
-
-    background: #e3efff;
-
-    color: #174d8c;
-}
-
-/* =========================
-   LOADING
-========================= */
-
-.loading {
-    padding: 30px;
-
+.result {
     text-align: center;
-
-    color: #aebbd2;
+    padding: 30px 5px;
 }
 
-/* =========================
-   FOOTER
-========================= */
-
-footer {
-    margin-top: 50px;
-
-    padding: 45px 20px;
-
-    text-align: center;
-
-    color: #8190ab;
-
-    border-top: 1px solid rgba(255,255,255,0.08);
+.result-icon {
+    font-size: 65px;
+    margin-bottom: 15px;
 }
 
-/* =========================
-   MOBILE
-========================= */
+.result h2 {
+    font-size: 30px;
+    margin-bottom: 12px;
+}
 
-@media (max-width: 700px) {
+.result p {
+    color: #9aa7bd;
+    line-height: 1.6;
+}
 
-    header {
-        padding: 14px 15px;
+.application-id {
+    margin: 20px 0;
+    padding: 15px;
+    border-radius: 12px;
+    background: #0c1425;
+    color: #b8c4d8;
+}
+
+@media(max-width:600px) {
+
+    .nav {
+        padding: 15px;
     }
 
     .logo {
         font-size: 16px;
     }
 
-    nav {
-        gap: 10px;
-    }
-
-    nav a {
-        font-size: 13px;
+    .nav-links button {
+        padding: 8px;
     }
 
     .hero {
-        padding-top: 55px;
+        padding: 60px 18px 40px;
     }
 
-    .hero h1 {
-        font-size: 35px;
+    .container {
+        padding-left: 18px;
+        padding-right: 18px;
     }
 
-    .hero p {
-        font-size: 16px;
-    }
-
-    .promo h2 {
-        font-size: 26px;
+    .modal {
+        padding: 10px;
     }
 
     .modal-box {
-        margin: 15px auto;
-        padding: 22px;
+        padding: 24px 18px;
+        border-radius: 20px;
+    }
+
+    .promo h2 {
+        font-size: 30px;
     }
 }
-
 </style>
 </head>
 
 <body>
 
-
-<!-- =========================
-     HEADER
-========================= -->
-
 <header>
+    <div class="nav">
+        <div class="logo">ALL WORLD BRANDS</div>
 
-    <div class="logo">
-        ALL WORLD BRANDS
+        <div class="nav-links">
+            <button onclick="scrollToCountries()">Countries</button>
+            <button onclick="openAddBrand()">Add Brand</button>
+        </div>
     </div>
-
-    <nav>
-
-        <a href="#" onclick="showHome(); return false;">
-            Countries
-        </a>
-
-        <a href="#" onclick="openAddBrand(); return false;">
-            Add Brand
-        </a>
-
-    </nav>
-
 </header>
-
-
-<!-- =========================
-     HERO
-========================= -->
 
 <section class="hero">
 
     <h1>
-        Discover brands around the world
+        Discover
+        <span class="gradient">Brands</span>
+        Worldwide
     </h1>
 
     <p>
-        Explore companies, brands and factories
-        from different countries around the world.
+        Explore brands, companies and manufacturers
+        from countries around the world.
     </p>
 
     <div class="search-box">
-
         <input
             id="searchInput"
-            type="search"
+            type="text"
             placeholder="Search country..."
-            autocomplete="off"
             oninput="filterCountries()"
         >
 
+        <button onclick="filterCountries()">Search</button>
     </div>
 
 </section>
 
+<main class="container" id="countriesSection">
 
-<!-- =========================
-     MAIN
-========================= -->
+    <h2 class="section-title">Countries</h2>
 
-<main class="container">
-
-
-    <!-- COUNTRIES -->
-
-    <section id="countryView">
-
-        <h2 class="section-title">
-            Countries
-        </h2>
-
-        <div
-            id="countries"
-            class="country-grid"
-        >
-            <div class="loading">
-                Loading countries...
-            </div>
-        </div>
-
-    </section>
-
-
-    <!-- COUNTRY DETAIL -->
-
-    <section
-        id="detailView"
-        class="detail-view"
-    >
-
-        <button
-            class="back-button"
-            onclick="showHome()"
-        >
-            ← Back to countries
-        </button>
-
-        <h2
-            id="countryTitle"
-            class="country-detail-title"
-        ></h2>
-
-        <div
-            id="brands"
-            class="brand-list"
-        >
-            <div class="loading">
-                Loading brands...
-            </div>
-        </div>
-
-    </section>
-
-
-    <!-- =========================
-         ADD BRAND PROMO
-    ========================= -->
+    <div id="countriesGrid" class="countries-grid">
+        <p>Loading countries...</p>
+    </div>
 
     <section class="promo">
 
-        <h2>
-            Add your brand to the world
-        </h2>
+        <h2>Add your brand to the world</h2>
 
         <p>
-            Publish your brand on
-            ALL WORLD BRANDS and make it visible
-            to visitors from around the world.
+            Submit your company or brand to ALL WORLD BRANDS.
+            Starting from only <strong>$1.00</strong>.
         </p>
 
-        <div class="price">
-            $1.00
-        </div>
-
         <button
-            class="primary-button"
+            class="primary-btn"
             onclick="openAddBrand()"
         >
             Add Your Brand — $1.00
@@ -787,1379 +550,835 @@ footer {
 
     </section>
 
-
 </main>
 
+<footer>
+    © 2026 ALL WORLD BRANDS
+</footer>
 
-<!-- =========================
-     ADD BRAND MODAL
-========================= -->
 
-<div
-    id="brandModal"
-    class="modal"
->
+<!-- ADD BRAND MODAL -->
+
+<div class="modal" id="addBrandModal">
 
     <div class="modal-box">
 
+        <button class="close" onclick="closeModal()">×</button>
 
-        <div class="modal-header">
+        <!-- FORM SCREEN -->
 
-            <h2>
-                Add Your Brand
-            </h2>
+        <div id="formScreen">
 
-            <button
-                class="close-button"
-                onclick="closeAddBrand()"
-            >
-                ✕
-            </button>
+            <h2>Add Your Brand</h2>
+
+            <p class="subtitle">
+                Submit your brand for review — $1.00
+            </p>
+
+            <form id="brandForm">
+
+                <div class="form-group">
+                    <label>Brand name *</label>
+                    <input
+                        id="brandName"
+                        required
+                        placeholder="Example: Artel"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Country *</label>
+
+                    <select id="brandCountry" required>
+                        <option value="">Select country</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Website</label>
+
+                    <input
+                        id="brandWebsite"
+                        type="url"
+                        placeholder="https://example.com"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Your name *</label>
+
+                    <input
+                        id="applicantName"
+                        required
+                        placeholder="Your full name"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Email *</label>
+
+                    <input
+                        id="applicantEmail"
+                        type="email"
+                        required
+                        placeholder="you@example.com"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Phone</label>
+
+                    <input
+                        id="applicantPhone"
+                        placeholder="+998..."
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Brand description</label>
+
+                    <textarea
+                        id="brandDescription"
+                        placeholder="Tell us about your brand..."
+                    ></textarea>
+                </div>
+
+                <div class="price-box">
+
+                    <span>Application fee</span>
+
+                    <span class="price">$1.00</span>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="checkout-btn"
+                >
+                    Continue to Payment — $1.00
+                </button>
+
+            </form>
 
         </div>
 
 
-        <p class="required-note">
-            Fields marked with * are required.
-        </p>
+        <!-- CHECKOUT SCREEN -->
 
+        <div id="checkoutScreen" class="checkout-screen">
 
-        <!-- =========================
-             BRAND FORM
-        ========================= -->
+            <div class="checkout-header">
 
-        <form
-            id="brandForm"
-            onsubmit="startCheckout(event)"
-        >
-
-
-            <div class="form-group">
-
-                <label for="brandName">
-                    Brand name *
-                </label>
-
-                <input
-                    id="brandName"
-                    name="brandName"
-                    type="text"
-                    required
-                    maxlength="150"
-                    placeholder="Your brand name"
+                <button
+                    class="back-btn"
+                    onclick="backToForm()"
                 >
+                    ← Back
+                </button>
+
+                <h2>Checkout</h2>
 
             </div>
 
-
-            <div class="form-group">
-
-                <label for="countrySelect">
-                    Country *
-                </label>
-
-                <select
-                    id="countrySelect"
-                    name="countryId"
-                    required
-                >
-
-                    <option value="">
-                        Loading countries...
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="website">
-                    Website
-                </label>
-
-                <input
-                    id="website"
-                    name="website"
-                    type="url"
-                    maxlength="500"
-                    placeholder="https://example.com"
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="yourName">
-                    Your name *
-                </label>
-
-                <input
-                    id="yourName"
-                    name="yourName"
-                    type="text"
-                    required
-                    maxlength="150"
-                    placeholder="Your full name"
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="email">
-                    Email *
-                </label>
-
-                <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    required
-                    maxlength="200"
-                    placeholder="you@example.com"
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="phone">
-                    Phone
-                </label>
-
-                <input
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    maxlength="50"
-                    placeholder="+998..."
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="description">
-                    Brand description
-                </label>
-
-                <textarea
-                    id="description"
-                    name="description"
-                    maxlength="2000"
-                    placeholder="Tell us about your brand..."
-                ></textarea>
-
-            </div>
-
-
-            <button
-                class="primary-button"
-                type="submit"
-            >
-                Continue to payment — $1.00
-            </button>
-
-
-        </form>
-
-
-        <!-- =========================
-             CHECKOUT
-        ========================= -->
-
-        <section
-            id="checkout"
-            class="checkout"
-        >
-
-            <h3>
-                Checkout
-            </h3>
-
-            <p class="checkout-description">
-                Review your order before continuing
-                to payment.
+            <p class="subtitle">
+                Review your application before payment.
             </p>
 
-
-            <div class="order-summary">
-
-                <div class="order-row">
-
-                    <span>
-                        Service
-                    </span>
-
-                    <strong>
-                        Brand listing
-                    </strong>
-
-                </div>
-
+            <div class="order-card">
 
                 <div class="order-row">
-
-                    <span>
-                        Quantity
-                    </span>
-
-                    <strong>
-                        1
-                    </strong>
-
+                    <span>Brand</span>
+                    <strong id="checkoutBrand"></strong>
                 </div>
 
+                <div class="order-row">
+                    <span>Country</span>
+                    <strong id="checkoutCountry"></strong>
+                </div>
 
-                <div class="order-total">
+                <div class="order-row">
+                    <span>Service</span>
+                    <strong>Brand listing</strong>
+                </div>
 
-                    <span>
-                        Total
-                    </span>
-
-                    <span>
-                        $1.00 USD
-                    </span>
-
+                <div class="order-row total">
+                    <span>Total</span>
+                    <span>$1.00 USD</span>
                 </div>
 
             </div>
 
 
-            <div class="payment-title">
-                Payment method
+            <div class="order-card">
+
+                <h3>Payment method</h3>
+
+                <div class="google-pay-area">
+
+                    <!--
+                    Google Pay button will be enabled
+                    after a real PSP/Gateway is configured.
+                    -->
+
+                    <button
+                        id="googlePayButton"
+                        class="google-pay-button"
+                        onclick="startGooglePay()"
+                    >
+                        <span>G</span>
+                        Pay with Google Pay
+                    </button>
+
+                </div>
+
+                <p class="payment-note">
+                    Your payment is securely processed through
+                    the selected payment service provider.
+                    Google Pay does not itself process the funds.
+                </p>
+
             </div>
 
+        </div>
 
-            <div id="google-pay-button"></div>
 
+        <!-- SUCCESS SCREEN -->
 
-            <div class="test-notice">
+        <div id="successScreen" class="checkout-screen">
 
-                <strong>TEST MODE</strong><br>
+            <div class="result">
 
-                Google Pay is currently connected
-                in TEST mode. No real money will be
-                charged at this stage.
+                <div class="result-icon">✓</div>
 
-                The real payment gateway will be
-                connected after the supported PSP
-                is selected.
+                <h2>Application Submitted</h2>
+
+                <p>
+                    Your brand application has been received.
+                </p>
+
+                <div class="application-id">
+                    Application ID:
+                    <strong id="applicationId"></strong>
+                </div>
+
+                <button
+                    class="primary-btn"
+                    onclick="closeModal()"
+                >
+                    Done
+                </button>
 
             </div>
 
-
-            <div
-                id="paymentStatus"
-                class="status"
-            ></div>
-
-
-        </section>
-
+        </div>
 
     </div>
 
 </div>
 
 
-<!-- =========================
-     GOOGLE PAY SCRIPT
-========================= -->
-
-<script
-    async
-    src="https://pay.google.com/gp/p/js/pay.js"
-    onload="onGooglePayLoaded()"
-></script>
-
-
 <script>
 
-/* =====================================================
-   GLOBAL VARIABLES
-===================================================== */
+/* ==========================================
+   GLOBAL DATA
+========================================== */
 
-let countriesData = [];
+let countries = [];
 
-let paymentsClient = null;
-
-let googlePayAvailable = false;
+let currentApplication = null;
 
 
-/*
-    Google Pay Merchant ID from your console.
-
-    Your current Merchant ID:
-    BCR2DN6D5KRLJTLN
-*/
-
-const GOOGLE_MERCHANT_ID =
-    "BCR2DN6D5KRLJTLN";
-
-
-/*
-    ALL WORLD BRANDS payment amount.
-*/
-
-const PAYMENT_AMOUNT =
-    "1.00";
-
-
-const PAYMENT_CURRENCY =
-    "USD";
-
-
-/* =====================================================
-   HTML SECURITY HELPERS
-===================================================== */
-
-function escapeHtml(value) {
-
-    return String(value || "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-
-}
-
-
-function escapeAttribute(value) {
-
-    return escapeHtml(value);
-
-}
-
-
-/* =====================================================
+/* ==========================================
    LOAD COUNTRIES
-===================================================== */
+========================================== */
 
 async function loadCountries() {
 
+    const grid = document.getElementById("countriesGrid");
+
     try {
 
-        const response =
-            await fetch("/api/countries");
+        const response = await fetch("/api/countries");
 
         if (!response.ok) {
-
-            throw new Error(
-                "Countries request failed"
-            );
-
+            throw new Error("Countries request failed");
         }
 
-        countriesData =
-            await response.json();
+        countries = await response.json();
 
-        renderCountries(
-            countriesData
-        );
+        renderCountries(countries);
 
-        populateCountrySelect();
+        fillCountrySelect(countries);
 
-    }
+    } catch (error) {
 
-    catch (error) {
+        console.error(error);
 
-        console.error(
-            "Countries error:",
-            error
-        );
-
-        document.getElementById(
-            "countries"
-        ).innerHTML = `
-            <div class="loading">
+        grid.innerHTML = `
+            <p style="color:#ff7777">
                 Unable to load countries.
-                Please refresh the page.
-            </div>
+            </p>
         `;
-
     }
-
 }
 
 
-/* =====================================================
+/* ==========================================
+   COUNTRY FLAGS
+========================================== */
+
+function countryCodeToFlag(code) {
+
+    if (!code) return "🌎";
+
+    return code
+        .toUpperCase()
+        .split("")
+        .map(letter =>
+            String.fromCodePoint(127397 + letter.charCodeAt(0))
+        )
+        .join("");
+}
+
+
+/* ==========================================
    RENDER COUNTRIES
-===================================================== */
+========================================== */
 
 function renderCountries(list) {
 
-    const container =
-        document.getElementById(
-            "countries"
-        );
+    const grid = document.getElementById("countriesGrid");
 
-    container.innerHTML = "";
+    if (!list.length) {
 
-
-    if (!list || !list.length) {
-
-        container.innerHTML = `
-            <div class="loading">
-                No countries found.
-            </div>
+        grid.innerHTML = `
+            <p>No countries found.</p>
         `;
 
         return;
-
     }
 
+    grid.innerHTML = list.map(country => {
 
-    list.forEach(country => {
+        const name =
+            country.name ||
+            country.country_name ||
+            "Unknown";
 
-        const card =
-            document.createElement("div");
+        const code =
+            country.code ||
+            country.iso_code ||
+            country.iso2 ||
+            "";
 
-        card.className =
-            "country-card";
+        return `
+            <div
+                class="country-card"
+                data-country-name="${escapeHtml(name)}"
+                onclick="openCountry(${Number(country.id)})"
+            >
 
+                <div class="country-flag">
+                    ${countryCodeToFlag(code)}
+                </div>
 
-        const flag =
-            country.flag || "🌍";
+                <h3>${escapeHtml(name)}</h3>
 
+                <small>
+                    Explore brands
+                </small>
 
-        card.innerHTML = `
-
-            <div class="country-flag">
-                ${escapeHtml(flag)}
             </div>
-
-            <h3>
-                ${escapeHtml(country.name)}
-            </h3>
-
-            <p>
-                Explore brands
-            </p>
-
         `;
 
-
-        card.addEventListener(
-            "click",
-            function() {
-
-                openCountry(
-                    country.id,
-                    country.name
-                );
-
-            }
-        );
-
-
-        container.appendChild(card);
-
-    });
-
+    }).join("");
 }
 
 
-/* =====================================================
+/* ==========================================
    COUNTRY SELECT
-===================================================== */
+========================================== */
 
-function populateCountrySelect() {
+function fillCountrySelect(list) {
 
     const select =
-        document.getElementById(
-            "countrySelect"
-        );
+        document.getElementById("brandCountry");
 
-    select.innerHTML = `
-        <option value="">
-            Select country
-        </option>
-    `;
+    select.innerHTML =
+        `<option value="">Select country</option>`;
 
-
-    countriesData.forEach(country => {
+    list.forEach(country => {
 
         const option =
             document.createElement("option");
 
-        option.value =
-            country.id;
+        option.value = country.id;
 
         option.textContent =
-            country.name;
+            country.name ||
+            country.country_name ||
+            "Unknown";
 
         select.appendChild(option);
-
     });
-
 }
 
 
-/* =====================================================
-   SEARCH COUNTRIES
-===================================================== */
+/* ==========================================
+   SEARCH
+========================================== */
 
 function filterCountries() {
 
-    const input =
-        document.getElementById(
-            "searchInput"
-        );
-
-
-    const text =
-        input.value
-            .trim()
-            .toLowerCase();
-
-
-    if (!text) {
-
-        renderCountries(
-            countriesData
-        );
-
-        return;
-
-    }
-
+    const query =
+        document.getElementById("searchInput")
+            .value
+            .toLowerCase()
+            .trim();
 
     const filtered =
-        countriesData.filter(
-            country =>
-                country.name
-                    .toLowerCase()
-                    .includes(text)
-        );
+        countries.filter(country => {
 
+            const name =
+                (
+                    country.name ||
+                    country.country_name ||
+                    ""
+                ).toLowerCase();
+
+            return name.includes(query);
+        });
 
     renderCountries(filtered);
-
 }
 
 
-/* =====================================================
+/* ==========================================
+   SCROLL
+========================================== */
+
+function scrollToCountries() {
+
+    document
+        .getElementById("countriesSection")
+        .scrollIntoView({
+            behavior: "smooth"
+        });
+}
+
+
+/* ==========================================
    OPEN COUNTRY
-===================================================== */
+========================================== */
 
-async function openCountry(
-    id,
-    name
-) {
-
-    document.getElementById(
-        "countryView"
-    ).style.display = "none";
-
-
-    document.getElementById(
-        "detailView"
-    ).style.display = "block";
-
-
-    document.getElementById(
-        "countryTitle"
-    ).textContent = name;
-
-
-    const brands =
-        document.getElementById(
-            "brands"
-        );
-
-
-    brands.innerHTML = `
-        <div class="loading">
-            Loading brands...
-        </div>
-    `;
-
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-
+async function openCountry(id) {
 
     try {
 
         const response =
-            await fetch(
-                "/api/countries/"
-                + encodeURIComponent(id)
-                + "/brands"
-            );
-
+            await fetch(`/api/countries/${id}/brands`);
 
         if (!response.ok) {
+            throw new Error("Unable to load brands");
+        }
 
-            throw new Error(
-                "Brands request failed"
+        const brands =
+            await response.json();
+
+        let html = "";
+
+        if (!brands.length) {
+
+            html = `
+                <p style="color:#9aa7bd">
+                    No brands listed yet.
+                </p>
+            `;
+
+        } else {
+
+            html = brands.map(brand => `
+                <div class="country-card">
+
+                    <h3>
+                        ${escapeHtml(brand.name || "Brand")}
+                    </h3>
+
+                    <small>
+                        ${escapeHtml(
+                            brand.description || ""
+                        )}
+                    </small>
+
+                </div>
+            `).join("");
+        }
+
+        const grid =
+            document.getElementById("countriesGrid");
+
+        grid.innerHTML = html;
+
+        window.scrollTo({
+            top:
+                document.getElementById(
+                    "countriesSection"
+                ).offsetTop - 80,
+            behavior: "smooth"
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert("Unable to load brands.");
+    }
+}
+
+
+/* ==========================================
+   OPEN ADD BRAND
+========================================== */
+
+function openAddBrand() {
+
+    document
+        .getElementById("addBrandModal")
+        .classList.add("show");
+
+    showScreen("formScreen");
+}
+
+
+/* ==========================================
+   CLOSE MODAL
+========================================== */
+
+function closeModal() {
+
+    document
+        .getElementById("addBrandModal")
+        .classList.remove("show");
+}
+
+
+/* ==========================================
+   SCREEN CONTROL
+========================================== */
+
+function showScreen(id) {
+
+    const screens = [
+        "formScreen",
+        "checkoutScreen",
+        "successScreen"
+    ];
+
+    screens.forEach(screenId => {
+
+        const element =
+            document.getElementById(screenId);
+
+        if (!element) return;
+
+        if (screenId === id) {
+
+            element.style.display =
+                "block";
+
+            element.classList.add("active");
+
+        } else {
+
+            element.style.display =
+                "none";
+
+            element.classList.remove("active");
+        }
+    });
+}
+
+
+/* ==========================================
+   FORM SUBMIT
+========================================== */
+
+document
+    .getElementById("brandForm")
+    .addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+        const brandName =
+            document.getElementById(
+                "brandName"
+            ).value.trim();
+
+        const countrySelect =
+            document.getElementById(
+                "brandCountry"
             );
 
+        const countryId =
+            countrySelect.value;
+
+        const countryName =
+            countrySelect.options[
+                countrySelect.selectedIndex
+            ]?.text || "";
+
+        if (!brandName || !countryId) {
+
+            alert(
+                "Please enter the brand name and select a country."
+            );
+
+            return;
         }
+
+
+        currentApplication = {
+
+            brandName,
+
+            countryId,
+
+            countryName,
+
+            website:
+                document.getElementById(
+                    "brandWebsite"
+                ).value.trim(),
+
+            applicantName:
+                document.getElementById(
+                    "applicantName"
+                ).value.trim(),
+
+            applicantEmail:
+                document.getElementById(
+                    "applicantEmail"
+                ).value.trim(),
+
+            applicantPhone:
+                document.getElementById(
+                    "applicantPhone"
+                ).value.trim(),
+
+            description:
+                document.getElementById(
+                    "brandDescription"
+                ).value.trim(),
+
+            amount: 1.00
+
+        };
+
+
+        document.getElementById(
+            "checkoutBrand"
+        ).textContent =
+            currentApplication.brandName;
+
+        document.getElementById(
+            "checkoutCountry"
+        ).textContent =
+            currentApplication.countryName;
+
+
+        showScreen("checkoutScreen");
+    });
+
+
+/* ==========================================
+   BACK TO FORM
+========================================== */
+
+function backToForm() {
+
+    showScreen("formScreen");
+}
+
+
+/* ==========================================
+   GOOGLE PAY
+========================================== */
+
+async function startGooglePay() {
+
+    if (!currentApplication) {
+
+        alert(
+            "Please complete the application first."
+        );
+
+        return;
+    }
+
+
+    /*
+       IMPORTANT:
+
+       Real Google Pay processing cannot be completed
+       until a real supported PSP/Gateway is selected
+       and configured.
+
+       We intentionally do NOT put fake gateway data here.
+    */
+
+    alert(
+        "Google Pay is ready for integration. " +
+        "The payment gateway must be connected before " +
+        "real payments can be processed."
+    );
+
+
+    /*
+       AFTER THE PSP IS CHOSEN:
+
+       This function will:
+
+       1. Create an order on the server
+       2. Open Google Pay
+       3. Receive the payment token
+       4. Send the token to server.js
+       5. Server sends token to PSP
+       6. PSP confirms payment
+       7. Application is saved
+       8. Success screen appears
+
+       We will add that code after selecting
+       the real Google Pay supported gateway.
+    */
+}
+
+
+/* ==========================================
+   SAVE APPLICATION
+========================================== */
+
+async function saveApplicationAfterPayment() {
+
+    if (!currentApplication) {
+        return;
+    }
+
+    try {
+
+        const response =
+            await fetch("/api/applications", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    brand_name:
+                        currentApplication.brandName,
+
+                    country_id:
+                        currentApplication.countryId,
+
+                    website:
+                        currentApplication.website,
+
+                    applicant_name:
+                        currentApplication.applicantName,
+
+                    email:
+                        currentApplication.applicantEmail,
+
+                    phone:
+                        currentApplication.applicantPhone,
+
+                    description:
+                        currentApplication.description,
+
+                    payment_status:
+                        "paid",
+
+                    amount:
+                        currentApplication.amount
+
+                })
+
+            });
 
 
         const data =
             await response.json();
 
 
-        brands.innerHTML = "";
-
-
-        if (!data.length) {
-
-            brands.innerHTML = `
-                <div class="loading">
-                    No brands listed yet.
-                </div>
-            `;
-
-            return;
-
-        }
-
-
-        data.forEach(brand => {
-
-            const card =
-                document.createElement("div");
-
-            card.className =
-                "brand-card";
-
-
-            let websiteHtml = "";
-
-
-            if (brand.website) {
-
-                websiteHtml = `
-
-                    <p>
-                        <a
-                            href="${escapeAttribute(brand.website)}"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            Visit website →
-                        </a>
-                    </p>
-
-                `;
-
-            }
-
-
-            card.innerHTML = `
-
-                <h3>
-                    ${escapeHtml(brand.name)}
-                </h3>
-
-                <p>
-                    ${escapeHtml(
-                        brand.description || ""
-                    )}
-                </p>
-
-                ${websiteHtml}
-
-            `;
-
-
-            brands.appendChild(card);
-
-        });
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "Brands error:",
-            error
-        );
-
-
-        brands.innerHTML = `
-            <div class="loading">
-                Unable to load brands.
-            </div>
-        `;
-
-    }
-
-}
-
-
-/* =====================================================
-   SHOW HOME
-===================================================== */
-
-function showHome() {
-
-    document.getElementById(
-        "countryView"
-    ).style.display = "block";
-
-
-    document.getElementById(
-        "detailView"
-    ).style.display = "none";
-
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-
-}
-
-
-/* =====================================================
-   OPEN ADD BRAND
-===================================================== */
-
-function openAddBrand() {
-
-    const modal =
-        document.getElementById(
-            "brandModal"
-        );
-
-
-    modal.style.display = "block";
-
-
-    document.body.style.overflow =
-        "hidden";
-
-
-    document.getElementById(
-        "checkout"
-    ).style.display = "none";
-
-
-    document.getElementById(
-        "paymentStatus"
-    ).className = "status";
-
-
-    document.getElementById(
-        "paymentStatus"
-    ).style.display = "none";
-
-
-    document.getElementById(
-        "brandName"
-    ).focus();
-
-}
-
-
-/* =====================================================
-   CLOSE ADD BRAND
-===================================================== */
-
-function closeAddBrand() {
-
-    document.getElementById(
-        "brandModal"
-    ).style.display = "none";
-
-
-    document.body.style.overflow =
-        "";
-
-}
-
-
-/* =====================================================
-   CLICK OUTSIDE MODAL
-===================================================== */
-
-document.getElementById(
-    "brandModal"
-).addEventListener(
-    "click",
-    function(event) {
-
-        if (
-            event.target === this
-        ) {
-
-            closeAddBrand();
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   START CHECKOUT
-===================================================== */
-
-function startCheckout(event) {
-
-    event.preventDefault();
-
-
-    const brandName =
-        document.getElementById(
-            "brandName"
-        ).value.trim();
-
-
-    const country =
-        document.getElementById(
-            "countrySelect"
-        ).value;
-
-
-    const yourName =
-        document.getElementById(
-            "yourName"
-        ).value.trim();
-
-
-    const email =
-        document.getElementById(
-            "email"
-        ).value.trim();
-
-
-    if (
-        !brandName ||
-        !country ||
-        !yourName ||
-        !email
-    ) {
-
-        showPaymentError(
-            "Please complete all required fields."
-        );
-
-        return;
-
-    }
-
-
-    document.getElementById(
-        "checkout"
-    ).style.display = "block";
-
-
-    document.getElementById(
-        "checkout"
-    ).scrollIntoView({
-        behavior: "smooth"
-    });
-
-
-    if (paymentsClient) {
-
-        renderGooglePayButton();
-
-    }
-
-}
-
-
-/* =====================================================
-   GOOGLE PAY LOADED
-===================================================== */
-
-function onGooglePayLoaded() {
-
-    try {
-
-        paymentsClient =
-            new google.payments.api.PaymentsClient({
-
-                environment: "TEST"
-
-            });
-
-
-        checkGooglePayAvailability();
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "Google Pay initialization error:",
-            error
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   BASIC CARD METHOD
-===================================================== */
-
-function getBaseCardPaymentMethod() {
-
-    return {
-
-        type: "CARD",
-
-        parameters: {
-
-            allowedAuthMethods: [
-
-                "PAN_ONLY",
-
-                "CRYPTOGRAM_3DS"
-
-            ],
-
-            allowedCardNetworks: [
-
-                "AMEX",
-
-                "DISCOVER",
-
-                "INTERAC",
-
-                "JCB",
-
-                "MASTERCARD",
-
-                "VISA"
-
-            ]
-
-        }
-
-    };
-
-}
-
-
-/* =====================================================
-   TOKENIZED CARD METHOD
-===================================================== */
-
-function getCardPaymentMethod() {
-
-    return {
-
-        ...getBaseCardPaymentMethod(),
-
-        tokenizationSpecification: {
-
-            type: "PAYMENT_GATEWAY",
-
-            parameters: {
-
-                /*
-                    IMPORTANT
-
-                    This is a placeholder for now.
-
-                    "example" is NOT a real payment gateway.
-
-                    We will replace it after selecting
-                    a real Google Pay supported PSP.
-                */
-
-                gateway: "example",
-
-                gatewayMerchantId:
-                    "exampleGatewayMerchantId"
-
-            }
-
-        }
-
-    };
-
-}
-
-
-/* =====================================================
-   IS READY TO PAY REQUEST
-===================================================== */
-
-function getIsReadyToPayRequest() {
-
-    return {
-
-        apiVersion: 2,
-
-        apiVersionMinor: 0,
-
-        allowedPaymentMethods: [
-
-            getBaseCardPaymentMethod()
-
-        ]
-
-    };
-
-}
-
-
-/* =====================================================
-   PAYMENT REQUEST
-===================================================== */
-
-function getPaymentDataRequest() {
-
-    return {
-
-        apiVersion: 2,
-
-        apiVersionMinor: 0,
-
-
-        merchantInfo: {
-
-            merchantName:
-                "ALL WORLD BRANDS",
-
-            merchantId:
-                GOOGLE_MERCHANT_ID
-
-        },
-
-
-        allowedPaymentMethods: [
-
-            getCardPaymentMethod()
-
-        ],
-
-
-        transactionInfo: {
-
-            totalPriceStatus:
-                "FINAL",
-
-            totalPrice:
-                PAYMENT_AMOUNT,
-
-            currencyCode:
-                PAYMENT_CURRENCY
-
-        },
-
-
-        emailRequired: true
-
-    };
-
-}
-
-
-/* =====================================================
-   CHECK GOOGLE PAY AVAILABILITY
-===================================================== */
-
-function checkGooglePayAvailability() {
-
-    if (!paymentsClient) {
-
-        return;
-
-    }
-
-
-    paymentsClient
-        .isReadyToPay(
-            getIsReadyToPayRequest()
-        )
-
-        .then(result => {
-
-            googlePayAvailable =
-                !!result.result;
-
-
-            if (
-                googlePayAvailable
-            ) {
-
-                renderGooglePayButton();
-
-            }
-
-        })
-
-        .catch(error => {
-
-            console.error(
-                "Google Pay availability error:",
-                error
+        if (!response.ok) {
+
+            throw new Error(
+                data.message ||
+                "Application failed"
             );
-
-        });
-
-}
-
-
-/* =====================================================
-   RENDER GOOGLE PAY BUTTON
-===================================================== */
-
-function renderGooglePayButton() {
-
-    const container =
-        document.getElementById(
-            "google-pay-button"
-        );
-
-
-    if (!container) {
-
-        return;
-
-    }
-
-
-    container.innerHTML = "";
-
-
-    if (!paymentsClient) {
-
-        return;
-
-    }
-
-
-    const button =
-        paymentsClient.createButton({
-
-            onClick:
-                payWithGooglePay,
-
-            buttonColor:
-                "default",
-
-            buttonType:
-                "buy",
-
-            buttonSizeMode:
-                "fill"
-
-        });
-
-
-    container.appendChild(button);
-
-}
-
-
-/* =====================================================
-   GOOGLE PAY PAYMENT
-===================================================== */
-
-async function payWithGooglePay() {
-
-    if (!paymentsClient) {
-
-        showPaymentError(
-            "Google Pay is not ready yet."
-        );
-
-        return;
-
-    }
-
-
-    try {
-
-        const paymentData =
-            await paymentsClient
-                .loadPaymentData(
-                    getPaymentDataRequest()
-                );
-
-
-        console.log(
-            "Google Pay TEST payment data:",
-            paymentData
-        );
-
-
-        /*
-            IMPORTANT:
-
-            At this stage this is TEST MODE.
-
-            The returned payment token is NOT sent
-            to a real payment processor.
-
-            After we connect the real PSP:
-
-            Google Pay
-                ↓
-            payment token
-                ↓
-            our server
-                ↓
-            real payment gateway
-                ↓
-            payment confirmation
-                ↓
-            application created
-        */
-
-
-        showPaymentSuccess();
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "Google Pay payment error:",
-            error
-        );
-
-
-        if (
-            error &&
-            error.statusCode === "CANCELED"
-        ) {
-
-            return;
-
         }
 
 
-        showPaymentError(
-            "Google Pay payment could not be completed."
-        );
+        document.getElementById(
+            "applicationId"
+        ).textContent =
+            data.id ||
+            data.application_id ||
+            "Submitted";
 
+
+        showScreen("successScreen");
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Unable to submit application."
+        );
     }
-
 }
 
 
-/* =====================================================
-   SUCCESS
-===================================================== */
+/* ==========================================
+   ESCAPE HTML
+========================================== */
 
-function showPaymentSuccess() {
+function escapeHtml(value) {
 
-    const status =
-        document.getElementById(
-            "paymentStatus"
-        );
-
-
-    status.className =
-        "status success";
-
-
-    status.style.display =
-        "block";
-
-
-    status.innerHTML = `
-
-        <strong>
-            Google Pay TEST payment completed.
-        </strong>
-
-        <br><br>
-
-        No real money was charged.
-
-        <br><br>
-
-        The real payment gateway still needs
-        to be connected before production.
-
-    `;
-
+    return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
 
-/* =====================================================
-   ERROR
-===================================================== */
+/* ==========================================
+   CLOSE MODAL BY CLICKING OUTSIDE
+========================================== */
 
-function showPaymentError(message) {
+document
+    .getElementById("addBrandModal")
+    .addEventListener("click", function(event) {
 
-    const status =
-        document.getElementById(
-            "paymentStatus"
-        );
+        if (event.target === this) {
+            closeModal();
+        }
 
-
-    status.className =
-        "status error";
-
-
-    status.style.display =
-        "block";
-
-
-    status.textContent =
-        message;
-
-
-    status.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
     });
 
-}
 
-
-/* =====================================================
-   INITIALIZE
-===================================================== */
+/* ==========================================
+   START
+========================================== */
 
 loadCountries();
-
-
-/* =====================================================
-   ESCAPE KEY
-===================================================== */
-
-document.addEventListener(
-    "keydown",
-    function(event) {
-
-        if (
-            event.key === "Escape"
-        ) {
-
-            const modal =
-                document.getElementById(
-                    "brandModal"
-                );
-
-
-            if (
-                modal.style.display === "block"
-            ) {
-
-                closeAddBrand();
-
-            }
-
-        }
-
-    }
-);
 
 </script>
 
