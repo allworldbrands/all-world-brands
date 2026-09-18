@@ -29,7 +29,7 @@ body{
 }
 
 /* =========================
-   TOP HEADER
+   HEADER
 ========================= */
 
 header{
@@ -198,11 +198,12 @@ header{
 
 /* =========================
    COUNTRY GRID
+   COMPUTER = 10
 ========================= */
 
 .grid{
   display:grid;
-  grid-template-columns:repeat(15,minmax(0,1fr));
+  grid-template-columns:repeat(10,minmax(0,1fr));
   gap:8px;
 }
 
@@ -486,7 +487,7 @@ footer{
 }
 
 /* =========================
-   SCROLL BUTTON
+   TOP BUTTON
 ========================= */
 
 .top-btn{
@@ -507,12 +508,14 @@ footer{
 
 /* =========================
    TABLET
+   10 TA
 ========================= */
 
 @media(max-width:1200px){
 
   .grid{
     grid-template-columns:repeat(10,minmax(0,1fr));
+    gap:6px;
   }
 
   .country-card{
@@ -530,6 +533,7 @@ footer{
 
 /* =========================
    PHONE
+   5 TA
 ========================= */
 
 @media(max-width:700px){
@@ -608,44 +612,42 @@ footer{
     font-size:9px;
   }
 
-  /*
-     TELEFONDA 10 TA YONMA-YON
-  */
+  /* ⭐ TELEFONDA 5 TA */
 
   .grid{
-    grid-template-columns:repeat(10,minmax(0,1fr));
-    gap:3px;
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    gap:5px;
   }
 
   .country-card{
-    height:88px;
-    border-radius:7px;
+    height:105px;
+    border-radius:9px;
   }
 
   .country-content{
-    padding:4px;
+    padding:5px;
   }
 
   .country-flag{
-    top:4px;
-    left:4px;
-    font-size:17px;
+    top:5px;
+    left:5px;
+    font-size:19px;
   }
 
   .country-name{
-    font-size:6.5px;
+    font-size:8px;
     line-height:1.05;
   }
 
   .country-code{
-    margin-top:2px;
-    padding:1px 3px;
-    font-size:4.5px;
+    margin-top:3px;
+    padding:2px 4px;
+    font-size:5.5px;
   }
 
   .country-count{
-    margin-top:1px;
-    font-size:4.5px;
+    margin-top:2px;
+    font-size:5.5px;
   }
 
   .add-section{
@@ -672,52 +674,48 @@ footer{
 }
 
 /* =========================
-   VERY SMALL PHONES
+   VERY SMALL PHONE
+   5 TA
 ========================= */
 
 @media(max-width:390px){
 
   .grid{
-    grid-template-columns:repeat(10,minmax(0,1fr));
-    gap:2px;
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    gap:4px;
   }
 
   .country-card{
-    height:78px;
-    border-radius:6px;
+    height:92px;
+    border-radius:7px;
   }
 
   .country-content{
-    padding:3px;
+    padding:4px;
   }
 
   .country-flag{
-    font-size:14px;
-    top:3px;
-    left:3px;
+    font-size:16px;
+    top:4px;
+    left:4px;
   }
 
   .country-name{
-    font-size:5.5px;
+    font-size:6.5px;
   }
 
   .country-code{
-    font-size:4px;
+    font-size:4.5px;
   }
 
   .country-count{
-    font-size:4px;
+    font-size:4.5px;
   }
 }
 </style>
 </head>
 
-
 <body>
-
-<!-- =========================
-     HEADER
-========================= -->
 
 <header>
 
@@ -728,7 +726,9 @@ footer{
       <div class="logo-small">GLOBAL BRAND DIRECTORY</div>
     </div>
 
-    <button class="menu-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <button
+      class="menu-btn"
+      onclick="window.scrollTo({top:0,behavior:'smooth'})">
       ☰
     </button>
 
@@ -736,10 +736,6 @@ footer{
 
 </header>
 
-
-<!-- =========================
-     HERO
-========================= -->
 
 <section class="hero">
 
@@ -763,8 +759,7 @@ footer{
           id="searchInput"
           type="search"
           placeholder="Search brand, country or territory..."
-          oninput="searchBrands()"
-        >
+          oninput="searchBrands()">
 
         <button
           class="search-btn"
@@ -780,10 +775,6 @@ footer{
 
 </section>
 
-
-<!-- =========================
-     COUNTRIES
-========================= -->
 
 <main class="container">
 
@@ -805,10 +796,6 @@ footer{
     class="grid">
   </div>
 
-
-  <!-- =========================
-       ADD BRAND
-  ========================= -->
 
   <section class="add-section">
 
@@ -835,10 +822,6 @@ footer{
 
 </main>
 
-
-<!-- =========================
-     APPLICATION MODAL
-========================= -->
 
 <div
   id="modal"
@@ -948,8 +931,7 @@ footer{
 
         <textarea
           id="brandDescription"
-          placeholder="Tell us about your brand...">
-        </textarea>
+          placeholder="Tell us about your brand..."></textarea>
 
       </div>
 
@@ -978,10 +960,6 @@ footer{
 
 </div>
 
-
-<!-- =========================
-     FOOTER
-========================= -->
 
 <footer>
 
@@ -1297,10 +1275,6 @@ const countryImages = {
 };
 
 
-/* =====================================================
-   DEFAULT IMAGE
-===================================================== */
-
 const defaultImage =
   "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=900&q=80";
 
@@ -1381,12 +1355,6 @@ async function loadCountries(){
   }catch(error){
 
     console.error(error);
-
-    /*
-      Agar API javob bermasa ham sayt
-      butunlay bo'sh qolmasligi uchun
-      xabar ko'rsatamiz.
-    */
 
     grid.innerHTML=`
       <div style="
@@ -1543,12 +1511,6 @@ function renderCountries(list){
 ===================================================== */
 
 function openCountry(name){
-
-  /*
-    Saytdagi mavjud server API bilan
-    mos ishlashi uchun country query
-    orqali brandlarni ko'rsatamiz.
-  */
 
   window.location.href =
     "/?country=" +
