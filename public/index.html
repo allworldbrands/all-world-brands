@@ -2,7 +2,7 @@
 <html lang="uz">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
 <meta name="description"
 content="ALL WORLD BRANDS — Discover brands and countries from around the world">
@@ -21,6 +21,7 @@ content="ALL WORLD BRANDS — Discover brands and countries from around the worl
 
 html{
     scroll-behavior:smooth;
+    background:#020713;
 }
 
 body{
@@ -43,238 +44,367 @@ button{
 }
 
 
-/* =========================
-   GLOBAL BACKGROUND
-========================= */
+/* =====================================================
+   MAIN LIVE BACKGROUND
+===================================================== */
 
 body::before{
     content:"";
+
     position:fixed;
     inset:0;
-    z-index:-5;
+
+    z-index:-10;
 
     background:
-        radial-gradient(
-            circle at 50% 5%,
-            rgba(19,100,180,.24),
-            transparent 35%
-        ),
-        radial-gradient(
-            circle at 100% 90%,
-            rgba(72,39,170,.18),
-            transparent 35%
-        ),
-        #020713;
+        #020713
+        url("/brand-rain-background.png")
+        center center /
+        cover
+        no-repeat;
+
+    transform:scale(1.03);
+
+    animation:
+        backgroundBreath
+        18s
+        ease-in-out
+        infinite
+        alternate;
+
+    will-change:transform;
 }
 
 
-/* =========================
-   ANIMATED EARTH
-========================= */
-
-#globeBg{
-    position:fixed;
-    z-index:-4;
-    inset:0;
-    pointer-events:none;
-    overflow:hidden;
-}
-
-.earth{
-    position:absolute;
-
-    width:min(900px,72vw);
-    aspect-ratio:1;
-
-    left:50%;
-    top:145px;
-
-    transform:translateX(-50%);
-
-    border-radius:50%;
-    overflow:hidden;
-
-    opacity:.55;
-
-    box-shadow:
-        0 0 80px rgba(0,140,255,.22),
-        inset -55px -15px 100px rgba(0,0,0,.62);
-
-    background:#031a2d;
-}
-
-.earth-map{
-    position:absolute;
-    inset:-2%;
-
-    background-image:
-        url("https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg");
-
-    background-size:200% 100%;
-    background-repeat:repeat-x;
-    background-position:0 50%;
-
-    animation:earthSpin 35s linear infinite;
-}
-
-.earth::after{
+body::after{
     content:"";
 
-    position:absolute;
+    position:fixed;
     inset:0;
 
+    z-index:-9;
+
+    pointer-events:none;
+
     background:
-        radial-gradient(
-            circle at 34% 28%,
-            rgba(255,255,255,.16),
-            transparent 18%
-        ),
-        radial-gradient(
-            circle at 68% 65%,
-            rgba(0,0,0,.7),
-            transparent 65%
-        ),
         linear-gradient(
-            90deg,
-            rgba(0,0,0,.25),
-            transparent 35%,
-            rgba(0,0,0,.32)
+            180deg,
+            rgba(1,7,18,.48),
+            rgba(1,7,18,.16) 42%,
+            rgba(1,5,14,.62)
+        ),
+        radial-gradient(
+            circle at 50% 40%,
+            transparent 20%,
+            rgba(0,0,0,.38) 100%
+        );
+}
+
+
+@keyframes backgroundBreath{
+
+    from{
+        transform:scale(1.03);
+    }
+
+    to{
+        transform:scale(1.09);
+    }
+
+}
+
+
+/* =====================================================
+   LIVE RAIN EFFECT
+===================================================== */
+
+#rainFX{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:-8;
+
+    pointer-events:none;
+
+    overflow:hidden;
+
+    opacity:.42;
+
+}
+
+
+.rain-streak{
+
+    position:absolute;
+
+    top:-18vh;
+
+    width:1px;
+
+    height:90px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            transparent,
+            rgba(180,225,255,.7),
+            transparent
         );
 
-    mix-blend-mode:screen;
+    transform:rotate(12deg);
+
+    animation:
+        rainFall
+        linear
+        infinite;
+
+    filter:blur(.2px);
+
 }
 
-@keyframes earthSpin{
-    to{
-        background-position:-200% 50%;
+
+@keyframes rainFall{
+
+    from{
+
+        transform:
+            translate3d(
+                0,
+                -15vh,
+                0
+            )
+            rotate(12deg);
+
     }
+
+    to{
+
+        transform:
+            translate3d(
+                -12vw,
+                120vh,
+                0
+            )
+            rotate(12deg);
+
+    }
+
 }
 
 
-/* =========================
+/* =====================================================
+   GLOBE BACKGROUND
+===================================================== */
+
+#globeBg{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:-7;
+
+    pointer-events:none;
+
+}
+
+
+/* =====================================================
    HEADER
-========================= */
+===================================================== */
 
 header{
+
     position:sticky;
+
     top:0;
+
     z-index:1000;
 
-    background:rgba(2,7,19,.78);
+    background:
+        rgba(2,7,19,.72);
 
-    backdrop-filter:blur(18px);
+    backdrop-filter:
+        blur(18px);
+
+    -webkit-backdrop-filter:
+        blur(18px);
 
     border-bottom:
-        1px solid rgba(255,255,255,.08);
+        1px solid
+        rgba(255,255,255,.08);
+
 }
+
 
 .nav{
+
     max-width:1400px;
+
     margin:auto;
 
-    padding:14px 24px;
+    padding:
+        14px 24px;
 
     display:flex;
+
     align-items:center;
+
     gap:20px;
+
 }
 
+
 .logo-wrap{
+
     display:flex;
+
     align-items:center;
+
     gap:12px;
 
     min-width:max-content;
+
 }
+
 
 .logo-globe{
+
     font-size:32px;
+
 }
+
 
 .logo{
+
     font-size:20px;
+
     font-weight:900;
+
     letter-spacing:1px;
+
 }
+
 
 .tagline{
+
     font-size:10px;
+
     color:#8fa3c3;
+
     margin-top:2px;
+
 }
+
 
 .nav-links{
+
     display:flex;
+
     gap:5px;
+
     margin-left:18px;
+
 }
+
 
 .nav-links button{
+
     border:0;
+
     background:transparent;
+
     color:#dfe9fb;
 
-    padding:10px 13px;
+    padding:
+        10px 13px;
 
     border-radius:10px;
+
 }
+
 
 .nav-links button:hover{
-    background:rgba(255,255,255,.08);
+
+    background:
+        rgba(255,255,255,.08);
+
 }
 
 
-/* =========================
+/* =====================================================
    HEADER SEARCH
-========================= */
+===================================================== */
 
 .header-search{
+
     margin-left:auto;
 
     display:flex;
+
     align-items:center;
 
     border:
-        1px solid rgba(71,128,255,.35);
+        1px solid
+        rgba(71,128,255,.35);
 
-    background:rgba(8,23,48,.72);
+    background:
+        rgba(8,23,48,.72);
 
     border-radius:14px;
 
     overflow:hidden;
 
     max-width:330px;
+
     width:100%;
+
 }
 
+
 .header-search input{
+
     width:100%;
 
     background:transparent;
+
     border:0;
+
     outline:0;
 
     color:#fff;
 
-    padding:11px 13px;
+    padding:
+        11px 13px;
+
 }
+
 
 .lang{
-    padding:8px 0 8px 12px;
+
+    padding:
+        8px 0
+        8px 12px;
 
     color:#fff;
+
     font-weight:700;
+
 }
 
 
-/* =========================
+/* =====================================================
    HERO
-========================= */
+===================================================== */
 
 .hero{
+
     position:relative;
 
     max-width:1400px;
+
     margin:auto;
 
     min-height:390px;
@@ -283,23 +413,33 @@ header{
         70px 24px 50px;
 
     display:flex;
+
     align-items:center;
+
 }
 
+
 .hero-copy{
+
     max-width:680px;
 
     position:relative;
+
     z-index:2;
+
 }
 
+
 .eyebrow{
+
     display:inline-flex;
 
-    padding:8px 13px;
+    padding:
+        8px 13px;
 
     border:
-        1px solid rgba(69,145,255,.45);
+        1px solid
+        rgba(69,145,255,.45);
 
     background:
         rgba(8,29,60,.62);
@@ -311,20 +451,34 @@ header{
     font-size:13px;
 
     margin-bottom:20px;
+
 }
 
+
 .hero h1{
+
     font-size:
-        clamp(42px,6vw,78px);
+        clamp(
+            42px,
+            6vw,
+            78px
+        );
 
     line-height:.98;
 
     font-weight:900;
 
     margin-bottom:22px;
+
+    text-shadow:
+        0 8px 40px
+        rgba(0,0,0,.5);
+
 }
 
+
 .gradient{
+
     background:
         linear-gradient(
             90deg,
@@ -334,12 +488,16 @@ header{
         );
 
     -webkit-background-clip:text;
+
     background-clip:text;
 
     color:transparent;
+
 }
 
+
 .hero p{
+
     max-width:670px;
 
     color:#b9c7df;
@@ -347,23 +505,28 @@ header{
     font-size:18px;
 
     line-height:1.55;
+
 }
 
 
-/* =========================
+/* =====================================================
    GLOBAL BADGE
-========================= */
+===================================================== */
 
 .global-badge{
+
     position:absolute;
 
     right:30px;
+
     top:80px;
 
-    padding:18px 22px;
+    padding:
+        18px 22px;
 
     border:
-        1px solid rgba(35,157,255,.55);
+        1px solid
+        rgba(35,157,255,.55);
 
     background:
         rgba(5,22,47,.78);
@@ -371,28 +534,40 @@ header{
     border-radius:20px;
 
     box-shadow:
-        0 15px 50px rgba(0,0,0,.25);
+        0 15px 50px
+        rgba(0,0,0,.25);
+
 }
+
 
 .global-badge strong{
+
     font-size:28px;
+
     display:block;
+
 }
+
 
 .global-badge span{
+
     color:#91a4c2;
+
     font-size:12px;
+
 }
 
 
-/* =========================
+/* =====================================================
    SEARCH
-========================= */
+===================================================== */
 
 .search-box{
+
     max-width:800px;
 
-    margin:28px 0 0;
+    margin:
+        28px 0 0;
 
     display:flex;
 
@@ -400,33 +575,44 @@ header{
         rgba(7,20,42,.82);
 
     border:
-        1px solid #1d75d8;
+        1px solid
+        #1d75d8;
 
     border-radius:18px;
 
     overflow:hidden;
 
     box-shadow:
-        0 12px 40px rgba(0,0,0,.22);
+        0 12px 40px
+        rgba(0,0,0,.22);
+
 }
 
+
 .search-box input{
+
     width:100%;
 
     border:0;
+
     outline:0;
 
     background:transparent;
 
     color:#fff;
 
-    padding:17px 20px;
+    padding:
+        17px 20px;
+
 }
 
+
 .search-box button{
+
     border:0;
 
-    padding:0 24px;
+    padding:
+        0 24px;
 
     background:
         linear-gradient(
@@ -438,14 +624,16 @@ header{
     color:#fff;
 
     font-weight:800;
+
 }
 
 
-/* =========================
+/* =====================================================
    MAIN
-========================= */
+===================================================== */
 
 .container{
+
     max-width:1400px;
 
     margin:auto;
@@ -456,9 +644,12 @@ header{
     position:relative;
 
     z-index:2;
+
 }
 
+
 .section-head{
+
     display:flex;
 
     align-items:center;
@@ -467,48 +658,63 @@ header{
 
     margin:
         18px 0 22px;
+
 }
+
 
 .section-title{
+
     font-size:30px;
+
 }
 
+
 .count-badge{
+
     font-size:13px;
 
     color:#cfe0ff;
 
-    padding:7px 12px;
+    padding:
+        7px 12px;
 
     border:
-        1px solid rgba(73,132,255,.4);
+        1px solid
+        rgba(73,132,255,.4);
 
     background:
         rgba(8,28,61,.65);
 
     border-radius:999px;
+
 }
 
 
-/* =========================
+/* =====================================================
    COUNTRY GRID
-========================= */
+===================================================== */
 
 .countries-grid{
+
     display:grid;
 
     grid-template-columns:
-        repeat(10,minmax(0,1fr));
+        repeat(
+            10,
+            minmax(0,1fr)
+        );
 
     gap:20px;
+
 }
 
 
-/* =========================
+/* =====================================================
    COUNTRY CARD
-========================= */
+===================================================== */
 
 .country-card{
+
     position:relative;
 
     min-width:0;
@@ -520,7 +726,8 @@ header{
     overflow:hidden;
 
     border:
-        1px solid rgba(62,157,255,.42);
+        1px solid
+        rgba(62,157,255,.42);
 
     background:
         #081a33
@@ -528,7 +735,8 @@ header{
         no-repeat;
 
     box-shadow:
-        0 12px 30px rgba(0,0,0,.28);
+        0 12px 30px
+        rgba(0,0,0,.28);
 
     transition:
         transform .2s,
@@ -536,9 +744,12 @@ header{
         box-shadow .2s;
 
     cursor:pointer;
+
 }
 
+
 .country-card::before{
+
     content:"";
 
     position:absolute;
@@ -548,31 +759,38 @@ header{
     background:
         linear-gradient(
             180deg,
-            rgba(0,0,0,.05) 0%,
-            rgba(0,0,0,.1) 38%,
-            rgba(0,7,18,.9) 100%
+            rgba(0,0,0,.05),
+            rgba(0,0,0,.12) 38%,
+            rgba(0,7,18,.92) 100%
         );
+
 }
 
+
 .country-card:hover{
-    transform:translateY(-5px);
+
+    transform:
+        translateY(-5px);
 
     border-color:#5fbcff;
 
     box-shadow:
         0 18px 40px
         rgba(0,120,255,.2);
+
 }
 
 
-/* =========================
+/* =====================================================
    FLAG
-========================= */
+===================================================== */
 
 .country-flag{
+
     position:absolute;
 
     left:10px;
+
     top:10px;
 
     font-size:27px;
@@ -584,24 +802,31 @@ header{
             0 3px 5px
             rgba(0,0,0,.5)
         );
+
 }
 
 
-/* =========================
+/* =====================================================
    COUNTRY TEXT
-========================= */
+===================================================== */
 
 .country-info{
+
     position:absolute;
 
     left:10px;
+
     right:10px;
+
     bottom:10px;
 
     z-index:2;
+
 }
 
+
 .country-card h3{
+
     font-size:14px;
 
     line-height:1.12;
@@ -613,9 +838,12 @@ header{
     overflow:hidden;
 
     text-overflow:ellipsis;
+
 }
 
+
 .country-meta{
+
     display:flex;
 
     align-items:center;
@@ -625,15 +853,18 @@ header{
     color:#c4d4ee;
 
     font-size:10px;
+
 }
 
 
-/* =========================
+/* =====================================================
    ARROW
-========================= */
+===================================================== */
 
 .arrow{
+
     width:25px;
+
     height:25px;
 
     border:
@@ -652,14 +883,16 @@ header{
 
     background:
         rgba(0,0,0,.2);
+
 }
 
 
-/* =========================
+/* =====================================================
    PROMO
-========================= */
+===================================================== */
 
 .promo{
+
     margin-top:60px;
 
     padding:
@@ -680,21 +913,33 @@ header{
         rgba(111,120,255,.3);
 
     text-align:center;
+
+    backdrop-filter:
+        blur(8px);
+
 }
 
+
 .promo h2{
+
     font-size:38px;
 
     margin-bottom:12px;
+
 }
 
+
 .promo p{
+
     color:#aeb9ce;
 
     margin-bottom:25px;
+
 }
 
+
 .primary-btn{
+
     border:0;
 
     border-radius:15px;
@@ -717,14 +962,16 @@ header{
     box-shadow:
         0 10px 35px
         rgba(91,74,255,.25);
+
 }
 
 
-/* =========================
+/* =====================================================
    FOOTER
-========================= */
+===================================================== */
 
 footer{
+
     border-top:
         1px solid
         rgba(255,255,255,.08);
@@ -733,15 +980,21 @@ footer{
 
     text-align:center;
 
-    padding:30px 20px;
+    padding:
+        30px 20px;
+
+    background:
+        rgba(1,5,14,.45);
+
 }
 
 
-/* =========================
+/* =====================================================
    MODAL
-========================= */
+===================================================== */
 
 .modal{
+
     display:none;
 
     position:fixed;
@@ -753,22 +1006,32 @@ footer{
     background:
         rgba(0,0,0,.78);
 
-    backdrop-filter:blur(10px);
+    backdrop-filter:
+        blur(10px);
+
+    -webkit-backdrop-filter:
+        blur(10px);
 
     overflow-y:auto;
 
     padding:25px;
+
 }
 
+
 .modal.show{
+
     display:flex;
 
     align-items:center;
 
     justify-content:center;
+
 }
 
+
 .modal-box{
+
     width:100%;
 
     max-width:650px;
@@ -776,7 +1039,8 @@ footer{
     background:#080e1c;
 
     border:
-        1px solid #23314e;
+        1px solid
+        #23314e;
 
     border-radius:25px;
 
@@ -787,46 +1051,64 @@ footer{
     box-shadow:
         0 30px 100px
         rgba(0,0,0,.6);
+
 }
 
+
 .close{
+
     position:absolute;
 
     right:20px;
+
     top:20px;
 
     width:42px;
+
     height:42px;
 
     border-radius:50%;
 
     border:
-        1px solid #26334d;
+        1px solid
+        #26334d;
 
     background:#0d1526;
 
     color:#fff;
 
     font-size:25px;
+
 }
 
+
 .modal h2{
+
     font-size:32px;
 
     margin-bottom:7px;
+
 }
 
+
 .subtitle{
+
     color:#8795af;
 
     margin-bottom:25px;
+
 }
+
 
 .form-group{
+
     margin-bottom:15px;
+
 }
 
+
 .form-group label{
+
     display:block;
 
     color:#b8c2d5;
@@ -834,15 +1116,19 @@ footer{
     font-size:14px;
 
     margin-bottom:7px;
+
 }
+
 
 .form-group input,
 .form-group select,
 .form-group textarea{
+
     width:100%;
 
     border:
-        1px solid #25334e;
+        1px solid
+        #25334e;
 
     background:#0c1425;
 
@@ -853,16 +1139,23 @@ footer{
     padding:14px;
 
     outline:0;
+
 }
 
+
 .form-group textarea{
+
     min-height:120px;
 
     resize:vertical;
+
 }
 
+
 .price-box{
-    margin:20px 0;
+
+    margin:
+        20px 0;
 
     padding:20px;
 
@@ -871,22 +1164,29 @@ footer{
     background:#0c1425;
 
     border:
-        1px solid #273652;
+        1px solid
+        #273652;
 
     display:flex;
 
     justify-content:space-between;
 
     align-items:center;
+
 }
 
+
 .price{
+
     font-size:27px;
 
     font-weight:900;
+
 }
 
+
 .checkout-btn{
+
     width:100%;
 
     border:0;
@@ -905,22 +1205,30 @@ footer{
             #0bbce5,
             #754bff
         );
+
 }
 
 
-/* =========================
+/* =====================================================
    CHECKOUT
-========================= */
+===================================================== */
 
 .checkout-screen{
+
     display:none;
+
 }
+
 
 .checkout-screen.active{
+
     display:block;
+
 }
 
+
 .checkout-header{
+
     display:flex;
 
     align-items:center;
@@ -928,9 +1236,12 @@ footer{
     gap:12px;
 
     margin-bottom:25px;
+
 }
 
+
 .back-btn{
+
     border:0;
 
     background:transparent;
@@ -938,32 +1249,43 @@ footer{
     color:#aeb9cc;
 
     font-size:15px;
+
 }
 
+
 .order-card{
+
     background:#0c1425;
 
     border:
-        1px solid #263450;
+        1px solid
+        #263450;
 
     border-radius:17px;
 
     padding:20px;
 
     margin-bottom:20px;
+
 }
 
+
 .order-row{
+
     display:flex;
 
     justify-content:space-between;
 
     padding:9px 0;
+
 }
 
+
 .order-row.total{
+
     border-top:
-        1px solid #263450;
+        1px solid
+        #263450;
 
     margin-top:10px;
 
@@ -972,13 +1294,19 @@ footer{
     font-size:20px;
 
     font-weight:900;
+
 }
+
 
 .google-pay-area{
+
     margin-top:20px;
+
 }
 
+
 .google-pay-button{
+
     width:100%;
 
     min-height:55px;
@@ -994,9 +1322,12 @@ footer{
     font-weight:800;
 
     font-size:17px;
+
 }
 
+
 .payment-note{
+
     color:#78869f;
 
     font-size:13px;
@@ -1004,39 +1335,55 @@ footer{
     line-height:1.5;
 
     margin-top:14px;
+
 }
 
 
-/* =========================
+/* =====================================================
    SUCCESS
-========================= */
+===================================================== */
 
 .result{
+
     text-align:center;
 
-    padding:30px 5px;
+    padding:
+        30px 5px;
+
 }
 
+
 .result-icon{
+
     font-size:65px;
 
     margin-bottom:15px;
+
 }
 
+
 .result h2{
+
     font-size:30px;
 
     margin-bottom:12px;
+
 }
 
+
 .result p{
+
     color:#9aa7bd;
 
     line-height:1.6;
+
 }
 
+
 .application-id{
-    margin:20px 0;
+
+    margin:
+        20px 0;
 
     padding:15px;
 
@@ -1045,237 +1392,415 @@ footer{
     background:#0c1425;
 
     color:#b8c4d8;
+
 }
 
 
-/* =========================
+/* =====================================================
    TABLET
-========================= */
+===================================================== */
 
 @media(max-width:1100px){
 
     .countries-grid{
+
         grid-template-columns:
-            repeat(8,minmax(0,1fr));
+            repeat(
+                8,
+                minmax(0,1fr)
+            );
+
     }
 
+
     .global-badge{
+
         position:static;
 
         margin-left:auto;
+
     }
 
+
     .hero{
+
         align-items:flex-start;
+
     }
 
 }
 
 
-/* =========================
+/* =====================================================
    MOBILE
-========================= */
+===================================================== */
 
 @media(max-width:850px){
 
     .nav-links{
+
         display:none;
+
     }
+
 
     .header-search{
+
         max-width:220px;
+
     }
 
+
     .hero{
+
         min-height:auto;
 
         padding-top:50px;
+
     }
+
 
     .global-badge{
+
         display:none;
+
     }
+
 
     .countries-grid{
+
         grid-template-columns:
-            repeat(5,minmax(0,1fr));
+            repeat(
+                5,
+                minmax(0,1fr)
+            );
 
         gap:14px;
+
     }
 
+
     .country-card{
+
         height:160px;
+
     }
 
 }
 
 
-/* =========================
+/* =====================================================
    PHONE
-========================= */
+===================================================== */
 
 @media(max-width:600px){
 
     .nav{
+
         padding:
             12px 14px;
+
     }
+
 
     .logo-globe{
+
         font-size:26px;
+
     }
+
 
     .logo{
+
         font-size:14px;
+
     }
+
 
     .tagline{
+
         font-size:8px;
+
     }
+
 
     .header-search{
+
         max-width:150px;
+
     }
 
+
     .header-search input{
+
         font-size:11px;
 
         padding:9px;
+
     }
 
+
     .lang{
+
         font-size:11px;
 
         padding-left:7px;
+
     }
+
 
     .hero{
+
         padding:
             45px 14px 35px;
+
     }
+
 
     .hero h1{
+
         font-size:40px;
+
     }
+
 
     .hero p{
+
         font-size:15px;
+
     }
+
 
     .search-box{
+
         margin-top:22px;
+
     }
 
+
     .search-box input{
+
         padding:14px;
 
         font-size:13px;
+
     }
 
+
     .search-box button{
+
         padding:
             0 14px;
 
         font-size:12px;
+
     }
+
 
     .container{
+
         padding-left:14px;
+
         padding-right:14px;
+
     }
+
 
     .section-head{
+
         gap:8px;
+
     }
+
 
     .section-title{
+
         font-size:24px;
+
     }
 
+
     .count-badge{
+
         font-size:10px;
 
         padding:
             6px 8px;
+
     }
+
 
     .countries-grid{
+
         grid-template-columns:
-            repeat(5,minmax(0,1fr));
+            repeat(
+                5,
+                minmax(0,1fr)
+            );
 
         gap:12px;
+
     }
 
+
     .country-card{
+
         height:145px;
 
         border-radius:12px;
+
     }
 
+
     .country-flag{
+
         left:6px;
 
         top:6px;
 
         font-size:19px;
+
     }
 
+
     .country-info{
+
         left:7px;
 
         right:7px;
 
         bottom:7px;
+
     }
 
+
     .country-card h3{
+
         font-size:10px;
 
         margin-bottom:3px;
+
     }
+
 
     .country-meta{
+
         font-size:8px;
+
     }
 
+
     .arrow{
+
         width:20px;
 
         height:20px;
 
         font-size:11px;
+
     }
+
 
     .promo{
+
         padding:
             30px 18px;
+
     }
+
 
     .promo h2{
+
         font-size:28px;
+
     }
+
 
     .modal{
+
         padding:10px;
+
     }
 
+
     .modal-box{
+
         padding:
             24px 18px;
 
         border-radius:20px;
+
     }
 
-    .earth{
-        width:145vw;
 
-        top:95px;
+    #rainFX{
 
-        opacity:.34;
+        opacity:.30;
+
     }
 
-    .earth-map{
-        animation-duration:45s;
+}
+
+
+/* =====================================================
+   VERY SMALL PHONE
+===================================================== */
+
+@media(max-width:380px){
+
+    .header-search{
+
+        max-width:125px;
+
+    }
+
+
+    .header-search input{
+
+        display:none;
+
+    }
+
+
+    .hero h1{
+
+        font-size:34px;
+
+    }
+
+
+    .countries-grid{
+
+        gap:9px;
+
+    }
+
+
+    .country-card{
+
+        height:132px;
+
+    }
+
+}
+
+
+/* =====================================================
+   REDUCE MOTION
+===================================================== */
+
+@media(prefers-reduced-motion:reduce){
+
+    *,
+    *::before,
+    *::after{
+
+        animation-duration:.001ms !important;
+
+        animation-iteration-count:1 !important;
+
+        scroll-behavior:auto !important;
+
     }
 
 }
@@ -1287,24 +1812,23 @@ footer{
 <body>
 
 
-<!-- =========================
-     GLOBAL EARTH
-========================= -->
+<!-- =====================================================
+     RAIN EFFECT
+===================================================== -->
 
-<div id="globeBg">
-
-    <div class="earth">
-
-        <div class="earth-map"></div>
-
-    </div>
-
-</div>
+<div id="rainFX"></div>
 
 
-<!-- =========================
+<!-- =====================================================
+     GLOBE BACKGROUND
+===================================================== -->
+
+<div id="globeBg"></div>
+
+
+<!-- =====================================================
      HEADER
-========================= -->
+===================================================== -->
 
 <header>
 
@@ -1316,11 +1840,13 @@ footer{
             🌐
         </div>
 
+
         <div>
 
             <div class="logo">
                 ALL WORLD BRANDS
             </div>
+
 
             <div class="tagline">
                 Global Brands • Global Opportunities
@@ -1333,11 +1859,16 @@ footer{
 
     <div class="nav-links">
 
-        <button onclick="scrollToCountries()">
+        <button
+            onclick="scrollToCountries()"
+        >
             Davlatlar
         </button>
 
-        <button onclick="openAddBrand()">
+
+        <button
+            onclick="openAddBrand()"
+        >
             Brend qo‘shish
         </button>
 
@@ -1349,6 +1880,7 @@ footer{
         <span class="lang">
             🌐 UZ
         </span>
+
 
         <input
             id="headerSearchInput"
@@ -1364,9 +1896,9 @@ footer{
 </header>
 
 
-<!-- =========================
+<!-- =====================================================
      HERO
-========================= -->
+===================================================== -->
 
 <section class="hero">
 
@@ -1375,6 +1907,7 @@ footer{
     <div class="eyebrow">
         🌍 Global brand directory
     </div>
+
 
     <h1>
 
@@ -1385,6 +1918,7 @@ footer{
         </span>
 
     </h1>
+
 
     <p>
 
@@ -1405,7 +1939,10 @@ footer{
             oninput="filterCountries()"
         >
 
-        <button onclick="filterCountries()">
+
+        <button
+            onclick="filterCountries()"
+        >
             Qidirish
         </button>
 
@@ -1420,9 +1957,11 @@ footer{
         Dunyo bo‘ylab
     </span>
 
+
     <strong>
         200+
     </strong>
+
 
     <span>
         davlat va hudud
@@ -1433,9 +1972,9 @@ footer{
 </section>
 
 
-<!-- =========================
+<!-- =====================================================
      MAIN
-========================= -->
+===================================================== -->
 
 <main
     class="container"
@@ -1447,6 +1986,7 @@ footer{
     <h2 class="section-title">
         🌐 Davlatlar
     </h2>
+
 
     <span
         class="count-badge"
@@ -1470,6 +2010,7 @@ footer{
         Brendingizni dunyoga olib chiqing
     </h2>
 
+
     <p>
 
         Brendingizni
@@ -1479,6 +2020,7 @@ footer{
         <strong>$1.00</strong>.
 
     </p>
+
 
     <button
         class="primary-btn"
@@ -1494,9 +2036,9 @@ footer{
 </main>
 
 
-<!-- =========================
+<!-- =====================================================
      FOOTER
-========================= -->
+===================================================== -->
 
 <footer>
 
@@ -1505,9 +2047,9 @@ footer{
 </footer>
 
 
-<!-- =========================
+<!-- =====================================================
      ADD BRAND MODAL
-========================= -->
+===================================================== -->
 
 <div
     class="modal"
@@ -1533,6 +2075,7 @@ footer{
     Brend qo‘shish
 </h2>
 
+
 <p class="subtitle">
     Brendingizni ko‘rib chiqish uchun yuboring — $1.00
 </p>
@@ -1546,6 +2089,7 @@ footer{
 <label>
     Brend nomi *
 </label>
+
 
 <input
     id="brandName"
@@ -1561,6 +2105,7 @@ footer{
 <label>
     Davlat *
 </label>
+
 
 <select
     id="brandCountry"
@@ -1582,6 +2127,7 @@ footer{
     Veb-sayt
 </label>
 
+
 <input
     id="brandWebsite"
     type="url"
@@ -1597,6 +2143,7 @@ footer{
     Ismingiz *
 </label>
 
+
 <input
     id="applicantName"
     required
@@ -1611,6 +2158,7 @@ footer{
 <label>
     Email *
 </label>
+
 
 <input
     id="applicantEmail"
@@ -1628,6 +2176,7 @@ footer{
     Telefon
 </label>
 
+
 <input
     id="applicantPhone"
     placeholder="+998..."
@@ -1642,6 +2191,7 @@ footer{
     Brend tavsifi
 </label>
 
+
 <textarea
     id="brandDescription"
     placeholder="Brendingiz haqida..."
@@ -1655,6 +2205,7 @@ footer{
 <span>
     Ariza to‘lovi
 </span>
+
 
 <span class="price">
     $1.00
@@ -1678,7 +2229,9 @@ footer{
 </div>
 
 
-<!-- CHECKOUT -->
+<!-- =====================================================
+     CHECKOUT
+===================================================== -->
 
 <div
     id="checkoutScreen"
@@ -1693,6 +2246,7 @@ footer{
 >
     ← Orqaga
 </button>
+
 
 <h2>
     To‘lov
@@ -1716,7 +2270,10 @@ footer{
     Brend
 </span>
 
-<strong id="checkoutBrand"></strong>
+
+<strong
+    id="checkoutBrand"
+></strong>
 
 </div>
 
@@ -1727,7 +2284,10 @@ footer{
     Davlat
 </span>
 
-<strong id="checkoutCountry"></strong>
+
+<strong
+    id="checkoutCountry"
+></strong>
 
 </div>
 
@@ -1737,6 +2297,7 @@ footer{
 <span>
     Xizmat
 </span>
+
 
 <strong>
     Brand listing
@@ -1750,6 +2311,7 @@ footer{
 <span>
     Jami
 </span>
+
 
 <span>
     $1.00 USD
@@ -1794,7 +2356,9 @@ footer{
 </div>
 
 
-<!-- SUCCESS -->
+<!-- =====================================================
+     SUCCESS
+===================================================== -->
 
 <div
     id="successScreen"
@@ -1807,9 +2371,11 @@ footer{
     ✓
 </div>
 
+
 <h2>
     Ariza yuborildi
 </h2>
+
 
 <p>
     Brend arizangiz qabul qilindi.
@@ -1820,7 +2386,9 @@ footer{
 
     Ariza ID:
 
-    <strong id="applicationId"></strong>
+    <strong
+        id="applicationId"
+    ></strong>
 
 </div>
 
@@ -1846,9 +2414,9 @@ footer{
 
 <script>
 
-/* =========================
+/* =====================================================
    GLOBAL
-========================= */
+===================================================== */
 
 let countries = [];
 
@@ -1856,58 +2424,156 @@ let currentApplication = null;
 
 let currentCountryId = null;
 
+let currentCountryBrands = [];
+
 let countriesRequest = null;
 
+let currentPage = "countries";
 
-/* =========================
+
+/* =====================================================
+   RAIN GENERATOR
+===================================================== */
+
+function createRain(){
+
+    const container =
+        document.getElementById(
+            "rainFX"
+        );
+
+
+    if(!container){
+
+        return;
+
+    }
+
+
+    const amount =
+        window.innerWidth <= 600
+        ?
+        42
+        :
+        85;
+
+
+    container.innerHTML = "";
+
+
+    for(
+        let i = 0;
+        i < amount;
+        i++
+    ){
+
+        const drop =
+            document.createElement(
+                "span"
+            );
+
+
+        drop.className =
+            "rain-streak";
+
+
+        const left =
+            Math.random() * 110;
+
+
+        const duration =
+            2.8 +
+            Math.random() * 4.5;
+
+
+        const delay =
+            Math.random() * 6;
+
+
+        const height =
+            40 +
+            Math.random() * 100;
+
+
+        const opacity =
+            .18 +
+            Math.random() * .55;
+
+
+        drop.style.left =
+            left + "%";
+
+
+        drop.style.height =
+            height + "px";
+
+
+        drop.style.opacity =
+            opacity;
+
+
+        drop.style.animationDuration =
+            duration + "s";
+
+
+        drop.style.animationDelay =
+            "-" + delay + "s";
+
+
+        container.appendChild(
+            drop
+        );
+
+    }
+
+}
+
+
+createRain();
+
+
+window.addEventListener(
+    "resize",
+    function(){
+
+        clearTimeout(
+            window.__rainResizeTimer
+        );
+
+
+        window.__rainResizeTimer =
+            setTimeout(
+                createRain,
+                300
+            );
+
+    }
+);
+
+
+/* =====================================================
    COUNTRY IMAGE
-   LOCAL GITHUB / RENDER
-========================= */
+===================================================== */
 
-/*
-    Rasmlar shu papkada bo‘ladi:
-
-    public/
-      images/
-        countries/
-
-          UZ.jpg
-          US.jpg
-          TR.jpg
-          DE.jpg
-          FR.jpg
-          GB.jpg
-          IT.jpg
-          JP.jpg
-          CN.jpg
-          IN.jpg
-
-    API country.code = UZ
-    -> /images/countries/UZ.jpg
-*/
-
-
-function imageForCountry(name, id, code){
+function imageForCountry(
+    name,
+    id,
+    code
+){
 
     const cleanName =
-        String(name || "").trim();
+        String(
+            name || ""
+        ).trim();
+
 
     const cleanCode =
-        String(code || "")
+        String(
+            code || ""
+        )
         .trim()
         .toUpperCase();
 
-
-    /*
-       ENG MUHIM QISM:
-
-       Masalan:
-
-       UZ -> /images/countries/UZ.jpg
-       US -> /images/countries/US.jpg
-       DE -> /images/countries/DE.jpg
-       TR -> /images/countries/TR.jpg
-    */
 
     if(cleanCode){
 
@@ -1915,11 +2581,6 @@ function imageForCountry(name, id, code){
 
     }
 
-
-    /*
-       Agar API code bermasa,
-       ayrim davlatlar uchun fallback.
-    */
 
     const fallbackImages = {
 
@@ -1990,16 +2651,14 @@ function imageForCountry(name, id, code){
         );
 
 
-    if(fallbackImages[key]){
+    if(
+        fallbackImages[key]
+    ){
 
         return fallbackImages[key];
 
     }
 
-
-    /*
-       Eng oxirgi fallback.
-    */
 
     return `https://loremflickr.com/900/650/${encodeURIComponent(
         cleanName + " landmark"
@@ -2008,9 +2667,9 @@ function imageForCountry(name, id, code){
 }
 
 
-/* =========================
-   FAST COUNTRY LOADER
-========================= */
+/* =====================================================
+   COUNTRY LOADER
+===================================================== */
 
 async function loadCountries(){
 
@@ -2019,15 +2678,12 @@ async function loadCountries(){
             "countriesGrid"
         );
 
+
     const count =
         document.getElementById(
             "countryCount"
         );
 
-
-    /*
-       AVVAL CACHE
-    */
 
     try{
 
@@ -2040,7 +2696,9 @@ async function loadCountries(){
         if(cached){
 
             const cachedCountries =
-                JSON.parse(cached);
+                JSON.parse(
+                    cached
+                );
 
 
             if(
@@ -2080,10 +2738,6 @@ async function loadCountries(){
 
     }
 
-
-    /*
-       KEYIN SERVER
-    */
 
     try{
 
@@ -2133,10 +2787,6 @@ async function loadCountries(){
         countries =
             data;
 
-
-        /*
-           CACHE
-        */
 
         try{
 
@@ -2230,11 +2880,13 @@ async function loadCountries(){
 }
 
 
-/* =========================
+/* =====================================================
    FLAG
-========================= */
+===================================================== */
 
-function countryCodeToFlag(code){
+function countryCodeToFlag(
+    code
+){
 
     if(!code){
 
@@ -2249,7 +2901,9 @@ function countryCodeToFlag(code){
         .trim();
 
 
-    if(clean.length !== 2){
+    if(
+        clean.length !== 2
+    ){
 
         return "🌎";
 
@@ -2270,11 +2924,13 @@ function countryCodeToFlag(code){
 }
 
 
-/* =========================
+/* =====================================================
    RENDER COUNTRIES
-========================= */
+===================================================== */
 
-function renderCountries(list){
+function renderCountries(
+    list
+){
 
     const grid =
         document.getElementById(
@@ -2308,44 +2964,45 @@ function renderCountries(list){
 
 
     grid.innerHTML =
-        list.map(country => {
+        list.map(
+            country => {
 
-            const name =
-                country.name ||
-                country.country_name ||
-                "Unknown";
-
-
-            const code =
-                country.code ||
-                country.iso_code ||
-                country.iso2 ||
-                "";
+                const name =
+                    country.name ||
+                    country.country_name ||
+                    "Unknown";
 
 
-            const count =
-                country.brand_count ??
-                country.brands_count ??
-                "0";
+                const code =
+                    country.code ||
+                    country.iso_code ||
+                    country.iso2 ||
+                    "";
 
 
-            const image =
-                imageForCountry(
-                    name,
-                    country.id,
-                    code
-                );
+                const count =
+                    country.brand_count ??
+                    country.brands_count ??
+                    "0";
 
 
-            return `
+                const image =
+                    imageForCountry(
+                        name,
+                        country.id,
+                        code
+                    );
+
+
+                return `
 
 <div
     class="country-card"
     style="
-        background-image:url('${image}');
+        background-image:url('${escapeAttribute(image)}');
     "
-    data-country-name="${escapeHtml(name)}"
-    data-country-code="${escapeHtml(code)}"
+    data-country-name="${escapeAttribute(name)}"
+    data-country-code="${escapeAttribute(code)}"
     onclick="openCountry(${Number(country.id)})"
 >
 
@@ -2394,16 +3051,19 @@ function renderCountries(list){
 
 `;
 
-        }).join("");
+            }
+        ).join("");
 
 }
 
 
-/* =========================
+/* =====================================================
    COUNTRY SELECT
-========================= */
+===================================================== */
 
-function fillCountrySelect(list){
+function fillCountrySelect(
+    list
+){
 
     const select =
         document.getElementById(
@@ -2427,42 +3087,55 @@ function fillCountrySelect(list){
     `;
 
 
-    list.forEach(country => {
+    list.forEach(
+        country => {
 
-        const option =
-            document.createElement(
-                "option"
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                country.id;
+
+
+            option.textContent =
+                country.name ||
+                country.country_name ||
+                "Unknown";
+
+
+            select.appendChild(
+                option
             );
 
-
-        option.value =
-            country.id;
-
-
-        option.textContent =
-            country.name ||
-            country.country_name ||
-            "Unknown";
-
-
-        select.appendChild(
-            option
-        );
-
-    });
+        }
+    );
 
 }
 
 
-/* =========================
+/* =====================================================
    SEARCH
-========================= */
+===================================================== */
 
-function syncSearch(value){
+function syncSearch(
+    value
+){
 
-    document.getElementById(
-        "searchInput"
-    ).value = value;
+    const search =
+        document.getElementById(
+            "searchInput"
+        );
+
+
+    if(search){
+
+        search.value =
+            value;
+
+    }
 
 
     filterCountries();
@@ -2491,32 +3164,51 @@ function filterCountries(){
         .trim();
 
 
-    const filtered =
-        countries.filter(country => {
+    if(!query){
 
-            const name =
-                String(
-                    country.name ||
-                    country.country_name ||
-                    ""
-                ).toLowerCase();
+        if(
+            currentPage === "countries"
+        ){
 
-
-            const code =
-                String(
-                    country.code ||
-                    country.iso_code ||
-                    country.iso2 ||
-                    ""
-                ).toLowerCase();
-
-
-            return (
-                name.includes(query) ||
-                code.includes(query)
+            renderCountries(
+                countries
             );
 
-        });
+        }
+
+        return;
+
+    }
+
+
+    const filtered =
+        countries.filter(
+            country => {
+
+                const name =
+                    String(
+                        country.name ||
+                        country.country_name ||
+                        ""
+                    ).toLowerCase();
+
+
+                const code =
+                    String(
+                        country.code ||
+                        country.iso_code ||
+                        country.iso2 ||
+                        ""
+                    ).toLowerCase();
+
+
+                return (
+                    name.includes(query) ||
+                    code.includes(query)
+                );
+
+            }
+        );
 
 
     renderCountries(
@@ -2526,9 +3218,9 @@ function filterCountries(){
 }
 
 
-/* =========================
+/* =====================================================
    SCROLL
-========================= */
+===================================================== */
 
 function scrollToCountries(){
 
@@ -2543,31 +3235,71 @@ function scrollToCountries(){
 }
 
 
-/* =========================
+/* =====================================================
+   HISTORY HELPER
+===================================================== */
+
+function setHistory(
+    state,
+    hash
+){
+
+    history.pushState(
+        state,
+        "",
+        hash
+    );
+
+}
+
+
+/* =====================================================
    OPEN COUNTRY
-========================= */
+===================================================== */
 
-async function openCountry(id){
+async function openCountry(
+    id
+){
 
-    currentCountryId =
+    const numericId =
         Number(id);
 
 
-    history.pushState(
+    currentCountryId =
+        numericId;
+
+
+    currentCountryBrands =
+        [];
+
+
+    const country =
+        countries.find(
+            c =>
+                Number(c.id) ===
+                numericId
+        );
+
+
+    setHistory(
         {
             page:"country",
-            countryId:Number(id)
+            countryId:numericId
         },
-        "",
-        "#country-" + Number(id)
+        "#country-" +
+        numericId
     );
+
+
+    currentPage =
+        "country";
 
 
     try{
 
         const response =
             await fetch(
-                `/api/countries/${id}/brands`
+                `/api/countries/${numericId}/brands`
             );
 
 
@@ -2584,12 +3316,45 @@ async function openCountry(id){
             await response.json();
 
 
-        const country =
-            countries.find(
-                c =>
-                    Number(c.id) ===
-                    Number(id)
-            );
+        currentCountryBrands =
+            Array.isArray(brands)
+            ?
+            brands
+            :
+            [];
+
+
+        renderBrandCards(
+            currentCountryBrands,
+            numericId
+        );
+
+
+        window.scrollTo({
+
+            top:
+                document
+                .getElementById(
+                    "countriesSection"
+                )
+                .offsetTop - 70,
+
+            behavior:"smooth"
+
+        });
+
+
+    }catch(error){
+
+        console.error(
+            error
+        );
+
+
+        renderBrandCards(
+            [],
+            numericId
+        );
 
 
         const grid =
@@ -2598,54 +3363,109 @@ async function openCountry(id){
             );
 
 
-        if(!brands.length){
+        grid.innerHTML = `
 
-            grid.innerHTML = `
+            <div style="
+                grid-column:1/-1;
+                padding:30px;
+                text-align:center;
+                color:#ffb0b0;
+            ">
 
-                <div style="
-                    grid-column:1/-1;
-                    padding:30px;
-                    text-align:center;
-                    color:#9aa7bd;
-                ">
+                Brendlarni yuklab bo‘lmadi.
 
-                    <div style="
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   BRAND CARDS
+===================================================== */
+
+function renderBrandCards(
+    brands,
+    countryId
+){
+
+    const grid =
+        document.getElementById(
+            "countriesGrid"
+        );
+
+
+    const country =
+        countries.find(
+            c =>
+                Number(c.id) ===
+                Number(countryId)
+        );
+
+
+    const countryCode =
+        country?.code ||
+        country?.iso_code ||
+        country?.iso2 ||
+        "";
+
+
+    if(!brands.length){
+
+        grid.innerHTML = `
+
+            <div style="
+                grid-column:1/-1;
+                padding:30px;
+                text-align:center;
+                color:#9aa7bd;
+            ">
+
+                <div
+                    style="
                         font-size:35px;
                         margin-bottom:10px;
-                    ">
-                        🏷️
-                    </div>
-
-                    Bu davlatda hozircha
-                    brendlar ro‘yxati yo‘q.
-
+                    "
+                >
+                    🏷️
                 </div>
 
-            `;
+                Bu davlatda hozircha
+                brendlar ro‘yxati yo‘q.
 
-        }else{
+            </div>
 
-            grid.innerHTML =
-                brands.map(
-                    brand => {
+        `;
 
-                        const countryCode =
-                            country?.code ||
-                            country?.iso_code ||
-                            country?.iso2 ||
-                            "";
+        return;
+
+    }
 
 
-                        return `
+    grid.innerHTML =
+        brands.map(
+            brand => {
+
+                const image =
+                    imageForCountry(
+                        country?.name ||
+                        "World",
+
+                        brand.id,
+
+                        countryCode
+                    );
+
+
+                return `
 
 <div
     class="country-card"
     style="
-        background-image:url('${imageForCountry(
-            country?.name || "World",
-            brand.id,
-            countryCode
-        )}');
+        background-image:url('${escapeAttribute(image)}');
     "
 >
 
@@ -2672,6 +3492,7 @@ async function openCountry(id){
 
 </span>
 
+
 <span class="arrow">
     →
 </span>
@@ -2684,10 +3505,70 @@ async function openCountry(id){
 
 `;
 
-                    }
-                ).join("");
+            }
+        ).join("");
 
-        }
+}
+
+
+/* =====================================================
+   GLOBAL HISTORY RENDER
+===================================================== */
+
+function renderState(
+    state
+){
+
+    const page =
+        state?.page ||
+        "countries";
+
+
+    if(page === "countries"){
+
+        currentPage =
+            "countries";
+
+        currentCountryId =
+            null;
+
+        currentCountryBrands =
+            [];
+
+        closeModalVisual();
+
+        renderCountries(
+            countries
+        );
+
+        window.scrollTo({
+            top:0,
+            behavior:"smooth"
+        });
+
+        return;
+
+    }
+
+
+    if(page === "country"){
+
+        currentPage =
+            "country";
+
+        currentCountryId =
+            Number(
+                state.countryId
+            );
+
+
+        closeModalVisual();
+
+
+        renderBrandCards(
+            currentCountryBrands,
+            state.countryId
+        );
 
 
         window.scrollTo({
@@ -2696,67 +3577,107 @@ async function openCountry(id){
                 document
                 .getElementById(
                     "countriesSection"
-                ).offsetTop - 70,
+                )
+                .offsetTop - 70,
 
             behavior:"smooth"
 
         });
 
 
-    }catch(error){
-
-        console.error(
-            error
-        );
-
-
-        alert(
-            "Brendlarni yuklab bo‘lmadi."
-        );
+        return;
 
     }
 
-}
+
+    if(page === "modal"){
+
+        currentPage =
+            "modal";
+
+        showModalVisual(
+            "formScreen"
+        );
+
+        return;
+
+    }
 
 
-/* =========================
-   RETURN TO COUNTRIES
-========================= */
+    if(page === "checkout"){
 
-function returnToCountries(){
+        currentPage =
+            "checkout";
+
+        showModalVisual(
+            "checkoutScreen"
+        );
+
+        return;
+
+    }
+
+
+    if(page === "success"){
+
+        currentPage =
+            "success";
+
+        showModalVisual(
+            "successScreen"
+        );
+
+        return;
+
+    }
+
+
+    currentPage =
+        "countries";
 
     currentCountryId =
         null;
 
-
-    history.pushState(
-        {
-            page:"countries"
-        },
-        "",
-        location.pathname
-    );
-
+    closeModalVisual();
 
     renderCountries(
         countries
     );
 
+}
 
-    window.scrollTo({
 
-        top:0,
+/* =====================================================
+   RETURN TO COUNTRIES
+===================================================== */
 
-        behavior:"smooth"
+function returnToCountries(){
 
-    });
+    if(
+        history.state?.page &&
+        history.state.page !==
+            "countries"
+    ){
+
+        history.back();
+
+        return;
+
+    }
+
+
+    renderState(
+        {
+            page:"countries"
+        }
+    );
 
 }
 
 
-/* =========================
+/* =====================================================
    INITIAL HISTORY
-========================= */
+===================================================== */
 
 history.replaceState(
     {
@@ -2767,135 +3688,141 @@ history.replaceState(
 );
 
 
-/* =========================
-   ANDROID BACK BUTTON
-========================= */
+/* =====================================================
+   ANDROID / BROWSER BACK
+===================================================== */
 
 window.addEventListener(
     "popstate",
-    function(){
+    function(event){
 
-        const modal =
-            document.getElementById(
-                "addBrandModal"
-            );
-
-
-        if(
-            modal &&
-            modal.classList.contains("show")
-        ){
-
-            closeModal();
-
-
-            history.pushState(
-                {
-                    page:"countries"
-                },
-                "",
-                location.pathname
-            );
-
-
-            return;
-
-        }
-
-
-        if(
-            currentCountryId !== null
-        ){
-
-            currentCountryId =
-                null;
-
-
-            renderCountries(
-                countries
-            );
-
-
-            history.pushState(
-                {
-                    page:"countries"
-                },
-                "",
-                location.pathname
-            );
-
-
-            window.scrollTo({
-
-                top:0,
-
-                behavior:"smooth"
-
-            });
-
-
-            return;
-
-        }
-
-
-        history.pushState(
+        const state =
+            event.state ||
             {
                 page:"countries"
-            },
-            "",
-            location.pathname
+            };
+
+
+        renderState(
+            state
         );
 
     }
 );
 
 
-/* =========================
-   MODAL
-========================= */
+/* =====================================================
+   MODAL VISUAL
+===================================================== */
 
-function openAddBrand(){
+function showModalVisual(
+    screenId
+){
 
-    history.pushState(
-        {
-            page:"modal"
-        },
-        "",
-        "#add-brand"
+    const modal =
+        document.getElementById(
+            "addBrandModal"
+        );
+
+
+    modal.classList.add(
+        "show"
     );
 
+
+    showScreen(
+        screenId
+    );
+
+}
+
+
+function closeModalVisual(){
 
     document
         .getElementById(
             "addBrandModal"
         )
-        .classList.add("show");
+        .classList.remove(
+            "show"
+        );
+
+}
 
 
-    showScreen(
+/* =====================================================
+   OPEN ADD BRAND
+===================================================== */
+
+function openAddBrand(){
+
+    if(
+        currentPage === "modal" ||
+        currentPage === "checkout" ||
+        currentPage === "success"
+    ){
+
+        return;
+
+    }
+
+
+    setHistory(
+        {
+            page:"modal"
+        },
+        "#add-brand"
+    );
+
+
+    currentPage =
+        "modal";
+
+
+    showModalVisual(
         "formScreen"
     );
 
 }
 
 
+/* =====================================================
+   CLOSE MODAL
+===================================================== */
+
 function closeModal(){
 
-    document
-        .getElementById(
-            "addBrandModal"
-        )
-        .classList.remove("show");
+    /*
+       X tugmasi ham tarix bilan ishlaydi.
+       Shuning uchun Android Back bilan
+       bir xil tartibda orqaga qaytadi.
+    */
+
+    if(
+        history.state?.page === "modal" ||
+        history.state?.page === "checkout" ||
+        history.state?.page === "success"
+    ){
+
+        history.back();
+
+        return;
+
+    }
+
+
+    closeModalVisual();
 
 }
 
 
-/* =========================
+/* =====================================================
    SCREEN CONTROL
-========================= */
+===================================================== */
 
-function showScreen(id){
+function showScreen(
+    id
+){
 
     [
         "formScreen",
@@ -2936,134 +3863,187 @@ function showScreen(id){
 }
 
 
-/* =========================
+/* =====================================================
    BRAND FORM
-========================= */
+===================================================== */
 
 document
-.getElementById(
-    "brandForm"
-)
-.addEventListener(
-    "submit",
-    function(event){
+    .getElementById(
+        "brandForm"
+    )
+    .addEventListener(
+        "submit",
+        function(event){
 
-        event.preventDefault();
-
-
-        const brandName =
-            document.getElementById(
-                "brandName"
-            ).value.trim();
+            event.preventDefault();
 
 
-        const countrySelect =
-            document.getElementById(
-                "brandCountry"
-            );
+            const brandName =
+                document
+                .getElementById(
+                    "brandName"
+                )
+                .value
+                .trim();
 
 
-        const countryId =
-            countrySelect.value;
+            const countrySelect =
+                document
+                .getElementById(
+                    "brandCountry"
+                );
 
 
-        const countryName =
-            countrySelect
-            .options[
+            const countryId =
+                countrySelect.value;
+
+
+            const countryName =
                 countrySelect
-                .selectedIndex
-            ]?.text || "";
+                .options[
+                    countrySelect
+                    .selectedIndex
+                ]
+                ?.text ||
+                "";
 
 
-        if(
-            !brandName ||
-            !countryId
-        ){
+            if(
+                !brandName ||
+                !countryId
+            ){
 
-            alert(
-                "Brend nomi va davlatni kiriting."
+                alert(
+                    "Brend nomi va davlatni kiriting."
+                );
+
+                return;
+
+            }
+
+
+            currentApplication = {
+
+                brandName,
+
+                countryId,
+
+                countryName,
+
+                website:
+                    document
+                    .getElementById(
+                        "brandWebsite"
+                    )
+                    .value
+                    .trim(),
+
+                applicantName:
+                    document
+                    .getElementById(
+                        "applicantName"
+                    )
+                    .value
+                    .trim(),
+
+                applicantEmail:
+                    document
+                    .getElementById(
+                        "applicantEmail"
+                    )
+                    .value
+                    .trim(),
+
+                applicantPhone:
+                    document
+                    .getElementById(
+                        "applicantPhone"
+                    )
+                    .value
+                    .trim(),
+
+                description:
+                    document
+                    .getElementById(
+                        "brandDescription"
+                    )
+                    .value
+                    .trim(),
+
+                amount:1
+
+            };
+
+
+            document
+                .getElementById(
+                    "checkoutBrand"
+                )
+                .textContent =
+                    brandName;
+
+
+            document
+                .getElementById(
+                    "checkoutCountry"
+                )
+                .textContent =
+                    countryName;
+
+
+            /*
+               FORM -> CHECKOUT
+               alohida history.
+            */
+
+            setHistory(
+                {
+                    page:"checkout"
+                },
+                "#checkout"
             );
 
 
-            return;
+            currentPage =
+                "checkout";
+
+
+            showModalVisual(
+                "checkoutScreen"
+            );
 
         }
+    );
 
 
-        currentApplication = {
-
-            brandName,
-
-            countryId,
-
-            countryName,
-
-            website:
-                document.getElementById(
-                    "brandWebsite"
-                ).value.trim(),
-
-            applicantName:
-                document.getElementById(
-                    "applicantName"
-                ).value.trim(),
-
-            applicantEmail:
-                document.getElementById(
-                    "applicantEmail"
-                ).value.trim(),
-
-            applicantPhone:
-                document.getElementById(
-                    "applicantPhone"
-                ).value.trim(),
-
-            description:
-                document.getElementById(
-                    "brandDescription"
-                ).value.trim(),
-
-            amount:1
-
-        };
-
-
-        document.getElementById(
-            "checkoutBrand"
-        ).textContent =
-            brandName;
-
-
-        document.getElementById(
-            "checkoutCountry"
-        ).textContent =
-            countryName;
-
-
-        showScreen(
-            "checkoutScreen"
-        );
-
-    }
-);
-
-
-/* =========================
+/* =====================================================
    BACK TO FORM
-========================= */
+===================================================== */
 
 function backToForm(){
 
-    showScreen(
+    if(
+        history.state?.page ===
+        "checkout"
+    ){
+
+        history.back();
+
+        return;
+
+    }
+
+
+    showModalVisual(
         "formScreen"
     );
 
 }
 
 
-/* =========================
+/* =====================================================
    GOOGLE PAY
-========================= */
+===================================================== */
 
 async function startGooglePay(){
 
@@ -3072,7 +4052,6 @@ async function startGooglePay(){
         alert(
             "Avval arizani to‘ldiring."
         );
-
 
         return;
 
@@ -3088,13 +4067,15 @@ async function startGooglePay(){
 }
 
 
-/* =========================
+/* =====================================================
    SAVE APPLICATION
-========================= */
+===================================================== */
 
 async function saveApplicationAfterPayment(){
 
-    if(!currentApplication){
+    if(
+        !currentApplication
+    ){
 
         return;
 
@@ -3115,44 +4096,45 @@ async function saveApplicationAfterPayment(){
                             "application/json"
                     },
 
-                    body:JSON.stringify({
+                    body:
+                        JSON.stringify({
 
-                        brand_name:
-                            currentApplication
-                            .brandName,
+                            brand_name:
+                                currentApplication
+                                .brandName,
 
-                        country_id:
-                            currentApplication
-                            .countryId,
+                            country_id:
+                                currentApplication
+                                .countryId,
 
-                        website:
-                            currentApplication
-                            .website,
+                            website:
+                                currentApplication
+                                .website,
 
-                        owner_name:
-                            currentApplication
-                            .applicantName,
+                            owner_name:
+                                currentApplication
+                                .applicantName,
 
-                        email:
-                            currentApplication
-                            .applicantEmail,
+                            email:
+                                currentApplication
+                                .applicantEmail,
 
-                        phone:
-                            currentApplication
-                            .applicantPhone,
+                            phone:
+                                currentApplication
+                                .applicantPhone,
 
-                        description:
-                            currentApplication
-                            .description,
+                            description:
+                                currentApplication
+                                .description,
 
-                        payment_status:
-                            "paid",
+                            payment_status:
+                                "paid",
 
-                        amount:
-                            currentApplication
-                            .amount
+                            amount:
+                                currentApplication
+                                .amount
 
-                    })
+                        })
 
                 }
             );
@@ -3173,15 +4155,33 @@ async function saveApplicationAfterPayment(){
         }
 
 
-        document.getElementById(
-            "applicationId"
-        ).textContent =
-            data.id ||
-            data.application_id ||
-            "Submitted";
+        document
+            .getElementById(
+                "applicationId"
+            )
+            .textContent =
+                data.id ||
+                data.application_id ||
+                "Submitted";
 
 
-        showScreen(
+        /*
+           CHECKOUT -> SUCCESS
+        */
+
+        setHistory(
+            {
+                page:"success"
+            },
+            "#success"
+        );
+
+
+        currentPage =
+            "success";
+
+
+        showModalVisual(
             "successScreen"
         );
 
@@ -3202,11 +4202,13 @@ async function saveApplicationAfterPayment(){
 }
 
 
-/* =========================
+/* =====================================================
    ESCAPE HTML
-========================= */
+===================================================== */
 
-function escapeHtml(value){
+function escapeHtml(
+    value
+){
 
     return String(
         value || ""
@@ -3240,33 +4242,48 @@ function escapeHtml(value){
 }
 
 
-/* =========================
-   CLOSE MODAL OUTSIDE
-========================= */
+function escapeAttribute(
+    value
+){
+
+    return escapeHtml(
+        value
+    )
+    .replace(
+        /`/g,
+        "&#096;"
+    );
+
+}
+
+
+/* =====================================================
+   CLOSE OUTSIDE
+===================================================== */
 
 document
-.getElementById(
-    "addBrandModal"
-)
-.addEventListener(
-    "click",
-    function(event){
+    .getElementById(
+        "addBrandModal"
+    )
+    .addEventListener(
+        "click",
+        function(event){
 
-        if(
-            event.target === this
-        ){
+            if(
+                event.target === this
+            ){
 
-            closeModal();
+                closeModal();
+
+            }
 
         }
-
-    }
-);
+    );
 
 
-/* =========================
+/* =====================================================
    START
-========================= */
+===================================================== */
 
 loadCountries();
 
