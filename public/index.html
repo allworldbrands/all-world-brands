@@ -1917,6 +1917,8 @@ let countries = [];
 
 let currentApplication = null;
 
+let currentCountryId = null;
+
 
 /* =========================
    COUNTRY IMAGES
@@ -1993,12 +1995,31 @@ const countryImages = {
 
 function imageForCountry(name,id){
 
-    const key =
-        String(name || "")
-        .replace(/[^A-Za-z]/g,"");
+    const cleanName =
+        String(name || "").trim();
 
-    return countryImages[key] ||
-        "https://images.unsplash.com/photo-1521292270410-a8c4d716d518?auto=format&fit=crop&w=900&q=80";
+    const key =
+        cleanName.replace(
+            /[^A-Za-z]/g,
+            ""
+        );
+
+
+    if(countryImages[key]){
+
+        return countryImages[key];
+
+    }
+
+
+    /*
+       Qolgan davlatlar uchun
+       davlat nomi asosida alohida rasm.
+    */
+
+    return `https://loremflickr.com/900/650/${encodeURIComponent(
+        cleanName + " landmark"
+    )}?lock=${Number(id) || 1}`;
 
 }
 
@@ -2014,12 +2035,14 @@ async function loadCountries(){
             "countriesGrid"
         );
 
+
     try{
 
         const response =
             await fetch(
                 "/api/countries"
             );
+
 
         if(!response.ok){
 
@@ -2028,6 +2051,7 @@ async function loadCountries(){
             );
 
         }
+
 
         countries =
             await response.json();
@@ -2053,11 +2077,17 @@ async function loadCountries(){
 
         console.error(error);
 
+
         grid.innerHTML = `
+
             <p style="color:#ff7777">
+
                 Davlatlarni yuklab bo‘lmadi.
+
             </p>
+
         `;
+
 
         document.getElementById(
             "countryCount"
@@ -2077,6 +2107,7 @@ function countryCodeToFlag(code){
 
     if(!code)
         return "🌎";
+
 
     return String(code)
         .toUpperCase()
@@ -2141,7 +2172,10 @@ function renderCountries(list){
 
 <div
     class="country-card"
-    style="background-image:url('${imageForCountry(name,country.id)}')"
+    style="background-image:url('${imageForCountry(
+        name,
+        country.id
+    )}')"
     data-country-name="${escapeHtml(name)}"
     onclick="openCountry(${Number(country.id)})"
 >
@@ -2208,12 +2242,13 @@ function fillCountrySelect(list){
         );
 
 
-    select.innerHTML =
-        `
+    select.innerHTML = `
+
         <option value="">
             Davlatni tanlang
         </option>
-        `;
+
+    `;
 
 
     list.forEach(country => {
@@ -2223,13 +2258,16 @@ function fillCountrySelect(list){
                 "option"
             );
 
+
         option.value =
             country.id;
+
 
         option.textContent =
             country.name ||
             country.country_name ||
             "Unknown";
+
 
         select.appendChild(
             option
@@ -2249,6 +2287,7 @@ function syncSearch(value){
     document.getElementById(
         "searchInput"
     ).value = value;
+
 
     filterCountries();
 
@@ -2323,6 +2362,25 @@ function scrollToCountries(){
 
 async function openCountry(id){
 
+    currentCountryId =
+        Number(id);
+
+
+    /*
+       Sayt tarixiga davlat holatini
+       qo‘shamiz.
+    */
+
+    history.pushState(
+        {
+            page:"country",
+            countryId:Number(id)
+        },
+        "",
+        "#country-" + Number(id)
+    );
+
+
     try{
 
         const response =
@@ -2379,7 +2437,10 @@ async function openCountry(id){
 
 <div
     class="country-card"
-    style="background-image:url('${imageForCountry(country?.name || "World",brand.id)}')"
+    style="background-image:url('${imageForCountry(
+        country?.name || "World",
+        brand.id
+    )}')"
 >
 
 <div class="country-info">
@@ -2434,6 +2495,7 @@ async function openCountry(id){
 
         console.error(error);
 
+
         alert(
             "Brendlarni yuklab bo‘lmadi."
         );
@@ -2444,10 +2506,162 @@ async function openCountry(id){
 
 
 /* =========================
+   RETURN TO COUNTRIES
+========================= */
+
+function returnToCountries(){
+
+    currentCountryId = null;
+
+
+    history.pushState(
+        {
+            page:"countries"
+        },
+        "",
+        location.pathname
+    );
+
+
+    renderCountries(
+        countries
+    );
+
+
+    window.scrollTo({
+
+        top:0,
+
+        behavior:"smooth"
+
+    });
+
+}
+
+
+/* =========================
+   INITIAL HISTORY STATE
+========================= */
+
+history.replaceState(
+    {
+        page:"countries"
+    },
+    "",
+    location.pathname
+);
+
+
+/* =========================
+   ANDROID BACK BUTTON
+========================= */
+
+window.addEventListener(
+    "popstate",
+    function(){
+
+        const modal =
+            document.getElementById(
+                "addBrandModal"
+            );
+
+
+        /*
+           Modal ochiq bo‘lsa,
+           Back avval modalni yopadi.
+        */
+
+        if(
+            modal &&
+            modal.classList.contains("show")
+        ){
+
+            closeModal();
+
+
+            history.pushState(
+                {
+                    page:"countries"
+                },
+                "",
+                location.pathname
+            );
+
+
+            return;
+
+        }
+
+
+        /*
+           Davlat ichida bo‘lsak,
+           davlatlar ro‘yxatiga qaytamiz.
+        */
+
+        if(currentCountryId !== null){
+
+            currentCountryId = null;
+
+
+            renderCountries(
+                countries
+            );
+
+
+            history.pushState(
+                {
+                    page:"countries"
+                },
+                "",
+                location.pathname
+            );
+
+
+            window.scrollTo({
+
+                top:0,
+
+                behavior:"smooth"
+
+            });
+
+
+            return;
+
+        }
+
+
+        /*
+           Asosiy sahifada Back bosilsa,
+           sayt shu sahifada qoladi.
+        */
+
+        history.pushState(
+            {
+                page:"countries"
+            },
+            "",
+            location.pathname
+        );
+
+    }
+);
+
+
+/* =========================
    MODAL
 ========================= */
 
 function openAddBrand(){
+
+    history.pushState(
+        {
+            page:"modal"
+        },
+        "",
+        "#add-brand"
+    );
+
 
     document
         .getElementById(
@@ -2491,6 +2705,7 @@ function showScreen(id){
                 document.getElementById(
                     screenId
                 );
+
 
             if(!element)
                 return;
@@ -2563,6 +2778,7 @@ document
                 "Brend nomi va davlatni kiriting."
             );
 
+
             return;
 
         }
@@ -2627,7 +2843,7 @@ document
 
 
 /* =========================
-   BACK
+   BACK TO FORM
 ========================= */
 
 function backToForm(){
@@ -2650,6 +2866,7 @@ async function startGooglePay(){
         alert(
             "Avval arizani to‘ldiring."
         );
+
 
         return;
 
@@ -2763,6 +2980,7 @@ async function saveApplicationAfterPayment(){
     }catch(error){
 
         console.error(error);
+
 
         alert(
             "Arizani yuborib bo‘lmadi."
