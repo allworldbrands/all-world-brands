@@ -1264,11 +1264,6 @@ footer{
     }
 
 
-    /*
-       TELEFONDA 5 TA
-       KARTA QATORDA
-    */
-
     .countries-grid{
 
         grid-template-columns:
@@ -1379,10 +1374,6 @@ footer{
 <body>
 
 
-<!-- =========================
-     ANIMATED EARTH
-========================= -->
-
 <div id="globeBg">
 
     <div class="earth">
@@ -1393,10 +1384,6 @@ footer{
 
 </div>
 
-
-<!-- =========================
-     HEADER
-========================= -->
 
 <header>
 
@@ -1455,10 +1442,6 @@ footer{
 
 </header>
 
-
-<!-- =========================
-     HERO
-========================= -->
 
 <section class="hero">
 
@@ -1525,10 +1508,6 @@ footer{
 </section>
 
 
-<!-- =========================
-     COUNTRIES
-========================= -->
-
 <main
     class="container"
     id="countriesSection"
@@ -1561,8 +1540,6 @@ footer{
 
 </div>
 
-
-<!-- PROMO -->
 
 <section class="promo">
 
@@ -1601,10 +1578,6 @@ footer{
 </footer>
 
 
-<!-- =========================
-     ADD BRAND MODAL
-========================= -->
-
 <div
     class="modal"
     id="addBrandModal"
@@ -1620,8 +1593,6 @@ footer{
     ×
 </button>
 
-
-<!-- FORM -->
 
 <div id="formScreen">
 
@@ -1774,8 +1745,6 @@ footer{
 </div>
 
 
-<!-- CHECKOUT -->
-
 <div
     id="checkoutScreen"
     class="checkout-screen"
@@ -1890,8 +1859,6 @@ footer{
 </div>
 
 
-<!-- SUCCESS -->
-
 <div
     id="successScreen"
     class="checkout-screen"
@@ -1955,67 +1922,67 @@ let currentApplication = null;
    COUNTRY IMAGES
 ========================= */
 
-const countryQueries = {
+const countryImages = {
 
     Uzbekistan:
-        "Samarkand Registan",
+        "https://images.unsplash.com/photo-1554797589-7241bb691973?auto=format&fit=crop&w=900&q=80",
 
     USA:
-        "New York Statue of Liberty",
+        "https://images.unsplash.com/photo-1485738422979-f5c462d49f74?auto=format&fit=crop&w=900&q=80",
 
     Turkey:
-        "Istanbul Hagia Sophia",
+        "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&w=900&q=80",
 
     Germany:
-        "Berlin Brandenburg Gate",
+        "https://images.unsplash.com/photo-1560969184-10fe8719e047?auto=format&fit=crop&w=900&q=80",
 
     Japan:
-        "Mount Fuji Tokyo",
+        "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=900&q=80",
 
     France:
-        "Paris Eiffel Tower",
+        "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=900&q=80",
 
     UnitedKingdom:
-        "London Big Ben",
+        "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=900&q=80",
 
     Italy:
-        "Rome Colosseum",
+        "https://images.unsplash.com/photo-1529260830199-42c24126f198?auto=format&fit=crop&w=900&q=80",
 
     China:
-        "Great Wall China",
+        "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?auto=format&fit=crop&w=900&q=80",
 
     India:
-        "Taj Mahal India",
+        "https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=900&q=80",
 
     Russia:
-        "Moscow Saint Basil",
+        "https://images.unsplash.com/photo-1513326738677-b964603b136d?auto=format&fit=crop&w=900&q=80",
 
     Spain:
-        "Barcelona Sagrada Familia",
+        "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?auto=format&fit=crop&w=900&q=80",
 
     Canada:
-        "Toronto Canada",
+        "https://images.unsplash.com/photo-1517935706615-2717063c2225?auto=format&fit=crop&w=900&q=80",
 
     Brazil:
-        "Rio Christ the Redeemer",
+        "https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=900&q=80",
 
     Australia:
-        "Sydney Opera House",
+        "https://images.unsplash.com/photo-1506973035872-a4f7d2c1b1b1?auto=format&fit=crop&w=900&q=80",
 
     SouthKorea:
-        "Seoul South Korea",
+        "https://images.unsplash.com/photo-1538485399081-7c8972b5b8d4?auto=format&fit=crop&w=900&q=80",
 
     SaudiArabia:
-        "Riyadh Saudi Arabia",
+        "https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?auto=format&fit=crop&w=900&q=80",
 
     Mexico:
-        "Chichen Itza Mexico",
+        "https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?auto=format&fit=crop&w=900&q=80",
 
     Indonesia:
-        "Bali Indonesia",
+        "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=900&q=80",
 
     Netherlands:
-        "Amsterdam Netherlands"
+        "https://images.unsplash.com/photo-1534351590666-13e3e96b5017?auto=format&fit=crop&w=900&q=80"
 
 };
 
@@ -2030,11 +1997,8 @@ function imageForCountry(name,id){
         String(name || "")
         .replace(/[^A-Za-z]/g,"");
 
-    const query =
-        countryQueries[key] ||
-        `${name} landmark`;
-
-    return `https://loremflickr.com/900/650/${encodeURIComponent(query)}?lock=${Number(id)||1}`;
+    return countryImages[key] ||
+        "https://images.unsplash.com/photo-1521292270410-a8c4d716d518?auto=format&fit=crop&w=900&q=80";
 
 }
 
@@ -2459,8 +2423,7 @@ async function openCountry(id){
                 document
                 .getElementById(
                     "countriesSection"
-                )
-                .offsetTop - 70,
+                ).offsetTop - 70,
 
             behavior:"smooth"
 
