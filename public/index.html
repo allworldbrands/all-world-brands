@@ -2415,7 +2415,7 @@ footer{
 <script>
 
 /* =====================================================
-   GLOBAL
+   GLOBAL STATE
 ===================================================== */
 
 let countries = [];
@@ -2426,9 +2426,18 @@ let currentCountryId = null;
 
 let currentCountryBrands = [];
 
+let currentPage = "countries";
+
 let countriesRequest = null;
 
-let currentPage = "countries";
+
+/*
+    History ishlashi uchun qo‘shimcha flag.
+    popstate orqali qaytilganda yana pushState
+    qilib tarixni buzib yubormaslik uchun.
+*/
+
+let isRestoringHistory = false;
 
 
 /* =====================================================
@@ -2444,18 +2453,14 @@ function createRain(){
 
 
     if(!container){
-
         return;
-
     }
 
 
     const amount =
         window.innerWidth <= 600
-        ?
-        42
-        :
-        85;
+        ? 42
+        : 85;
 
 
     container.innerHTML = "";
@@ -3254,59 +3259,47 @@ function setHistory(
 
 
 /* =====================================================
-   OPEN COUNTRY
+   LOAD COUNTRY BRANDS
 ===================================================== */
 
-async function openCountry(
-    id
+async function loadCountryBrands(
+    countryId
 ){
 
     const numericId =
-        Number(id);
+        Number(countryId);
 
 
-    currentCountryId =
-        numericId;
+    if(
+        !numericId
+    ){
 
+        return [];
 
-    currentCountryBrands =
-        [];
-
-
-    const country =
-        countries.find(
-            c =>
-                Number(c.id) ===
-                numericId
-        );
-
-
-    setHistory(
-        {
-            page:"country",
-            countryId:numericId
-        },
-        "#country-" +
-        numericId
-    );
-
-
-    currentPage =
-        "country";
+    }
 
 
     try{
 
         const response =
             await fetch(
-                `/api/countries/${numericId}/brands`
+                `/api/countries/${numericId}/brands`,
+                {
+                    method:"GET",
+                    cache:"no-store",
+
+                    headers:{
+                        "Accept":
+                            "application/json"
+                    }
+                }
             );
 
 
         if(!response.ok){
 
             throw new Error(
-                "Unable to load brands"
+                `HTTP ${response.status}`
             );
 
         }
@@ -3318,67 +3311,151 @@ async function openCountry(
 
         currentCountryBrands =
             Array.isArray(brands)
-            ?
-            brands
-            :
-            [];
+            ? brands
+            : [];
 
 
-        renderBrandCards(
-            currentCountryBrands,
-            numericId
-        );
-
-
-        window.scrollTo({
-
-            top:
-                document
-                .getElementById(
-                    "countriesSection"
-                )
-                .offsetTop - 70,
-
-            behavior:"smooth"
-
-        });
-
+        return currentCountryBrands;
 
     }catch(error){
 
         console.error(
+            "Brand load error:",
             error
         );
 
 
-        renderBrandCards(
-            [],
+        currentCountryBrands =
+            [];
+
+
+        return [];
+
+    }
+
+}
+
+
+/* =====================================================
+   OPEN COUNTRY
+===================================================== */
+
+async function openCountry(
+    id
+){
+
+    const numericId =
+        Number(id);
+
+
+    if(!numericId){
+
+        return;
+
+    }
+
+
+    const country =
+        countries.find(
+            c =>
+                Number(c.id) ===
+                numericId
+        );
+
+
+    currentCountryId =
+        numericId;
+
+
+    currentCountryBrands =
+        [];
+
+
+    /*
+       Faqat foydalanuvchi country kartasini
+       bosganda yangi history yozamiz.
+    */
+
+    if(!isRestoringHistory){
+
+        setHistory(
+            {
+                page:"country",
+                countryId:numericId
+            },
+            "#country-" +
+            numericId
+        );
+
+    }
+
+
+    currentPage =
+        "country";
+
+
+    /*
+       Eski modal ochiq bo‘lsa yopamiz.
+    */
+
+    closeModalVisual();
+
+
+    const grid =
+        document.getElementById(
+            "countriesGrid"
+        );
+
+
+    grid.innerHTML = `
+
+        <div style="
+            grid-column:1/-1;
+            padding:50px 20px;
+            text-align:center;
+            color:#9aa7bd;
+        ">
+
+            <div style="
+                font-size:35px;
+                margin-bottom:12px;
+            ">
+                🌍
+            </div>
+
+            <div>
+                Brendlar yuklanmoqda...
+            </div>
+
+        </div>
+
+    `;
+
+
+    const brands =
+        await loadCountryBrands(
             numericId
         );
 
 
-        const grid =
-            document.getElementById(
-                "countriesGrid"
-            );
+    renderBrandCards(
+        brands,
+        numericId
+    );
 
 
-        grid.innerHTML = `
+    window.scrollTo({
 
-            <div style="
-                grid-column:1/-1;
-                padding:30px;
-                text-align:center;
-                color:#ffb0b0;
-            ">
+        top:
+            document
+            .getElementById(
+                "countriesSection"
+            )
+            .offsetTop - 70,
 
-                Brendlarni yuklab bo‘lmadi.
+        behavior:"smooth"
 
-            </div>
-
-        `;
-
-    }
+    });
 
 }
 
@@ -3413,7 +3490,10 @@ function renderBrandCards(
         "";
 
 
-    if(!brands.length){
+    if(
+        !Array.isArray(brands) ||
+        !brands.length
+    ){
 
         grid.innerHTML = `
 
@@ -3515,7 +3595,7 @@ function renderBrandCards(
    GLOBAL HISTORY RENDER
 ===================================================== */
 
-function renderState(
+async function renderState(
     state
 ){
 
@@ -3523,6 +3603,10 @@ function renderState(
         state?.page ||
         "countries";
 
+
+    /* =================================================
+       COUNTRIES
+    ================================================= */
 
     if(page === "countries"){
 
@@ -3551,6 +3635,10 @@ function renderState(
     }
 
 
+    /* =================================================
+       COUNTRY
+    ================================================= */
+
     if(page === "country"){
 
         currentPage =
@@ -3565,9 +3653,23 @@ function renderState(
         closeModalVisual();
 
 
+        /*
+           Agar foydalanuvchi Back orqali countryga
+           qaytsa, currentCountryBrands bo‘sh bo‘lishi
+           mumkin.
+
+           Shuning uchun API'dan yana yuklaymiz.
+        */
+
+        const brands =
+            await loadCountryBrands(
+                currentCountryId
+            );
+
+
         renderBrandCards(
-            currentCountryBrands,
-            state.countryId
+            brands,
+            currentCountryId
         );
 
 
@@ -3590,53 +3692,105 @@ function renderState(
     }
 
 
+    /* =================================================
+       MODAL / FORM
+    ================================================= */
+
     if(page === "modal"){
 
         currentPage =
             "modal";
 
+
         showModalVisual(
             "formScreen"
         );
+
 
         return;
 
     }
 
+
+    /* =================================================
+       CHECKOUT
+    ================================================= */
 
     if(page === "checkout"){
 
         currentPage =
             "checkout";
 
+
+        /*
+           currentApplication mavjud bo‘lsa,
+           checkout ma'lumotlarini qayta chiqaramiz.
+        */
+
+        if(currentApplication){
+
+            document
+                .getElementById(
+                    "checkoutBrand"
+                )
+                .textContent =
+                    currentApplication.brandName ||
+                    "";
+
+
+            document
+                .getElementById(
+                    "checkoutCountry"
+                )
+                .textContent =
+                    currentApplication.countryName ||
+                    "";
+
+        }
+
+
         showModalVisual(
             "checkoutScreen"
         );
+
 
         return;
 
     }
 
+
+    /* =================================================
+       SUCCESS
+    ================================================= */
 
     if(page === "success"){
 
         currentPage =
             "success";
 
+
         showModalVisual(
             "successScreen"
         );
+
 
         return;
 
     }
 
 
+    /* =================================================
+       FALLBACK
+    ================================================= */
+
     currentPage =
         "countries";
 
     currentCountryId =
         null;
+
+    currentCountryBrands =
+        [];
 
     closeModalVisual();
 
@@ -3679,13 +3833,24 @@ function returnToCountries(){
    INITIAL HISTORY
 ===================================================== */
 
-history.replaceState(
-    {
-        page:"countries"
-    },
-    "",
-    location.pathname
-);
+/*
+   Faqat birinchi kirishda asosiy history state.
+*/
+
+if(
+    !history.state ||
+    !history.state.page
+){
+
+    history.replaceState(
+        {
+            page:"countries"
+        },
+        "",
+        location.pathname
+    );
+
+}
 
 
 /* =====================================================
@@ -3694,18 +3859,31 @@ history.replaceState(
 
 window.addEventListener(
     "popstate",
-    function(event){
+    async function(event){
 
-        const state =
-            event.state ||
-            {
-                page:"countries"
-            };
+        isRestoringHistory =
+            true;
 
 
-        renderState(
-            state
-        );
+        try{
+
+            const state =
+                event.state ||
+                {
+                    page:"countries"
+                };
+
+
+            await renderState(
+                state
+            );
+
+        }finally{
+
+            isRestoringHistory =
+                false;
+
+        }
 
     }
 );
@@ -3725,6 +3903,13 @@ function showModalVisual(
         );
 
 
+    if(!modal){
+
+        return;
+
+    }
+
+
     modal.classList.add(
         "show"
     );
@@ -3739,13 +3924,22 @@ function showModalVisual(
 
 function closeModalVisual(){
 
-    document
-        .getElementById(
+    const modal =
+        document.getElementById(
             "addBrandModal"
-        )
-        .classList.remove(
-            "show"
         );
+
+
+    if(!modal){
+
+        return;
+
+    }
+
+
+    modal.classList.remove(
+        "show"
+    );
 
 }
 
@@ -3755,6 +3949,12 @@ function closeModalVisual(){
 ===================================================== */
 
 function openAddBrand(){
+
+    /*
+       Agar allaqachon form,
+       checkout yoki success ochiq bo‘lsa,
+       yana history qo‘shmaymiz.
+    */
 
     if(
         currentPage === "modal" ||
@@ -3766,6 +3966,28 @@ function openAddBrand(){
 
     }
 
+
+    /*
+       Muhim:
+       Qaysi sahifadan kelgan bo‘lsa,
+       o‘sha history saqlanadi.
+
+       Country ichida bo‘lsa:
+
+       countries
+          ↓
+       country
+          ↓
+       modal
+
+       Back:
+
+       modal
+          ↓
+       country
+          ↓
+       countries
+    */
 
     setHistory(
         {
@@ -3793,15 +4015,25 @@ function openAddBrand(){
 function closeModal(){
 
     /*
-       X tugmasi ham tarix bilan ishlaydi.
-       Shuning uchun Android Back bilan
-       bir xil tartibda orqaga qaytadi.
+       X tugmasi history.back() ishlatadi.
+
+       Shuning uchun:
+
+       success -> checkout
+       checkout -> form
+       form -> country/countries
+
+       tartibi saqlanadi.
     */
 
+    const page =
+        history.state?.page;
+
+
     if(
-        history.state?.page === "modal" ||
-        history.state?.page === "checkout" ||
-        history.state?.page === "success"
+        page === "modal" ||
+        page === "checkout" ||
+        page === "success"
     ){
 
         history.back();
@@ -3993,7 +4225,13 @@ document
 
             /*
                FORM -> CHECKOUT
-               alohida history.
+
+               Bu yerda albatta yangi history
+               yaratiladi.
+
+               Natija:
+
+               modal -> checkout
             */
 
             setHistory(
@@ -4021,6 +4259,11 @@ document
 ===================================================== */
 
 function backToForm(){
+
+    /*
+       Android Back bilan bir xil:
+       checkout -> modal
+    */
 
     if(
         history.state?.page ===
@@ -4057,6 +4300,14 @@ async function startGooglePay(){
 
     }
 
+
+    /*
+       Hozircha Google Pay gateway
+       ulanmagan.
+
+       Keyin shu funksiya haqiqiy
+       payment gateway bilan almashtiriladi.
+    */
 
     alert(
         "Google Pay gateway hali ulanmagan. " +
@@ -4167,6 +4418,8 @@ async function saveApplicationAfterPayment(){
 
         /*
            CHECKOUT -> SUCCESS
+
+           Alohida history state.
         */
 
         setHistory(
@@ -4279,6 +4532,41 @@ document
 
         }
     );
+
+
+/* =====================================================
+   ESC KEY
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        if(
+            event.key === "Escape"
+        ){
+
+            const modal =
+                document.getElementById(
+                    "addBrandModal"
+                );
+
+
+            if(
+                modal &&
+                modal.classList.contains(
+                    "show"
+                )
+            ){
+
+                closeModal();
+
+            }
+
+        }
+
+    }
+);
 
 
 /* =====================================================
