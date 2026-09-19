@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://allworldbands.net/sitemap.xml
+Sitemap: https://allworldbrands.net/sitemap.xml
