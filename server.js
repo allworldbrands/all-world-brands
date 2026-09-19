@@ -9,12 +9,6 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 
-/*
-=====================================================
-PATHS
-=====================================================
-*/
-
 const PUBLIC_DIR = path.join(__dirname, "public");
 const ADMIN_DIR = path.join(PUBLIC_DIR, "admin");
 
@@ -120,7 +114,9 @@ function containsAdultContent(value) {
   }
 
   return ADULT_CONTENT_WORDS.some((word) =>
-    text.includes(normalizeForModeration(word))
+    text.includes(
+      normalizeForModeration(word)
+    )
   );
 }
 
@@ -135,7 +131,10 @@ URL SECURITY
 */
 
 function isSafeUrl(value) {
-  if (value === undefined || value === null) {
+  if (
+    value === undefined ||
+    value === null
+  ) {
     return true;
   }
 
@@ -149,7 +148,9 @@ function isSafeUrl(value) {
     return false;
   }
 
-  if (/[\u0000-\u001F\u007F]/.test(text)) {
+  if (
+    /[\u0000-\u001F\u007F]/.test(text)
+  ) {
     return false;
   }
 
@@ -166,13 +167,13 @@ function isSafeUrl(value) {
   }
 
   /*
-    Allow local files:
+    Local files are allowed:
 
-      /images/apple.png
+      /images/logo.png
       /uploads/logo.jpg
       ./images/logo.png
 
-    But reject:
+    Protocol-relative URLs are blocked:
 
       //evil-site.com
   */
@@ -207,12 +208,18 @@ function isSafeUrl(value) {
 
 /*
 =====================================================
-VALIDATION HELPERS
+VALIDATION
 =====================================================
 */
 
-function cleanString(value, maxLength = 5000) {
-  if (value === undefined || value === null) {
+function cleanString(
+  value,
+  maxLength = 5000
+) {
+  if (
+    value === undefined ||
+    value === null
+  ) {
     return "";
   }
 
@@ -224,7 +231,10 @@ function cleanString(value, maxLength = 5000) {
 function validId(value) {
   const id = Number(value);
 
-  if (!Number.isInteger(id) || id <= 0) {
+  if (
+    !Number.isInteger(id) ||
+    id <= 0
+  ) {
     return null;
   }
 
@@ -232,14 +242,22 @@ function validId(value) {
 }
 
 function validEmail(email) {
-  const value = cleanString(email, 254);
+  const value = cleanString(
+    email,
+    254
+  );
 
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+    value
+  );
 }
 
 function validateUrls(values) {
   for (const value of values) {
-    if (value && !isSafeUrl(value)) {
+    if (
+      value &&
+      !isSafeUrl(value)
+    ) {
       return false;
     }
   }
@@ -257,57 +275,94 @@ const db = new sqlite3.Database(
   DB_PATH,
   (error) => {
     if (error) {
-      console.error("SQLite connection error:", error);
+      console.error(
+        "SQLite connection error:",
+        error
+      );
+
       process.exit(1);
     }
 
-    console.log("SQLite connected:");
+    console.log(
+      "SQLite connected:"
+    );
+
     console.log(DB_PATH);
   }
 );
 
-db.configure("busyTimeout", 5000);
+db.configure(
+  "busyTimeout",
+  5000
+);
 
-function dbRun(sql, params = []) {
-  return new Promise((resolve, reject) => {
-    db.run(sql, params, function (error) {
-      if (error) {
-        reject(error);
-        return;
-      }
+function dbRun(
+  sql,
+  params = []
+) {
+  return new Promise(
+    (resolve, reject) => {
+      db.run(
+        sql,
+        params,
+        function (error) {
+          if (error) {
+            reject(error);
+            return;
+          }
 
-      resolve({
-        lastID: this.lastID,
-        changes: this.changes
-      });
-    });
-  });
+          resolve({
+            lastID: this.lastID,
+            changes: this.changes
+          });
+        }
+      );
+    }
+  );
 }
 
-function dbGet(sql, params = []) {
-  return new Promise((resolve, reject) => {
-    db.get(sql, params, (error, row) => {
-      if (error) {
-        reject(error);
-        return;
-      }
+function dbGet(
+  sql,
+  params = []
+) {
+  return new Promise(
+    (resolve, reject) => {
+      db.get(
+        sql,
+        params,
+        (error, row) => {
+          if (error) {
+            reject(error);
+            return;
+          }
 
-      resolve(row);
-    });
-  });
+          resolve(row);
+        }
+      );
+    }
+  );
 }
 
-function dbAll(sql, params = []) {
-  return new Promise((resolve, reject) => {
-    db.all(sql, params, (error, rows) => {
-      if (error) {
-        reject(error);
-        return;
-      }
+function dbAll(
+  sql,
+  params = []
+) {
+  return new Promise(
+    (resolve, reject) => {
+      db.all(
+        sql,
+        params,
+        (error, rows) => {
+          if (error) {
+            reject(error);
+            return;
+          }
 
-      resolve(rows || []);
-    });
-  });
+          resolve(rows || []);
+        }
+      );
+    }
+  );
 }
 
 /*
@@ -571,7 +626,7 @@ const countries = [
 
 /*
 =====================================================
-DATABASE INITIALIZATION
+DATABASE MIGRATION
 =====================================================
 */
 
@@ -585,45 +640,50 @@ async function addColumnIfMissing(
   );
 
   const exists = columns.some(
-    (item) => item.name === column
+    (item) =>
+      item.name === column
   );
 
   if (!exists) {
-    try {
-      await dbRun(
-        `ALTER TABLE ${table} ADD COLUMN ${column} ${definition}`
-      );
+    await dbRun(
+      `ALTER TABLE ${table} ADD COLUMN ${column} ${definition}`
+    );
 
-      console.log(
-        `Added column ${table}.${column}`
-      );
-    } catch (error) {
-      console.error(
-        `Migration error ${table}.${column}:`,
-        error.message
-      );
-    }
+    console.log(
+      `Added column ${table}.${column}`
+    );
   }
 }
 
+/*
+=====================================================
+DATABASE INITIALIZATION
+=====================================================
+*/
+
 async function initializeDatabase() {
+
   /*
   ---------------------------------------------------
   PRAGMAS
   ---------------------------------------------------
   */
 
-  try {
-    await dbRun("PRAGMA foreign_keys = ON");
-    await dbRun("PRAGMA journal_mode = WAL");
-    await dbRun("PRAGMA synchronous = NORMAL");
-  } catch (error) {
-    console.error("PRAGMA error:", error.message);
-  }
+  await dbRun(
+    "PRAGMA foreign_keys = ON"
+  );
+
+  await dbRun(
+    "PRAGMA journal_mode = WAL"
+  );
+
+  await dbRun(
+    "PRAGMA synchronous = NORMAL"
+  );
 
   /*
   ---------------------------------------------------
-  TABLES
+  COUNTRIES
   ---------------------------------------------------
   */
 
@@ -634,6 +694,12 @@ async function initializeDatabase() {
       code TEXT
     )
   `);
+
+  /*
+  ---------------------------------------------------
+  BRANDS
+  ---------------------------------------------------
+  */
 
   await dbRun(`
     CREATE TABLE IF NOT EXISTS brands (
@@ -646,11 +712,18 @@ async function initializeDatabase() {
       website TEXT DEFAULT '',
       verification TEXT DEFAULT 'Unverified',
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
       FOREIGN KEY(country_id)
-        REFERENCES countries(id)
-        ON DELETE CASCADE
+      REFERENCES countries(id)
+      ON DELETE CASCADE
     )
   `);
+
+  /*
+  ---------------------------------------------------
+  FACTORIES
+  ---------------------------------------------------
+  */
 
   await dbRun(`
     CREATE TABLE IF NOT EXISTS factories (
@@ -661,24 +734,42 @@ async function initializeDatabase() {
       address TEXT,
       phone TEXT,
       website TEXT,
+
       FOREIGN KEY(brand_id)
-        REFERENCES brands(id)
-        ON DELETE CASCADE
+      REFERENCES brands(id)
+      ON DELETE CASCADE
     )
   `);
+
+  /*
+  ---------------------------------------------------
+  APPLICATIONS
+  ---------------------------------------------------
+  */
 
   await dbRun(`
     CREATE TABLE IF NOT EXISTS applications (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
+
       brand_name TEXT NOT NULL,
-      country TEXT,
-      owner_name TEXT,
-      email TEXT,
-      phone TEXT,
-      website TEXT,
+
+      country TEXT DEFAULT '',
+      country_id INTEGER,
+
+      owner_name TEXT DEFAULT '',
+      email TEXT DEFAULT '',
+      phone TEXT DEFAULT '',
+
+      website TEXT DEFAULT '',
       logo TEXT DEFAULT '',
-      description TEXT,
+
+      description TEXT DEFAULT '',
+
+      payment_status TEXT DEFAULT 'pending',
+      amount REAL DEFAULT 0,
+
       status TEXT DEFAULT 'new',
+
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )
   `);
@@ -688,6 +779,12 @@ async function initializeDatabase() {
   SAFE MIGRATIONS
   ---------------------------------------------------
   */
+
+  await addColumnIfMissing(
+    "countries",
+    "code",
+    "TEXT"
+  );
 
   await addColumnIfMissing(
     "brands",
@@ -719,12 +816,6 @@ async function initializeDatabase() {
     "TEXT DEFAULT 'Unverified'"
   );
 
-  /*
-    IMPORTANT:
-    CURRENT_TIMESTAMP is not used directly in
-    ALTER TABLE ADD COLUMN.
-  */
-
   await addColumnIfMissing(
     "brands",
     "created_at",
@@ -746,31 +837,37 @@ async function initializeDatabase() {
   await addColumnIfMissing(
     "applications",
     "country",
-    "TEXT"
+    "TEXT DEFAULT ''"
+  );
+
+  await addColumnIfMissing(
+    "applications",
+    "country_id",
+    "INTEGER"
   );
 
   await addColumnIfMissing(
     "applications",
     "owner_name",
-    "TEXT"
+    "TEXT DEFAULT ''"
   );
 
   await addColumnIfMissing(
     "applications",
     "email",
-    "TEXT"
+    "TEXT DEFAULT ''"
   );
 
   await addColumnIfMissing(
     "applications",
     "phone",
-    "TEXT"
+    "TEXT DEFAULT ''"
   );
 
   await addColumnIfMissing(
     "applications",
     "website",
-    "TEXT"
+    "TEXT DEFAULT ''"
   );
 
   await addColumnIfMissing(
@@ -782,7 +879,19 @@ async function initializeDatabase() {
   await addColumnIfMissing(
     "applications",
     "description",
-    "TEXT"
+    "TEXT DEFAULT ''"
+  );
+
+  await addColumnIfMissing(
+    "applications",
+    "payment_status",
+    "TEXT DEFAULT 'pending'"
+  );
+
+  await addColumnIfMissing(
+    "applications",
+    "amount",
+    "REAL DEFAULT 0"
   );
 
   await addColumnIfMissing(
@@ -827,20 +936,35 @@ async function initializeDatabase() {
     ON applications(status)
   `);
 
+  await dbRun(`
+    CREATE INDEX IF NOT EXISTS
+    idx_applications_country_id
+    ON applications(country_id)
+  `);
+
   /*
   ---------------------------------------------------
-  COUNTRIES
+  INSERT COUNTRIES
   ---------------------------------------------------
   */
 
-  for (const [name, code] of countries) {
+  for (
+    const [name, code]
+    of countries
+  ) {
     await dbRun(
       `
       INSERT OR IGNORE INTO countries
-      (name, code)
+      (
+        name,
+        code
+      )
       VALUES (?, ?)
       `,
-      [name, code]
+      [
+        name,
+        code
+      ]
     );
   }
 
@@ -857,66 +981,77 @@ async function initializeDatabase() {
       "Technology",
       "https://www.apple.com"
     ],
+
     [
       "Nike",
       "United States",
       "Sportswear",
       "https://www.nike.com"
     ],
+
     [
       "Burberry",
       "United Kingdom",
       "Fashion",
       "https://www.burberry.com"
     ],
+
     [
       "BMW",
       "Germany",
       "Automotive",
       "https://www.bmw.com"
     ],
+
     [
       "L'Oréal",
       "France",
       "Beauty",
       "https://www.loreal.com"
     ],
+
     [
       "Ferrari",
       "Italy",
       "Automotive",
       "https://www.ferrari.com"
     ],
+
     [
       "Arçelik",
       "Turkey",
       "Home Appliances",
       "https://www.arcelik.com"
     ],
+
     [
       "Artel",
       "Uzbekistan",
       "Electronics",
       "https://artelelectronics.com"
     ],
+
     [
       "Toyota",
       "Japan",
       "Automotive",
       "https://www.toyota.com"
     ],
+
     [
       "Samsung",
       "South Korea",
       "Electronics",
       "https://www.samsung.com"
     ],
+
     [
       "Huawei",
       "China",
       "Technology",
       "https://www.huawei.com"
     ],
+
     [
       "Tata",
       "India",
@@ -925,7 +1060,11 @@ async function initializeDatabase() {
     ]
   ];
 
-  for (const brand of starterBrands) {
+  for (
+    const brand
+    of starterBrands
+  ) {
+
     const [
       name,
       countryName,
@@ -933,14 +1072,15 @@ async function initializeDatabase() {
       website
     ] = brand;
 
-    const country = await dbGet(
-      `
-      SELECT id
-      FROM countries
-      WHERE name = ?
-      `,
-      [countryName]
-    );
+    const country =
+      await dbGet(
+        `
+        SELECT id
+        FROM countries
+        WHERE name = ?
+        `,
+        [countryName]
+      );
 
     if (!country) {
       continue;
@@ -956,7 +1096,14 @@ async function initializeDatabase() {
         website,
         verification
       )
-      SELECT ?, ?, ?, ?, ?
+
+      SELECT
+        ?,
+        ?,
+        ?,
+        ?,
+        ?
+
       WHERE NOT EXISTS (
         SELECT 1
         FROM brands
@@ -983,11 +1130,16 @@ async function initializeDatabase() {
 
 /*
 =====================================================
-MIDDLEWARE
+MODERATION MIDDLEWARE
 =====================================================
 */
 
-function rejectAdultContent(req, res, next) {
+function rejectAdultContent(
+  req,
+  res,
+  next
+) {
+
   const fields = [
     req.body?.brand_name,
     req.body?.name,
@@ -1005,7 +1157,8 @@ function rejectAdultContent(req, res, next) {
   ) {
     return res.status(400).json({
       ok: false,
-      error: "Adult content is not allowed."
+      error:
+        "Adult content is not allowed."
     });
   }
 
@@ -1018,7 +1171,12 @@ ADMIN AUTH
 =====================================================
 */
 
-function adminAuth(req, res, next) {
+function adminAuth(
+  req,
+  res,
+  next
+) {
+
   const configuredUser =
     process.env.ADMIN_USER;
 
@@ -1039,7 +1197,10 @@ function adminAuth(req, res, next) {
   const header =
     req.headers.authorization || "";
 
-  if (!header.startsWith("Basic ")) {
+  if (
+    !header.startsWith("Basic ")
+  ) {
+
     res.setHeader(
       "WWW-Authenticate",
       'Basic realm="ALL WORLD BRANDS ADMIN"'
@@ -1053,11 +1214,15 @@ function adminAuth(req, res, next) {
   let decoded;
 
   try {
-    decoded = Buffer.from(
-      header.slice(6),
-      "base64"
-    ).toString("utf8");
+
+    decoded =
+      Buffer.from(
+        header.slice(6),
+        "base64"
+      ).toString("utf8");
+
   } catch (error) {
+
     return res.status(401).send(
       "Invalid authentication."
     );
@@ -1073,15 +1238,21 @@ function adminAuth(req, res, next) {
   }
 
   const username =
-    decoded.slice(0, separator);
+    decoded.slice(
+      0,
+      separator
+    );
 
   const password =
-    decoded.slice(separator + 1);
+    decoded.slice(
+      separator + 1
+    );
 
   if (
     username !== configuredUser ||
     password !== configuredPassword
   ) {
+
     res.setHeader(
       "WWW-Authenticate",
       'Basic realm="ALL WORLD BRANDS ADMIN"'
@@ -1101,23 +1272,60 @@ HEALTH
 =====================================================
 */
 
-app.get("/api/health", async (req, res) => {
-  try {
-    await dbGet("SELECT 1 AS ok");
+app.get(
+  "/api/health",
+  async (req, res) => {
 
-    res.json({
-      ok: true,
-      service: "ALL WORLD BRANDS",
-      database: "connected",
-      timestamp: new Date().toISOString()
-    });
-  } catch (error) {
-    res.status(500).json({
-      ok: false,
-      database: "error"
-    });
+    try {
+
+      await dbGet(
+        "SELECT 1 AS ok"
+      );
+
+      const countryCount =
+        await dbGet(
+          `
+          SELECT COUNT(*) AS count
+          FROM countries
+          `
+        );
+
+      const brandCount =
+        await dbGet(
+          `
+          SELECT COUNT(*) AS count
+          FROM brands
+          `
+        );
+
+      res.json({
+        ok: true,
+        service:
+          "ALL WORLD BRANDS",
+        database:
+          "connected",
+        countries:
+          countryCount?.count || 0,
+        brands:
+          brandCount?.count || 0,
+        timestamp:
+          new Date().toISOString()
+      });
+
+    } catch (error) {
+
+      console.error(
+        "Health error:",
+        error
+      );
+
+      res.status(500).json({
+        ok: false,
+        database: "error"
+      });
+    }
   }
-});
+);
 
 /*
 =====================================================
@@ -1126,67 +1334,113 @@ PUBLIC API
 */
 
 /*
+-----------------------------------------------------
 GET ALL COUNTRIES
+-----------------------------------------------------
+
+IMPORTANT:
+Frontend expects an ARRAY directly.
+
+NOT:
+
+{
+  ok: true,
+  countries: [...]
+}
+
+BUT:
+
+[
+  {...},
+  {...}
+]
 */
 
-app.get("/api/countries", async (req, res) => {
-  try {
-    const rows = await dbAll(`
-      SELECT
-        id,
-        name,
-        code
-      FROM countries
-      ORDER BY name COLLATE NOCASE ASC
-    `);
+app.get(
+  "/api/countries",
+  async (req, res) => {
 
-    res.json({
-      ok: true,
-      countries: rows
-    });
-  } catch (error) {
-    console.error(error);
+    try {
 
-    res.status(500).json({
-      ok: false,
-      error: "Failed to load countries."
-    });
+      const rows =
+        await dbAll(`
+          SELECT
+            id,
+            name,
+            code
+          FROM countries
+          ORDER BY
+            name COLLATE NOCASE ASC
+        `);
+
+      /*
+        Frontend compatibility:
+        return ARRAY directly.
+      */
+
+      res.json(rows);
+
+    } catch (error) {
+
+      console.error(
+        "GET /api/countries:",
+        error
+      );
+
+      res.status(500).json({
+        ok: false,
+        error:
+          "Failed to load countries."
+      });
+    }
   }
-});
+);
 
 /*
+-----------------------------------------------------
 GET ONE COUNTRY
+-----------------------------------------------------
 */
 
 app.get(
   "/api/countries/:id",
   async (req, res) => {
-    const id = validId(req.params.id);
+
+    const id =
+      validId(
+        req.params.id
+      );
 
     if (!id) {
+
       return res.status(400).json({
         ok: false,
-        error: "Invalid country ID."
+        error:
+          "Invalid country ID."
       });
     }
 
     try {
-      const country = await dbGet(
-        `
-        SELECT
-          id,
-          name,
-          code
-        FROM countries
-        WHERE id = ?
-        `,
-        [id]
-      );
+
+      const country =
+        await dbGet(
+          `
+          SELECT
+            id,
+            name,
+            code
+          FROM countries
+          WHERE id = ?
+          `,
+          [id]
+        );
 
       if (!country) {
+
         return res.status(404).json({
           ok: false,
-          error: "Country not found."
+          error:
+            "Country not found."
         });
       }
 
@@ -1194,129 +1448,181 @@ app.get(
         ok: true,
         country
       });
+
     } catch (error) {
-      console.error(error);
+
+      console.error(
+        "GET country:",
+        error
+      );
 
       res.status(500).json({
         ok: false,
-        error: "Failed to load country."
+        error:
+          "Failed to load country."
       });
     }
   }
 );
 
 /*
+-----------------------------------------------------
 GET BRANDS BY COUNTRY
+-----------------------------------------------------
 */
 
 app.get(
   "/api/countries/:id/brands",
   async (req, res) => {
+
     const countryId =
-      validId(req.params.id);
+      validId(
+        req.params.id
+      );
 
     if (!countryId) {
+
       return res.status(400).json({
         ok: false,
-        error: "Invalid country ID."
+        error:
+          "Invalid country ID."
       });
     }
 
     try {
-      const country = await dbGet(
-        `
-        SELECT id, name, code
-        FROM countries
-        WHERE id = ?
-        `,
-        [countryId]
-      );
+
+      const country =
+        await dbGet(
+          `
+          SELECT
+            id,
+            name,
+            code
+          FROM countries
+          WHERE id = ?
+          `,
+          [countryId]
+        );
 
       if (!country) {
+
         return res.status(404).json({
           ok: false,
-          error: "Country not found."
+          error:
+            "Country not found."
         });
       }
 
-      const brands = await dbAll(
-        `
-        SELECT
-          id,
-          country_id,
-          name,
-          logo,
-          category,
-          description,
-          website,
-          verification,
-          created_at
-        FROM brands
-        WHERE country_id = ?
-        ORDER BY name COLLATE NOCASE ASC
-        `,
-        [countryId]
-      );
+      const brands =
+        await dbAll(
+          `
+          SELECT
+            id,
+            country_id,
+            name,
+            logo,
+            category,
+            description,
+            website,
+            verification,
+            created_at
+          FROM brands
+          WHERE country_id = ?
+          ORDER BY
+            name COLLATE NOCASE ASC
+          `,
+          [countryId]
+        );
+
+      /*
+        Return both formats so the frontend
+        can safely use data.brands.
+
+        Existing index.html expects:
+          data.brands
+      */
 
       res.json({
         ok: true,
         country,
         brands
       });
+
     } catch (error) {
-      console.error(error);
+
+      console.error(
+        "GET country brands:",
+        error
+      );
 
       res.status(500).json({
         ok: false,
-        error: "Failed to load brands."
+        error:
+          "Failed to load brands."
       });
     }
   }
 );
 
 /*
+-----------------------------------------------------
 GET ONE BRAND
+-----------------------------------------------------
 */
 
 app.get(
   "/api/brands/:id",
   async (req, res) => {
-    const id = validId(req.params.id);
+
+    const id =
+      validId(
+        req.params.id
+      );
 
     if (!id) {
+
       return res.status(400).json({
         ok: false,
-        error: "Invalid brand ID."
+        error:
+          "Invalid brand ID."
       });
     }
 
     try {
-      const brand = await dbGet(
-        `
-        SELECT
-          b.id,
-          b.country_id,
-          b.name,
-          b.logo,
-          b.category,
-          b.description,
-          b.website,
-          b.verification,
-          b.created_at,
-          c.name AS country,
-          c.code AS country_code
-        FROM brands b
-        JOIN countries c
-          ON c.id = b.country_id
-        WHERE b.id = ?
-        `,
-        [id]
-      );
+
+      const brand =
+        await dbGet(
+          `
+          SELECT
+            b.id,
+            b.country_id,
+            b.name,
+            b.logo,
+            b.category,
+            b.description,
+            b.website,
+            b.verification,
+            b.created_at,
+
+            c.name AS country,
+            c.code AS country_code
+
+          FROM brands b
+
+          JOIN countries c
+            ON c.id = b.country_id
+
+          WHERE b.id = ?
+          `,
+          [id]
+        );
 
       if (!brand) {
+
         return res.status(404).json({
           ok: false,
-          error: "Brand not found."
+          error:
+            "Brand not found."
         });
       }
 
@@ -1324,12 +1630,18 @@ app.get(
         ok: true,
         brand
       });
+
     } catch (error) {
-      console.error(error);
+
+      console.error(
+        "GET brand:",
+        error
+      );
 
       res.status(500).json({
         ok: false,
-        error: "Failed to load brand."
+        error:
+          "Failed to load brand."
       });
     }
   }
@@ -1345,20 +1657,25 @@ app.get(
   "/api/search",
   rejectAdultContent,
   async (req, res) => {
-    const q = cleanString(
-      req.query.q,
-      200
-    );
+
+    const q =
+      cleanString(
+        req.query.q,
+        200
+      );
 
     if (!q) {
+
       return res.json({
         ok: true,
         query: "",
+        count: 0,
         results: []
       });
     }
 
     if (isBlockedContent(q)) {
+
       return res.status(400).json({
         ok: false,
         error:
@@ -1367,48 +1684,59 @@ app.get(
     }
 
     try {
-      const search = `%${q}%`;
 
-      const results = await dbAll(
-        `
-        SELECT
-          b.id,
-          b.country_id,
-          b.name,
-          b.logo,
-          b.category,
-          b.description,
-          b.website,
-          b.verification,
-          b.created_at,
-          c.name AS country,
-          c.code AS country_code
-        FROM brands b
-        JOIN countries c
-          ON c.id = b.country_id
-        WHERE
-          b.name LIKE ?
-          OR b.description LIKE ?
-          OR b.category LIKE ?
-          OR c.name LIKE ?
-        ORDER BY
-          CASE
-            WHEN b.name LIKE ? THEN 0
-            WHEN c.name LIKE ? THEN 1
-            ELSE 2
-          END,
-          b.name COLLATE NOCASE ASC
-        LIMIT 100
-        `,
-        [
-          search,
-          search,
-          search,
-          search,
-          search,
-          search
-        ]
-      );
+      const search =
+        `%${q}%`;
+
+      const results =
+        await dbAll(
+          `
+          SELECT
+            b.id,
+            b.country_id,
+            b.name,
+            b.logo,
+            b.category,
+            b.description,
+            b.website,
+            b.verification,
+            b.created_at,
+
+            c.name AS country,
+            c.code AS country_code
+
+          FROM brands b
+
+          JOIN countries c
+            ON c.id = b.country_id
+
+          WHERE
+            b.name LIKE ?
+            OR b.description LIKE ?
+            OR b.category LIKE ?
+            OR c.name LIKE ?
+
+          ORDER BY
+
+            CASE
+              WHEN b.name LIKE ? THEN 0
+              WHEN c.name LIKE ? THEN 1
+              ELSE 2
+            END,
+
+            b.name COLLATE NOCASE ASC
+
+          LIMIT 100
+          `,
+          [
+            search,
+            search,
+            search,
+            search,
+            search,
+            search
+          ]
+        );
 
       res.json({
         ok: true,
@@ -1416,12 +1744,18 @@ app.get(
         count: results.length,
         results
       });
+
     } catch (error) {
-      console.error(error);
+
+      console.error(
+        "Search error:",
+        error
+      );
 
       res.status(500).json({
         ok: false,
-        error: "Search failed."
+        error:
+          "Search failed."
       });
     }
   }
@@ -1437,57 +1771,112 @@ app.post(
   "/api/applications",
   rejectAdultContent,
   async (req, res) => {
-    const brandName = cleanString(
-      req.body.brand_name,
-      200
-    );
 
-    const country = cleanString(
-      req.body.country,
-      200
-    );
+    const brandName =
+      cleanString(
+        req.body?.brand_name,
+        200
+      );
 
-    const ownerName = cleanString(
-      req.body.owner_name,
-      200
-    );
+    /*
+      Frontend sends country_id.
+      Older clients may send country.
+    */
 
-    const email = cleanString(
-      req.body.email,
-      254
-    );
+    const countryId =
+      validId(
+        req.body?.country_id
+      );
 
-    const phone = cleanString(
-      req.body.phone,
-      100
-    );
+    let countryName =
+      cleanString(
+        req.body?.country,
+        200
+      );
 
-    const website = cleanString(
-      req.body.website,
-      2048
-    );
+    const ownerName =
+      cleanString(
+        req.body?.owner_name,
+        200
+      );
 
-    const logo = cleanString(
-      req.body.logo,
-      2048
-    );
+    const email =
+      cleanString(
+        req.body?.email,
+        254
+      );
 
-    const description = cleanString(
-      req.body.description,
-      5000
-    );
+    const phone =
+      cleanString(
+        req.body?.phone,
+        100
+      );
+
+    const website =
+      cleanString(
+        req.body?.website,
+        2048
+      );
+
+    const logo =
+      cleanString(
+        req.body?.logo,
+        2048
+      );
+
+    const description =
+      cleanString(
+        req.body?.description,
+        5000
+      );
+
+    /*
+      Frontend sends these fields.
+    */
+
+    let paymentStatus =
+      cleanString(
+        req.body?.payment_status,
+        30
+      ).toLowerCase();
+
+    const amountValue =
+      Number(
+        req.body?.amount || 0
+      );
+
+    const amount =
+      Number.isFinite(
+        amountValue
+      ) &&
+      amountValue >= 0
+        ? amountValue
+        : 0;
+
+    /*
+    ---------------------------------------------------
+    VALIDATION
+    ---------------------------------------------------
+    */
 
     if (!brandName) {
+
       return res.status(400).json({
         ok: false,
-        error: "Brand name is required."
+        error:
+          "Brand name is required."
       });
     }
 
-    if (!email || !validEmail(email)) {
+    if (
+      !email ||
+      !validEmail(email)
+    ) {
+
       return res.status(400).json({
         ok: false,
-        error: "Valid email is required."
+        error:
+          "Valid email is required."
       });
     }
 
@@ -1497,50 +1886,150 @@ app.post(
         logo
       ])
     ) {
+
       return res.status(400).json({
         ok: false,
-        error: "Invalid URL."
+        error:
+          "Invalid URL."
       });
     }
 
+    /*
+    ---------------------------------------------------
+    COUNTRY
+    ---------------------------------------------------
+    */
+
     try {
-      const result = await dbRun(
-        `
-        INSERT INTO applications
-        (
-          brand_name,
-          country,
-          owner_name,
-          email,
-          phone,
-          website,
-          logo,
-          description,
-          status
+
+      if (countryId) {
+
+        const country =
+          await dbGet(
+            `
+            SELECT
+              id,
+              name
+            FROM countries
+            WHERE id = ?
+            `,
+            [countryId]
+          );
+
+        if (!country) {
+
+          return res.status(404).json({
+            ok: false,
+            error:
+              "Country not found."
+          });
+        }
+
+        countryName =
+          country.name;
+      }
+
+      /*
+        If no country_id was sent,
+        preserve the old country text.
+      */
+
+      /*
+    ---------------------------------------------------
+    PAYMENT STATUS
+    ---------------------------------------------------
+      */
+
+      const allowedPaymentStatuses = [
+        "pending",
+        "paid",
+        "failed",
+        "cancelled"
+      ];
+
+      if (
+        !allowedPaymentStatuses.includes(
+          paymentStatus
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `,
-        [
-          brandName,
-          country,
-          ownerName,
-          email,
-          phone,
-          website,
-          logo,
-          description,
-          "new"
-        ]
-      );
+      ) {
+        paymentStatus =
+          "pending";
+      }
+
+      /*
+    ---------------------------------------------------
+    INSERT APPLICATION
+    ---------------------------------------------------
+      */
+
+      const result =
+        await dbRun(
+          `
+          INSERT INTO applications
+          (
+            brand_name,
+            country,
+            country_id,
+            owner_name,
+            email,
+            phone,
+            website,
+            logo,
+            description,
+            payment_status,
+            amount,
+            status
+          )
+
+          VALUES
+          (
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?
+          )
+          `,
+          [
+            brandName,
+            countryName,
+            countryId,
+            ownerName,
+            email,
+            phone,
+            website,
+            logo,
+            description,
+            paymentStatus,
+            amount,
+            "new"
+          ]
+        );
 
       res.status(201).json({
         ok: true,
         message:
           "Application submitted successfully.",
-        id: result.lastID
+        id:
+          result.lastID,
+        payment_status:
+          paymentStatus,
+        amount
       });
+
     } catch (error) {
-      console.error(error);
+
+      console.error(
+        "Application error:",
+        error
+      );
 
       res.status(500).json({
         ok: false,
@@ -1558,37 +2047,59 @@ ADMIN API
 */
 
 /*
+-----------------------------------------------------
 GET APPLICATIONS
+-----------------------------------------------------
 */
 
 app.get(
   "/api/admin/applications",
   adminAuth,
   async (req, res) => {
+
     try {
-      const applications = await dbAll(`
-        SELECT
-          id,
-          brand_name,
-          country,
-          owner_name,
-          email,
-          phone,
-          website,
-          logo,
-          description,
-          status,
-          created_at
-        FROM applications
-        ORDER BY id DESC
-      `);
+
+      const applications =
+        await dbAll(`
+          SELECT
+            a.id,
+            a.brand_name,
+            a.country,
+            a.country_id,
+            a.owner_name,
+            a.email,
+            a.phone,
+            a.website,
+            a.logo,
+            a.description,
+            a.payment_status,
+            a.amount,
+            a.status,
+            a.created_at,
+
+            c.name AS country_name,
+            c.code AS country_code
+
+          FROM applications a
+
+          LEFT JOIN countries c
+            ON c.id = a.country_id
+
+          ORDER BY
+            a.id DESC
+        `);
 
       res.json({
         ok: true,
         applications
       });
+
     } catch (error) {
-      console.error(error);
+
+      console.error(
+        "Admin applications error:",
+        error
+      );
 
       res.status(500).json({
         ok: false,
@@ -1600,50 +2111,68 @@ app.get(
 );
 
 /*
+-----------------------------------------------------
 GET ADMIN BRANDS
+-----------------------------------------------------
 */
 
 app.get(
   "/api/admin/brands",
   adminAuth,
   async (req, res) => {
+
     try {
-      const brands = await dbAll(`
-        SELECT
-          b.id,
-          b.country_id,
-          b.name,
-          b.logo,
-          b.category,
-          b.description,
-          b.website,
-          b.verification,
-          b.created_at,
-          c.name AS country,
-          c.code AS country_code
-        FROM brands b
-        JOIN countries c
-          ON c.id = b.country_id
-        ORDER BY b.id DESC
-      `);
+
+      const brands =
+        await dbAll(`
+          SELECT
+            b.id,
+            b.country_id,
+            b.name,
+            b.logo,
+            b.category,
+            b.description,
+            b.website,
+            b.verification,
+            b.created_at,
+
+            c.name AS country,
+            c.code AS country_code
+
+          FROM brands b
+
+          JOIN countries c
+            ON c.id = b.country_id
+
+          ORDER BY
+            b.id DESC
+        `);
 
       res.json({
         ok: true,
         brands
       });
+
     } catch (error) {
-      console.error(error);
+
+      console.error(
+        "Admin brands error:",
+        error
+      );
 
       res.status(500).json({
         ok: false,
-        error: "Failed to load brands."
+        error:
+          "Failed to load brands."
       });
     }
   }
 );
 
 /*
+-----------------------------------------------------
 CREATE BRAND
+-----------------------------------------------------
 */
 
 app.post(
@@ -1651,50 +2180,64 @@ app.post(
   adminAuth,
   rejectAdultContent,
   async (req, res) => {
+
     const countryId =
-      validId(req.body.country_id);
+      validId(
+        req.body?.country_id
+      );
 
-    const name = cleanString(
-      req.body.name,
-      200
-    );
+    const name =
+      cleanString(
+        req.body?.name,
+        200
+      );
 
-    const logo = cleanString(
-      req.body.logo,
-      2048
-    );
+    const logo =
+      cleanString(
+        req.body?.logo,
+        2048
+      );
 
-    const category = cleanString(
-      req.body.category,
-      200
-    );
+    const category =
+      cleanString(
+        req.body?.category,
+        200
+      );
 
-    const description = cleanString(
-      req.body.description,
-      5000
-    );
+    const description =
+      cleanString(
+        req.body?.description,
+        5000
+      );
 
-    const website = cleanString(
-      req.body.website,
-      2048
-    );
+    const website =
+      cleanString(
+        req.body?.website,
+        2048
+      );
 
-    const verification = cleanString(
-      req.body.verification,
-      100
-    ) || "Unverified";
+    const verification =
+      cleanString(
+        req.body?.verification,
+        100
+      ) ||
+      "Unverified";
 
     if (!countryId) {
+
       return res.status(400).json({
         ok: false,
-        error: "Valid country_id is required."
+        error:
+          "Valid country_id is required."
       });
     }
 
     if (!name) {
+
       return res.status(400).json({
         ok: false,
-        error: "Brand name is required."
+        error:
+          "Brand name is required."
       });
     }
 
@@ -1704,72 +2247,99 @@ app.post(
         website
       ])
     ) {
+
       return res.status(400).json({
         ok: false,
-        error: "Invalid URL."
+        error:
+          "Invalid URL."
       });
     }
 
     try {
-      const country = await dbGet(
-        `
-        SELECT id
-        FROM countries
-        WHERE id = ?
-        `,
-        [countryId]
-      );
+
+      const country =
+        await dbGet(
+          `
+          SELECT id
+          FROM countries
+          WHERE id = ?
+          `,
+          [countryId]
+        );
 
       if (!country) {
+
         return res.status(404).json({
           ok: false,
-          error: "Country not found."
+          error:
+            "Country not found."
         });
       }
 
-      const result = await dbRun(
-        `
-        INSERT INTO brands
-        (
-          country_id,
-          name,
-          logo,
-          category,
-          description,
-          website,
-          verification
-        )
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-        `,
-        [
-          countryId,
-          name,
-          logo,
-          category,
-          description,
-          website,
-          verification
-        ]
-      );
+      const result =
+        await dbRun(
+          `
+          INSERT INTO brands
+          (
+            country_id,
+            name,
+            logo,
+            category,
+            description,
+            website,
+            verification
+          )
+
+          VALUES
+          (
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?,
+            ?
+          )
+          `,
+          [
+            countryId,
+            name,
+            logo,
+            category,
+            description,
+            website,
+            verification
+          ]
+        );
 
       res.status(201).json({
         ok: true,
-        message: "Brand created.",
-        id: result.lastID
+        message:
+          "Brand created.",
+        id:
+          result.lastID
       });
+
     } catch (error) {
-      console.error(error);
+
+      console.error(
+        "Create brand error:",
+        error
+      );
 
       res.status(500).json({
         ok: false,
-        error: "Failed to create brand."
+        error:
+          "Failed to create brand."
       });
     }
   }
 );
 
 /*
+-----------------------------------------------------
 UPDATE BRAND
+-----------------------------------------------------
 */
 
 app.put(
@@ -1777,49 +2347,68 @@ app.put(
   adminAuth,
   rejectAdultContent,
   async (req, res) => {
-    const id = validId(req.params.id);
+
+    const id =
+      validId(
+        req.params.id
+      );
 
     if (!id) {
+
       return res.status(400).json({
         ok: false,
-        error: "Invalid brand ID."
+        error:
+          "Invalid brand ID."
       });
     }
 
     const countryId =
-      validId(req.body.country_id);
+      validId(
+        req.body?.country_id
+      );
 
-    const name = cleanString(
-      req.body.name,
-      200
-    );
+    const name =
+      cleanString(
+        req.body?.name,
+        200
+      );
 
-    const logo = cleanString(
-      req.body.logo,
-      2048
-    );
+    const logo =
+      cleanString(
+        req.body?.logo,
+        2048
+      );
 
-    const category = cleanString(
-      req.body.category,
-      200
-    );
+    const category =
+      cleanString(
+        req.body?.category,
+        200
+      );
 
-    const description = cleanString(
-      req.body.description,
-      5000
-    );
+    const description =
+      cleanString(
+        req.body?.description,
+        5000
+      );
 
-    const website = cleanString(
-      req.body.website,
-      2048
-    );
+    const website =
+      cleanString(
+        req.body?.website,
+        2048
+      );
 
-    const verification = cleanString(
-      req.body.verification,
-      100
-    ) || "Unverified";
+    const verification =
+      cleanString(
+        req.body?.verification,
+        100
+      ) ||
+      "Unverified";
 
-    if (!countryId || !name) {
+    if (
+      !countryId ||
+      !name
+    ) {
+
       return res.status(400).json({
         ok: false,
         error:
@@ -1833,48 +2422,58 @@ app.put(
         website
       ])
     ) {
+
       return res.status(400).json({
         ok: false,
-        error: "Invalid URL."
+        error:
+          "Invalid URL."
       });
     }
 
     try {
-      const existing = await dbGet(
-        `
-        SELECT id
-        FROM brands
-        WHERE id = ?
-        `,
-        [id]
-      );
+
+      const existing =
+        await dbGet(
+          `
+          SELECT id
+          FROM brands
+          WHERE id = ?
+          `,
+          [id]
+        );
 
       if (!existing) {
+
         return res.status(404).json({
           ok: false,
-          error: "Brand not found."
+          error:
+            "Brand not found."
         });
       }
 
-      const country = await dbGet(
-        `
-        SELECT id
-        FROM countries
-        WHERE id = ?
-        `,
-        [countryId]
-      );
+      const country =
+        await dbGet(
+          `
+          SELECT id
+          FROM countries
+          WHERE id = ?
+          `,
+          [countryId]
+        );
 
       if (!country) {
+
         return res.status(404).json({
           ok: false,
-          error: "Country not found."
+          error:
+            "Country not found."
         });
       }
 
       await dbRun(
         `
         UPDATE brands
+
         SET
           country_id = ?,
           name = ?,
@@ -1883,6 +2482,7 @@ app.put(
           description = ?,
           website = ?,
           verification = ?
+
         WHERE id = ?
         `,
         [
@@ -1899,88 +2499,125 @@ app.put(
 
       res.json({
         ok: true,
-        message: "Brand updated."
+        message:
+          "Brand updated."
       });
+
     } catch (error) {
-      console.error(error);
+
+      console.error(
+        "Update brand error:",
+        error
+      );
 
       res.status(500).json({
         ok: false,
-        error: "Failed to update brand."
+        error:
+          "Failed to update brand."
       });
     }
   }
 );
 
 /*
+-----------------------------------------------------
 DELETE BRAND
+-----------------------------------------------------
 */
 
 app.delete(
   "/api/admin/brands/:id",
   adminAuth,
   async (req, res) => {
-    const id = validId(req.params.id);
+
+    const id =
+      validId(
+        req.params.id
+      );
 
     if (!id) {
+
       return res.status(400).json({
         ok: false,
-        error: "Invalid brand ID."
+        error:
+          "Invalid brand ID."
       });
     }
 
     try {
-      const result = await dbRun(
-        `
-        DELETE FROM brands
-        WHERE id = ?
-        `,
-        [id]
-      );
 
-      if (result.changes === 0) {
+      const result =
+        await dbRun(
+          `
+          DELETE FROM brands
+          WHERE id = ?
+          `,
+          [id]
+        );
+
+      if (
+        result.changes === 0
+      ) {
+
         return res.status(404).json({
           ok: false,
-          error: "Brand not found."
+          error:
+            "Brand not found."
         });
       }
 
       res.json({
         ok: true,
-        message: "Brand deleted."
+        message:
+          "Brand deleted."
       });
+
     } catch (error) {
-      console.error(error);
+
+      console.error(
+        "Delete brand error:",
+        error
+      );
 
       res.status(500).json({
         ok: false,
-        error: "Failed to delete brand."
+        error:
+          "Failed to delete brand."
       });
     }
   }
 );
 
 /*
+-----------------------------------------------------
 UPDATE APPLICATION STATUS
+-----------------------------------------------------
 */
 
 app.put(
   "/api/admin/applications/:id",
   adminAuth,
   async (req, res) => {
-    const id = validId(req.params.id);
+
+    const id =
+      validId(
+        req.params.id
+      );
 
     if (!id) {
+
       return res.status(400).json({
         ok: false,
-        error: "Invalid application ID."
+        error:
+          "Invalid application ID."
       });
     }
 
-    const status = cleanString(
-      req.body.status,
-      30
-    ).toLowerCase();
+    const status =
+      cleanString(
+        req.body?.status,
+        30
+      ).toLowerCase();
 
     const allowedStatuses = [
       "new",
@@ -1990,8 +2627,11 @@ app.put(
     ];
 
     if (
-      !allowedStatuses.includes(status)
+      !allowedStatuses.includes(
+        status
+      )
     ) {
+
       return res.status(400).json({
         ok: false,
         error:
@@ -2000,22 +2640,28 @@ app.put(
     }
 
     try {
-      const result = await dbRun(
-        `
-        UPDATE applications
-        SET status = ?
-        WHERE id = ?
-        `,
-        [
-          status,
-          id
-        ]
-      );
 
-      if (result.changes === 0) {
+      const result =
+        await dbRun(
+          `
+          UPDATE applications
+          SET status = ?
+          WHERE id = ?
+          `,
+          [
+            status,
+            id
+          ]
+        );
+
+      if (
+        result.changes === 0
+      ) {
+
         return res.status(404).json({
           ok: false,
-          error: "Application not found."
+          error:
+            "Application not found."
         });
       }
 
@@ -2024,13 +2670,120 @@ app.put(
         message:
           "Application status updated."
       });
+
     } catch (error) {
-      console.error(error);
+
+      console.error(
+        "Application status error:",
+        error
+      );
 
       res.status(500).json({
         ok: false,
         error:
           "Failed to update application."
+      });
+    }
+  }
+);
+
+/*
+-----------------------------------------------------
+UPDATE APPLICATION PAYMENT
+-----------------------------------------------------
+*/
+
+app.put(
+  "/api/admin/applications/:id/payment",
+  adminAuth,
+  async (req, res) => {
+
+    const id =
+      validId(
+        req.params.id
+      );
+
+    if (!id) {
+
+      return res.status(400).json({
+        ok: false,
+        error:
+          "Invalid application ID."
+      });
+    }
+
+    let paymentStatus =
+      cleanString(
+        req.body?.payment_status,
+        30
+      ).toLowerCase();
+
+    const allowedStatuses = [
+      "pending",
+      "paid",
+      "failed",
+      "cancelled"
+    ];
+
+    if (
+      !allowedStatuses.includes(
+        paymentStatus
+      )
+    ) {
+
+      return res.status(400).json({
+        ok: false,
+        error:
+          "Invalid payment status."
+      });
+    }
+
+    try {
+
+      const result =
+        await dbRun(
+          `
+          UPDATE applications
+
+          SET
+            payment_status = ?
+
+          WHERE id = ?
+          `,
+          [
+            paymentStatus,
+            id
+          ]
+        );
+
+      if (
+        result.changes === 0
+      ) {
+
+        return res.status(404).json({
+          ok: false,
+          error:
+            "Application not found."
+        });
+      }
+
+      res.json({
+        ok: true,
+        message:
+          "Payment status updated."
+      });
+
+    } catch (error) {
+
+      console.error(
+        "Payment update error:",
+        error
+      );
+
+      res.status(500).json({
+        ok: false,
+        error:
+          "Failed to update payment status."
       });
     }
   }
@@ -2045,9 +2798,11 @@ UNKNOWN API ROUTE
 app.use(
   "/api",
   (req, res) => {
+
     res.status(404).json({
       ok: false,
-      error: "API endpoint not found."
+      error:
+        "API endpoint not found."
     });
   }
 );
@@ -2062,19 +2817,27 @@ app.get(
   "/admin",
   adminAuth,
   (req, res) => {
+
     const adminIndex =
       path.join(
         ADMIN_DIR,
         "index.html"
       );
 
-    if (!fs.existsSync(adminIndex)) {
+    if (
+      !fs.existsSync(
+        adminIndex
+      )
+    ) {
+
       return res.status(404).send(
         "Admin page not found."
       );
     }
 
-    res.sendFile(adminIndex);
+    res.sendFile(
+      adminIndex
+    );
   }
 );
 
@@ -2087,7 +2850,9 @@ ADMIN STATIC FILES
 app.use(
   "/admin",
   adminAuth,
-  express.static(ADMIN_DIR)
+  express.static(
+    ADMIN_DIR
+  )
 );
 
 /*
@@ -2097,9 +2862,12 @@ PUBLIC STATIC FILES
 */
 
 app.use(
-  express.static(PUBLIC_DIR, {
-    index: "index.html"
-  })
+  express.static(
+    PUBLIC_DIR,
+    {
+      index: "index.html"
+    }
+  )
 );
 
 /*
@@ -2111,19 +2879,27 @@ FRONTEND FALLBACK
 app.get(
   /.*/,
   (req, res) => {
+
     const indexPath =
       path.join(
         PUBLIC_DIR,
         "index.html"
       );
 
-    if (!fs.existsSync(indexPath)) {
+    if (
+      !fs.existsSync(
+        indexPath
+      )
+    ) {
+
       return res.status(404).send(
         "index.html not found."
       );
     }
 
-    res.sendFile(indexPath);
+    res.sendFile(
+      indexPath
+    );
   }
 );
 
@@ -2134,7 +2910,13 @@ ERROR HANDLER
 */
 
 app.use(
-  (error, req, res, next) => {
+  (
+    error,
+    req,
+    res,
+    next
+  ) => {
+
     console.error(
       "Server error:",
       error
@@ -2145,15 +2927,18 @@ app.use(
       error.status === 400 &&
       "body" in error
     ) {
+
       return res.status(400).json({
         ok: false,
-        error: "Invalid JSON."
+        error:
+          "Invalid JSON."
       });
     }
 
     res.status(500).json({
       ok: false,
-      error: "Internal server error."
+      error:
+        "Internal server error."
     });
   }
 );
@@ -2165,13 +2950,16 @@ START SERVER
 */
 
 async function startServer() {
+
   try {
+
     await initializeDatabase();
 
     app.listen(
       PORT,
       "0.0.0.0",
       () => {
+
         console.log(
           "========================================"
         );
@@ -2189,11 +2977,17 @@ async function startServer() {
         );
 
         console.log(
+          `Countries: ${countries.length}`
+        );
+
+        console.log(
           "========================================"
         );
       }
     );
+
   } catch (error) {
+
     console.error(
       "Database initialization failed:",
       error
@@ -2211,35 +3005,44 @@ GRACEFUL SHUTDOWN
 =====================================================
 */
 
-function shutdown(signal) {
+function shutdown(
+  signal
+) {
+
   console.log(
     `${signal} received. Closing database...`
   );
 
-  db.close((error) => {
-    if (error) {
-      console.error(
-        "Database close error:",
-        error
+  db.close(
+    (error) => {
+
+      if (error) {
+
+        console.error(
+          "Database close error:",
+          error
+        );
+
+        process.exit(1);
+      }
+
+      console.log(
+        "Database closed."
       );
 
-      process.exit(1);
+      process.exit(0);
     }
-
-    console.log(
-      "Database closed."
-    );
-
-    process.exit(0);
-  });
+  );
 }
 
 process.on(
   "SIGTERM",
-  () => shutdown("SIGTERM")
+  () =>
+    shutdown("SIGTERM")
 );
 
 process.on(
   "SIGINT",
-  () => shutdown("SIGINT")
+  () =>
+    shutdown("SIGINT")
 );
