@@ -224,7 +224,9 @@ header{
 }
 
 
-/* HEADER SEARCH */
+/* =========================
+   HEADER SEARCH
+========================= */
 
 .header-search{
     margin-left:auto;
@@ -348,7 +350,9 @@ header{
 }
 
 
-/* GLOBAL BADGE */
+/* =========================
+   GLOBAL BADGE
+========================= */
 
 .global-badge{
     position:absolute;
@@ -561,7 +565,9 @@ header{
 }
 
 
-/* FLAG */
+/* =========================
+   FLAG
+========================= */
 
 .country-flag{
     position:absolute;
@@ -581,7 +587,9 @@ header{
 }
 
 
-/* COUNTRY TEXT */
+/* =========================
+   COUNTRY TEXT
+========================= */
 
 .country-info{
     position:absolute;
@@ -620,7 +628,9 @@ header{
 }
 
 
-/* ARROW */
+/* =========================
+   ARROW
+========================= */
 
 .arrow{
     width:25px;
@@ -1277,6 +1287,10 @@ footer{
 <body>
 
 
+<!-- =========================
+     GLOBAL EARTH
+========================= -->
+
 <div id="globeBg">
 
     <div class="earth">
@@ -1287,6 +1301,10 @@ footer{
 
 </div>
 
+
+<!-- =========================
+     HEADER
+========================= -->
 
 <header>
 
@@ -1345,6 +1363,10 @@ footer{
 
 </header>
 
+
+<!-- =========================
+     HERO
+========================= -->
 
 <section class="hero">
 
@@ -1411,6 +1433,10 @@ footer{
 </section>
 
 
+<!-- =========================
+     MAIN
+========================= -->
+
 <main
     class="container"
     id="countriesSection"
@@ -1426,7 +1452,7 @@ footer{
         class="count-badge"
         id="countryCount"
     >
-        Davlatlar
+        Yuklanmoqda...
     </span>
 
 </div>
@@ -1468,12 +1494,20 @@ footer{
 </main>
 
 
+<!-- =========================
+     FOOTER
+========================= -->
+
 <footer>
 
     © 2026 ALL WORLD BRANDS
 
 </footer>
 
+
+<!-- =========================
+     ADD BRAND MODAL
+========================= -->
 
 <div
     class="modal"
@@ -1490,6 +1524,8 @@ footer{
     ×
 </button>
 
+
+<!-- FORM -->
 
 <div id="formScreen">
 
@@ -1642,6 +1678,8 @@ footer{
 </div>
 
 
+<!-- CHECKOUT -->
+
 <div
     id="checkoutScreen"
     class="checkout-screen"
@@ -1756,6 +1794,8 @@ footer{
 </div>
 
 
+<!-- SUCCESS -->
+
 <div
     id="successScreen"
     class="checkout-screen"
@@ -1820,82 +1860,128 @@ let countriesRequest = null;
 
 
 /* =========================
-   COUNTRY IMAGES
+   COUNTRY IMAGE
+   LOCAL GITHUB / RENDER
 ========================= */
 
-const countryImages = {
+/*
+    Rasmlar shu papkada bo‘ladi:
 
-    Uzbekistan:
-        "https://images.unsplash.com/photo-1554797589-7241bb691973?auto=format&fit=crop&w=900&q=80",
+    public/
+      images/
+        countries/
 
-    USA:
-        "https://images.unsplash.com/photo-1485738422979-f5c462d49f74?auto=format&fit=crop&w=900&q=80",
+          UZ.jpg
+          US.jpg
+          TR.jpg
+          DE.jpg
+          FR.jpg
+          GB.jpg
+          IT.jpg
+          JP.jpg
+          CN.jpg
+          IN.jpg
 
-    Turkey:
-        "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&w=900&q=80",
-
-    Germany:
-        "https://images.unsplash.com/photo-1560969184-10fe8719e047?auto=format&fit=crop&w=900&q=80",
-
-    Japan:
-        "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=900&q=80",
-
-    France:
-        "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=900&q=80",
-
-    UnitedKingdom:
-        "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=900&q=80",
-
-    Italy:
-        "https://images.unsplash.com/photo-1529260830199-42c24126f198?auto=format&fit=crop&w=900&q=80",
-
-    China:
-        "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?auto=format&fit=crop&w=900&q=80",
-
-    India:
-        "https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=900&q=80",
-
-    Russia:
-        "https://images.unsplash.com/photo-1513326738677-b964603b136d?auto=format&fit=crop&w=900&q=80",
-
-    Spain:
-        "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?auto=format&fit=crop&w=900&q=80",
-
-    Canada:
-        "https://images.unsplash.com/photo-1517935706615-2717063c2225?auto=format&fit=crop&w=900&q=80",
-
-    Brazil:
-        "https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=900&q=80",
-
-    Australia:
-        "https://images.unsplash.com/photo-1506973035872-a4f7d2c1b1b1?auto=format&fit=crop&w=900&q=80",
-
-    SouthKorea:
-        "https://images.unsplash.com/photo-1538485399081-7c8972b5b8d4?auto=format&fit=crop&w=900&q=80",
-
-    SaudiArabia:
-        "https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?auto=format&fit=crop&w=900&q=80",
-
-    Mexico:
-        "https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?auto=format&fit=crop&w=900&q=80",
-
-    Indonesia:
-        "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=900&q=80",
-
-    Netherlands:
-        "https://images.unsplash.com/photo-1534351590666-13e3e96b5017?auto=format&fit=crop&w=900&q=80"
-
-};
+    API country.code = UZ
+    -> /images/countries/UZ.jpg
+*/
 
 
-/* =========================
-   IMAGE FUNCTION
-========================= */
-
-function imageForCountry(name,id){
+function imageForCountry(name, id, code){
 
     const cleanName =
         String(name || "").trim();
+
+    const cleanCode =
+        String(code || "")
+        .trim()
+        .toUpperCase();
+
+
+    /*
+       ENG MUHIM QISM:
+
+       Masalan:
+
+       UZ -> /images/countries/UZ.jpg
+       US -> /images/countries/US.jpg
+       DE -> /images/countries/DE.jpg
+       TR -> /images/countries/TR.jpg
+    */
+
+    if(cleanCode){
+
+        return `/images/countries/${cleanCode}.jpg`;
+
+    }
+
+
+    /*
+       Agar API code bermasa,
+       ayrim davlatlar uchun fallback.
+    */
+
+    const fallbackImages = {
+
+        Uzbekistan:
+        "https://images.unsplash.com/photo-1554797589-7241bb691973?auto=format&fit=crop&w=900&q=80",
+
+        USA:
+        "https://images.unsplash.com/photo-1485738422979-f5c462d49f74?auto=format&fit=crop&w=900&q=80",
+
+        Turkey:
+        "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&w=900&q=80",
+
+        Germany:
+        "https://images.unsplash.com/photo-1560969184-10fe8719e047?auto=format&fit=crop&w=900&q=80",
+
+        Japan:
+        "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=900&q=80",
+
+        France:
+        "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=900&q=80",
+
+        UnitedKingdom:
+        "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=900&q=80",
+
+        Italy:
+        "https://images.unsplash.com/photo-1529260830199-42c24126f198?auto=format&fit=crop&w=900&q=80",
+
+        China:
+        "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?auto=format&fit=crop&w=900&q=80",
+
+        India:
+        "https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=900&q=80",
+
+        Russia:
+        "https://images.unsplash.com/photo-1513326738677-b964603b136d?auto=format&fit=crop&w=900&q=80",
+
+        Spain:
+        "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?auto=format&fit=crop&w=900&q=80",
+
+        Canada:
+        "https://images.unsplash.com/photo-1517935706615-2717063c2225?auto=format&fit=crop&w=900&q=80",
+
+        Brazil:
+        "https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=900&q=80",
+
+        SouthKorea:
+        "https://images.unsplash.com/photo-1538485399081-7c8972b5b8d4?auto=format&fit=crop&w=900&q=80",
+
+        SaudiArabia:
+        "https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?auto=format&fit=crop&w=900&q=80",
+
+        Mexico:
+        "https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?auto=format&fit=crop&w=900&q=80",
+
+        Indonesia:
+        "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=900&q=80",
+
+        Netherlands:
+        "https://images.unsplash.com/photo-1534351590666-13e3e96b5017?auto=format&fit=crop&w=900&q=80"
+
+    };
+
 
     const key =
         cleanName.replace(
@@ -1904,10 +1990,16 @@ function imageForCountry(name,id){
         );
 
 
-    if(countryImages[key]){
-        return countryImages[key];
+    if(fallbackImages[key]){
+
+        return fallbackImages[key];
+
     }
 
+
+    /*
+       Eng oxirgi fallback.
+    */
 
     return `https://loremflickr.com/900/650/${encodeURIComponent(
         cleanName + " landmark"
@@ -1935,10 +2027,6 @@ async function loadCountries(){
 
     /*
        AVVAL CACHE
-
-       Oldin yuklangan davlatlar
-       sayt ochilishi bilan darhol
-       ko‘rsatiladi.
     */
 
     try{
@@ -1995,9 +2083,6 @@ async function loadCountries(){
 
     /*
        KEYIN SERVER
-
-       Serverdagi yangi ma’lumotlarni
-       olamiz.
     */
 
     try{
@@ -2050,8 +2135,7 @@ async function loadCountries(){
 
 
         /*
-           Keyingi safar darhol chiqishi
-           uchun cache.
+           CACHE
         */
 
         try{
@@ -2094,11 +2178,6 @@ async function loadCountries(){
             error
         );
 
-
-        /*
-           Cache bo‘lmagan bo‘lsa
-           xatolikni ko‘rsatamiz.
-        */
 
         if(!countries.length){
 
@@ -2158,12 +2237,26 @@ async function loadCountries(){
 function countryCodeToFlag(code){
 
     if(!code){
+
         return "🌎";
+
     }
 
 
-    return String(code)
+    const clean =
+        String(code)
         .toUpperCase()
+        .trim();
+
+
+    if(clean.length !== 2){
+
+        return "🌎";
+
+    }
+
+
+    return clean
         .split("")
         .map(
             letter =>
@@ -2189,10 +2282,25 @@ function renderCountries(list){
         );
 
 
-    if(!Array.isArray(list) || !list.length){
+    if(
+        !Array.isArray(list) ||
+        !list.length
+    ){
 
-        grid.innerHTML =
-            "<p>Davlat topilmadi.</p>";
+        grid.innerHTML = `
+
+            <div style="
+                grid-column:1/-1;
+                padding:30px;
+                text-align:center;
+                color:#9aa7bd;
+            ">
+
+                🌐 Davlat topilmadi.
+
+            </div>
+
+        `;
 
         return;
 
@@ -2221,15 +2329,23 @@ function renderCountries(list){
                 "0";
 
 
+            const image =
+                imageForCountry(
+                    name,
+                    country.id,
+                    code
+                );
+
+
             return `
 
 <div
     class="country-card"
-    style="background-image:url('${imageForCountry(
-        name,
-        country.id
-    )}')"
+    style="
+        background-image:url('${image}');
+    "
     data-country-name="${escapeHtml(name)}"
+    data-country-code="${escapeHtml(code)}"
     onclick="openCountry(${Number(country.id)})"
 >
 
@@ -2296,7 +2412,9 @@ function fillCountrySelect(list){
 
 
     if(!select){
+
         return;
+
     }
 
 
@@ -2354,12 +2472,21 @@ function syncSearch(value){
 
 function filterCountries(){
 
-    const query =
-        document
-        .getElementById(
+    const input =
+        document.getElementById(
             "searchInput"
-        )
-        .value
+        );
+
+
+    if(!input){
+
+        return;
+
+    }
+
+
+    const query =
+        input.value
         .toLowerCase()
         .trim();
 
@@ -2475,12 +2602,24 @@ async function openCountry(id){
 
             grid.innerHTML = `
 
-                <p style="color:#9aa7bd">
+                <div style="
+                    grid-column:1/-1;
+                    padding:30px;
+                    text-align:center;
+                    color:#9aa7bd;
+                ">
+
+                    <div style="
+                        font-size:35px;
+                        margin-bottom:10px;
+                    ">
+                        🏷️
+                    </div>
 
                     Bu davlatda hozircha
                     brendlar ro‘yxati yo‘q.
 
-                </p>
+                </div>
 
             `;
 
@@ -2488,14 +2627,26 @@ async function openCountry(id){
 
             grid.innerHTML =
                 brands.map(
-                    brand => `
+                    brand => {
+
+                        const countryCode =
+                            country?.code ||
+                            country?.iso_code ||
+                            country?.iso2 ||
+                            "";
+
+
+                        return `
 
 <div
     class="country-card"
-    style="background-image:url('${imageForCountry(
-        country?.name || "World",
-        brand.id
-    )}')"
+    style="
+        background-image:url('${imageForCountry(
+            country?.name || "World",
+            brand.id,
+            countryCode
+        )}');
+    "
 >
 
 <div class="country-info">
@@ -2521,13 +2672,19 @@ async function openCountry(id){
 
 </span>
 
-</div>
+<span class="arrow">
+    →
+</span>
 
 </div>
 
 </div>
 
-`
+</div>
+
+`;
+
+                    }
                 ).join("");
 
         }
@@ -2548,7 +2705,9 @@ async function openCountry(id){
 
     }catch(error){
 
-        console.error(error);
+        console.error(
+            error
+        );
 
 
         alert(
@@ -2566,7 +2725,8 @@ async function openCountry(id){
 
 function returnToCountries(){
 
-    currentCountryId = null;
+    currentCountryId =
+        null;
 
 
     history.pushState(
@@ -2595,7 +2755,7 @@ function returnToCountries(){
 
 
 /* =========================
-   INITIAL HISTORY STATE
+   INITIAL HISTORY
 ========================= */
 
 history.replaceState(
@@ -2643,9 +2803,12 @@ window.addEventListener(
         }
 
 
-        if(currentCountryId !== null){
+        if(
+            currentCountryId !== null
+        ){
 
-            currentCountryId = null;
+            currentCountryId =
+                null;
 
 
             renderCountries(
@@ -2748,7 +2911,9 @@ function showScreen(id){
 
 
             if(!element){
+
                 return;
+
             }
 
 
@@ -2930,7 +3095,9 @@ async function startGooglePay(){
 async function saveApplicationAfterPayment(){
 
     if(!currentApplication){
+
         return;
+
     }
 
 
@@ -3021,7 +3188,9 @@ async function saveApplicationAfterPayment(){
 
     }catch(error){
 
-        console.error(error);
+        console.error(
+            error
+        );
 
 
         alert(
@@ -3039,7 +3208,9 @@ async function saveApplicationAfterPayment(){
 
 function escapeHtml(value){
 
-    return String(value || "")
+    return String(
+        value || ""
+    )
 
         .replace(
             /&/g,
