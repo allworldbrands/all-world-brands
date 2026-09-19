@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3000;
 app.disable("x-powered-by");
 
 /* =====================================================
-SECURITY
+   SECURITY
 ===================================================== */
 
 app.use(
@@ -31,7 +31,7 @@ app.use(
 );
 
 /* =====================================================
-18+ CONTENT PROTECTION
+   18+ CONTENT PROTECTION
 ===================================================== */
 
 const ADULT_CONTENT_WORDS = [
@@ -107,7 +107,7 @@ function isBlockedContent(body) {
 }
 
 /* =====================================================
-URL PROTECTION
+   URL PROTECTION
 ===================================================== */
 
 function isSafeUrl(value) {
@@ -136,11 +136,6 @@ function isSafeUrl(value) {
   ) {
     return false;
   }
-
-  /*
-   Allow normal HTTPS/HTTP URLs.
-   Also allow empty values because logo/website are optional.
-  */
 
   try {
     const url = new URL(text);
@@ -175,49 +170,38 @@ function validateUrls(body) {
 }
 
 /* =====================================================
-MODERATION MIDDLEWARE
+   MODERATION MIDDLEWARE
 ===================================================== */
 
 function rejectAdultContent(req, res, next) {
-
   if (isBlockedContent(req.body || {})) {
-
-    return res
-      .status(400)
-      .json({
-        ok: false,
-        error:
-          "This content is not allowed on ALL WORLD BRANDS."
-      });
-
+    return res.status(400).json({
+      ok: false,
+      error:
+        "This content is not allowed on ALL WORLD BRANDS."
+    });
   }
 
   const urlError = validateUrls(req.body || {});
 
   if (urlError) {
-
-    return res
-      .status(400)
-      .json({
-        ok: false,
-        error: urlError
-      });
-
+    return res.status(400).json({
+      ok: false,
+      error: urlError
+    });
   }
 
   next();
 }
 
 /* =====================================================
-DATABASE
+   DATABASE
 ===================================================== */
 
 const db = new sqlite3.Database(
   path.join(__dirname, "allworldbrands.db"),
   (err) => {
-
     if (err) {
-
       console.error(
         "Database connection error:",
         err.message
@@ -226,13 +210,14 @@ const db = new sqlite3.Database(
       process.exit(1);
     }
 
+    console.log("SQLite database connected.");
   }
 );
 
 db.run("PRAGMA foreign_keys = ON");
 
 /* =====================================================
-COUNTRIES + TERRITORIES
+   COUNTRIES + TERRITORIES
 ===================================================== */
 
 const countries = [
@@ -489,7 +474,7 @@ const countries = [
 ];
 
 /* =====================================================
-DATABASE TABLES + MIGRATIONS
+   DATABASE TABLES
 ===================================================== */
 
 db.serialize(() => {
@@ -509,11 +494,13 @@ db.serialize(() => {
       name TEXT NOT NULL,
       logo TEXT DEFAULT '',
       category TEXT DEFAULT '',
-      description TEXT,
-      website TEXT,
+      description TEXT DEFAULT '',
+      website TEXT DEFAULT '',
       verification TEXT DEFAULT 'Unverified',
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY(country_id) REFERENCES countries(id)
+      FOREIGN KEY(country_id)
+        REFERENCES countries(id)
+        ON DELETE CASCADE
     )
   `);
 
@@ -526,7 +513,9 @@ db.serialize(() => {
       address TEXT,
       phone TEXT,
       website TEXT,
-      FOREIGN KEY(brand_id) REFERENCES brands(id)
+      FOREIGN KEY(brand_id)
+        REFERENCES brands(id)
+        ON DELETE CASCADE
     )
   `);
 
@@ -546,24 +535,25 @@ db.serialize(() => {
     )
   `);
 
+  /* ===================================================
+     SAFE MIGRATIONS
+  =================================================== */
+
   function addColumnIfMissing(
     table,
     column,
     definition
   ) {
-
     db.all(
       `PRAGMA table_info(${table})`,
       [],
       (err, columns) => {
 
         if (err) {
-
           console.error(
             `Schema check failed for ${table}:`,
             err.message
           );
-
           return;
         }
 
@@ -572,7 +562,6 @@ db.serialize(() => {
         );
 
         if (!exists) {
-
           db.run(
             `
             ALTER TABLE ${table}
@@ -581,22 +570,18 @@ db.serialize(() => {
             (alterErr) => {
 
               if (alterErr) {
-
                 console.error(
                   `Could not add ${table}.${column}:`,
                   alterErr.message
                 );
-
               }
 
             }
           );
-
         }
 
       }
     );
-
   }
 
   addColumnIfMissing(
@@ -684,7 +669,7 @@ db.serialize(() => {
   );
 
   /* ===================================================
-  INSERT COUNTRIES
+     INSERT COUNTRIES
   =================================================== */
 
   const insertCountry = db.prepare(`
@@ -700,11 +685,10 @@ db.serialize(() => {
   insertCountry.finalize();
 
   /* ===================================================
-  STARTER BRANDS
+     STARTER BRANDS
   =================================================== */
 
   const starterBrands = [
-
     [
       "Apple",
       "United States",
@@ -812,7 +796,6 @@ db.serialize(() => {
       "Conglomerate",
       "https://www.tata.com"
     ]
-
   ];
 
   starterBrands.forEach(
@@ -834,7 +817,15 @@ db.serialize(() => {
         [country],
         (err, row) => {
 
-          if (err || !row) {
+          if (err) {
+            console.error(
+              "Country lookup error:",
+              err.message
+            );
+            return;
+          }
+
+          if (!row) {
             return;
           }
 
@@ -868,19 +859,26 @@ db.serialize(() => {
               "Official source",
               row.id,
               name
-            ]
-          );
+            ],
+            (insertErr) => {
 
+              if (insertErr) {
+                console.error(
+                  "Starter brand error:",
+                  insertErr.message
+                );
+              }
+
+            }
+          );
         }
       );
-
     }
   );
-
 });
 
 /* =====================================================
-ADMIN AUTH
+   ADMIN AUTHENTICATION
 ===================================================== */
 
 function adminAuth(req, res, next) {
@@ -898,7 +896,6 @@ function adminAuth(req, res, next) {
     return res
       .status(401)
       .send("Authentication required");
-
   }
 
   const encoded = auth.slice(6);
@@ -907,17 +904,15 @@ function adminAuth(req, res, next) {
 
   try {
 
-    decoded =
-      Buffer
-        .from(encoded, "base64")
-        .toString("utf8");
+    decoded = Buffer
+      .from(encoded, "base64")
+      .toString("utf8");
 
   } catch (error) {
 
     return res
       .status(401)
       .send("Invalid authentication");
-
   }
 
   const separator =
@@ -928,7 +923,6 @@ function adminAuth(req, res, next) {
     return res
       .status(401)
       .send("Invalid authentication");
-
   }
 
   const username =
@@ -950,14 +944,13 @@ function adminAuth(req, res, next) {
     return res
       .status(401)
       .send("Wrong username or password");
-
   }
 
   next();
 }
 
 /* =====================================================
-HEALTH
+   HEALTH
 ===================================================== */
 
 app.get(
@@ -968,14 +961,15 @@ app.get(
       ok: true,
       service: "ALL WORLD BRANDS",
       countries: countries.length,
-      contentProtection: true
+      contentProtection: true,
+      unsafeUrlProtection: true
     });
 
   }
 );
 
 /* =====================================================
-COUNTRIES
+   COUNTRIES
 ===================================================== */
 
 app.get(
@@ -992,8 +986,12 @@ app.get(
       FROM countries c
       LEFT JOIN brands b
         ON b.country_id = c.id
-      GROUP BY c.id
-      ORDER BY c.name COLLATE NOCASE
+      GROUP BY
+        c.id,
+        c.name,
+        c.code
+      ORDER BY
+        c.name COLLATE NOCASE
       `,
       [],
       (err, rows) => {
@@ -1007,19 +1005,16 @@ app.get(
             .json({
               error: "Database error"
             });
-
         }
 
         res.json(rows);
-
       }
     );
-
   }
 );
 
 /* =====================================================
-SINGLE COUNTRY
+   SINGLE COUNTRY
 ===================================================== */
 
 app.get(
@@ -1045,7 +1040,6 @@ app.get(
             .json({
               error: "Database error"
             });
-
         }
 
         if (!row) {
@@ -1055,19 +1049,16 @@ app.get(
             .json({
               error: "Country not found"
             });
-
         }
 
         res.json(row);
-
       }
     );
-
   }
 );
 
 /* =====================================================
-COUNTRY BRANDS
+   COUNTRY BRANDS
 ===================================================== */
 
 app.get(
@@ -1092,7 +1083,8 @@ app.get(
       JOIN countries c
         ON c.id = b.country_id
       WHERE b.country_id = ?
-      ORDER BY b.name COLLATE NOCASE
+      ORDER BY
+        b.name COLLATE NOCASE
       `,
       [req.params.id],
       (err, rows) => {
@@ -1106,19 +1098,16 @@ app.get(
             .json({
               error: "Database error"
             });
-
         }
 
         res.json(rows);
-
       }
     );
-
   }
 );
 
 /* =====================================================
-BRAND BY ID
+   BRAND BY ID
 ===================================================== */
 
 app.get(
@@ -1154,7 +1143,6 @@ app.get(
             .json({
               error: "Database error"
             });
-
         }
 
         if (!row) {
@@ -1164,19 +1152,16 @@ app.get(
             .json({
               error: "Brand not found"
             });
-
         }
 
         res.json(row);
-
       }
     );
-
   }
 );
 
 /* =====================================================
-SEARCH
+   SEARCH
 ===================================================== */
 
 app.get(
@@ -1184,17 +1169,11 @@ app.get(
   (req, res) => {
 
     const q =
-      String(req.query.q || "")
-        .trim();
+      String(req.query.q || "").trim();
 
     if (!q) {
       return res.json([]);
     }
-
-    /*
-      If somebody searches for explicit adult content,
-      return no results.
-    */
 
     if (containsAdultContent(q)) {
       return res.json([]);
@@ -1223,7 +1202,8 @@ app.get(
         OR b.description LIKE ?
         OR b.category LIKE ?
         OR c.name LIKE ?
-      ORDER BY b.name COLLATE NOCASE
+      ORDER BY
+        b.name COLLATE NOCASE
       LIMIT 100
       `,
       [
@@ -1236,24 +1216,23 @@ app.get(
 
         if (err) {
 
+          console.error(err);
+
           return res
             .status(500)
             .json({
               error: "Database error"
             });
-
         }
 
         res.json(rows);
-
       }
     );
-
   }
 );
 
 /* =====================================================
-PUBLIC APPLICATION
+   PUBLIC APPLICATION
 ===================================================== */
 
 app.post(
@@ -1272,10 +1251,7 @@ app.post(
       description
     } = req.body;
 
-    if (
-      !brand_name ||
-      !email
-    ) {
+    if (!brand_name || !email) {
 
       return res
         .status(400)
@@ -1284,7 +1260,6 @@ app.post(
           error:
             "Brand name and email are required"
         });
-
     }
 
     db.run(
@@ -1325,7 +1300,6 @@ app.post(
               error:
                 "Could not save application"
             });
-
         }
 
         res.json({
@@ -1334,15 +1308,13 @@ app.post(
           message:
             "Application received. Payment is not processed automatically yet."
         });
-
       }
     );
-
   }
 );
 
 /* =====================================================
-ADMIN — APPLICATIONS
+   ADMIN — APPLICATIONS
 ===================================================== */
 
 app.get(
@@ -1357,9 +1329,7 @@ app.get(
         brand_name,
         country,
         owner_name,
-        owner_name AS owner_email,
         email,
-        email AS applicant_email,
         phone,
         website,
         logo,
@@ -1382,19 +1352,16 @@ app.get(
             .json({
               error: "Database error"
             });
-
         }
 
         res.json(rows);
-
       }
     );
-
   }
 );
 
 /* =====================================================
-ADMIN — BRANDS
+   ADMIN — BRANDS
 ===================================================== */
 
 app.get(
@@ -1433,19 +1400,16 @@ app.get(
             .json({
               error: "Database error"
             });
-
         }
 
         res.json(rows);
-
       }
     );
-
   }
 );
 
 /* =====================================================
-ADMIN — ADD BRAND
+   ADMIN — ADD BRAND
 ===================================================== */
 
 app.post(
@@ -1473,7 +1437,6 @@ app.post(
           error:
             "Brand name is required"
         });
-
     }
 
     function createBrand(countryId) {
@@ -1486,7 +1449,6 @@ app.post(
             error:
               "Valid country is required"
           });
-
       }
 
       db.run(
@@ -1510,7 +1472,9 @@ app.post(
           String(category || "").trim(),
           String(description || "").trim(),
           String(website || "").trim(),
-          String(verification || "Unverified").trim()
+          String(
+            verification || "Unverified"
+          ).trim()
         ],
         function (err) {
 
@@ -1524,17 +1488,14 @@ app.post(
                 error:
                   "Could not create brand"
               });
-
           }
 
           res.json({
             ok: true,
             id: this.lastID
           });
-
         }
       );
-
     }
 
     if (country_id) {
@@ -1560,7 +1521,6 @@ app.post(
                 error:
                   "Database error"
               });
-
           }
 
           if (!row) {
@@ -1571,11 +1531,9 @@ app.post(
                 error:
                   "Country code not found"
               });
-
           }
 
           createBrand(row.id);
-
         }
       );
 
@@ -1588,12 +1546,11 @@ app.post(
         error:
           "Country or country code is required"
       });
-
   }
 );
 
 /* =====================================================
-ADMIN — UPDATE BRAND
+   ADMIN — UPDATE BRAND
 ===================================================== */
 
 app.put(
@@ -1623,7 +1580,6 @@ app.put(
             error:
               "Country and brand name are required"
           });
-
       }
 
       db.run(
@@ -1646,7 +1602,9 @@ app.put(
           String(category || "").trim(),
           String(description || "").trim(),
           String(website || "").trim(),
-          String(verification || "Unverified").trim(),
+          String(
+            verification || "Unverified"
+          ).trim(),
           req.params.id
         ],
         function (err) {
@@ -1661,17 +1619,14 @@ app.put(
                 error:
                   "Could not update brand"
               });
-
           }
 
           res.json({
             ok: true,
             changes: this.changes
           });
-
         }
       );
-
     }
 
     if (country_id) {
@@ -1697,7 +1652,6 @@ app.put(
                 error:
                   "Database error"
               });
-
           }
 
           if (!row) {
@@ -1708,11 +1662,9 @@ app.put(
                 error:
                   "Country code not found"
               });
-
           }
 
           updateBrand(row.id);
-
         }
       );
 
@@ -1725,12 +1677,11 @@ app.put(
         error:
           "Country is required"
       });
-
   }
 );
 
 /* =====================================================
-ADMIN — DELETE BRAND
+   ADMIN — DELETE BRAND
 ===================================================== */
 
 app.delete(
@@ -1756,22 +1707,19 @@ app.delete(
               error:
                 "Could not delete brand"
             });
-
         }
 
         res.json({
           ok: true,
           changes: this.changes
         });
-
       }
     );
-
   }
 );
 
 /* =====================================================
-ADMIN — APPLICATION STATUS
+   ADMIN — APPLICATION STATUS
 ===================================================== */
 
 app.put(
@@ -1796,7 +1744,6 @@ app.put(
           error:
             "Invalid status"
         });
-
     }
 
     db.run(
@@ -1821,22 +1768,19 @@ app.put(
               error:
                 "Could not update application"
             });
-
         }
 
         res.json({
           ok: true,
           changes: this.changes
         });
-
       }
     );
-
   }
 );
 
 /* =====================================================
-ADMIN PAGE
+   ADMIN PAGE
 ===================================================== */
 
 app.get(
@@ -1852,12 +1796,11 @@ app.get(
         "index.html"
       )
     );
-
   }
 );
 
 /* =====================================================
-ADMIN STATIC FILES
+   ADMIN STATIC FILES
 ===================================================== */
 
 app.use(
@@ -1873,7 +1816,7 @@ app.use(
 );
 
 /* =====================================================
-PUBLIC FILES
+   PUBLIC STATIC FILES
 ===================================================== */
 
 app.use(
@@ -1886,14 +1829,8 @@ app.use(
 );
 
 /* =====================================================
-FALLBACK
+   FALLBACK
 ===================================================== */
-
-/*
- IMPORTANT:
- Express 5 does not accept app.get("*", ...).
- Regex works with Express 4 and Express 5.
-*/
 
 app.get(
   /.*/,
@@ -1906,12 +1843,11 @@ app.get(
         "index.html"
       )
     );
-
   }
 );
 
 /* =====================================================
-ERROR HANDLER
+   ERROR HANDLER
 ===================================================== */
 
 app.use(
@@ -1933,12 +1869,11 @@ app.use(
         error:
           "Internal server error"
       });
-
   }
 );
 
 /* =====================================================
-START SERVER
+   START SERVER
 ===================================================== */
 
 app.listen(
@@ -1951,7 +1886,11 @@ app.listen(
     );
 
     console.log(
-      "ALL WORLD BRANDS"
+      "       ALL WORLD BRANDS"
+    );
+
+    console.log(
+      "================================="
     );
 
     console.log(
@@ -1973,8 +1912,15 @@ app.listen(
     );
 
     console.log(
-      "================================="
+      "Search API: ENABLED"
     );
 
+    console.log(
+      "Admin API: ENABLED"
+    );
+
+    console.log(
+      "================================="
+    );
   }
 );
