@@ -95,7 +95,6 @@ body::after{
 }
 
 @keyframes backgroundBreath{
-
     from{
         transform:scale(1.03);
     }
@@ -103,7 +102,6 @@ body::after{
     to{
         transform:scale(1.09);
     }
-
 }
 
 
@@ -145,7 +143,6 @@ body::after{
 }
 
 @keyframes rainFall{
-
     from{
         transform:
             translate3d(0,-15vh,0)
@@ -157,7 +154,6 @@ body::after{
             translate3d(-12vw,120vh,0)
             rotate(12deg);
     }
-
 }
 
 
@@ -523,6 +519,7 @@ header{
 
 /* =====================================================
    COUNTRY GRID
+   KOMPYUTER = 25 TA
 ===================================================== */
 
 .countries-grid{
@@ -534,7 +531,7 @@ header{
             minmax(0,1fr)
         );
 
-    gap:20px;
+    gap:8px;
 }
 
 
@@ -571,7 +568,7 @@ header{
 
     aspect-ratio:16 / 9;
 
-    border-radius:16px;
+    border-radius:12px;
     overflow:hidden;
 
     border:
@@ -584,7 +581,7 @@ header{
         no-repeat;
 
     box-shadow:
-        0 12px 30px
+        0 8px 20px
         rgba(0,0,0,.28);
 
     transition:
@@ -634,10 +631,10 @@ header{
 .country-flag{
     position:absolute;
 
-    left:10px;
-    top:10px;
+    left:7px;
+    top:7px;
 
-    font-size:27px;
+    font-size:20px;
 
     z-index:2;
 
@@ -656,15 +653,15 @@ header{
 .country-info{
     position:absolute;
 
-    left:10px;
-    right:10px;
-    bottom:10px;
+    left:7px;
+    right:7px;
+    bottom:7px;
 
     z-index:2;
 }
 
 .country-card h3{
-    font-size:14px;
+    font-size:12px;
     line-height:1.12;
 
     margin-bottom:5px;
@@ -680,8 +677,61 @@ header{
     align-items:center;
     justify-content:space-between;
 
+    gap:4px;
+
     color:#c4d4ee;
-    font-size:10px;
+    font-size:9px;
+}
+
+.country-meta-left{
+    display:flex;
+    align-items:center;
+    gap:4px;
+    min-width:0;
+}
+
+.country-code{
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+
+/* =====================================================
+   BRAND COUNT SQUARE
+===================================================== */
+
+.brand-count-box{
+    min-width:30px;
+    height:30px;
+
+    padding:
+        0 6px;
+
+    display:inline-flex;
+
+    align-items:center;
+    justify-content:center;
+
+    flex-shrink:0;
+
+    border-radius:8px;
+
+    background:
+        rgba(5,20,45,.92);
+
+    border:
+        1px solid
+        rgba(95,188,255,.58);
+
+    color:#fff;
+
+    font-size:11px;
+    font-weight:900;
+
+    box-shadow:
+        0 4px 12px
+        rgba(0,0,0,.3);
 }
 
 
@@ -692,6 +742,8 @@ header{
 .arrow{
     width:25px;
     height:25px;
+
+    flex-shrink:0;
 
     border:
         1px solid
@@ -1251,9 +1303,11 @@ footer{
     .countries-grid{
         grid-template-columns:
             repeat(
-                4,
+                10,
                 minmax(0,1fr)
             );
+
+        gap:6px;
     }
 
     .global-badge{
@@ -1294,11 +1348,11 @@ footer{
     .countries-grid{
         grid-template-columns:
             repeat(
-                3,
+                10,
                 minmax(0,1fr)
             );
 
-        gap:14px;
+        gap:5px;
     }
 
     .support-contacts{
@@ -1398,46 +1452,71 @@ footer{
             6px 8px;
     }
 
+    /* ================================================
+       TELEFONDA 10 TA BIR QATORDA
+    ================================================ */
+
     .countries-grid{
         grid-template-columns:
             repeat(
-                2,
+                10,
                 minmax(0,1fr)
             );
 
-        gap:12px;
+        gap:4px;
     }
 
     .country-card{
-        aspect-ratio:16 / 9;
-        border-radius:12px;
+        aspect-ratio:1 / 1;
+        border-radius:7px;
     }
 
     .country-flag{
-        left:6px;
-        top:6px;
-        font-size:19px;
+        left:3px;
+        top:3px;
+        font-size:12px;
     }
 
     .country-info{
-        left:7px;
-        right:7px;
-        bottom:7px;
+        left:3px;
+        right:3px;
+        bottom:3px;
     }
 
     .country-card h3{
-        font-size:10px;
-        margin-bottom:3px;
+        font-size:7px;
+        margin-bottom:2px;
     }
 
     .country-meta{
-        font-size:8px;
+        font-size:6px;
+        gap:2px;
+    }
+
+    .country-meta-left{
+        gap:2px;
+    }
+
+    /* ================================================
+       BRAND COUNT KVADRATI
+    ================================================ */
+
+    .brand-count-box{
+        min-width:20px;
+        height:20px;
+
+        padding:
+            0 3px;
+
+        border-radius:5px;
+
+        font-size:7px;
     }
 
     .arrow{
-        width:20px;
-        height:20px;
-        font-size:11px;
+        width:16px;
+        height:16px;
+        font-size:8px;
     }
 
     .promo{
@@ -1521,7 +1600,19 @@ footer{
     }
 
     .countries-grid{
-        gap:9px;
+        gap:3px;
+    }
+
+    .brand-count-box{
+        min-width:18px;
+        height:18px;
+        font-size:6px;
+    }
+
+    .arrow{
+        width:14px;
+        height:14px;
+        font-size:7px;
     }
 
 }
@@ -1551,7 +1642,6 @@ footer{
 
 
 <body>
-
 
 <div id="rainFX"></div>
 
@@ -1716,30 +1806,22 @@ footer{
     </h2>
 
     <p>
-
         Brendingizni
         ALL WORLD BRANDS katalogiga yuboring.
 
         Boshlang‘ich narx
         <strong>$1.00</strong>.
-
     </p>
 
     <button
         class="primary-btn"
         onclick="openAddBrand()"
     >
-
         Brendingizni qo‘shing — $1.00
-
     </button>
 
 </section>
 
-
-<!-- =====================================================
-     CUSTOMER SUPPORT
-===================================================== -->
 
 <section class="support-section">
 
@@ -1762,12 +1844,6 @@ footer{
 
             <div class="support-contacts">
 
-
-                <!-- PHONE
-                     Oddiy matn.
-                     Bosilganda qo‘ng‘iroq qilmaydi.
-                -->
-
                 <div class="support-item">
 
                     <span class="support-item-icon">
@@ -1788,8 +1864,6 @@ footer{
 
                 </div>
 
-
-                <!-- TELEGRAM -->
 
                 <a
                     class="support-item support-link"
@@ -1817,8 +1891,6 @@ footer{
                 </a>
 
 
-                <!-- EMAIL -->
-
                 <a
                     class="support-item support-link"
                     href="mailto:allworldbrandsnet@gmail.com"
@@ -1842,8 +1914,6 @@ footer{
 
                 </a>
 
-
-                <!-- 24/7 -->
 
                 <div class="support-item">
 
@@ -1877,9 +1947,7 @@ footer{
 
 
 <footer>
-
     © 2026 ALL WORLD BRANDS
-
 </footer>
 
 
@@ -1889,7 +1957,6 @@ footer{
 >
 
 <div class="modal-box">
-
 
 <button
     class="close"
@@ -1911,7 +1978,6 @@ footer{
 
 
 <form id="brandForm">
-
 
 <div class="form-group">
 
@@ -2041,7 +2107,6 @@ footer{
 >
     To‘lovga o‘tish — $1.00
 </button>
-
 
 </form>
 
@@ -2196,7 +2261,6 @@ footer{
 
 </div>
 
-
 </div>
 
 </div>
@@ -2275,7 +2339,6 @@ function createRain(){
     }
 
 }
-
 
 createRain();
 
@@ -2383,14 +2446,9 @@ async function loadCountries(){
 
     }
 
-
     count.textContent =
         "Davlatlar yuklanmoqda...";
 
-
-    /* =================================================
-       CACHE
-    ================================================= */
 
     try{
 
@@ -2436,10 +2494,6 @@ async function loadCountries(){
 
     }
 
-
-    /* =================================================
-       API
-    ================================================= */
 
     try{
 
@@ -2704,9 +2758,7 @@ function renderCountries(list){
 
 
 <div class="country-flag">
-
     ${countryCodeToFlag(code)}
-
 </div>
 
 
@@ -2719,14 +2771,16 @@ function renderCountries(list){
 
 <div class="country-meta">
 
-<span>
+<span class="country-meta-left">
 
-    ${escapeHtml(code)}
+    <span class="country-code">
+        ${escapeHtml(code)}
+    </span>
 
     ${
         count !== ""
         ?
-        ` • ${escapeHtml(count)} brend`
+        `<span class="brand-count-box">${escapeHtml(count)}</span>`
         :
         ""
     }
@@ -3239,11 +3293,15 @@ function renderBrandCards(
 
 <div class="country-meta">
 
-<span>
-    ${escapeHtml(
-        brand.category ||
-        "Brand"
-    )}
+<span class="country-meta-left">
+
+    <span class="country-code">
+        ${escapeHtml(
+            brand.category ||
+            "Brand"
+        )}
+    </span>
+
 </span>
 
 
