@@ -1,13 +1,22 @@
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-<meta name="description"
-      content="ALL WORLD BRANDS — Discover brands and countries from around the world">
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+>
 
-<meta name="theme-color" content="#020713">
+<meta
+    name="description"
+    content="ALL WORLD BRANDS — Discover brands and countries from around the world."
+>
+
+<meta
+    name="theme-color"
+    content="#030712"
+>
 
 <title>ALL WORLD BRANDS</title>
 
@@ -24,12 +33,43 @@ html{
 
 body{
     min-height:100vh;
-    font-family:Arial,Helvetica,sans-serif;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
     color:#fff;
     background:
-        radial-gradient(circle at 50% -10%,rgba(0,170,255,.18),transparent 38%),
-        linear-gradient(180deg,#020713 0%,#030916 50%,#01040b 100%);
+        radial-gradient(
+            circle at 50% 0%,
+            #10234b 0%,
+            #050914 42%,
+            #02040a 100%
+        );
     overflow-x:hidden;
+}
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:-3;
+    background:
+        radial-gradient(
+            circle at 15% 20%,
+            rgba(255,210,0,.08),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 85% 80%,
+            rgba(255,0,50,.07),
+            transparent 25%
+        );
+}
+
+a{
+    color:inherit;
+    text-decoration:none;
 }
 
 button,
@@ -43,65 +83,24 @@ button{
     cursor:pointer;
 }
 
-a{
-    color:inherit;
-    text-decoration:none;
+.container{
+    width:min(1800px,96%);
+    margin:auto;
 }
 
-/* =========================
-   BACKGROUND
-========================= */
-
-#rainFX{
-    position:fixed;
-    inset:0;
-    pointer-events:none;
-    z-index:-2;
-    overflow:hidden;
-}
-
-.rain-line{
-    position:absolute;
-    top:-150px;
-    width:1px;
-    height:120px;
-    background:linear-gradient(
-        transparent,
-        rgba(0,180,255,.45),
-        transparent
-    );
-    animation:rainFall linear infinite;
-    opacity:.35;
-}
-
-@keyframes rainFall{
-    from{
-        transform:translateY(-150px);
-    }
-    to{
-        transform:translateY(110vh);
-    }
-}
-
-/* =========================
-   HEADER
-========================= */
+/* HEADER */
 
 header{
     position:sticky;
     top:0;
     z-index:1000;
-    width:100%;
-    border-bottom:1px solid rgba(0,180,255,.15);
     background:rgba(2,7,19,.88);
     backdrop-filter:blur(18px);
-    -webkit-backdrop-filter:blur(18px);
+    border-bottom:1px solid rgba(255,255,255,.08);
 }
 
 .header-inner{
-    width:min(1450px,94%);
-    min-height:76px;
-    margin:auto;
+    min-height:72px;
     display:flex;
     align-items:center;
     justify-content:space-between;
@@ -109,193 +108,138 @@ header{
 }
 
 .logo{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    white-space:nowrap;
-    font-size:21px;
+    font-size:clamp(18px,2vw,28px);
     font-weight:900;
-    letter-spacing:1px;
-}
-
-.logo-icon{
-    width:42px;
-    height:42px;
-    border-radius:50%;
-    display:grid;
-    place-items:center;
-    background:
-        radial-gradient(circle at 35% 30%,#2edcff,#0069ff 48%,#00132e 75%);
-    box-shadow:
-        0 0 18px rgba(0,174,255,.5),
-        inset 0 0 15px rgba(255,255,255,.15);
+    letter-spacing:1.5px;
+    white-space:nowrap;
 }
 
 .logo span{
-    color:#39d9ff;
+    color:#ffd400;
 }
 
-nav{
+.header-actions{
     display:flex;
     align-items:center;
-    gap:24px;
+    gap:10px;
 }
 
-nav a{
-    color:#b9c9db;
-    font-size:14px;
-    font-weight:700;
-    transition:.2s;
+.price-badge{
+    padding:10px 16px;
+    border-radius:999px;
+    background:
+        linear-gradient(
+            135deg,
+            #ffd400,
+            #ff7b00
+        );
+    color:#090909;
+    font-weight:900;
+    box-shadow:
+        0 8px 30px rgba(255,190,0,.2);
 }
 
-nav a:hover{
-    color:#36d8ff;
+.contact-btn{
+    border:1px solid rgba(255,255,255,.16);
+    background:rgba(255,255,255,.05);
+    color:#fff;
+    border-radius:999px;
+    padding:10px 15px;
 }
 
-.header-status{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    color:#8fa5bc;
-    font-size:12px;
-}
-
-.status-dot{
-    width:8px;
-    height:8px;
-    border-radius:50%;
-    background:#29e68a;
-    box-shadow:0 0 12px #29e68a;
-}
-
-/* =========================
-   HERO
-========================= */
+/* HERO */
 
 .hero{
-    width:min(1450px,94%);
-    margin:0 auto;
-    min-height:470px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
     text-align:center;
-    padding:70px 0 50px;
-}
-
-.hero-badge{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    padding:8px 15px;
-    border:1px solid rgba(0,196,255,.25);
-    border-radius:999px;
-    background:rgba(0,135,255,.07);
-    color:#66ddff;
-    font-size:12px;
-    font-weight:800;
-    margin-bottom:24px;
+    padding:55px 15px 35px;
 }
 
 .hero h1{
-    font-size:clamp(42px,7vw,92px);
-    line-height:.95;
-    font-weight:950;
-    letter-spacing:-3px;
-    text-transform:uppercase;
-    background:linear-gradient(90deg,#fff,#59dcff,#fff);
-    -webkit-background-clip:text;
-    background-clip:text;
-    color:transparent;
-    text-shadow:0 0 35px rgba(0,190,255,.12);
+    font-size:
+        clamp(32px,5vw,76px);
+    line-height:1;
+    font-weight:1000;
+    letter-spacing:-2px;
+}
+
+.hero h1 span{
+    color:#ffd400;
 }
 
 .hero p{
-    max-width:760px;
-    margin:25px auto 30px;
-    color:#91a8bf;
-    font-size:17px;
-    line-height:1.7;
+    max-width:900px;
+    margin:18px auto 0;
+    color:#b9c3d5;
+    font-size:
+        clamp(15px,2vw,20px);
 }
 
-.search-box{
-    width:min(760px,100%);
-    position:relative;
-}
-
-.search-box input{
-    width:100%;
-    height:62px;
-    padding:0 58px 0 22px;
-    color:#fff;
-    border:1px solid rgba(0,190,255,.25);
-    outline:none;
-    border-radius:18px;
-    background:rgba(5,15,31,.88);
-    box-shadow:
-        0 0 35px rgba(0,130,255,.08),
-        inset 0 0 25px rgba(0,110,255,.04);
-}
-
-.search-box input:focus{
-    border-color:rgba(55,217,255,.65);
-    box-shadow:0 0 30px rgba(0,180,255,.14);
-}
-
-.search-icon{
-    position:absolute;
-    right:20px;
-    top:50%;
-    transform:translateY(-50%);
-    color:#43d8ff;
-    font-size:22px;
-}
-
-/* =========================
-   COMMON
-========================= */
-
-.section{
-    width:min(1450px,94%);
-    margin:0 auto;
-    padding:45px 0;
-}
-
-.section-head{
-    display:flex;
-    align-items:end;
-    justify-content:space-between;
-    gap:20px;
-    margin-bottom:25px;
-}
-
-.section-title{
-    font-size:30px;
-    font-weight:900;
-    letter-spacing:-.5px;
-}
-
-.section-subtitle{
-    margin-top:7px;
-    color:#71869d;
-    font-size:13px;
-}
-
-.counter{
-    color:#4ddcff;
-    font-size:13px;
+.tagline{
+    margin-top:14px;
+    color:#ffd400;
     font-weight:800;
 }
 
-/* =========================
-   COUNTRIES
-========================= */
+/* SEARCH */
+
+.search-area{
+    max-width:900px;
+    margin:10px auto 35px;
+}
+
+.search-box{
+    width:100%;
+    min-height:58px;
+    border-radius:18px;
+    border:1px solid rgba(255,255,255,.15);
+    background:rgba(255,255,255,.07);
+    color:#fff;
+    outline:none;
+    padding:0 20px;
+    font-size:18px;
+    box-shadow:
+        0 15px 50px rgba(0,0,0,.2);
+}
+
+.search-box::placeholder{
+    color:#8994a8;
+}
+
+.search-box:focus{
+    border-color:#ffd400;
+    box-shadow:
+        0 0 0 3px rgba(255,212,0,.1);
+}
+
+.search-message{
+    min-height:24px;
+    text-align:center;
+    margin-top:10px;
+    color:#9da8ba;
+}
+
+/* COUNTRY GRID */
+
+.section-title{
+    text-align:center;
+    margin:25px 0;
+}
+
+.section-title h2{
+    font-size:
+        clamp(24px,3vw,42px);
+}
+
+.section-title p{
+    margin-top:8px;
+    color:#8994a8;
+}
 
 .countries-grid{
     display:grid;
-    grid-template-columns:repeat(5,minmax(0,1fr));
-    gap:16px;
+    grid-template-columns:
+        repeat(15,minmax(0,1fr));
+    gap:10px;
 }
 
 .country-card{
@@ -303,21 +247,20 @@ nav a:hover{
     min-width:0;
     aspect-ratio:16/9;
     overflow:hidden;
-    border-radius:17px;
-    border:1px solid rgba(80,180,255,.13);
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,.14);
     background:
-        linear-gradient(145deg,rgba(15,35,62,.95),rgba(3,11,23,.98));
+        linear-gradient(
+            135deg,
+            rgba(255,212,0,.95),
+            rgba(255,35,65,.9)
+        );
+    box-shadow:
+        0 8px 25px rgba(0,0,0,.2);
     transition:
-        transform .25s ease,
-        border-color .25s ease,
-        box-shadow .25s ease;
-    cursor:pointer;
-}
-
-.country-card:hover{
-    transform:translateY(-5px);
-    border-color:rgba(55,215,255,.55);
-    box-shadow:0 14px 35px rgba(0,120,255,.13);
+        transform .2s ease,
+        border-color .2s ease,
+        box-shadow .2s ease;
 }
 
 .country-card::before{
@@ -327,288 +270,303 @@ nav a:hover{
     background:
         linear-gradient(
             135deg,
-            rgba(30,190,255,.12),
-            transparent 45%,
-            rgba(90,0,255,.07)
+            rgba(255,215,0,.92),
+            rgba(255,25,60,.82)
         );
-    pointer-events:none;
+    z-index:0;
 }
 
-.country-image{
+.country-card::after{
+    content:"";
     position:absolute;
     inset:0;
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    opacity:.42;
-    transition:.3s;
-}
-
-.country-card:hover .country-image{
-    opacity:.58;
-    transform:scale(1.04);
-}
-
-.country-overlay{
-    position:absolute;
-    inset:0;
-    display:flex;
-    align-items:flex-end;
-    padding:18px;
     background:
         linear-gradient(
-            transparent 20%,
-            rgba(1,5,13,.94) 100%
+            to top,
+            rgba(0,0,0,.72),
+            rgba(0,0,0,.08) 65%
         );
+    z-index:1;
 }
 
-.country-info{
-    position:relative;
-    z-index:2;
+.country-card:hover{
+    transform:translateY(-4px);
+    border-color:#ffd400;
+    box-shadow:
+        0 15px 35px rgba(0,0,0,.35);
+}
+
+.country-flag{
+    position:absolute;
+    left:8px;
+    bottom:8px;
+    width:34%;
+    height:45%;
+    object-fit:contain;
+    object-position:center;
+    z-index:3;
+    filter:
+        drop-shadow(0 4px 8px rgba(0,0,0,.45));
 }
 
 .country-name{
-    font-size:17px;
+    position:absolute;
+    left:8px;
+    right:8px;
+    top:8px;
+    z-index:3;
+    font-size:
+        clamp(10px,1vw,18px);
+    line-height:1.1;
+    font-weight:900;
+    text-shadow:
+        0 2px 5px rgba(0,0,0,.75);
+}
+
+.country-count{
+    position:absolute;
+    right:8px;
+    bottom:8px;
+    z-index:3;
+    padding:5px 7px;
+    border-radius:8px;
+    background:rgba(0,0,0,.55);
+    font-size:10px;
     font-weight:900;
 }
 
-.country-meta{
-    margin-top:5px;
-    color:#7f96ad;
-    font-size:11px;
+/* BRANDS */
+
+.view-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin:20px 0;
 }
 
-/* =========================
-   BRANDS
-========================= */
+.back-btn{
+    border:1px solid rgba(255,255,255,.16);
+    background:rgba(255,255,255,.06);
+    color:#fff;
+    border-radius:12px;
+    padding:10px 15px;
+}
 
-.brands-grid{
+.brand-grid{
     display:grid;
-    grid-template-columns:repeat(4,minmax(0,1fr));
-    gap:16px;
+    grid-template-columns:
+        repeat(5,minmax(0,1fr));
+    gap:15px;
 }
 
 .brand-card{
-    min-width:0;
-    border:1px solid rgba(100,180,255,.13);
-    border-radius:18px;
-    padding:20px;
     background:
         linear-gradient(
             145deg,
-            rgba(11,25,44,.95),
-            rgba(3,10,20,.98)
+            rgba(255,255,255,.08),
+            rgba(255,255,255,.025)
         );
-    transition:.25s;
-    cursor:pointer;
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:18px;
+    padding:20px;
+    min-height:190px;
+    transition:.2s ease;
 }
 
 .brand-card:hover{
     transform:translateY(-4px);
-    border-color:rgba(55,215,255,.5);
-    box-shadow:0 14px 35px rgba(0,120,255,.12);
+    border-color:#ffd400;
 }
 
 .brand-logo{
-    width:64px;
-    height:64px;
-    border-radius:15px;
-    display:grid;
-    place-items:center;
-    overflow:hidden;
-    margin-bottom:16px;
-    background:#071321;
-    border:1px solid rgba(255,255,255,.08);
-}
-
-.brand-logo img{
-    width:100%;
-    height:100%;
+    width:75px;
+    height:75px;
     object-fit:contain;
-}
-
-.brand-logo-fallback{
-    color:#42d8ff;
-    font-size:25px;
-    font-weight:900;
+    border-radius:15px;
+    background:#fff;
+    padding:7px;
+    margin-bottom:14px;
 }
 
 .brand-name{
-    font-size:18px;
+    font-size:20px;
     font-weight:900;
+}
+
+.brand-category{
+    margin-top:6px;
+    color:#ffd400;
+    font-size:13px;
 }
 
 .brand-country{
     margin-top:5px;
-    color:#5edcff;
-    font-size:12px;
-}
-
-.brand-category{
-    margin-top:12px;
-    color:#7e94aa;
-    font-size:12px;
-}
-
-.brand-description{
-    margin-top:10px;
-    color:#91a3b7;
+    color:#9da8ba;
     font-size:13px;
-    line-height:1.55;
-    display:-webkit-box;
-    -webkit-line-clamp:3;
-    -webkit-box-orient:vertical;
-    overflow:hidden;
 }
 
-/* =========================
-   SEARCH RESULTS
-========================= */
+/* FORM */
 
-#searchResultsSection{
-    display:none;
+.form-section{
+    margin:80px auto;
+    max-width:950px;
 }
 
-.search-results{
-    display:grid;
-    grid-template-columns:repeat(4,minmax(0,1fr));
-    gap:16px;
-}
-
-/* =========================
-   ADD BRAND
-========================= */
-
-.application-section{
-    width:min(950px,94%);
-    margin:30px auto 70px;
-}
-
-.application-box{
-    padding:35px;
+.form-card{
+    padding:30px;
     border-radius:24px;
-    border:1px solid rgba(0,190,255,.18);
     background:
         linear-gradient(
             145deg,
-            rgba(8,22,40,.94),
-            rgba(2,9,19,.98)
+            rgba(255,255,255,.08),
+            rgba(255,255,255,.025)
         );
-    box-shadow:0 20px 60px rgba(0,0,0,.22);
+    border:1px solid rgba(255,255,255,.1);
+}
+
+.form-card h2{
+    font-size:34px;
+}
+
+.form-card > p{
+    color:#9da8ba;
+    margin:10px 0 25px;
 }
 
 .form-grid{
     display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:16px;
-    margin-top:25px;
+    grid-template-columns:
+        repeat(2,minmax(0,1fr));
+    gap:15px;
 }
 
-.form-group{
+.field{
     display:flex;
     flex-direction:column;
-    gap:8px;
+    gap:7px;
 }
 
-.form-group.full{
+.field.full{
     grid-column:1/-1;
 }
 
-.form-group label{
-    color:#9bb0c5;
-    font-size:12px;
-    font-weight:800;
+.field label{
+    color:#c7cfdd;
+    font-size:14px;
+    font-weight:700;
 }
 
-.form-group input,
-.form-group textarea,
-.form-group select{
+.field input,
+.field textarea,
+.field select{
     width:100%;
-    border:1px solid rgba(100,180,255,.16);
-    border-radius:12px;
-    outline:none;
-    background:#050f1e;
+    border:1px solid rgba(255,255,255,.13);
+    background:#080f1f;
     color:#fff;
-    padding:13px 14px;
+    border-radius:12px;
+    padding:13px;
+    outline:none;
 }
 
-.form-group input{
-    height:48px;
-}
-
-.form-group textarea{
+.field textarea{
     min-height:120px;
     resize:vertical;
 }
 
-.form-group input:focus,
-.form-group textarea:focus,
-.form-group select:focus{
-    border-color:rgba(50,215,255,.65);
+.field input:focus,
+.field textarea:focus,
+.field select:focus{
+    border-color:#ffd400;
+}
+
+.payment-info{
+    grid-column:1/-1;
+    padding:16px;
+    border-radius:14px;
+    background:
+        rgba(255,212,0,.08);
+    border:1px solid
+        rgba(255,212,0,.2);
+}
+
+.payment-info strong{
+    color:#ffd400;
 }
 
 .submit-btn{
-    width:100%;
-    height:52px;
-    margin-top:20px;
+    grid-column:1/-1;
     border:0;
-    border-radius:13px;
-    color:#00111a;
-    background:linear-gradient(90deg,#34d8ff,#6ff2ff);
-    font-size:15px;
-    font-weight:900;
-    transition:.2s;
-}
-
-.submit-btn:hover{
-    transform:translateY(-2px);
-    box-shadow:0 10px 25px rgba(0,205,255,.18);
+    border-radius:14px;
+    min-height:54px;
+    background:
+        linear-gradient(
+            135deg,
+            #ffd400,
+            #ff7900
+        );
+    color:#050505;
+    font-weight:1000;
+    font-size:17px;
 }
 
 .submit-btn:disabled{
-    opacity:.6;
+    opacity:.55;
     cursor:not-allowed;
-    transform:none;
 }
 
 .form-message{
-    display:none;
-    margin-top:15px;
-    padding:12px 14px;
-    border-radius:10px;
-    font-size:13px;
-    line-height:1.5;
+    grid-column:1/-1;
+    min-height:25px;
+    color:#ffd400;
+    text-align:center;
 }
 
-.form-message.show{
+/* CONTACT */
+
+.contact-section{
+    margin:80px auto;
+    max-width:1000px;
+    text-align:center;
+}
+
+.contact-grid{
+    display:grid;
+    grid-template-columns:
+        repeat(3,minmax(0,1fr));
+    gap:15px;
+    margin-top:25px;
+}
+
+.contact-card{
+    padding:25px;
+    border-radius:18px;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.1);
+}
+
+.contact-card strong{
     display:block;
+    color:#ffd400;
+    margin-bottom:8px;
 }
 
-.form-message.success{
-    color:#7dffbf;
-    background:rgba(30,220,130,.08);
-    border:1px solid rgba(30,220,130,.2);
+.contact-card span{
+    color:#c4ccda;
+    word-break:break-word;
 }
 
-.form-message.error{
-    color:#ff9d9d;
-    background:rgba(255,50,70,.08);
-    border:1px solid rgba(255,50,70,.2);
-}
-
-/* =========================
-   MODAL
-========================= */
+/* MODAL */
 
 .modal{
     position:fixed;
     inset:0;
-    z-index:2000;
+    z-index:5000;
     display:none;
     align-items:center;
     justify-content:center;
     padding:20px;
-    background:rgba(0,0,0,.76);
+    background:rgba(0,0,0,.72);
     backdrop-filter:blur(8px);
 }
 
@@ -620,286 +578,188 @@ nav a:hover{
     width:min(700px,100%);
     max-height:90vh;
     overflow:auto;
+    background:#07101f;
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:24px;
+    padding:25px;
     position:relative;
-    padding:30px;
-    border-radius:22px;
-    border:1px solid rgba(60,210,255,.22);
-    background:
-        linear-gradient(
-            145deg,
-            #071528,
-            #020813
-        );
-    box-shadow:0 30px 100px rgba(0,0,0,.55);
 }
 
 .modal-close{
     position:absolute;
-    right:17px;
-    top:15px;
-    width:38px;
-    height:38px;
-    border:1px solid rgba(255,255,255,.1);
-    border-radius:50%;
+    right:15px;
+    top:12px;
+    border:0;
+    background:transparent;
     color:#fff;
-    background:#071321;
-    font-size:20px;
-}
-
-.modal-logo{
-    width:80px;
-    height:80px;
-    border-radius:18px;
-    display:grid;
-    place-items:center;
-    overflow:hidden;
-    background:#081526;
-    border:1px solid rgba(255,255,255,.08);
-    margin-bottom:18px;
-}
-
-.modal-logo img{
-    width:100%;
-    height:100%;
-    object-fit:contain;
+    font-size:30px;
 }
 
 .modal-title{
-    font-size:30px;
-    font-weight:900;
+    padding-right:35px;
+    font-size:28px;
 }
 
-.modal-country{
-    margin-top:6px;
-    color:#46d9ff;
+.modal-content{
+    margin-top:18px;
+    color:#c6cfdd;
+    line-height:1.6;
 }
 
-.modal-description{
-    margin-top:20px;
-    color:#9aacc0;
-    line-height:1.7;
-    white-space:pre-wrap;
+.modal-content img{
+    max-width:120px;
+    max-height:120px;
+    object-fit:contain;
+    background:#fff;
+    border-radius:15px;
+    padding:8px;
+    margin-bottom:15px;
 }
 
-.modal-link{
-    display:inline-flex;
-    margin-top:20px;
-    padding:11px 16px;
-    border-radius:10px;
-    border:1px solid rgba(60,210,255,.2);
-    color:#55ddff;
-    background:rgba(0,170,255,.06);
+.modal-content a{
+    color:#ffd400;
 }
 
-.factory-list{
-    margin-top:25px;
-}
-
-.factory-list h3{
-    margin-bottom:12px;
-    font-size:16px;
-}
-
-.factory-item{
-    padding:12px;
-    margin-bottom:8px;
-    border-radius:10px;
-    background:rgba(255,255,255,.03);
-    color:#94a8bc;
-    font-size:13px;
-}
-
-/* =========================
-   LOADING / EMPTY
-========================= */
-
-.loading{
-    grid-column:1/-1;
-    text-align:center;
-    padding:40px 10px;
-    color:#6f879e;
-}
-
-.empty{
-    grid-column:1/-1;
-    padding:40px 10px;
-    text-align:center;
-    color:#71869d;
-    border:1px dashed rgba(100,180,255,.15);
-    border-radius:16px;
-}
-
-/* =========================
-   FOOTER
-========================= */
+/* FOOTER */
 
 footer{
-    margin-top:60px;
-    border-top:1px solid rgba(100,180,255,.1);
-    background:#01050d;
+    margin-top:80px;
+    padding:35px 15px;
+    text-align:center;
+    color:#778399;
+    border-top:1px solid rgba(255,255,255,.07);
 }
 
-.footer-inner{
-    width:min(1450px,94%);
-    margin:auto;
-    padding:35px 0;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:20px;
+footer strong{
+    color:#ffd400;
 }
 
-.footer-brand{
-    color:#7f95aa;
-    font-size:12px;
-}
+/* RESPONSIVE */
 
-.footer-brand strong{
-    color:#40d9ff;
-}
-
-.footer-links{
-    display:flex;
-    gap:18px;
-    color:#71879d;
-    font-size:12px;
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-
-@media(max-width:1100px){
-
+@media(max-width:1500px){
     .countries-grid{
-        grid-template-columns:repeat(4,minmax(0,1fr));
-    }
-
-    .brands-grid,
-    .search-results{
-        grid-template-columns:repeat(3,minmax(0,1fr));
+        grid-template-columns:
+            repeat(12,minmax(0,1fr));
     }
 }
 
-@media(max-width:800px){
+@media(max-width:1200px){
+    .countries-grid{
+        grid-template-columns:
+            repeat(10,minmax(0,1fr));
+    }
 
+    .brand-grid{
+        grid-template-columns:
+            repeat(4,minmax(0,1fr));
+    }
+}
+
+@media(max-width:850px){
+    .countries-grid{
+        grid-template-columns:
+            repeat(6,minmax(0,1fr));
+    }
+
+    .brand-grid{
+        grid-template-columns:
+            repeat(3,minmax(0,1fr));
+    }
+
+    .contact-grid{
+        grid-template-columns:
+            repeat(2,minmax(0,1fr));
+    }
+}
+
+@media(max-width:600px){
     .header-inner{
-        min-height:68px;
+        min-height:62px;
     }
 
-    nav{
-        display:none;
+    .logo{
+        font-size:16px;
     }
 
-    .header-status{
+    .price-badge{
+        padding:8px 11px;
+        font-size:13px;
+    }
+
+    .contact-btn{
         display:none;
     }
 
     .hero{
-        min-height:410px;
-        padding-top:50px;
-    }
-
-    .hero h1{
-        letter-spacing:-2px;
+        padding-top:35px;
     }
 
     .countries-grid{
-        grid-template-columns:repeat(3,minmax(0,1fr));
+        grid-template-columns:
+            repeat(6,minmax(0,1fr));
+        gap:6px;
     }
 
-    .brands-grid,
-    .search-results{
-        grid-template-columns:repeat(2,minmax(0,1fr));
+    .country-card{
+        border-radius:8px;
+    }
+
+    .country-name{
+        font-size:8px;
+    }
+
+    .country-count{
+        font-size:7px;
+        padding:3px 4px;
+    }
+
+    .country-flag{
+        left:4px;
+        bottom:4px;
+    }
+
+    .brand-grid{
+        grid-template-columns:
+            repeat(2,minmax(0,1fr));
+        gap:10px;
+    }
+
+    .brand-card{
+        padding:14px;
+        min-height:160px;
+    }
+
+    .brand-logo{
+        width:60px;
+        height:60px;
+    }
+
+    .brand-name{
+        font-size:16px;
     }
 
     .form-grid{
         grid-template-columns:1fr;
     }
 
-    .form-group.full{
+    .field.full,
+    .payment-info,
+    .submit-btn,
+    .form-message{
         grid-column:auto;
     }
 
-    .application-box{
-        padding:25px;
-    }
-}
-
-@media(max-width:560px){
-
-    .logo{
-        font-size:16px;
+    .form-card{
+        padding:20px;
     }
 
-    .logo-icon{
-        width:36px;
-        height:36px;
-    }
-
-    .hero{
-        padding:42px 0 30px;
-    }
-
-    .hero h1{
-        font-size:42px;
-    }
-
-    .hero p{
-        font-size:14px;
-        line-height:1.6;
-    }
-
-    .search-box input{
-        height:55px;
-    }
-
-    .section{
-        padding:30px 0;
-    }
-
-    .section-title{
-        font-size:24px;
-    }
-
-    .countries-grid{
-        grid-template-columns:repeat(2,minmax(0,1fr));
-        gap:10px;
-    }
-
-    .country-card{
-        border-radius:13px;
-    }
-
-    .country-overlay{
-        padding:12px;
-    }
-
-    .country-name{
-        font-size:14px;
-    }
-
-    .country-meta{
-        font-size:10px;
-    }
-
-    .brands-grid,
-    .search-results{
+    .contact-grid{
         grid-template-columns:1fr;
     }
 
-    .application-section{
-        width:94%;
-    }
-
-    .application-box{
-        padding:20px;
-        border-radius:18px;
-    }
-
-    .footer-inner{
-        flex-direction:column;
+    .view-bar{
         align-items:flex-start;
+        flex-direction:column;
     }
 }
 </style>
@@ -907,25 +767,27 @@ footer{
 
 <body>
 
-<div id="rainFX"></div>
-
 <header>
-    <div class="header-inner">
+    <div class="container header-inner">
 
-        <a href="/" class="logo">
-            <div class="logo-icon">🌐</div>
-            <div>ALL <span>WORLD</span> BRANDS</div>
-        </a>
+        <div class="logo">
+            ALL WORLD <span>BRANDS</span>
+        </div>
 
-        <nav>
-            <a href="#countries">Countries</a>
-            <a href="#brands">Brands</a>
-            <a href="#add-brand">Add Your Brand</a>
-        </nav>
+        <div class="header-actions">
+            <div
+                class="price-badge"
+                id="headerPrice"
+            >
+                $1
+            </div>
 
-        <div class="header-status">
-            <span class="status-dot"></span>
-            GLOBAL DATABASE
+            <button
+                class="contact-btn"
+                onclick="scrollToContact()"
+            >
+                Contact
+            </button>
         </div>
 
     </div>
@@ -935,256 +797,267 @@ footer{
 
 <section class="hero">
 
-    <div class="hero-badge">
-        🌍 GLOBAL BRAND DIRECTORY
-    </div>
-
-    <h1>ALL WORLD BRANDS</h1>
+    <h1>
+        Discover
+        <span>World Brands</span>
+    </h1>
 
     <p>
-        Discover brands, companies and products from countries
-        around the world in one global platform.
+        Discover brands, companies and products
+        from countries around the world.
     </p>
 
-    <div class="search-box">
+    <div
+        class="tagline"
+        id="tagline"
+    >
+        Bring your brand to the world.
+    </div>
+
+</section>
+
+<section class="container">
+
+    <div class="search-area">
+
         <input
             id="searchInput"
+            class="search-box"
             type="search"
+            placeholder="Search brands, categories or countries..."
             autocomplete="off"
-            placeholder="Search brands, countries or categories..."
         >
-        <span class="search-icon">⌕</span>
+
+        <div
+            id="searchMessage"
+            class="search-message"
+        ></div>
+
     </div>
 
 </section>
 
 <section
-    class="section"
-    id="searchResultsSection"
+    class="container"
+    id="countriesSection"
 >
 
-    <div class="section-head">
-        <div>
-            <h2 class="section-title">Search Results</h2>
-            <p class="section-subtitle">
-                Brands matching your search
-            </p>
-        </div>
+    <div class="section-title">
 
-        <div
-            class="counter"
-            id="searchCounter"
-        ></div>
+        <h2>
+            Countries
+        </h2>
+
+        <p>
+            Choose a country to discover its brands.
+        </p>
+
     </div>
 
     <div
-        class="search-results"
-        id="searchResults"
+        id="countriesGrid"
+        class="countries-grid"
     ></div>
 
 </section>
 
 <section
-    class="section"
-    id="countries"
+    class="container"
+    id="brandsSection"
+    style="display:none;"
 >
 
-    <div class="section-head">
+    <div class="view-bar">
 
         <div>
-            <h2 class="section-title">Countries</h2>
-            <p class="section-subtitle">
-                Explore brands by country
-            </p>
-        </div>
-
-        <div
-            class="counter"
-            id="countryCounter"
-        >
-            0 countries
-        </div>
-
-    </div>
-
-    <div
-        class="countries-grid"
-        id="countriesGrid"
-    >
-        <div class="loading">
-            Loading countries...
-        </div>
-    </div>
-
-</section>
-
-<section
-    class="section"
-    id="brands"
->
-
-    <div class="section-head">
-
-        <div>
-            <h2 class="section-title" id="brandsTitle">
-                Featured Brands
+            <h2 id="selectedCountryName">
+                Brands
             </h2>
-
-            <p class="section-subtitle" id="brandsSubtitle">
-                Discover brands from around the world
-            </p>
         </div>
 
-        <div
-            class="counter"
-            id="brandCounter"
-        ></div>
+        <button
+            class="back-btn"
+            onclick="returnToCountries()"
+        >
+            ← Back to countries
+        </button>
 
     </div>
 
     <div
-        class="brands-grid"
         id="brandsGrid"
-    >
-        <div class="loading">
-            Loading brands...
-        </div>
-    </div>
+        class="brand-grid"
+    ></div>
 
 </section>
 
 <section
-    class="application-section"
-    id="add-brand"
+    class="container form-section"
+    id="applicationSection"
 >
 
-    <div class="application-box">
+    <div class="form-card">
 
-        <div class="section-head">
-            <div>
-                <h2 class="section-title">
-                    Add Your Brand
-                </h2>
+        <h2>
+            Add Your Brand
+        </h2>
 
-                <p class="section-subtitle">
-                    Submit your brand to ALL WORLD BRANDS
-                </p>
+        <p>
+            Bring your brand to the world.
+        </p>
+
+        <form
+            id="applicationForm"
+            class="form-grid"
+        >
+
+            <div class="field">
+
+                <label>
+                    Brand name *
+                </label>
+
+                <input
+                    id="brandName"
+                    name="brand_name"
+                    required
+                    maxlength="120"
+                >
+
             </div>
-        </div>
 
-        <form id="brandApplicationForm">
+            <div class="field">
 
-            <div class="form-grid">
+                <label>
+                    Country *
+                </label>
 
-                <div class="form-group">
-                    <label for="brandName">
-                        Brand Name *
-                    </label>
+                <select
+                    id="countrySelect"
+                    name="country"
+                    required
+                >
+                    <option value="">
+                        Select country
+                    </option>
+                </select>
 
-                    <input
-                        id="brandName"
-                        name="brand_name"
-                        type="text"
-                        required
-                        maxlength="120"
-                        placeholder="Brand name"
-                    >
-                </div>
+            </div>
 
-                <div class="form-group">
-                    <label for="country">
-                        Country *
-                    </label>
+            <div class="field">
 
-                    <input
-                        id="country"
-                        name="country"
-                        type="text"
-                        required
-                        maxlength="100"
-                        placeholder="Country"
-                    >
-                </div>
+                <label>
+                    Owner name *
+                </label>
 
-                <div class="form-group">
-                    <label for="ownerName">
-                        Owner / Representative *
-                    </label>
+                <input
+                    id="ownerName"
+                    name="owner_name"
+                    required
+                    maxlength="120"
+                >
 
-                    <input
-                        id="ownerName"
-                        name="owner_name"
-                        type="text"
-                        required
-                        maxlength="120"
-                        placeholder="Full name"
-                    >
-                </div>
+            </div>
 
-                <div class="form-group">
-                    <label for="email">
-                        Email *
-                    </label>
+            <div class="field">
 
-                    <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        required
-                        maxlength="180"
-                        placeholder="email@example.com"
-                    >
-                </div>
+                <label>
+                    Email *
+                </label>
 
-                <div class="form-group">
-                    <label for="phone">
-                        Phone
-                    </label>
+                <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    required
+                    maxlength="200"
+                >
 
-                    <input
-                        id="phone"
-                        name="phone"
-                        type="tel"
-                        maxlength="50"
-                        placeholder="+998..."
-                    >
-                </div>
+            </div>
 
-                <div class="form-group">
-                    <label for="website">
-                        Website
-                    </label>
+            <div class="field">
 
-                    <input
-                        id="website"
-                        name="website"
-                        type="url"
-                        maxlength="500"
-                        placeholder="https://example.com"
-                    >
-                </div>
+                <label>
+                    Phone
+                </label>
 
-                <div class="form-group full">
-                    <label for="description">
-                        Brand Description
-                    </label>
+                <input
+                    id="phone"
+                    name="phone"
+                    maxlength="50"
+                >
 
-                    <textarea
-                        id="description"
-                        name="description"
-                        maxlength="3000"
-                        placeholder="Tell us about your brand..."
-                    ></textarea>
-                </div>
+            </div>
+
+            <div class="field">
+
+                <label>
+                    Website
+                </label>
+
+                <input
+                    id="website"
+                    name="website"
+                    type="url"
+                    placeholder="https://..."
+                    maxlength="2048"
+                >
+
+            </div>
+
+            <div class="field full">
+
+                <label>
+                    Logo URL
+                </label>
+
+                <input
+                    id="logo"
+                    name="logo"
+                    type="url"
+                    placeholder="https://..."
+                    maxlength="2048"
+                >
+
+            </div>
+
+            <div class="field full">
+
+                <label>
+                    Brand description
+                </label>
+
+                <textarea
+                    id="description"
+                    name="description"
+                    maxlength="3000"
+                ></textarea>
+
+            </div>
+
+            <div class="payment-info">
+
+                Brand registration/payment:
+
+                <strong
+                    id="formPrice"
+                >
+                    $1
+                </strong>
+
+                <br>
+
+                Payment is processed securely
+                through OCTO.
 
             </div>
 
             <button
-                type="submit"
+                id="submitButton"
                 class="submit-btn"
-                id="submitBrandBtn"
+                type="submit"
             >
-                SUBMIT BRAND
+                Submit & Pay
             </button>
 
             <div
@@ -1198,89 +1071,134 @@ footer{
 
 </section>
 
-</main>
+<section
+    class="container contact-section"
+    id="contactSection"
+>
 
-<footer>
+    <div class="section-title">
 
-    <div class="footer-inner">
+        <h2>
+            Contact
+        </h2>
 
-        <div class="footer-brand">
-            © <span id="currentYear"></span>
-            <strong>ALL WORLD BRANDS</strong>
-            — Global Brand Directory
+        <p>
+            Contact ALL WORLD BRANDS.
+        </p>
+
+    </div>
+
+    <div class="contact-grid">
+
+        <div class="contact-card">
+
+            <strong>
+                Email
+            </strong>
+
+            <span id="contactEmail">
+                contact@allworldbrands.net
+            </span>
+
         </div>
 
-        <div class="footer-links">
-            <a href="#countries">Countries</a>
-            <a href="#brands">Brands</a>
-            <a href="#add-brand">Add Brand</a>
+        <div class="contact-card">
+
+            <strong>
+                Phone
+            </strong>
+
+            <span id="contactPhone">
+                —
+            </span>
+
+        </div>
+
+        <div class="contact-card">
+
+            <strong>
+                WhatsApp
+            </strong>
+
+            <span id="contactWhatsapp">
+                —
+            </span>
+
+        </div>
+
+        <div class="contact-card">
+
+            <strong>
+                Address
+            </strong>
+
+            <span id="contactAddress">
+                —
+            </span>
+
+        </div>
+
+        <div class="contact-card">
+
+            <strong>
+                Working hours
+            </strong>
+
+            <span id="contactHours">
+                —
+            </span>
+
         </div>
 
     </div>
 
+</section>
+
+</main>
+
+<footer>
+
+    <strong>
+        ALL WORLD BRANDS
+    </strong>
+
+    <br><br>
+
+    Discover brands from around the world.
+
 </footer>
 
-<!-- BRAND MODAL -->
+<!-- MODAL -->
 
 <div
+    id="modal"
     class="modal"
-    id="brandModal"
-    aria-hidden="true"
+    onclick="closeModalOutside(event)"
 >
 
-    <div class="modal-box">
+    <div
+        class="modal-box"
+        id="modalBox"
+    >
 
         <button
             class="modal-close"
-            id="modalClose"
-            type="button"
-            aria-label="Close"
+            onclick="closeModal()"
         >
             ×
         </button>
 
-        <div
-            class="modal-logo"
-            id="modalLogo"
-        ></div>
-
-        <div
-            class="modal-title"
+        <h2
             id="modalTitle"
-        ></div>
-
-        <div
-            class="modal-country"
-            id="modalCountry"
-        ></div>
-
-        <div
-            class="modal-description"
-            id="modalDescription"
-        ></div>
-
-        <a
-            class="modal-link"
-            id="modalWebsite"
-            href="#"
-            target="_blank"
-            rel="noopener noreferrer"
-            style="display:none"
+            class="modal-title"
         >
-            Visit Website ↗
-        </a>
+            Information
+        </h2>
 
         <div
-            class="factory-list"
-            id="factoryList"
-            style="display:none"
-        >
-
-            <h3>Factories</h3>
-
-            <div id="factoryItems"></div>
-
-        </div>
+            id="modalContent"
+            class="modal-content"
+        ></div>
 
     </div>
 
@@ -1289,81 +1207,14 @@ footer{
 <script>
 "use strict";
 
-/* =========================
-   GLOBALS
-========================= */
+let countries = [];
+let siteConfig = {};
+let currentCountry = null;
 
-const API_BASE = "";
-
-const countriesGrid = document.getElementById("countriesGrid");
-const brandsGrid = document.getElementById("brandsGrid");
-const searchResults = document.getElementById("searchResults");
-const searchResultsSection =
-    document.getElementById("searchResultsSection");
-
-const searchInput =
-    document.getElementById("searchInput");
-
-const countryCounter =
-    document.getElementById("countryCounter");
-
-const brandCounter =
-    document.getElementById("brandCounter");
-
-const brandsTitle =
-    document.getElementById("brandsTitle");
-
-const brandsSubtitle =
-    document.getElementById("brandsSubtitle");
-
-const searchCounter =
-    document.getElementById("searchCounter");
-
-const applicationForm =
-    document.getElementById("brandApplicationForm");
-
-const submitBrandBtn =
-    document.getElementById("submitBrandBtn");
-
-const formMessage =
-    document.getElementById("formMessage");
-
-const modal =
-    document.getElementById("brandModal");
-
-const modalClose =
-    document.getElementById("modalClose");
-
-const modalLogo =
-    document.getElementById("modalLogo");
-
-const modalTitle =
-    document.getElementById("modalTitle");
-
-const modalCountry =
-    document.getElementById("modalCountry");
-
-const modalDescription =
-    document.getElementById("modalDescription");
-
-const modalWebsite =
-    document.getElementById("modalWebsite");
-
-const factoryList =
-    document.getElementById("factoryList");
-
-const factoryItems =
-    document.getElementById("factoryItems");
-
-document.getElementById("currentYear").textContent =
-    new Date().getFullYear();
-
-/* =========================
-   HELPERS
-========================= */
+const $ = id =>
+    document.getElementById(id);
 
 function escapeHtml(value){
-
     return String(value ?? "")
         .replace(/&/g,"&amp;")
         .replace(/</g,"&lt;")
@@ -1373,1334 +1224,1045 @@ function escapeHtml(value){
 }
 
 function safeUrl(value){
+    const url =
+        String(value || "").trim();
 
-    if(!value){
+    if(!url){
         return "";
     }
 
-    try{
+    if(
+        /^javascript:/i.test(url) ||
+        /^data:/i.test(url) ||
+        /^vbscript:/i.test(url) ||
+        /^file:/i.test(url) ||
+        /^blob:/i.test(url)
+    ){
+        return "";
+    }
 
-        const url =
-            new URL(
-                String(value),
-                window.location.origin
-            );
+    if(
+        url.startsWith("/") ||
+        url.startsWith("./")
+    ){
+        return url;
+    }
+
+    try{
+        const parsed =
+            new URL(url);
 
         if(
-            url.protocol !== "http:" &&
-            url.protocol !== "https:"
+            parsed.protocol !== "http:" &&
+            parsed.protocol !== "https:"
         ){
             return "";
         }
 
-        return url.href;
-
+        return parsed.href;
     }catch{
-
         return "";
     }
 }
 
-async function apiFetch(
-    url,
-    options = {}
-){
-
-    const config = {
-        ...options,
-        headers:{
-            ...(options.body
-                ? {"Content-Type":"application/json"}
-                : {}),
-            ...(options.headers || {})
-        }
-    };
-
-    const response =
-        await fetch(
-            API_BASE + url,
-            config
-        );
-
-    let data = null;
-
-    try{
-        data = await response.json();
-    }catch{
-        data = null;
-    }
-
-    if(!response.ok){
-
-        const message =
-            data?.message ||
-            data?.error ||
-            `Request failed (${response.status})`;
-
-        throw new Error(message);
-    }
-
-    return data;
-}
-
-function showFormMessage(
-    message,
-    type = "error"
-){
-
-    formMessage.textContent = message;
-
-    formMessage.className =
-        `form-message show ${type}`;
-}
-
-function hideFormMessage(){
-
-    formMessage.textContent = "";
-
-    formMessage.className =
-        "form-message";
-}
-
-function getInitials(name){
-
-    const text =
-        String(name || "?")
-            .trim();
-
-    if(!text){
-        return "?";
-    }
-
-    return text
-        .split(/\s+/)
-        .slice(0,2)
-        .map(word => word[0])
-        .join("")
-        .toUpperCase();
-}
-
-function countrySlug(name){
-
-    return String(name || "")
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g,"")
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9]+/g,"-")
-        .replace(/^-+|-+$/g,"");
-}
-
-/* =========================
-   RAIN EFFECT
-========================= */
-
-function createRain(){
-
-    const container =
-        document.getElementById("rainFX");
-
-    const amount =
-        window.innerWidth < 600
-            ? 35
-            : 70;
-
-    for(let i = 0; i < amount; i++){
-
-        const line =
-            document.createElement("div");
-
-        line.className = "rain-line";
-
-        line.style.left =
-            `${Math.random() * 100}%`;
-
-        line.style.height =
-            `${60 + Math.random() * 130}px`;
-
-        line.style.animationDuration =
-            `${3 + Math.random() * 7}s`;
-
-        line.style.animationDelay =
-            `${Math.random() * 7}s`;
-
-        line.style.opacity =
-            `${0.15 + Math.random() * 0.35}`;
-
-        container.appendChild(line);
-    }
-}
-
-/* =========================
-   COUNTRY IMAGE
-========================= */
-
-function countryImage(country){
-
-    const slug =
-        countrySlug(
-            country?.name
-        );
-
-    if(!slug){
+function imageForCountry(code){
+    if(!code){
         return "";
     }
 
-    return `/images/countries/${slug}.jpg`;
+    return (
+        "/images/countries/" +
+        String(code).toUpperCase() +
+        ".png"
+    );
 }
 
-/* =========================
-   LOAD COUNTRIES
-========================= */
+function showModal(title, content){
+    $("modalTitle").textContent =
+        title || "Information";
 
-async function loadCountries(){
+    $("modalContent").innerHTML =
+        content || "";
 
-    countriesGrid.innerHTML =
-        `<div class="loading">
-            Loading countries...
-        </div>`;
+    $("modal").classList.add("show");
+}
+
+function closeModal(){
+    $("modal").classList.remove("show");
+}
+
+function closeModalOutside(event){
+    if(event.target === $("modal")){
+        closeModal();
+    }
+}
+
+function scrollToContact(){
+    $("contactSection")
+        .scrollIntoView({
+            behavior:"smooth"
+        });
+}
+
+async function loadSiteConfig(){
 
     try{
 
-        const data =
-            await apiFetch(
-                "/api/countries"
+        const response =
+            await fetch(
+                "/api/site-config",
+                {
+                    cache:"no-store"
+                }
             );
 
-        const countries =
-            Array.isArray(data)
-                ? data
-                : Array.isArray(data?.countries)
-                    ? data.countries
-                    : [];
-
-        countryCounter.textContent =
-            `${countries.length} countries`;
-
-        if(!countries.length){
-
-            countriesGrid.innerHTML =
-                `<div class="empty">
-                    No countries available.
-                </div>`;
-
+        if(!response.ok){
             return;
         }
 
-        countriesGrid.innerHTML =
-            countries
-                .map(country => {
+        siteConfig =
+            await response.json();
 
-                    const image =
-                        countryImage(country);
+        const price =
+            siteConfig.payment_display ||
+            "$1";
 
-                    const imageHtml =
-                        image
-                            ? `
-                                <img
-                                    class="country-image"
-                                    src="${escapeHtml(image)}"
-                                    alt="${escapeHtml(country.name)}"
-                                    loading="lazy"
-                                    onerror="this.style.display='none'"
-                                >
-                              `
-                            : "";
+        $("headerPrice")
+            .textContent = price;
 
-                    return `
-                        <article
-                            class="country-card"
-                            data-country-id="${Number(country.id) || 0}"
-                            data-country-name="${escapeHtml(country.name)}"
-                        >
+        $("formPrice")
+            .textContent = price;
 
-                            ${imageHtml}
+        $("tagline")
+            .textContent =
+                siteConfig.tagline ||
+                "Bring your brand to the world.";
 
-                            <div class="country-overlay">
+        const contact =
+            siteConfig.contact || {};
 
-                                <div class="country-info">
+        $("contactEmail")
+            .textContent =
+                contact.email || "—";
 
-                                    <div class="country-name">
-                                        ${escapeHtml(country.name)}
-                                    </div>
+        $("contactPhone")
+            .textContent =
+                contact.phone || "—";
 
-                                    <div class="country-meta">
-                                        Explore brands →
-                                    </div>
+        $("contactWhatsapp")
+            .textContent =
+                contact.whatsapp || "—";
 
-                                </div>
+        $("contactAddress")
+            .textContent =
+                contact.address || "—";
 
-                            </div>
+        $("contactHours")
+            .textContent =
+                contact.hours || "—";
 
-                        </article>
-                    `;
+    }catch(error){
 
-                })
-                .join("");
+        console.error(
+            "Site config error:",
+            error
+        );
 
-        countriesGrid
-            .querySelectorAll(".country-card")
-            .forEach(card => {
+    }
+}
 
-                card.addEventListener(
-                    "click",
-                    () => {
+async function loadCountries(){
 
-                        const id =
-                            Number(
-                                card.dataset.countryId
-                            );
+    try{
 
-                        const name =
-                            card.dataset.countryName;
+        const response =
+            await fetch(
+                "/api/countries",
+                {
+                    cache:"no-store"
+                }
+            );
 
-                        if(id){
-                            loadCountryBrands(
-                                id,
-                                name
-                            );
-                        }
+        if(!response.ok){
+            throw new Error(
+                "Country request failed"
+            );
+        }
 
-                    }
-                );
+        countries =
+            await response.json();
 
-            });
+        renderCountries();
+        fillCountrySelect();
 
     }catch(error){
 
         console.error(error);
 
-        countriesGrid.innerHTML =
-            `<div class="empty">
-                Failed to load countries.
-            </div>`;
-
+        $("countriesGrid")
+            .innerHTML =
+                `
+                <div style="
+                    grid-column:1/-1;
+                    text-align:center;
+                    color:#ff7b7b;
+                    padding:30px;
+                ">
+                    Unable to load countries.
+                </div>
+                `;
     }
 }
 
-/* =========================
-   BRAND LOGO
-========================= */
+function renderCountries(){
 
-function renderBrandLogo(
-    brand,
-    className = "brand-logo"
-){
+    const grid =
+        $("countriesGrid");
 
-    const logo =
-        safeUrl(brand?.logo);
+    grid.innerHTML = "";
 
-    if(logo){
+    countries.forEach(country => {
 
-        return `
-            <div class="${className}">
-                <img
-                    src="${escapeHtml(logo)}"
-                    alt="${escapeHtml(brand?.name || "Brand")}"
-                    loading="lazy"
-                    onerror="
-                        this.style.display='none';
-                        this.parentElement
-                            .querySelector('.brand-logo-fallback')
-                            .style.display='grid';
-                    "
-                >
+        const card =
+            document.createElement("button");
 
-                <div
-                    class="brand-logo-fallback"
-                    style="display:none"
-                >
-                    ${escapeHtml(
-                        getInitials(brand?.name)
-                    )}
-                </div>
-            </div>
+        card.type = "button";
+        card.className =
+            "country-card";
+
+        const image =
+            imageForCountry(
+                country.code
+            );
+
+        if(image){
+
+            const flag =
+                document.createElement("img");
+
+            flag.className =
+                "country-flag";
+
+            flag.alt =
+                country.name +
+                " flag";
+
+            flag.src = image;
+
+            flag.onerror = () => {
+                flag.style.display =
+                    "none";
+            };
+
+            card.appendChild(flag);
+        }
+
+        const name =
+            document.createElement("div");
+
+        name.className =
+            "country-name";
+
+        name.textContent =
+            country.name;
+
+        card.appendChild(name);
+
+        const count =
+            document.createElement("div");
+
+        count.className =
+            "country-count";
+
+        count.textContent =
+            `${Number(country.brand_count || 0)} brands`;
+
+        card.appendChild(count);
+
+        card.addEventListener(
+            "click",
+            () =>
+                openCountry(country)
+        );
+
+        grid.appendChild(card);
+    });
+}
+
+function fillCountrySelect(){
+
+    const select =
+        $("countrySelect");
+
+    select.innerHTML =
+        `
+        <option value="">
+            Select country
+        </option>
         `;
 
-    }
+    countries.forEach(country => {
 
-    return `
-        <div class="${className}">
-            <div class="brand-logo-fallback">
-                ${escapeHtml(
-                    getInitials(brand?.name)
-                )}
-            </div>
-        </div>
-    `;
+        const option =
+            document.createElement("option");
+
+        option.value =
+            country.name;
+
+        option.textContent =
+            country.name;
+
+        select.appendChild(option);
+    });
 }
 
-/* =========================
-   BRAND CARD
-========================= */
+async function openCountry(country){
 
-function renderBrandCard(
-    brand
-){
+    currentCountry =
+        country;
 
-    const website =
-        safeUrl(brand?.website);
+    $("countriesSection")
+        .style.display = "none";
 
-    return `
-        <article
-            class="brand-card"
-            data-brand-id="${Number(brand?.id) || 0}"
-        >
+    $("brandsSection")
+        .style.display = "block";
 
-            ${renderBrandLogo(brand)}
+    $("selectedCountryName")
+        .textContent =
+            country.name;
+
+    $("brandsGrid")
+        .innerHTML =
+            `
+            <div style="
+                grid-column:1/-1;
+                text-align:center;
+                padding:40px;
+                color:#9da8ba;
+            ">
+                Loading brands...
+            </div>
+            `;
+
+    $("brandsSection")
+        .scrollIntoView({
+            behavior:"smooth"
+        });
+
+    try{
+
+        const response =
+            await fetch(
+                `/api/countries/${encodeURIComponent(country.id)}/brands`,
+                {
+                    cache:"no-store"
+                }
+            );
+
+        if(!response.ok){
+            throw new Error(
+                "Brand request failed"
+            );
+        }
+
+        const brands =
+            await response.json();
+
+        renderBrands(brands);
+
+        if(country.code){
+
+            try{
+
+                await fetch(
+                    `/api/language?country=${encodeURIComponent(country.code)}`,
+                    {
+                        cache:"no-store"
+                    }
+                );
+
+            }catch{}
+
+        }
+
+    }catch(error){
+
+        console.error(error);
+
+        $("brandsGrid")
+            .innerHTML =
+                `
+                <div style="
+                    grid-column:1/-1;
+                    text-align:center;
+                    color:#ff7b7b;
+                    padding:40px;
+                ">
+                    Unable to load brands.
+                </div>
+                `;
+    }
+}
+
+function renderBrands(brands){
+
+    const grid =
+        $("brandsGrid");
+
+    grid.innerHTML = "";
+
+    if(!brands.length){
+
+        grid.innerHTML =
+            `
+            <div style="
+                grid-column:1/-1;
+                text-align:center;
+                padding:50px;
+                color:#9da8ba;
+            ">
+                No brands have been added yet.
+            </div>
+            `;
+
+        return;
+    }
+
+    brands.forEach(brand => {
+
+        const card =
+            document.createElement("article");
+
+        card.className =
+            "brand-card";
+
+        let logoHtml = "";
+
+        const logo =
+            safeUrl(brand.logo);
+
+        if(logo){
+
+            logoHtml =
+                `
+                <img
+                    class="brand-logo"
+                    src="${escapeHtml(logo)}"
+                    alt="${escapeHtml(brand.name)}"
+                    onerror="this.style.display='none'"
+                >
+                `;
+        }
+
+        card.innerHTML =
+            `
+            ${logoHtml}
 
             <div class="brand-name">
-                ${escapeHtml(brand?.name || "Unnamed Brand")}
+                ${escapeHtml(brand.name)}
+            </div>
+
+            <div class="brand-category">
+                ${escapeHtml(
+                    brand.category ||
+                    "Brand"
+                )}
             </div>
 
             <div class="brand-country">
                 ${escapeHtml(
-                    brand?.country_name ||
-                    brand?.country ||
+                    brand.country_name ||
                     ""
                 )}
             </div>
+            `;
 
-            ${
-                brand?.category
-                    ? `
-                        <div class="brand-category">
-                            ${escapeHtml(
-                                brand.category
-                            )}
-                        </div>
-                      `
-                    : ""
-            }
-
-            ${
-                brand?.description
-                    ? `
-                        <div class="brand-description">
-                            ${escapeHtml(
-                                brand.description
-                            )}
-                        </div>
-                      `
-                    : ""
-            }
-
-            ${
-                website
-                    ? `
-                        <div
-                            style="
-                                margin-top:14px;
-                                color:#42d8ff;
-                                font-size:12px;
-                                font-weight:700;
-                            "
-                        >
-                            Visit brand →
-                        </div>
-                      `
-                    : ""
-            }
-
-        </article>
-    `;
-}
-
-/* =========================
-   LOAD BRANDS
-========================= */
-
-async function loadBrands(){
-
-    brandsGrid.innerHTML =
-        `<div class="loading">
-            Loading brands...
-        </div>`;
-
-    brandsTitle.textContent =
-        "Featured Brands";
-
-    brandsSubtitle.textContent =
-        "Discover brands from around the world";
-
-    try{
-
-        const countries =
-            await apiFetch(
-                "/api/countries"
-            );
-
-        const countryList =
-            Array.isArray(countries)
-                ? countries
-                : countries?.countries || [];
-
-        const brands = [];
-
-        for(
-            const country
-            of countryList
-        ){
-
-            try{
-
-                const result =
-                    await apiFetch(
-                        `/api/countries/${encodeURIComponent(
-                            country.id
-                        )}/brands`
-                    );
-
-                const list =
-                    Array.isArray(result)
-                        ? result
-                        : result?.brands || [];
-
-                for(
-                    const brand
-                    of list
-                ){
-
-                    brands.push({
-                        ...brand,
-                        country_name:
-                            brand.country_name ||
-                            country.name
-                    });
-
-                }
-
-            }catch(error){
-
-                console.warn(
-                    "Country brands error:",
-                    country.name,
-                    error
-                );
-
-            }
-
-            if(brands.length >= 20){
-                break;
-            }
-        }
-
-        if(!brands.length){
-
-            brandsGrid.innerHTML =
-                `<div class="empty">
-                    No brands available yet.
-                </div>`;
-
-            brandCounter.textContent =
-                "0 brands";
-
-            return;
-        }
-
-        const visible =
-            brands.slice(0,20);
-
-        brandsGrid.innerHTML =
-            visible
-                .map(renderBrandCard)
-                .join("");
-
-        brandCounter.textContent =
-            `${brands.length} brands`;
-
-        bindBrandCards(
-            brandsGrid
+        card.addEventListener(
+            "click",
+            () =>
+                openBrand(
+                    brand.id
+                )
         );
 
-    }catch(error){
-
-        console.error(error);
-
-        brandsGrid.innerHTML =
-            `<div class="empty">
-                Failed to load brands.
-            </div>`;
-
-    }
+        grid.appendChild(card);
+    });
 }
 
-/* =========================
-   COUNTRY BRANDS
-========================= */
+function returnToCountries(){
 
-async function loadCountryBrands(
-    countryId,
-    countryName
-){
+    currentCountry = null;
 
-    brandsGrid.innerHTML =
-        `<div class="loading">
-            Loading brands...
-        </div>`;
+    $("brandsSection")
+        .style.display = "none";
 
-    brandsTitle.textContent =
-        countryName || "Country Brands";
+    $("countriesSection")
+        .style.display = "block";
 
-    brandsSubtitle.textContent =
-        "Brands registered in this country";
-
-    document
-        .getElementById("brands")
+    $("countriesSection")
         .scrollIntoView({
-            behavior:"smooth",
-            block:"start"
+            behavior:"smooth"
         });
+}
+
+async function openBrand(id){
 
     try{
 
-        const result =
-            await apiFetch(
-                `/api/countries/${encodeURIComponent(
-                    countryId
-                )}/brands`
-            );
-
-        const brands =
-            Array.isArray(result)
-                ? result
-                : result?.brands || [];
-
-        brandsGrid.innerHTML =
-            "";
-
-        if(!brands.length){
-
-            brandsGrid.innerHTML =
-                `<div class="empty">
-                    No brands found for this country.
-                </div>`;
-
-            brandCounter.textContent =
-                "0 brands";
-
-            return;
-        }
-
-        brandsGrid.innerHTML =
-            brands
-                .map(brand => ({
-                    ...brand,
-                    country_name:
-                        brand.country_name ||
-                        countryName
-                }))
-                .map(renderBrandCard)
-                .join("");
-
-        brandCounter.textContent =
-            `${brands.length} brands`;
-
-        bindBrandCards(
-            brandsGrid
-        );
-
-    }catch(error){
-
-        console.error(error);
-
-        brandsGrid.innerHTML =
-            `<div class="empty">
-                Failed to load country brands.
-            </div>`;
-
-    }
-}
-
-/* =========================
-   BRAND CLICK
-========================= */
-
-function bindBrandCards(
-    container
-){
-
-    container
-        .querySelectorAll(".brand-card")
-        .forEach(card => {
-
-            card.addEventListener(
-                "click",
-                async () => {
-
-                    const id =
-                        Number(
-                            card.dataset.brandId
-                        );
-
-                    if(id){
-                        await openBrand(
-                            id
-                        );
-                    }
-
+        const response =
+            await fetch(
+                `/api/brands/${encodeURIComponent(id)}`,
+                {
+                    cache:"no-store"
                 }
             );
 
-        });
-}
-
-/* =========================
-   BRAND DETAILS
-========================= */
-
-async function openBrand(
-    brandId
-){
-
-    try{
-
-        const result =
-            await apiFetch(
-                `/api/brands/${encodeURIComponent(
-                    brandId
-                )}`
+        if(!response.ok){
+            throw new Error(
+                "Brand request failed"
             );
+        }
 
         const brand =
-            result?.brand ||
-            result;
-
-        const factories =
-            result?.factories ||
-            brand?.factories ||
-            [];
-
-        modalTitle.textContent =
-            brand?.name ||
-            "Brand";
-
-        modalCountry.textContent =
-            brand?.country_name ||
-            brand?.country ||
-            "";
-
-        modalDescription.textContent =
-            brand?.description ||
-            "No description available.";
+            await response.json();
 
         const logo =
-            safeUrl(
-                brand?.logo
-            );
+            safeUrl(brand.logo);
+
+        let html = "";
 
         if(logo){
 
-            modalLogo.innerHTML =
+            html +=
                 `
                 <img
                     src="${escapeHtml(logo)}"
-                    alt="${escapeHtml(
-                        brand?.name || "Brand"
-                    )}"
-                    onerror="
-                        this.style.display='none';
-                        this.parentElement
-                            .innerHTML='<strong>${escapeHtml(
-                                getInitials(brand?.name)
-                            )}</strong>';
-                    "
+                    alt="${escapeHtml(brand.name)}"
+                    onerror="this.style.display='none'"
                 >
                 `;
-
-        }else{
-
-            modalLogo.innerHTML =
-                `<strong>
-                    ${escapeHtml(
-                        getInitials(brand?.name)
-                    )}
-                </strong>`;
-
         }
 
+        html +=
+            `
+            <p>
+                ${escapeHtml(
+                    brand.description ||
+                    "No description available."
+                )}
+            </p>
+
+            <p>
+                <strong>
+                    Category:
+                </strong>
+                ${escapeHtml(
+                    brand.category ||
+                    "—"
+                )}
+            </p>
+
+            <p>
+                <strong>
+                    Country:
+                </strong>
+                ${escapeHtml(
+                    brand.country_name ||
+                    "—"
+                )}
+            </p>
+
+            <p>
+                <strong>
+                    Verification:
+                </strong>
+                ${escapeHtml(
+                    brand.verification ||
+                    "Unverified"
+                )}
+            </p>
+            `;
+
         const website =
-            safeUrl(
-                brand?.website
-            );
+            safeUrl(brand.website);
 
         if(website){
 
-            modalWebsite.href =
-                website;
-
-            modalWebsite.style.display =
-                "inline-flex";
-
-        }else{
-
-            modalWebsite.href =
-                "#";
-
-            modalWebsite.style.display =
-                "none";
+            html +=
+                `
+                <p>
+                    <a
+                        href="${escapeHtml(website)}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Visit official website →
+                    </a>
+                </p>
+                `;
         }
 
         if(
-            Array.isArray(factories) &&
-            factories.length
+            Array.isArray(
+                brand.factories
+            ) &&
+            brand.factories.length
         ){
 
-            factoryList.style.display =
-                "block";
+            html +=
+                `
+                <hr style="
+                    margin:20px 0;
+                    border-color:rgba(255,255,255,.1);
+                ">
 
-            factoryItems.innerHTML =
-                factories
-                    .map(factory => {
+                <h3>
+                    Factories
+                </h3>
+                `;
 
-                        const parts = [
-                            factory?.name,
-                            factory?.city,
-                            factory?.address,
-                            factory?.phone
-                        ]
-                            .filter(Boolean);
+            brand.factories.forEach(factory => {
 
-                        return `
-                            <div class="factory-item">
-                                ${escapeHtml(
-                                    parts.join(" — ")
-                                )}
-                            </div>
-                        `;
+                html +=
+                    `
+                    <div style="
+                        margin-top:15px;
+                        padding:12px;
+                        border-radius:10px;
+                        background:rgba(255,255,255,.04);
+                    ">
+                        <strong>
+                            ${escapeHtml(
+                                factory.name || ""
+                            )}
+                        </strong>
 
-                    })
-                    .join("");
+                        <br>
 
-        }else{
+                        ${escapeHtml(
+                            factory.city || ""
+                        )}
 
-            factoryList.style.display =
-                "none";
+                        <br>
 
-            factoryItems.innerHTML =
-                "";
+                        ${escapeHtml(
+                            factory.address || ""
+                        )}
+                    </div>
+                    `;
+            });
         }
 
-        modal.classList.add("show");
-
-        modal.setAttribute(
-            "aria-hidden",
-            "false"
+        showModal(
+            brand.name,
+            html
         );
 
     }catch(error){
 
         console.error(error);
 
-        alert(
-            error.message ||
-            "Failed to load brand details."
+        showModal(
+            "Error",
+            "<p>Unable to load brand information.</p>"
         );
-
     }
 }
-
-function closeModal(){
-
-    modal.classList.remove("show");
-
-    modal.setAttribute(
-        "aria-hidden",
-        "true"
-    );
-}
-
-modalClose.addEventListener(
-    "click",
-    closeModal
-);
-
-modal.addEventListener(
-    "click",
-    event => {
-
-        if(event.target === modal){
-            closeModal();
-        }
-
-    }
-);
-
-document.addEventListener(
-    "keydown",
-    event => {
-
-        if(event.key === "Escape"){
-            closeModal();
-        }
-
-    }
-);
-
-/* =========================
-   SEARCH
-========================= */
 
 let searchTimer = null;
 
-searchInput.addEventListener(
-    "input",
-    () => {
+$("searchInput")
+    .addEventListener(
+        "input",
+        function(){
 
-        clearTimeout(
-            searchTimer
-        );
-
-        const query =
-            searchInput.value.trim();
-
-        if(query.length < 2){
-
-            searchResultsSection.style.display =
-                "none";
-
-            return;
-        }
-
-        searchTimer =
-            setTimeout(
-                () => searchBrands(query),
-                350
+            clearTimeout(
+                searchTimer
             );
 
-    }
-);
+            const value =
+                this.value.trim();
 
-async function searchBrands(
-    query
-){
+            if(!value){
 
-    searchResultsSection.style.display =
-        "block";
-
-    searchResults.innerHTML =
-        `<div class="loading">
-            Searching...
-        </div>`;
-
-    searchCounter.textContent =
-        "";
-
-    try{
-
-        const result =
-            await apiFetch(
-                `/api/search?q=${encodeURIComponent(
-                    query
-                )}`
-            );
-
-        const brands =
-            Array.isArray(result)
-                ? result
-                : result?.brands ||
-                  result?.results ||
-                  [];
-
-        searchCounter.textContent =
-            `${brands.length} results`;
-
-        if(!brands.length){
-
-            searchResults.innerHTML =
-                `<div class="empty">
-                    No brands found.
-                </div>`;
-
-            return;
-        }
-
-        searchResults.innerHTML =
-            brands
-                .map(renderBrandCard)
-                .join("");
-
-        bindBrandCards(
-            searchResults
-        );
-
-    }catch(error){
-
-        console.error(error);
-
-        searchResults.innerHTML =
-            `<div class="empty">
-                Search failed.
-            </div>`;
-
-    }
-}
-
-/* =========================
-   ADD BRAND
-========================= */
-
-applicationForm.addEventListener(
-    "submit",
-    async event => {
-
-        event.preventDefault();
-
-        hideFormMessage();
-
-        const payload = {
-
-            brand_name:
-                document
-                    .getElementById("brandName")
-                    .value
-                    .trim(),
-
-            country:
-                document
-                    .getElementById("country")
-                    .value
-                    .trim(),
-
-            owner_name:
-                document
-                    .getElementById("ownerName")
-                    .value
-                    .trim(),
-
-            email:
-                document
-                    .getElementById("email")
-                    .value
-                    .trim(),
-
-            phone:
-                document
-                    .getElementById("phone")
-                    .value
-                    .trim(),
-
-            website:
-                document
-                    .getElementById("website")
-                    .value
-                    .trim(),
-
-            description:
-                document
-                    .getElementById("description")
-                    .value
-                    .trim()
-
-        };
-
-        if(
-            !payload.brand_name ||
-            !payload.country ||
-            !payload.owner_name ||
-            !payload.email
-        ){
-
-            showFormMessage(
-                "Please fill in all required fields.",
-                "error"
-            );
-
-            return;
-        }
-
-        submitBrandBtn.disabled =
-            true;
-
-        submitBrandBtn.textContent =
-            "PROCESSING...";
-
-        try{
-
-            /*
-             * STEP 1
-             * Create application.
-             */
-
-            const result =
-                await apiFetch(
-                    "/api/applications",
-                    {
-                        method:"POST",
-                        body:JSON.stringify(
-                            payload
-                        )
-                    }
-                );
-
-            /*
-             * Some server versions may
-             * return payment URL directly.
-             */
-
-            const directPaymentUrl =
-                safeUrl(
-                    result?.payment_url ||
-                    result?.octo_pay_url ||
-                    result?.data?.octo_pay_url ||
-                    result?.data?.payment_url
-                );
-
-            if(directPaymentUrl){
-
-                showFormMessage(
-                    "Application created. Redirecting to secure payment...",
-                    "success"
-                );
-
-                window.location.href =
-                    directPaymentUrl;
+                $("searchMessage")
+                    .textContent = "";
 
                 return;
             }
 
-            /*
-             * Get application ID.
-             */
-
-            const applicationId =
-                result?.application_id ||
-                result?.id ||
-                result?.data?.application_id ||
-                result?.data?.id;
-
-            if(!applicationId){
-
-                throw new Error(
-                    "Application was created, but payment information was not returned."
+            searchTimer =
+                setTimeout(
+                    () =>
+                        searchBrands(value),
+                    300
                 );
-            }
+        }
+    );
 
-            /*
-             * STEP 2
-             * Create OCTO payment exactly once.
-             */
+async function searchBrands(query){
 
-            const payment =
-                await apiFetch(
-                    "/api/payments/octo/create",
-                    {
-                        method:"POST",
-                        body:JSON.stringify({
-                            application_id:
-                                Number(
-                                    applicationId
-                                )
-                        })
-                    }
-                );
+    try{
 
-            const paymentUrl =
-                safeUrl(
-                    payment?.payment_url ||
-                    payment?.octo_pay_url ||
-                    payment?.data?.octo_pay_url ||
-                    payment?.data?.payment_url
-                );
+        $("searchMessage")
+            .textContent =
+                "Searching...";
 
-            if(!paymentUrl){
-
-                throw new Error(
-                    payment?.message ||
-                    payment?.error ||
-                    "OCTO payment URL was not returned."
-                );
-            }
-
-            showFormMessage(
-                "Application created. Redirecting to secure OCTO payment...",
-                "success"
+        const response =
+            await fetch(
+                `/api/search?q=${encodeURIComponent(query)}`,
+                {
+                    cache:"no-store"
+                }
             );
 
-            window.location.href =
-                paymentUrl;
-
-        }catch(error){
-
-            console.error(
-                "Application/payment error:",
-                error
+        if(!response.ok){
+            throw new Error(
+                "Search failed"
             );
-
-            showFormMessage(
-                error.message ||
-                "Something went wrong. Please try again.",
-                "error"
-            );
-
-            submitBrandBtn.disabled =
-                false;
-
-            submitBrandBtn.textContent =
-                "SUBMIT BRAND";
         }
 
+        const results =
+            await response.json();
+
+        if(!results.length){
+
+            $("searchMessage")
+                .textContent =
+                    "No brands found.";
+
+            return;
+        }
+
+        $("searchMessage")
+            .textContent =
+            `${results.length} result(s) found.`;
+
+        renderSearchResults(results);
+
+    }catch(error){
+
+        console.error(error);
+
+        $("searchMessage")
+            .textContent =
+                "Search failed.";
     }
-);
+}
 
-/* =========================
-   OCTO RETURN
-========================= */
+function renderSearchResults(results){
 
-async function checkOctoReturn(){
+    const grid =
+        $("brandsGrid");
+
+    grid.innerHTML = "";
+
+    $("countriesSection")
+        .style.display = "none";
+
+    $("brandsSection")
+        .style.display = "block";
+
+    $("selectedCountryName")
+        .textContent =
+            "Search Results";
+
+    renderBrands(results);
+
+    $("brandsSection")
+        .scrollIntoView({
+            behavior:"smooth"
+        });
+}
+
+$("applicationForm")
+    .addEventListener(
+        "submit",
+        submitApplication
+    );
+
+async function submitApplication(event){
+
+    event.preventDefault();
+
+    const button =
+        $("submitButton");
+
+    const message =
+        $("formMessage");
+
+    button.disabled = true;
+
+    message.textContent =
+        "Creating your application...";
+
+    const form =
+        new FormData(
+            $("applicationForm")
+        );
+
+    const data =
+        Object.fromEntries(
+            form.entries()
+        );
+
+    try{
+
+        const response =
+            await fetch(
+                "/api/applications",
+                {
+                    method:"POST",
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+                    body:
+                        JSON.stringify(data)
+                }
+            );
+
+        const result =
+            await response.json();
+
+        if(!response.ok){
+
+            throw new Error(
+                result.error ||
+                "Application failed."
+            );
+        }
+
+        const applicationId =
+            result.application_id;
+
+        if(!applicationId){
+
+            throw new Error(
+                "Application ID was not returned."
+            );
+        }
+
+        localStorage.setItem(
+            "awb_application_id",
+            String(applicationId)
+        );
+
+        message.textContent =
+            "Preparing secure payment...";
+
+        const paymentResponse =
+            await fetch(
+                "/api/payments/octo/create",
+                {
+                    method:"POST",
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+                    body:
+                        JSON.stringify({
+                            application_id:
+                                applicationId
+                        })
+                }
+            );
+
+        const payment =
+            await paymentResponse.json();
+
+        if(!paymentResponse.ok){
+
+            throw new Error(
+                payment.error ||
+                "Unable to create payment."
+            );
+        }
+
+        if(payment.already_paid){
+
+            message.textContent =
+                "Payment is already confirmed.";
+
+            return;
+        }
+
+        const paymentUrl =
+            payment.payment_url ||
+            payment.octo_pay_url;
+
+        if(!paymentUrl){
+
+            throw new Error(
+                "OCTO payment URL was not returned."
+            );
+        }
+
+        message.textContent =
+            "Redirecting to secure OCTO payment...";
+
+        window.location.href =
+            paymentUrl;
+
+    }catch(error){
+
+        console.error(error);
+
+        message.textContent =
+            error.message ||
+            "Something went wrong.";
+
+        button.disabled = false;
+    }
+}
+
+async function checkPaymentReturn(){
 
     const params =
         new URLSearchParams(
             window.location.search
         );
 
-    const payment =
-        params.get("payment");
-
-    const applicationId =
-        params.get("application_id");
-
     if(
-        payment !== "octo" ||
-        !applicationId
+        params.get("payment") !==
+        "octo"
     ){
         return;
     }
 
+    let applicationId =
+        params.get(
+            "application_id"
+        );
+
+    if(!applicationId){
+
+        applicationId =
+            localStorage.getItem(
+                "awb_application_id"
+            );
+    }
+
+    if(!applicationId){
+        return;
+    }
+
+    showModal(
+        "Payment status",
+        `
+        <p>
+            Checking your payment...
+        </p>
+        `
+    );
+
     try{
 
-        showFormMessage(
-            "Checking payment status...",
-            "success"
-        );
+        const response =
+            await fetch(
+                `/api/payments/octo/status/${encodeURIComponent(applicationId)}`,
+                {
+                    cache:"no-store"
+                }
+            );
 
         const result =
-            await apiFetch(
-                `/api/payments/octo/status/${encodeURIComponent(
-                    applicationId
-                )}`
-            );
-
-        const status = String(
-            result?.payment_status ||
-            result?.status ||
-            result?.octo_status ||
-            ""
-        ).toLowerCase();
+            await response.json();
 
         if(
-            [
-                "paid",
-                "success",
-                "succeeded",
-                "completed"
-            ].includes(status)
+            response.ok &&
+            result.payment_status ===
+                "paid"
         ){
 
-            showFormMessage(
-                "Payment successful. Your brand application has been received.",
-                "success"
+            showModal(
+                "Payment successful",
+                `
+                <p>
+                    Your payment has been confirmed.
+                </p>
+
+                <p style="
+                    margin-top:10px;
+                    color:#ffd400;
+                    font-weight:800;
+                ">
+                    Your brand application has been received.
+                </p>
+                `
             );
 
-            applicationForm.reset();
-
-        }else if(
-            [
-                "failed",
-                "cancelled",
-                "canceled",
-                "rejected"
-            ].includes(status)
-        ){
-
-            showFormMessage(
-                "Payment was not completed.",
-                "error"
+            localStorage.removeItem(
+                "awb_application_id"
             );
 
-        }else{
+            $("applicationForm")
+                .reset();
 
-            showFormMessage(
-                "Payment is still being processed. Please check again shortly.",
-                "success"
-            );
+            return;
         }
 
-    }catch(error){
+        if(
+            result.payment_status ===
+            "failed"
+        ){
 
-        console.error(
-            "OCTO status error:",
-            error
+            showModal(
+                "Payment failed",
+                `
+                <p>
+                    The payment was not confirmed.
+                    You can try again.
+                </p>
+                `
+            );
+
+            return;
+        }
+
+        showModal(
+            "Payment pending",
+            `
+            <p>
+                The payment is not confirmed yet.
+            </p>
+
+            <p style="
+                margin-top:10px;
+                color:#9da8ba;
+            ">
+                If you completed the payment,
+                please wait a little and refresh.
+            </p>
+            `
         );
-
-        showFormMessage(
-            "We could not confirm the payment status yet.",
-            "error"
-        );
-    }
-
-    /*
-     * Clean URL without reloading.
-     */
-
-    try{
-
-        const cleanUrl =
-            window.location.pathname;
-
-        window.history.replaceState(
-            {},
-            document.title,
-            cleanUrl
-        );
-
-    }catch{}
-}
-
-/* =========================
-   HEALTH CHECK
-========================= */
-
-async function checkServer(){
-
-    try{
-
-        await apiFetch(
-            "/api/health"
-        );
-
-        return true;
 
     }catch(error){
 
-        console.warn(
-            "Server health check failed:",
-            error
-        );
+        console.error(error);
 
-        return false;
+        showModal(
+            "Payment status",
+            `
+            <p>
+                We could not check the payment status right now.
+            </p>
+            `
+        );
     }
 }
 
-/* =========================
-   INIT
-========================= */
+async function initialize(){
 
-async function init(){
+    await Promise.all([
+        loadSiteConfig(),
+        loadCountries()
+    ]);
 
-    createRain();
-
-    await checkServer();
-
-    await loadCountries();
-
-    await loadBrands();
-
-    await checkOctoReturn();
+    await checkPaymentReturn();
 }
 
-init();
-
+initialize();
 </script>
 
 </body>
