@@ -23,9 +23,9 @@
 
 <style>
 
-/* =========================
+/* =====================================================
    RESET
-========================= */
+===================================================== */
 
 *{
     box-sizing:border-box;
@@ -39,12 +39,13 @@ html{
 
 body{
     min-height:100vh;
+
     font-family:
         Arial,
         Helvetica,
         sans-serif;
 
-    color:#ffffff;
+    color:#fff;
 
     background:
         radial-gradient(
@@ -67,12 +68,13 @@ body{
     overflow-x:hidden;
 }
 
-/* =========================
+/* =====================================================
    GLOBAL BACKGROUND
-========================= */
+===================================================== */
 
 body::before{
     content:"";
+
     position:fixed;
     inset:0;
 
@@ -86,11 +88,13 @@ body::before{
     opacity:.16;
 
     pointer-events:none;
+
     z-index:-5;
 }
 
 body::after{
     content:"";
+
     position:fixed;
     inset:0;
 
@@ -103,12 +107,13 @@ body::after{
         );
 
     pointer-events:none;
+
     z-index:-4;
 }
 
-/* =========================
+/* =====================================================
    RAIN
-========================= */
+===================================================== */
 
 #rainFX{
     position:fixed;
@@ -134,7 +139,8 @@ body::after{
             transparent
         );
 
-    animation:rainFall linear infinite;
+    animation:
+        rainFall linear infinite;
 }
 
 @keyframes rainFall{
@@ -149,9 +155,9 @@ body::after{
 
 }
 
-/* =========================
-   GLOBE BACKGROUND
-========================= */
+/* =====================================================
+   GLOBE
+===================================================== */
 
 .globe-bg{
     position:fixed;
@@ -168,7 +174,8 @@ body::after{
     border-radius:50%;
 
     border:
-        1px solid rgba(0,180,255,.10);
+        1px solid
+        rgba(0,180,255,.10);
 
     box-shadow:
         0 0 100px rgba(0,150,255,.06),
@@ -188,7 +195,8 @@ body::after{
     inset:8%;
 
     border:
-        1px solid rgba(0,180,255,.07);
+        1px solid
+        rgba(0,180,255,.07);
 
     border-radius:50%;
 }
@@ -197,9 +205,9 @@ body::after{
     transform:rotate(90deg);
 }
 
-/* =========================
+/* =====================================================
    HEADER
-========================= */
+===================================================== */
 
 header{
     position:sticky;
@@ -223,14 +231,17 @@ header{
         blur(18px);
 
     border-bottom:
-        1px solid rgba(255,255,255,.08);
+        1px solid
+        rgba(255,255,255,.08);
 
     box-shadow:
-        0 8px 35px rgba(0,0,0,.25);
+        0 8px 35px
+        rgba(0,0,0,.25);
 }
 
 .header-inner{
     width:100%;
+
     max-width:1800px;
 
     margin:auto;
@@ -242,14 +253,14 @@ header{
     gap:20px;
 }
 
-/* =========================
+/* =====================================================
    LOGO
-========================= */
+===================================================== */
 
 .logo{
     flex-shrink:0;
 
-    color:#ffffff;
+    color:#fff;
 
     text-decoration:none;
 
@@ -262,12 +273,13 @@ header{
     white-space:nowrap;
 
     text-shadow:
-        0 0 20px rgba(0,180,255,.25);
+        0 0 20px
+        rgba(0,180,255,.25);
 }
 
-/* =========================
-   HEADER SEARCH
-========================= */
+/* =====================================================
+   SEARCH
+===================================================== */
 
 .header-search{
     flex:1;
@@ -288,11 +300,12 @@ header{
     border-radius:14px;
 
     border:
-        1px solid rgba(255,255,255,.12);
+        1px solid
+        rgba(255,255,255,.12);
 
     outline:none;
 
-    color:#ffffff;
+    color:#fff;
 
     background:
         rgba(255,255,255,.055);
@@ -303,7 +316,8 @@ header{
 }
 
 .header-search input::placeholder{
-    color:rgba(255,255,255,.48);
+    color:
+        rgba(255,255,255,.48);
 }
 
 .header-search input:focus{
@@ -318,21 +332,20 @@ header{
         rgba(0,180,255,.08);
 }
 
-/* =========================
+/* =====================================================
    MAIN
-========================= */
+===================================================== */
 
 main{
     width:100%;
 }
 
-/* =========================
+/* =====================================================
    HERO
-========================= */
+===================================================== */
 
 .hero{
-    min-height:
-        360px;
+    min-height:360px;
 
     display:flex;
 
@@ -360,25 +373,20 @@ main{
 
     font-weight:1000;
 
-    letter-spacing:
-        -2px;
+    letter-spacing:-2px;
 
-    text-transform:
-        uppercase;
+    text-transform:uppercase;
 
     background:
         linear-gradient(
             90deg,
-            #ffffff,
+            #fff,
             #63d9ff,
-            #ffffff
+            #fff
         );
 
-    -webkit-background-clip:
-        text;
-
-    background-clip:
-        text;
+    -webkit-background-clip:text;
+    background-clip:text;
 
     color:transparent;
 
@@ -405,17 +413,16 @@ main{
     line-height:1.6;
 }
 
-/* =========================
+/* =====================================================
    SECTION
-========================= */
+===================================================== */
 
 .section{
     width:100%;
 
     max-width:1900px;
 
-    margin:
-        0 auto;
+    margin:0 auto;
 
     padding:
         20px 20px 70px;
@@ -451,12 +458,12 @@ main{
     font-size:13px;
 }
 
-/* =========================
+/* =====================================================
    COUNTRIES GRID
-========================= */
+   DESKTOP = 15
+===================================================== */
 
 .countries-grid{
-
     width:100%;
 
     display:grid;
@@ -470,12 +477,11 @@ main{
     gap:12px;
 }
 
-/* =========================
+/* =====================================================
    COUNTRY CARD
-========================= */
+===================================================== */
 
 .country-card{
-
     position:relative;
 
     aspect-ratio:16 / 9;
@@ -501,19 +507,16 @@ main{
         rgba(255,255,255,.10);
 
     background:
-
         radial-gradient(
             circle at 15% 10%,
             rgba(0,190,255,.24),
             transparent 38%
         ),
-
         radial-gradient(
             circle at 90% 90%,
             rgba(110,70,255,.20),
             transparent 42%
         ),
-
         linear-gradient(
             135deg,
             #0a1830,
@@ -535,7 +538,6 @@ main{
 }
 
 .country-card::before{
-
     content:"";
 
     position:absolute;
@@ -543,7 +545,6 @@ main{
     inset:0;
 
     background:
-
         linear-gradient(
             135deg,
             rgba(255,255,255,.07),
@@ -555,7 +556,6 @@ main{
 }
 
 .country-card::after{
-
     content:"";
 
     position:absolute;
@@ -577,7 +577,6 @@ main{
 }
 
 .country-card:hover{
-
     transform:
         translateY(-4px)
         scale(1.025);
@@ -594,7 +593,6 @@ main{
 }
 
 .country-content{
-
     position:relative;
 
     z-index:2;
@@ -605,11 +603,9 @@ main{
 }
 
 .country-code{
-
     display:inline-flex;
 
     align-items:center;
-
     justify-content:center;
 
     margin-bottom:6px;
@@ -633,7 +629,6 @@ main{
 }
 
 .country-name{
-
     display:block;
 
     width:100%;
@@ -653,19 +648,18 @@ main{
 
     font-weight:800;
 
-    color:#ffffff;
+    color:#fff;
 
     text-shadow:
         0 2px 8px
         rgba(0,0,0,.55);
 }
 
-/* =========================
-   LOADING
-========================= */
+/* =====================================================
+   LOADING / EMPTY
+===================================================== */
 
 .loading{
-
     grid-column:
         1 / -1;
 
@@ -677,12 +671,122 @@ main{
         rgba(255,255,255,.5);
 }
 
-/* =========================
+.empty{
+    grid-column:
+        1 / -1;
+
+    padding:50px 20px;
+
+    text-align:center;
+
+    color:
+        rgba(255,255,255,.45);
+}
+
+/* =====================================================
+   SEARCH RESULTS
+===================================================== */
+
+.search-results{
+    display:none;
+
+    margin-top:20px;
+}
+
+.search-results.active{
+    display:block;
+}
+
+.search-results-title{
+    margin-bottom:15px;
+
+    color:
+        rgba(255,255,255,.55);
+
+    font-size:14px;
+}
+
+.search-result-card{
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    padding:16px;
+
+    margin-bottom:10px;
+
+    border-radius:15px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+    background:
+        rgba(255,255,255,.035);
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.search-result-card:hover{
+    border-color:
+        rgba(0,190,255,.35);
+
+    background:
+        rgba(0,150,255,.07);
+
+    transform:
+        translateY(-2px);
+}
+
+.search-result-icon{
+    width:46px;
+    height:46px;
+
+    flex:0 0 46px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border-radius:12px;
+
+    background:
+        rgba(0,160,255,.10);
+
+    border:
+        1px solid
+        rgba(0,190,255,.15);
+
+    font-size:20px;
+}
+
+.search-result-info{
+    min-width:0;
+}
+
+.search-result-info h3{
+    font-size:16px;
+
+    margin-bottom:4px;
+}
+
+.search-result-info p{
+    color:
+        rgba(255,255,255,.48);
+
+    font-size:13px;
+}
+
+/* =====================================================
    PROMO
-========================= */
+===================================================== */
 
 .promo{
-
     max-width:1100px;
 
     margin:
@@ -696,7 +800,6 @@ main{
     text-align:center;
 
     background:
-
         linear-gradient(
             135deg,
             rgba(0,140,255,.13),
@@ -713,7 +816,6 @@ main{
 }
 
 .promo h2{
-
     font-size:
         clamp(
             25px,
@@ -725,7 +827,6 @@ main{
 }
 
 .promo p{
-
     color:
         rgba(255,255,255,.6);
 
@@ -734,8 +835,11 @@ main{
     margin-bottom:25px;
 }
 
-.btn{
+/* =====================================================
+   BUTTON
+===================================================== */
 
+.btn{
     border:0;
 
     outline:none;
@@ -751,7 +855,7 @@ main{
 
     font-weight:800;
 
-    color:#ffffff;
+    color:#fff;
 
     background:
         linear-gradient(
@@ -768,7 +872,6 @@ main{
 }
 
 .btn:hover{
-
     transform:
         translateY(-2px);
 
@@ -777,12 +880,19 @@ main{
         rgba(0,120,255,.30);
 }
 
-/* =========================
+.btn:disabled{
+    opacity:.6;
+
+    cursor:not-allowed;
+
+    transform:none;
+}
+
+/* =====================================================
    FOOTER
-========================= */
+===================================================== */
 
 footer{
-
     width:100%;
 
     padding:
@@ -797,7 +907,6 @@ footer{
 }
 
 .footer-inner{
-
     max-width:1200px;
 
     margin:auto;
@@ -811,7 +920,6 @@ footer{
 }
 
 .footer-box{
-
     padding:20px;
 
     border-radius:16px;
@@ -825,14 +933,12 @@ footer{
 }
 
 .footer-box h3{
-
     margin-bottom:12px;
 
     font-size:16px;
 }
 
 .footer-box p{
-
     color:
         rgba(255,255,255,.55);
 
@@ -842,7 +948,6 @@ footer{
 }
 
 .contact-value{
-
     display:block;
 
     margin-top:7px;
@@ -850,24 +955,20 @@ footer{
     color:
         rgba(255,255,255,.75);
 
-    word-break:
-        break-word;
+    word-break:break-word;
 }
 
 .contact-link{
-
     color:#63d9ff;
 
     text-decoration:none;
 }
 
 .contact-link:hover{
-
     text-decoration:underline;
 }
 
 .copyright{
-
     max-width:1200px;
 
     margin:
@@ -887,12 +988,11 @@ footer{
     font-size:12px;
 }
 
-/* =========================
-   MODALS
-========================= */
+/* =====================================================
+   MODAL
+===================================================== */
 
 .modal{
-
     position:fixed;
 
     inset:0;
@@ -918,12 +1018,10 @@ footer{
 }
 
 .modal.active{
-
     display:flex;
 }
 
 .modal-box{
-
     width:100%;
 
     max-width:620px;
@@ -954,7 +1052,6 @@ footer{
 }
 
 .modal-header{
-
     display:flex;
 
     align-items:center;
@@ -967,12 +1064,10 @@ footer{
 }
 
 .modal-header h2{
-
     font-size:25px;
 }
 
 .close-btn{
-
     width:36px;
     height:36px;
 
@@ -982,7 +1077,7 @@ footer{
 
     cursor:pointer;
 
-    color:#ffffff;
+    color:#fff;
 
     background:
         rgba(255,255,255,.07);
@@ -990,17 +1085,15 @@ footer{
     font-size:20px;
 }
 
-/* =========================
+/* =====================================================
    FORM
-========================= */
+===================================================== */
 
 .form-group{
-
     margin-bottom:16px;
 }
 
 .form-group label{
-
     display:block;
 
     margin-bottom:7px;
@@ -1014,10 +1107,10 @@ footer{
 .form-group input,
 .form-group textarea,
 .form-group select{
-
     width:100%;
 
-    border:1px solid
+    border:
+        1px solid
         rgba(255,255,255,.12);
 
     outline:none;
@@ -1027,7 +1120,7 @@ footer{
     padding:
         12px 13px;
 
-    color:#ffffff;
+    color:#fff;
 
     background:
         rgba(255,255,255,.05);
@@ -1036,14 +1129,12 @@ footer{
 }
 
 .form-group select option{
+    color:#000;
 
-    color:#000000;
-
-    background:#ffffff;
+    background:#fff;
 }
 
 .form-group textarea{
-
     min-height:110px;
 
     resize:vertical;
@@ -1052,7 +1143,6 @@ footer{
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus{
-
     border-color:
         rgba(0,190,255,.55);
 
@@ -1062,7 +1152,6 @@ footer{
 }
 
 .form-actions{
-
     display:flex;
 
     justify-content:flex-end;
@@ -1072,19 +1161,17 @@ footer{
     margin-top:20px;
 }
 
-/* =========================
+/* =====================================================
    BRANDS
-========================= */
+===================================================== */
 
 .brand-list{
-
     display:grid;
 
     gap:12px;
 }
 
 .brand-card{
-
     padding:16px;
 
     border-radius:15px;
@@ -1098,14 +1185,12 @@ footer{
 }
 
 .brand-card h3{
-
     margin-bottom:7px;
 
     font-size:17px;
 }
 
 .brand-card p{
-
     color:
         rgba(255,255,255,.55);
 
@@ -1115,7 +1200,6 @@ footer{
 }
 
 .brand-card a{
-
     display:inline-block;
 
     margin-top:9px;
@@ -1127,12 +1211,11 @@ footer{
     font-size:13px;
 }
 
-/* =========================
+/* =====================================================
    CHECKOUT
-========================= */
+===================================================== */
 
 .checkout-info{
-
     padding:18px;
 
     margin-bottom:18px;
@@ -1148,7 +1231,6 @@ footer{
 }
 
 .checkout-price{
-
     margin-top:8px;
 
     font-size:30px;
@@ -1158,19 +1240,35 @@ footer{
     color:#63d9ff;
 }
 
-/* =========================
+.payment-status{
+    margin-top:15px;
+
+    padding:12px;
+
+    border-radius:10px;
+
+    font-size:13px;
+
+    line-height:1.5;
+
+    color:
+        rgba(255,255,255,.60);
+
+    background:
+        rgba(255,255,255,.035);
+}
+
+/* =====================================================
    SUCCESS
-========================= */
+===================================================== */
 
 .success{
-
     text-align:center;
 
     padding:15px 5px;
 }
 
 .success-icon{
-
     width:70px;
     height:70px;
 
@@ -1196,45 +1294,28 @@ footer{
 }
 
 .success h2{
-
     margin-bottom:10px;
 }
 
 .success p{
-
     color:
         rgba(255,255,255,.55);
 
     line-height:1.6;
 }
 
-/* =========================
-   EMPTY
-========================= */
-
-.empty{
-
-    grid-column:
-        1 / -1;
-
-    padding:50px 20px;
-
-    text-align:center;
-
-    color:
-        rgba(255,255,255,.45);
-}
-
-/* =========================
-   DESKTOP/TABLET
-========================= */
+/* =====================================================
+   RESPONSIVE
+===================================================== */
 
 @media(max-width:1600px){
 
     .countries-grid{
-
         grid-template-columns:
-            repeat(12,minmax(0,1fr));
+            repeat(
+                12,
+                minmax(0,1fr)
+            );
     }
 
 }
@@ -1242,9 +1323,11 @@ footer{
 @media(max-width:1300px){
 
     .countries-grid{
-
         grid-template-columns:
-            repeat(10,minmax(0,1fr));
+            repeat(
+                10,
+                minmax(0,1fr)
+            );
     }
 
 }
@@ -1252,50 +1335,47 @@ footer{
 @media(max-width:1050px){
 
     .countries-grid{
-
         grid-template-columns:
-            repeat(8,minmax(0,1fr));
+            repeat(
+                8,
+                minmax(0,1fr)
+            );
     }
 
     .footer-inner{
-
         grid-template-columns:
             1fr 1fr;
     }
 
 }
 
-/* =========================
+/* =====================================================
    MOBILE
-========================= */
+   5 COUNTRIES PER ROW
+===================================================== */
 
 @media(max-width:800px){
 
     header{
-
         padding:
             10px 12px;
     }
 
     .header-inner{
-
         gap:10px;
     }
 
     .logo{
-
         font-size:15px;
 
         letter-spacing:.8px;
     }
 
     .header-search{
-
         max-width:none;
     }
 
     .header-search input{
-
         height:42px;
 
         padding:
@@ -1305,41 +1385,36 @@ footer{
     }
 
     .hero{
-
-        min-height:
-            280px;
+        min-height:280px;
 
         padding:
             50px 15px 40px;
     }
 
     .hero h1{
-
-        letter-spacing:
-            -1px;
+        letter-spacing:-1px;
     }
 
     .section{
-
         padding:
             15px 10px 50px;
     }
 
     .section-title{
-
         margin-bottom:18px;
     }
 
     .countries-grid{
-
         grid-template-columns:
-            repeat(5,minmax(0,1fr));
+            repeat(
+                5,
+                minmax(0,1fr)
+            );
 
         gap:7px;
     }
 
     .country-card{
-
         aspect-ratio:
             1 / 1;
 
@@ -1349,7 +1424,6 @@ footer{
     }
 
     .country-code{
-
         font-size:7px;
 
         padding:
@@ -1359,7 +1433,6 @@ footer{
     }
 
     .country-name{
-
         font-size:
             clamp(
                 7px,
@@ -1369,7 +1442,6 @@ footer{
     }
 
     .promo{
-
         margin:
             0 10px 55px;
 
@@ -1380,18 +1452,15 @@ footer{
     }
 
     .footer-inner{
-
         grid-template-columns:
             1fr;
     }
 
     .modal{
-
         padding:10px;
     }
 
     .modal-box{
-
         padding:20px;
 
         border-radius:18px;
@@ -1399,49 +1468,43 @@ footer{
 
 }
 
-/* =========================
+/* =====================================================
    VERY SMALL PHONES
-========================= */
+===================================================== */
 
 @media(max-width:380px){
 
     .logo{
-
         font-size:13px;
     }
 
     .header-search input{
-
         font-size:12px;
     }
 
     .countries-grid{
-
         gap:5px;
     }
 
     .country-card{
-
         padding:5px;
 
         border-radius:8px;
     }
 
     .country-name{
-
         font-size:7px;
     }
 
 }
 
-/* =========================
+/* =====================================================
    REDUCED MOTION
-========================= */
+===================================================== */
 
 @media(prefers-reduced-motion:reduce){
 
     *{
-
         animation-duration:
             .01ms !important;
 
@@ -1462,18 +1525,18 @@ footer{
 
 <body>
 
-<!-- =========================
+<!-- =====================================================
      BACKGROUND
-========================= -->
+===================================================== -->
 
 <div class="globe-bg"></div>
 
 <div id="rainFX"></div>
 
 
-<!-- =========================
+<!-- =====================================================
      HEADER
-========================= -->
+===================================================== -->
 
 <header>
 
@@ -1493,6 +1556,7 @@ footer{
                 type="search"
                 placeholder="Search countries or brands..."
                 autocomplete="off"
+                aria-label="Search countries or brands"
             >
 
         </div>
@@ -1502,9 +1566,9 @@ footer{
 </header>
 
 
-<!-- =========================
+<!-- =====================================================
      MAIN
-========================= -->
+===================================================== -->
 
 <main>
 
@@ -1524,7 +1588,9 @@ footer{
     </section>
 
 
-    <!-- COUNTRIES -->
+    <!-- =================================================
+         COUNTRIES
+    ================================================== -->
 
     <section class="section">
 
@@ -1540,11 +1606,6 @@ footer{
 
         </div>
 
-        <!--
-            Pastdagi alohida Country Search
-            olib tashlandi.
-            Faqat headerdagi qidiruv ishlaydi.
-        -->
 
         <div
             id="countriesGrid"
@@ -1557,12 +1618,31 @@ footer{
 
         </div>
 
+
+        <!-- SEARCH RESULTS -->
+
+        <div
+            id="searchResults"
+            class="search-results"
+        >
+
+            <div
+                id="searchResultsTitle"
+                class="search-results-title"
+            ></div>
+
+            <div
+                id="searchResultsList"
+            ></div>
+
+        </div>
+
     </section>
 
 
-    <!-- =========================
-         ADD BRAND PROMO
-    ========================= -->
+    <!-- =================================================
+         ADD BRAND
+    ================================================== -->
 
     <section class="promo">
 
@@ -1589,9 +1669,9 @@ footer{
 </main>
 
 
-<!-- =========================
+<!-- =====================================================
      FOOTER
-========================= -->
+===================================================== -->
 
 <footer>
 
@@ -1618,10 +1698,7 @@ footer{
                 Contact
             </h3>
 
-            <!--
-                Telefon ataylab tel: qilinmadi.
-                Bosilganda qo'ng'iroq qilmaydi.
-            -->
+            <!-- Phone intentionally NOT tel: -->
 
             <span class="contact-value">
                 +998 93 384 31 12
@@ -1670,13 +1747,14 @@ footer{
 </footer>
 
 
-<!-- =========================
+<!-- =====================================================
      COUNTRY MODAL
-========================= -->
+===================================================== -->
 
 <div
     id="countryModal"
     class="modal"
+    aria-hidden="true"
 >
 
     <div class="modal-box">
@@ -1691,6 +1769,7 @@ footer{
                 class="close-btn"
                 type="button"
                 onclick="closeModal('countryModal')"
+                aria-label="Close"
             >
                 ×
             </button>
@@ -1709,13 +1788,14 @@ footer{
 </div>
 
 
-<!-- =========================
+<!-- =====================================================
      ADD BRAND MODAL
-========================= -->
+===================================================== -->
 
 <div
     id="addBrandModal"
     class="modal"
+    aria-hidden="true"
 >
 
     <div class="modal-box">
@@ -1730,6 +1810,7 @@ footer{
                 class="close-btn"
                 type="button"
                 onclick="closeModal('addBrandModal')"
+                aria-label="Close"
             >
                 ×
             </button>
@@ -1737,7 +1818,10 @@ footer{
         </div>
 
 
-        <form id="brandForm">
+        <form
+            id="brandForm"
+            novalidate
+        >
 
             <div class="form-group">
 
@@ -1910,13 +1994,14 @@ footer{
 </div>
 
 
-<!-- =========================
+<!-- =====================================================
      CHECKOUT MODAL
-========================= -->
+===================================================== -->
 
 <div
     id="checkoutModal"
     class="modal"
+    aria-hidden="true"
 >
 
     <div class="modal-box">
@@ -1931,6 +2016,7 @@ footer{
                 class="close-btn"
                 type="button"
                 onclick="closeModal('checkoutModal')"
+                aria-label="Close"
             >
                 ×
             </button>
@@ -1944,7 +2030,10 @@ footer{
                 Brand listing
             </div>
 
-            <div class="checkout-price">
+            <div
+                id="checkoutPrice"
+                class="checkout-price"
+            >
                 $1
             </div>
 
@@ -1959,8 +2048,17 @@ footer{
                 margin-bottom:20px;
             "
         >
-            Payment gateway will be connected here.
+            Secure payment will open through the payment provider.
         </p>
+
+
+        <div
+            id="paymentStatus"
+            class="payment-status"
+        >
+            Your application will be created first.
+            After that you will be redirected to secure payment.
+        </div>
 
 
         <div class="form-actions">
@@ -1974,9 +2072,10 @@ footer{
             </button>
 
             <button
+                id="payButton"
                 class="btn"
                 type="button"
-                onclick="startGooglePay()"
+                onclick="startPayment()"
             >
                 Pay $1
             </button>
@@ -1988,13 +2087,14 @@ footer{
 </div>
 
 
-<!-- =========================
+<!-- =====================================================
      SUCCESS MODAL
-========================= -->
+===================================================== -->
 
 <div
     id="successModal"
     class="modal"
+    aria-hidden="true"
 >
 
     <div class="modal-box">
@@ -2006,13 +2106,14 @@ footer{
             </div>
 
             <h2>
-                Application Received
+                Payment Received
             </h2>
 
             <p>
+                Your payment has been confirmed.
                 Your brand application has been
-                received successfully. Our team
-                will review it.
+                received and will be reviewed by
+                our team.
             </p>
 
             <div style="margin-top:22px;">
@@ -2034,34 +2135,81 @@ footer{
 </div>
 
 
+<!-- =====================================================
+     PAYMENT PENDING MODAL
+===================================================== -->
+
+<div
+    id="pendingModal"
+    class="modal"
+    aria-hidden="true"
+>
+
+    <div class="modal-box">
+
+        <div class="success">
+
+            <div class="success-icon">
+                !
+            </div>
+
+            <h2>
+                Payment Pending
+            </h2>
+
+            <p>
+                Your application was received,
+                but the payment is still being
+                confirmed.
+            </p>
+
+            <div style="margin-top:22px;">
+
+                <button
+                    class="btn"
+                    type="button"
+                    onclick="closeModal('pendingModal')"
+                >
+                    Close
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
 <script>
 
 /* =====================================================
    ALL WORLD BRANDS
-   MAIN JAVASCRIPT
+   FRONTEND JAVASCRIPT
 ===================================================== */
 
 "use strict";
 
 
-/* =========================
+/* =====================================================
    HELPERS
-========================= */
+===================================================== */
 
 const $ = (selector) =>
     document.querySelector(selector);
 
 
-const escapeHtml = (value) => {
+function escapeHtml(value){
 
     return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
 
-};
+}
 
 
 function isSafeUrl(value){
@@ -2131,18 +2279,18 @@ async function apiFetch(
 }
 
 
-/* =========================
+/* =====================================================
    STATE
-========================= */
+===================================================== */
 
 let allCountries = [];
 
 let currentApplication = null;
 
 
-/* =========================
+/* =====================================================
    LOAD COUNTRIES
-========================= */
+===================================================== */
 
 async function loadCountries(){
 
@@ -2155,9 +2303,11 @@ async function loadCountries(){
     try{
 
         grid.innerHTML =
-            `<div class="loading">
+            `
+            <div class="loading">
                 Loading countries...
-             </div>`;
+            </div>
+            `;
 
         const data =
             await apiFetch(
@@ -2190,10 +2340,12 @@ async function loadCountries(){
         );
 
         grid.innerHTML =
-            `<div class="empty">
+            `
+            <div class="empty">
                 Failed to load countries.
                 Please try again later.
-             </div>`;
+            </div>
+            `;
 
         count.textContent =
             "Error";
@@ -2203,9 +2355,9 @@ async function loadCountries(){
 }
 
 
-/* =========================
+/* =====================================================
    RENDER COUNTRIES
-========================= */
+===================================================== */
 
 function renderCountries(
     countries
@@ -2223,9 +2375,11 @@ function renderCountries(
     if(!countries.length){
 
         grid.innerHTML =
-            `<div class="empty">
+            `
+            <div class="empty">
                 No countries found.
-             </div>`;
+            </div>
+            `;
 
         return;
 
@@ -2233,63 +2387,66 @@ function renderCountries(
 
     grid.innerHTML =
         countries
-            .map(country => {
+            .map(
+                country => {
 
-                const id =
-                    Number(country.id);
+                    const id =
+                        Number(country.id);
 
-                const name =
-                    escapeHtml(
-                        country.name
-                    );
+                    const name =
+                        escapeHtml(
+                            country.name
+                        );
 
-                const code =
-                    escapeHtml(
-                        country.code || ""
-                    );
+                    const code =
+                        escapeHtml(
+                            country.code || ""
+                        );
 
-                return `
+                    return `
+                        <article
+                            class="country-card"
+                            data-country-id="${id}"
+                            data-country-name="${escapeHtml(
+                                String(country.name || "")
+                                    .toLowerCase()
+                            )}"
+                            onclick="openCountry(${id})"
+                        >
 
-                    <article
-                        class="country-card"
-                        data-country-id="${id}"
-                        data-country-name="${name.toLowerCase()}"
-                        onclick="openCountry(${id})"
-                    >
+                            <div class="country-content">
 
-                        <div class="country-content">
+                                ${
+                                    code
+                                    ?
+                                    `
+                                    <span class="country-code">
+                                        ${code}
+                                    </span>
+                                    `
+                                    :
+                                    ""
+                                }
 
-                            ${
-                                code
-                                ?
-                                `
-                                <span class="country-code">
-                                    ${code}
+                                <span class="country-name">
+                                    ${name}
                                 </span>
-                                `
-                                :
-                                ""
-                            }
 
-                            <span class="country-name">
-                                ${name}
-                            </span>
+                            </div>
 
-                        </div>
+                        </article>
+                    `;
 
-                    </article>
-
-                `;
-
-            })
+                }
+            )
             .join("");
 
 }
 
 
-/* =========================
+/* =====================================================
    COUNTRY SELECT
-========================= */
+===================================================== */
 
 function fillCountrySelect(
     countries
@@ -2336,64 +2493,283 @@ function fillCountrySelect(
 }
 
 
-/* =========================
-   HEADER SEARCH
-========================= */
+/* =====================================================
+   SEARCH
+===================================================== */
 
-function filterCountries(){
+let searchTimer = null;
 
-    const input =
-        $("#headerSearch");
 
-    if(!input){
+async function performSearch(
+    query
+){
+
+    const results =
+        $("#searchResults");
+
+    const title =
+        $("#searchResultsTitle");
+
+    const list =
+        $("#searchResultsList");
+
+    if(!results){
         return;
     }
 
-    const query =
-        input.value
-            .trim()
-            .toLowerCase();
+    query =
+        String(query || "")
+            .trim();
 
     if(!query){
 
-        renderCountries(
-            allCountries
+        results.classList.remove(
+            "active"
         );
+
+        list.innerHTML = "";
 
         return;
 
     }
 
-    const filtered =
+    /*
+        Country search is handled locally.
+    */
+
+    const countryMatches =
         allCountries.filter(
             country => {
 
                 const name =
                     String(
                         country.name || ""
-                    )
-                    .toLowerCase();
+                    ).toLowerCase();
 
                 const code =
                     String(
                         country.code || ""
-                    )
-                    .toLowerCase();
+                    ).toLowerCase();
+
+                const q =
+                    query.toLowerCase();
 
                 return (
-                    name.includes(query) ||
-                    code.includes(query)
+                    name.includes(q) ||
+                    code.includes(q)
                 );
 
             }
         );
 
-    renderCountries(
-        filtered
-    );
+
+    try{
+
+        const data =
+            await apiFetch(
+                `/api/search?q=${encodeURIComponent(query)}`
+            );
+
+        const brandResults =
+            Array.isArray(data?.results)
+                ? data.results
+                : [];
+
+
+        renderSearchResults(
+            countryMatches,
+            brandResults,
+            query
+        );
+
+    }catch(error){
+
+        console.error(
+            "Search error:",
+            error
+        );
+
+        renderSearchResults(
+            countryMatches,
+            [],
+            query
+        );
+
+    }
 
 }
 
+
+function renderSearchResults(
+    countryMatches,
+    brandResults,
+    query
+){
+
+    const results =
+        $("#searchResults");
+
+    const title =
+        $("#searchResultsTitle");
+
+    const list =
+        $("#searchResultsList");
+
+    if(!results){
+        return;
+    }
+
+    const total =
+        countryMatches.length +
+        brandResults.length;
+
+    results.classList.add(
+        "active"
+    );
+
+    title.textContent =
+        `${total} result${total === 1 ? "" : "s"} for "${query}"`;
+
+
+    if(!total){
+
+        list.innerHTML =
+            `
+            <div class="empty">
+                No countries or brands found.
+            </div>
+            `;
+
+        return;
+
+    }
+
+
+    let html = "";
+
+
+    countryMatches
+        .slice(0,20)
+        .forEach(
+            country => {
+
+                const id =
+                    Number(country.id);
+
+                html += `
+                    <div
+                        class="search-result-card"
+                        onclick="openCountry(${id})"
+                    >
+
+                        <div class="search-result-icon">
+                            🌍
+                        </div>
+
+                        <div class="search-result-info">
+
+                            <h3>
+                                ${escapeHtml(country.name)}
+                            </h3>
+
+                            <p>
+                                Country
+                                ${
+                                    country.code
+                                    ?
+                                    `• ${escapeHtml(country.code)}`
+                                    :
+                                    ""
+                                }
+                            </p>
+
+                        </div>
+
+                    </div>
+                `;
+
+            }
+        );
+
+
+    brandResults
+        .slice(0,30)
+        .forEach(
+            brand => {
+
+                const brandId =
+                    Number(brand.id);
+
+                const name =
+                    escapeHtml(
+                        brand.name
+                    );
+
+                const country =
+                    escapeHtml(
+                        brand.country_name ||
+                        brand.country ||
+                        ""
+                    );
+
+                const category =
+                    escapeHtml(
+                        brand.category || ""
+                    );
+
+                html += `
+                    <div
+                        class="search-result-card"
+                        onclick="openBrand(${brandId})"
+                    >
+
+                        <div class="search-result-icon">
+                            🏷️
+                        </div>
+
+                        <div class="search-result-info">
+
+                            <h3>
+                                ${name}
+                            </h3>
+
+                            <p>
+                                Brand
+                                ${
+                                    country
+                                    ?
+                                    ` • ${country}`
+                                    :
+                                    ""
+                                }
+
+                                ${
+                                    category
+                                    ?
+                                    ` • ${category}`
+                                    :
+                                    ""
+                                }
+                            </p>
+
+                        </div>
+
+                    </div>
+                `;
+
+            }
+        );
+
+
+    list.innerHTML =
+        html;
+
+}
+
+
+/* =====================================================
+   HEADER SEARCH
+===================================================== */
 
 const headerSearch =
     $("#headerSearch");
@@ -2402,15 +2778,55 @@ if(headerSearch){
 
     headerSearch.addEventListener(
         "input",
-        filterCountries
+        function(){
+
+            const query =
+                this.value.trim();
+
+            clearTimeout(
+                searchTimer
+            );
+
+            if(!query){
+
+                $("#searchResults")
+                    ?.classList
+                    .remove("active");
+
+                renderCountries(
+                    allCountries
+                );
+
+                return;
+
+            }
+
+            /*
+                Keep country grid visible
+                while search is active.
+            */
+
+            searchTimer =
+                setTimeout(
+                    () => {
+
+                        performSearch(
+                            query
+                        );
+
+                    },
+                    250
+                );
+
+        }
     );
 
 }
 
 
-/* =========================
+/* =====================================================
    OPEN COUNTRY
-========================= */
+===================================================== */
 
 async function openCountry(
     countryId
@@ -2433,10 +2849,17 @@ async function openCountry(
         "active"
     );
 
+    modal.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
     brands.innerHTML =
-        `<div class="loading">
+        `
+        <div class="loading">
             Loading brands...
-         </div>`;
+        </div>
+        `;
 
     try{
 
@@ -2461,18 +2884,215 @@ async function openCountry(
         );
 
         brands.innerHTML =
-            `<div class="empty">
+            `
+            <div class="empty">
                 Failed to load brands.
-             </div>`;
+            </div>
+            `;
 
     }
 
 }
 
 
-/* =========================
+/* =====================================================
+   OPEN BRAND
+===================================================== */
+
+async function openBrand(
+    brandId
+){
+
+    try{
+
+        const data =
+            await apiFetch(
+                `/api/brands/${encodeURIComponent(brandId)}`
+            );
+
+        const brand =
+            data?.brand || data;
+
+        if(!brand){
+            throw new Error(
+                "Brand not found"
+            );
+        }
+
+        const modal =
+            $("#countryModal");
+
+        const title =
+            $("#countryModalTitle");
+
+        const brands =
+            $("#countryBrands");
+
+        title.textContent =
+            brand.name || "Brand";
+
+        let html = "";
+
+
+        const countryName =
+            brand.country_name ||
+            brand.country ||
+            "";
+
+
+        html += `
+            <div class="brand-card">
+
+                <h3>
+                    ${escapeHtml(brand.name)}
+                </h3>
+
+                ${
+                    countryName
+                    ?
+                    `
+                    <p>
+                        Country:
+                        ${escapeHtml(countryName)}
+                    </p>
+                    `
+                    :
+                    ""
+                }
+
+                ${
+                    brand.category
+                    ?
+                    `
+                    <p style="margin-top:6px;">
+                        ${escapeHtml(brand.category)}
+                    </p>
+                    `
+                    :
+                    ""
+                }
+
+                ${
+                    brand.description
+                    ?
+                    `
+                    <p style="margin-top:8px;">
+                        ${escapeHtml(brand.description)}
+                    </p>
+                    `
+                    :
+                    ""
+                }
+
+                ${
+                    brand.website &&
+                    isSafeUrl(brand.website)
+                    ?
+                    `
+                    <a
+                        href="${escapeHtml(brand.website)}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Visit website
+                    </a>
+                    `
+                    :
+                    ""
+                }
+
+            </div>
+        `;
+
+
+        if(
+            Array.isArray(brand.factories) &&
+            brand.factories.length
+        ){
+
+            html += `
+                <div
+                    style="
+                        margin-top:12px;
+                        color:rgba(255,255,255,.55);
+                        font-size:13px;
+                    "
+                >
+                    Factories
+                </div>
+            `;
+
+
+            brand.factories.forEach(
+                factory => {
+
+                    html += `
+                        <div class="brand-card">
+
+                            <h3>
+                                ${escapeHtml(factory.name || "Factory")}
+                            </h3>
+
+                            ${
+                                factory.city
+                                ?
+                                `
+                                <p>
+                                    ${escapeHtml(factory.city)}
+                                </p>
+                                `
+                                :
+                                ""
+                            }
+
+                            ${
+                                factory.address
+                                ?
+                                `
+                                <p style="margin-top:5px;">
+                                    ${escapeHtml(factory.address)}
+                                </p>
+                                `
+                                :
+                                ""
+                            }
+
+                        </div>
+                    `;
+
+                }
+            );
+
+        }
+
+
+        brands.innerHTML =
+            html;
+
+        modal.classList.add(
+            "active"
+        );
+
+        modal.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+    }catch(error){
+
+        console.error(
+            "Brand error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =====================================================
    RENDER BRANDS
-========================= */
+===================================================== */
 
 function renderBrandCards(
     brands
@@ -2484,10 +3104,12 @@ function renderBrandCards(
     if(!brands.length){
 
         container.innerHTML =
-            `<div class="empty">
+            `
+            <div class="empty">
                 No brands have been added
                 for this country yet.
-             </div>`;
+            </div>
+            `;
 
         return;
 
@@ -2495,96 +3117,96 @@ function renderBrandCards(
 
     container.innerHTML =
         brands
-            .map(brand => {
+            .map(
+                brand => {
 
-                const name =
-                    escapeHtml(
-                        brand.name
-                    );
+                    const name =
+                        escapeHtml(
+                            brand.name
+                        );
 
-                const category =
-                    escapeHtml(
-                        brand.category || ""
-                    );
+                    const category =
+                        escapeHtml(
+                            brand.category || ""
+                        );
 
-                const description =
-                    escapeHtml(
-                        brand.description || ""
-                    );
+                    const description =
+                        escapeHtml(
+                            brand.description || ""
+                        );
 
-                const website =
-                    String(
-                        brand.website || ""
-                    ).trim();
+                    const website =
+                        String(
+                            brand.website || ""
+                        ).trim();
 
-                let websiteHtml =
-                    "";
+                    let websiteHtml =
+                        "";
 
-                if(
-                    website &&
-                    isSafeUrl(website)
-                ){
+                    if(
+                        website &&
+                        isSafeUrl(website)
+                    ){
 
-                    websiteHtml =
-                        `
-                        <a
-                            href="${escapeHtml(website)}"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            Visit website
-                        </a>
-                        `;
+                        websiteHtml =
+                            `
+                            <a
+                                href="${escapeHtml(website)}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Visit website
+                            </a>
+                            `;
+
+                    }
+
+                    return `
+                        <div class="brand-card">
+
+                            <h3>
+                                ${name}
+                            </h3>
+
+                            ${
+                                category
+                                ?
+                                `
+                                <p>
+                                    ${category}
+                                </p>
+                                `
+                                :
+                                ""
+                            }
+
+                            ${
+                                description
+                                ?
+                                `
+                                <p style="margin-top:6px;">
+                                    ${description}
+                                </p>
+                                `
+                                :
+                                ""
+                            }
+
+                            ${websiteHtml}
+
+                        </div>
+                    `;
 
                 }
-
-                return `
-
-                    <div class="brand-card">
-
-                        <h3>
-                            ${name}
-                        </h3>
-
-                        ${
-                            category
-                            ?
-                            `
-                            <p>
-                                ${category}
-                            </p>
-                            `
-                            :
-                            ""
-                        }
-
-                        ${
-                            description
-                            ?
-                            `
-                            <p style="margin-top:6px;">
-                                ${description}
-                            </p>
-                            `
-                            :
-                            ""
-                        }
-
-                        ${websiteHtml}
-
-                    </div>
-
-                `;
-
-            })
+            )
             .join("");
 
 }
 
 
-/* =========================
+/* =====================================================
    ADD BRAND
-========================= */
+===================================================== */
 
 function openAddBrand(){
 
@@ -2599,6 +3221,11 @@ function openAddBrand(){
         "active"
     );
 
+    modal.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
 }
 
 
@@ -2608,9 +3235,7 @@ function resetBrandForm(){
         $("#brandForm");
 
     if(form){
-
         form.reset();
-
     }
 
 }
@@ -2629,14 +3254,19 @@ function closeModal(
             "active"
         );
 
+        modal.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
     }
 
 }
 
 
-/* =========================
+/* =====================================================
    BRAND FORM
-========================= */
+===================================================== */
 
 const brandForm =
     $("#brandForm");
@@ -2645,7 +3275,7 @@ if(brandForm){
 
     brandForm.addEventListener(
         "submit",
-        function(event){
+        async function(event){
 
             event.preventDefault();
 
@@ -2807,45 +3437,56 @@ if(brandForm){
 }
 
 
-/* =========================
-   CHECKOUT
-========================= */
+/* =====================================================
+   OPEN CHECKOUT
+===================================================== */
 
 function openCheckout(){
 
     const modal =
         $("#checkoutModal");
 
+    const message =
+        $("#checkoutMessage");
+
+    const status =
+        $("#paymentStatus");
+
     if(!modal){
         return;
+    }
+
+    if(message){
+
+        message.textContent =
+            "Your application will be created and then you will be redirected to the secure OCTO payment page.";
+
+    }
+
+    if(status){
+
+        status.textContent =
+            "Payment amount: $1.00. Secure payment is handled by the payment provider.";
+
     }
 
     modal.classList.add(
         "active"
     );
 
+    modal.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
 }
 
 
-async function startGooglePay(){
+/* =====================================================
+   CREATE APPLICATION + OCTO PAYMENT
+===================================================== */
 
-    /*
-        MUHIM:
-
-        Hozircha haqiqiy Google Pay
-        gateway ulanmagan.
-
-        Shuning uchun frontend
-        payment_status = "paid"
-        yubormaydi.
-
-        Serverga faqat application
-        pending holatda yuboriladi.
-
-        Keyinchalik haqiqiy payment
-        provider webhook/API orqali
-        serverda tekshiriladi.
-    */
+async function startPayment(){
 
     if(!currentApplication){
 
@@ -2857,23 +3498,51 @@ async function startGooglePay(){
 
     }
 
+
     const button =
-        document.querySelector(
-            "#checkoutModal .form-actions .btn:last-child"
-        );
+        $("#payButton");
+
+    const message =
+        $("#checkoutMessage");
+
+    const status =
+        $("#paymentStatus");
+
 
     if(button){
 
-        button.disabled = true;
+        button.disabled =
+            true;
 
         button.textContent =
             "Processing...";
 
     }
 
+
+    if(message){
+
+        message.textContent =
+            "Creating your application...";
+
+    }
+
+
     try{
 
-        const response =
+        /*
+            IMPORTANT:
+
+            Frontend DOES NOT send:
+
+            payment_status = paid
+            amount = 1
+
+            The server decides the real
+            payment amount and payment status.
+        */
+
+        const applicationResponse =
             await apiFetch(
                 "/api/applications",
                 {
@@ -2892,37 +3561,145 @@ async function startGooglePay(){
             );
 
 
-        closeModal(
-            "checkoutModal"
-        );
+        const applicationId =
+            Number(
+                applicationResponse?.application_id ||
+                applicationResponse?.id ||
+                applicationResponse?.application?.id
+            );
 
 
-        openSuccess();
+        if(
+            !Number.isInteger(applicationId) ||
+            applicationId <= 0
+        ){
+
+            throw new Error(
+                "Application ID was not returned by the server."
+            );
+
+        }
 
 
-        console.log(
-            "Application created:",
-            response
-        );
+        if(message){
+
+            message.textContent =
+                "Opening secure payment page...";
+
+        }
 
 
-        currentApplication =
-            null;
+        /*
+            Create the real OCTO payment
+            on the SERVER.
+        */
 
-        resetBrandForm();
+        const paymentResponse =
+            await apiFetch(
+                "/api/payments/octo/create",
+                {
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            application_id:
+                                applicationId
+                        })
+                }
+            );
+
+
+        const paymentUrl =
+            String(
+                paymentResponse?.payment_url ||
+                paymentResponse?.data?.octo_pay_url ||
+                ""
+            ).trim();
+
+
+        if(!paymentUrl){
+
+            throw new Error(
+                "Payment URL was not returned by the payment server."
+            );
+
+        }
+
+
+        if(
+            !isSafeUrl(paymentUrl)
+        ){
+
+            throw new Error(
+                "Invalid payment URL."
+            );
+
+        }
+
+
+        /*
+            Save ID locally so that after
+            returning from OCTO we can check
+            the payment status.
+        */
+
+        try{
+
+            sessionStorage.setItem(
+                "awb_application_id",
+                String(applicationId)
+            );
+
+        }catch{
+
+            /* ignore storage errors */
+
+        }
+
+
+        /*
+            Redirect to OCTO.
+        */
+
+        window.location.href =
+            paymentUrl;
 
 
     }catch(error){
 
         console.error(
-            "Application error:",
+            "Payment error:",
             error
         );
 
+
+        if(message){
+
+            message.textContent =
+                "Payment could not be started.";
+
+        }
+
+
+        if(status){
+
+            status.textContent =
+                error.message ||
+                "Could not start payment. Please try again.";
+
+        }
+
+
         alert(
             error.message ||
-            "Could not submit application."
+            "Could not start payment."
         );
+
 
     }finally{
 
@@ -2941,19 +3718,185 @@ async function startGooglePay(){
 }
 
 
-/* =========================
-   SUCCESS
-========================= */
+/*
+    Keep the old function name too,
+    so nothing breaks if another element
+    still calls startGooglePay().
+*/
 
-function openSuccess(){
+async function startGooglePay(){
 
-    const modal =
-        $("#successModal");
+    return startPayment();
 
-    if(modal){
+}
 
-        modal.classList.add(
+
+/* =====================================================
+   CHECK PAYMENT STATUS
+===================================================== */
+
+async function checkPaymentStatus(
+    applicationId
+){
+
+    if(
+        !applicationId ||
+        !Number.isInteger(
+            Number(applicationId)
+        )
+    ){
+
+        return null;
+
+    }
+
+
+    try{
+
+        const data =
+            await apiFetch(
+                `/api/payments/octo/status/${encodeURIComponent(applicationId)}`
+            );
+
+        return data;
+
+    }catch(error){
+
+        console.error(
+            "Payment status error:",
+            error
+        );
+
+        return null;
+
+    }
+
+}
+
+
+/* =====================================================
+   HANDLE OCTO RETURN
+===================================================== */
+
+async function handlePaymentReturn(){
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+    const payment =
+        params.get(
+            "payment"
+        );
+
+    const applicationId =
+        Number(
+            params.get(
+                "application_id"
+            )
+        );
+
+
+    if(
+        payment !== "octo" ||
+        !Number.isInteger(applicationId) ||
+        applicationId <= 0
+    ){
+
+        return;
+
+    }
+
+
+    /*
+        Clean the URL immediately.
+    */
+
+    try{
+
+        const cleanUrl =
+            window.location.pathname;
+
+        window.history.replaceState(
+            {},
+            document.title,
+            cleanUrl
+        );
+
+    }catch{
+
+        /* ignore */
+
+    }
+
+
+    /*
+        Ask the server for the actual
+        payment status.
+
+        We DO NOT trust the URL
+        or frontend payment status.
+    */
+
+    const result =
+        await checkPaymentStatus(
+            applicationId
+        );
+
+
+    const status =
+        String(
+            result?.payment_status ||
+            result?.status ||
+            "pending"
+        ).toLowerCase();
+
+
+    if(
+        status === "paid" ||
+        status === "success" ||
+        status === "succeeded"
+    ){
+
+        openSuccess();
+
+        return;
+
+    }
+
+
+    if(
+        status === "cancelled" ||
+        status === "canceled" ||
+        status === "failed"
+    ){
+
+        alert(
+            "Payment was not completed."
+        );
+
+        return;
+
+    }
+
+
+    /*
+        pending / unknown
+    */
+
+    const pendingModal =
+        $("#pendingModal");
+
+    if(pendingModal){
+
+        pendingModal.classList.add(
             "active"
+        );
+
+        pendingModal.setAttribute(
+            "aria-hidden",
+            "false"
         );
 
     }
@@ -2961,9 +3904,9 @@ function openSuccess(){
 }
 
 
-/* =========================
-   CLOSE MODAL ON BACKGROUND
-========================= */
+/* =====================================================
+   CLOSE MODALS ON BACKGROUND
+===================================================== */
 
 document
     .querySelectorAll(".modal")
@@ -2982,6 +3925,11 @@ document
                             "active"
                         );
 
+                        modal.setAttribute(
+                            "aria-hidden",
+                            "true"
+                        );
+
                     }
 
                 }
@@ -2991,9 +3939,9 @@ document
     );
 
 
-/* =========================
+/* =====================================================
    ESC KEY
-========================= */
+===================================================== */
 
 document.addEventListener(
     "keydown",
@@ -3014,6 +3962,11 @@ document.addEventListener(
                             "active"
                         );
 
+                        modal.setAttribute(
+                            "aria-hidden",
+                            "true"
+                        );
+
                     }
                 );
 
@@ -3023,9 +3976,9 @@ document.addEventListener(
 );
 
 
-/* =========================
+/* =====================================================
    RAIN EFFECT
-========================= */
+===================================================== */
 
 function createRain(){
 
@@ -3061,12 +4014,15 @@ function createRain(){
             Math.random() * 100 + "%";
 
         line.style.animationDuration =
-            (1.8 + Math.random() * 3.5)
-            + "s";
+            (
+                1.8 +
+                Math.random() * 3.5
+            ) + "s";
 
         line.style.animationDelay =
-            (Math.random() * 4)
-            + "s";
+            (
+                Math.random() * 4
+            ) + "s";
 
         line.style.opacity =
             (
@@ -3083,25 +4039,33 @@ function createRain(){
 }
 
 
-/* =========================
+/* =====================================================
    START
-========================= */
+===================================================== */
 
 document.addEventListener(
     "DOMContentLoaded",
-    function(){
+    async function(){
 
         createRain();
 
-        loadCountries();
+        await loadCountries();
+
+        /*
+            If the user has returned from
+            OCTO payment, verify the real
+            server-side payment status.
+        */
+
+        await handlePaymentReturn();
 
     }
 );
 
 
-/* =========================
+/* =====================================================
    RESIZE RAIN
-========================= */
+===================================================== */
 
 window.addEventListener(
     "resize",
