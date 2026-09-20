@@ -133,12 +133,9 @@ header{
     position:sticky;
     top:0;
     z-index:1000;
-    background:
-        rgba(2,7,19,.90);
+    background:rgba(2,7,19,.90);
     backdrop-filter:blur(18px);
-    border-bottom:
-        1px solid
-        rgba(255,255,255,.08);
+    border-bottom:1px solid rgba(255,255,255,.08);
 }
 
 .header-inner{
@@ -150,8 +147,7 @@ header{
 }
 
 .logo{
-    font-size:
-        clamp(18px,2vw,28px);
+    font-size:clamp(18px,2vw,28px);
     font-weight:900;
     letter-spacing:1.5px;
     white-space:nowrap;
@@ -170,35 +166,24 @@ header{
 .price-badge{
     padding:10px 16px;
     border-radius:999px;
-
     background:
         linear-gradient(
             135deg,
             #ff304f,
             #b9002d
         );
-
     color:#fff;
-
     font-weight:900;
-
     box-shadow:
         0 8px 30px
         rgba(220,0,50,.22);
 }
 
 .contact-btn{
-    border:
-        1px solid
-        rgba(255,255,255,.16);
-
-    background:
-        rgba(255,255,255,.05);
-
+    border:1px solid rgba(255,255,255,.16);
+    background:rgba(255,255,255,.05);
     color:#fff;
-
     border-radius:999px;
-
     padding:10px 15px;
 }
 
@@ -212,9 +197,7 @@ header{
 }
 
 .hero h1{
-    font-size:
-        clamp(32px,5vw,76px);
-
+    font-size:clamp(32px,5vw,76px);
     line-height:1;
     font-weight:1000;
     letter-spacing:-2px;
@@ -227,11 +210,8 @@ header{
 .hero p{
     max-width:900px;
     margin:18px auto 0;
-
     color:#b9c3d5;
-
-    font-size:
-        clamp(15px,2vw,20px);
+    font-size:clamp(15px,2vw,20px);
 }
 
 .tagline{
@@ -252,24 +232,13 @@ header{
 .search-box{
     width:100%;
     min-height:58px;
-
     border-radius:18px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.15);
-
-    background:
-        rgba(3,12,30,.78);
-
+    border:1px solid rgba(255,255,255,.15);
+    background:rgba(3,12,30,.78);
     color:#fff;
-
     outline:none;
-
     padding:0 20px;
-
     font-size:18px;
-
     box-shadow:
         0 15px 50px
         rgba(0,0,0,.25);
@@ -281,7 +250,6 @@ header{
 
 .search-box:focus{
     border-color:#ff304f;
-
     box-shadow:
         0 0 0 3px
         rgba(255,48,79,.12);
@@ -289,11 +257,8 @@ header{
 
 .search-message{
     min-height:24px;
-
     text-align:center;
-
     margin-top:10px;
-
     color:#9da8ba;
 }
 
@@ -307,8 +272,7 @@ header{
 }
 
 .section-title h2{
-    font-size:
-        clamp(24px,3vw,42px);
+    font-size:clamp(24px,3vw,42px);
 }
 
 .section-title p{
@@ -322,88 +286,63 @@ header{
 
 .countries-grid{
     display:grid;
-
     grid-template-columns:
         repeat(15,minmax(0,1fr));
-
     gap:10px;
 }
 
 .country-card{
     position:relative;
-
     min-width:0;
-
     aspect-ratio:16/9;
-
     overflow:hidden;
-
     border-radius:12px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.14);
-
+    border:1px solid rgba(255,255,255,.14);
     background:
         linear-gradient(
             135deg,
             #071b45,
             #6d071f
         );
-
     box-shadow:
         0 8px 25px
         rgba(0,0,0,.25);
-
     transition:
         transform .2s ease,
         border-color .2s ease,
         box-shadow .2s ease;
-
     padding:0;
 }
 
 .country-card::before{
     content:"";
-
     position:absolute;
-
     inset:0;
-
     background:
         linear-gradient(
             135deg,
             rgba(10,50,120,.95),
             rgba(170,0,45,.92)
         );
-
     z-index:0;
 }
 
 .country-card::after{
     content:"";
-
     position:absolute;
-
     inset:0;
-
     background:
         linear-gradient(
             to top,
             rgba(0,0,0,.72),
             rgba(0,0,0,.05) 70%
         );
-
     z-index:1;
 }
 
 .country-card:hover{
-    transform:
-        translateY(-4px);
-
-    border-color:
-        #ff304f;
-
+    transform:translateY(-4px);
+    border-color:#ff304f;
     box-shadow:
         0 15px 35px
         rgba(0,0,0,.40);
@@ -411,19 +350,13 @@ header{
 
 .country-flag{
     position:absolute;
-
     left:8px;
     bottom:8px;
-
     width:34%;
     height:45%;
-
     object-fit:contain;
-
     object-position:center;
-
     z-index:3;
-
     filter:
         drop-shadow(
             0 4px 8px
@@ -433,29 +366,17 @@ header{
 
 .country-name{
     position:absolute;
-
     left:8px;
     right:8px;
     top:8px;
-
     z-index:3;
-
-    font-size:
-        clamp(10px,1vw,18px);
-
+    font-size:clamp(10px,1vw,18px);
     line-height:1.1;
-
     font-weight:900;
-
     text-shadow:
         0 2px 5px
         rgba(0,0,0,.80);
 }
-
-/*
-   IMPORTANT:
-   Country card brand count is intentionally removed.
-*/
 
 /* =========================
    BRANDS
@@ -463,47 +384,31 @@ header{
 
 .view-bar{
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
-
     gap:15px;
-
     margin:20px 0;
 }
 
 .country-brand-count{
     margin-top:8px;
-
     color:#ff304f;
-
     font-size:15px;
-
     font-weight:800;
 }
 
 .back-btn{
-    border:
-        1px solid
-        rgba(255,255,255,.16);
-
-    background:
-        rgba(255,255,255,.06);
-
+    border:1px solid rgba(255,255,255,.16);
+    background:rgba(255,255,255,.06);
     color:#fff;
-
     border-radius:12px;
-
     padding:10px 15px;
 }
 
 .brand-grid{
     display:grid;
-
     grid-template-columns:
         repeat(5,minmax(0,1fr));
-
     gap:15px;
 }
 
@@ -514,40 +419,26 @@ header{
             rgba(255,255,255,.08),
             rgba(255,255,255,.025)
         );
-
-    border:
-        1px solid
-        rgba(255,255,255,.10);
-
+    border:1px solid rgba(255,255,255,.10);
     border-radius:18px;
-
     padding:20px;
-
     min-height:190px;
-
     transition:.2s ease;
+    cursor:pointer;
 }
 
 .brand-card:hover{
-    transform:
-        translateY(-4px);
-
-    border-color:
-        #ff304f;
+    transform:translateY(-4px);
+    border-color:#ff304f;
 }
 
 .brand-logo{
     width:75px;
     height:75px;
-
     object-fit:contain;
-
     border-radius:15px;
-
     background:#fff;
-
     padding:7px;
-
     margin-bottom:14px;
 }
 
@@ -558,17 +449,13 @@ header{
 
 .brand-category{
     margin-top:6px;
-
     color:#ff304f;
-
     font-size:13px;
 }
 
 .brand-country{
     margin-top:5px;
-
     color:#9da8ba;
-
     font-size:13px;
 }
 
@@ -578,25 +465,19 @@ header{
 
 .form-section{
     margin:80px auto;
-
     max-width:950px;
 }
 
 .form-card{
     padding:30px;
-
     border-radius:24px;
-
     background:
         linear-gradient(
             145deg,
             rgba(255,255,255,.08),
             rgba(255,255,255,.025)
         );
-
-    border:
-        1px solid
-        rgba(255,255,255,.10);
+    border:1px solid rgba(255,255,255,.10);
 }
 
 .form-card h2{
@@ -605,24 +486,19 @@ header{
 
 .form-card > p{
     color:#9da8ba;
-
     margin:10px 0 25px;
 }
 
 .form-grid{
     display:grid;
-
     grid-template-columns:
         repeat(2,minmax(0,1fr));
-
     gap:15px;
 }
 
 .field{
     display:flex;
-
     flex-direction:column;
-
     gap:7px;
 }
 
@@ -632,9 +508,7 @@ header{
 
 .field label{
     color:#c7cfdd;
-
     font-size:14px;
-
     font-weight:700;
 }
 
@@ -642,25 +516,16 @@ header{
 .field textarea,
 .field select{
     width:100%;
-
-    border:
-        1px solid
-        rgba(255,255,255,.13);
-
+    border:1px solid rgba(255,255,255,.13);
     background:#080f1f;
-
     color:#fff;
-
     border-radius:12px;
-
     padding:13px;
-
     outline:none;
 }
 
 .field textarea{
     min-height:120px;
-
     resize:vertical;
 }
 
@@ -672,17 +537,10 @@ header{
 
 .payment-info{
     grid-column:1/-1;
-
     padding:16px;
-
     border-radius:14px;
-
-    background:
-        rgba(255,48,79,.08);
-
-    border:
-        1px solid
-        rgba(255,48,79,.22);
+    background:rgba(255,48,79,.08);
+    border:1px solid rgba(255,48,79,.22);
 }
 
 .payment-info strong{
@@ -691,40 +549,29 @@ header{
 
 .submit-btn{
     grid-column:1/-1;
-
     border:0;
-
     border-radius:14px;
-
     min-height:54px;
-
     background:
         linear-gradient(
             135deg,
             #ff304f,
             #b9002d
         );
-
     color:#fff;
-
     font-weight:1000;
-
     font-size:17px;
 }
 
 .submit-btn:disabled{
     opacity:.55;
-
     cursor:not-allowed;
 }
 
 .form-message{
     grid-column:1/-1;
-
     min-height:25px;
-
     color:#ff304f;
-
     text-align:center;
 }
 
@@ -734,9 +581,7 @@ header{
 
 .contact-section{
     margin:55px auto 30px;
-
     max-width:850px;
-
     text-align:center;
 }
 
@@ -754,48 +599,43 @@ header{
 
 .contact-grid{
     display:flex;
-
     justify-content:center;
-
     align-items:center;
-
     flex-wrap:wrap;
-
     gap:8px;
-
     margin-top:12px;
 }
 
 .contact-card{
+    display:inline-flex;
+    align-items:center;
     padding:8px 11px;
-
     border-radius:10px;
-
-    background:
-        rgba(255,255,255,.035);
-
-    border:
-        1px solid
-        rgba(255,255,255,.07);
-
+    background:rgba(255,255,255,.035);
+    border:1px solid rgba(255,255,255,.07);
     min-width:auto;
+    transition:
+        background .2s ease,
+        border-color .2s ease,
+        transform .2s ease;
+}
+
+.contact-card:hover{
+    background:rgba(255,48,79,.08);
+    border-color:rgba(255,48,79,.35);
+    transform:translateY(-2px);
 }
 
 .contact-card strong{
     display:inline;
-
     color:#ff304f;
-
     margin-right:5px;
-
     font-size:11px;
 }
 
 .contact-card span{
     color:#c4ccda;
-
     font-size:11px;
-
     word-break:break-word;
 }
 
@@ -810,22 +650,13 @@ header{
 
 .modal{
     position:fixed;
-
     inset:0;
-
     z-index:5000;
-
     display:none;
-
     align-items:center;
-
     justify-content:center;
-
     padding:20px;
-
-    background:
-        rgba(0,0,0,.72);
-
+    background:rgba(0,0,0,.72);
     backdrop-filter:blur(8px);
 }
 
@@ -835,66 +666,43 @@ header{
 
 .modal-box{
     width:min(700px,100%);
-
     max-height:90vh;
-
     overflow:auto;
-
     background:#07101f;
-
-    border:
-        1px solid
-        rgba(255,255,255,.12);
-
+    border:1px solid rgba(255,255,255,.12);
     border-radius:24px;
-
     padding:25px;
-
     position:relative;
 }
 
 .modal-close{
     position:absolute;
-
     right:15px;
     top:12px;
-
     border:0;
-
     background:transparent;
-
     color:#fff;
-
     font-size:30px;
 }
 
 .modal-title{
     padding-right:35px;
-
     font-size:28px;
 }
 
 .modal-content{
     margin-top:18px;
-
     color:#c6cfdd;
-
     line-height:1.6;
 }
 
 .modal-content img{
     max-width:120px;
-
     max-height:120px;
-
     object-fit:contain;
-
     background:#fff;
-
     border-radius:15px;
-
     padding:8px;
-
     margin-bottom:15px;
 }
 
@@ -908,17 +716,10 @@ header{
 
 footer{
     margin-top:45px;
-
     padding:25px 15px;
-
     text-align:center;
-
     color:#778399;
-
-    border-top:
-        1px solid
-        rgba(255,255,255,.07);
-
+    border-top:1px solid rgba(255,255,255,.07);
     font-size:12px;
 }
 
@@ -976,7 +777,6 @@ footer strong{
 
     .price-badge{
         padding:8px 11px;
-
         font-size:13px;
     }
 
@@ -991,7 +791,6 @@ footer strong{
     .countries-grid{
         grid-template-columns:
             repeat(6,minmax(0,1fr));
-
         gap:6px;
     }
 
@@ -1011,13 +810,11 @@ footer strong{
     .brand-grid{
         grid-template-columns:
             repeat(2,minmax(0,1fr));
-
         gap:10px;
     }
 
     .brand-card{
         padding:14px;
-
         min-height:160px;
     }
 
@@ -1060,7 +857,6 @@ footer strong{
 
     .view-bar{
         align-items:flex-start;
-
         flex-direction:column;
     }
 }
@@ -1409,7 +1205,11 @@ footer strong{
 
     <div class="contact-grid">
 
-        <div class="contact-card">
+        <a
+            id="contactPhoneLink"
+            class="contact-card"
+            href="tel:+998933843112"
+        >
 
             <strong>
                 Phone
@@ -1419,9 +1219,15 @@ footer strong{
                 +998 93 384 31 12
             </span>
 
-        </div>
+        </a>
 
-        <div class="contact-card">
+        <a
+            id="contactWhatsappLink"
+            class="contact-card"
+            href="https://wa.me/998933843112"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
 
             <strong>
                 WhatsApp
@@ -1431,9 +1237,15 @@ footer strong{
                 +998 93 384 31 12
             </span>
 
-        </div>
+        </a>
 
-        <div class="contact-card">
+        <a
+            id="contactTelegramLink"
+            class="contact-card"
+            href="https://t.me/allworldbrandsnet"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
 
             <strong>
                 Telegram
@@ -1443,9 +1255,13 @@ footer strong{
                 @allworldbrandsnet
             </span>
 
-        </div>
+        </a>
 
-        <div class="contact-card">
+        <a
+            id="contactEmailLink"
+            class="contact-card"
+            href="mailto:allworldbrandsnet@gmail.com"
+        >
 
             <strong>
                 Email
@@ -1455,7 +1271,7 @@ footer strong{
                 allworldbrandsnet@gmail.com
             </span>
 
-        </div>
+        </a>
 
     </div>
 
@@ -1658,11 +1474,115 @@ function scrollToContact(){
 }
 
 
+function normalizePhone(value){
+
+    return String(value || "")
+        .replace(/[^\d+]/g,"");
+}
+
+
+function whatsappPhone(value){
+
+    return String(value || "")
+        .replace(/\D/g,"");
+}
+
+
+function normalizeTelegram(value){
+
+    return String(value || "")
+        .trim()
+        .replace(/^@/,"")
+        .replace(/^https?:\/\/t\.me\//i,"")
+        .replace(/^t\.me\//i,"")
+        .replace(/\/+$/,"");
+}
+
+
+function updateContactLinks(){
+
+    const phone =
+        $("contactPhone")
+            .textContent
+            .trim() ||
+        "+998 93 384 31 12";
+
+    const whatsapp =
+        $("contactWhatsapp")
+            .textContent
+            .trim() ||
+        phone;
+
+    const telegram =
+        $("contactTelegram")
+            .textContent
+            .trim() ||
+        "@allworldbrandsnet";
+
+    const email =
+        $("contactEmail")
+            .textContent
+            .trim() ||
+        "allworldbrandsnet@gmail.com";
+
+    const phoneNumber =
+        normalizePhone(phone);
+
+    const whatsappNumber =
+        whatsappPhone(
+            whatsapp
+        ) ||
+        whatsappPhone(phone);
+
+    const telegramName =
+        normalizeTelegram(
+            telegram
+        );
+
+    $("contactPhoneLink").href =
+        phoneNumber
+            ? "tel:" + phoneNumber
+            : "#";
+
+    $("contactWhatsappLink").href =
+        whatsappNumber
+            ? "https://wa.me/" +
+              whatsappNumber
+            : "#";
+
+    $("contactTelegramLink").href =
+        telegramName
+            ? "https://t.me/" +
+              telegramName
+            : "#";
+
+    $("contactEmailLink").href =
+        email
+            ? "mailto:" +
+              email
+            : "#";
+}
+
+
 /* =========================
    SITE CONFIG
 ========================= */
 
 async function loadSiteConfig(){
+
+    const defaultContact = {
+        email:
+            "allworldbrandsnet@gmail.com",
+
+        phone:
+            "+998 93 384 31 12",
+
+        whatsapp:
+            "+998 93 384 31 12",
+
+        telegram:
+            "@allworldbrandsnet"
+    };
 
     try{
 
@@ -1675,7 +1595,9 @@ async function loadSiteConfig(){
             );
 
         if(!response.ok){
-            return;
+            throw new Error(
+                "Site config request failed"
+            );
         }
 
         siteConfig =
@@ -1701,30 +1623,33 @@ async function loadSiteConfig(){
         const contact =
             siteConfig.contact || {};
 
+        /*
+           Approved contact details are used
+           whenever the server does not provide
+           a value.
+        */
+
         $("contactEmail")
             .textContent =
             contact.email ||
-            "allworldbrandsnet@gmail.com";
+            defaultContact.email;
 
         $("contactPhone")
             .textContent =
             contact.phone ||
-            "+998 93 384 31 12";
+            defaultContact.phone;
 
         $("contactWhatsapp")
             .textContent =
             contact.whatsapp ||
-            "+998 93 384 31 12";
+            defaultContact.whatsapp;
 
-        if(
-            contact.telegram
-        ){
+        $("contactTelegram")
+            .textContent =
+            contact.telegram ||
+            defaultContact.telegram;
 
-            $("contactTelegram")
-                .textContent =
-                contact.telegram;
-
-        }
+        updateContactLinks();
 
     }catch(error){
 
@@ -1733,6 +1658,35 @@ async function loadSiteConfig(){
             error
         );
 
+        $("headerPrice")
+            .textContent =
+            "$1";
+
+        $("formPrice")
+            .textContent =
+            "$1";
+
+        $("tagline")
+            .textContent =
+            "Bring your brand to the world.";
+
+        $("contactEmail")
+            .textContent =
+            defaultContact.email;
+
+        $("contactPhone")
+            .textContent =
+            defaultContact.phone;
+
+        $("contactWhatsapp")
+            .textContent =
+            defaultContact.whatsapp;
+
+        $("contactTelegram")
+            .textContent =
+            defaultContact.telegram;
+
+        updateContactLinks();
     }
 }
 
@@ -1762,6 +1716,12 @@ async function loadCountries(){
 
         countries =
             await response.json();
+
+        if(!Array.isArray(countries)){
+            throw new Error(
+                "Invalid countries response"
+            );
+        }
 
         renderCountries();
 
@@ -1855,12 +1815,6 @@ function renderCountries(){
             country.name;
 
         card.appendChild(name);
-
-        /*
-           IMPORTANT:
-           Brand count is NOT shown
-           on country cards.
-        */
 
         card.addEventListener(
             "click",
@@ -2029,7 +1983,7 @@ function renderBrands(brands){
 
     grid.innerHTML = "";
 
-    if(!brands.length){
+    if(!Array.isArray(brands) || !brands.length){
 
         grid.innerHTML =
             `
@@ -2134,6 +2088,12 @@ function returnToCountries(){
     $("selectedCountryCount")
         .textContent =
         "0 brands";
+
+    $("searchInput")
+        .value = "";
+
+    $("searchMessage")
+        .textContent = "";
 
     $("countriesSection")
         .scrollIntoView({
@@ -2349,6 +2309,14 @@ $("searchInput")
                     .textContent =
                     "";
 
+                $("brandsSection")
+                    .style.display =
+                    "none";
+
+                $("countriesSection")
+                    .style.display =
+                    "block";
+
                 return;
             }
 
@@ -2371,11 +2339,6 @@ async function searchBrands(query){
             .textContent =
             "Searching...";
 
-        /*
-           The server endpoint must search
-           ONLY brands.name.
-        */
-
         const response =
             await fetch(
                 `/api/search?q=${encodeURIComponent(query)}`,
@@ -2393,6 +2356,13 @@ async function searchBrands(query){
 
         const results =
             await response.json();
+
+        if(!Array.isArray(results)){
+
+            throw new Error(
+                "Invalid search response"
+            );
+        }
 
         if(!results.length){
 
@@ -2428,11 +2398,6 @@ async function searchBrands(query){
 ========================= */
 
 function renderSearchResults(results){
-
-    const grid =
-        $("brandsGrid");
-
-    grid.innerHTML = "";
 
     $("countriesSection")
         .style.display =
@@ -2769,6 +2734,8 @@ async function initialize(){
         loadSiteConfig(),
         loadCountries()
     ]);
+
+    updateContactLinks();
 
     await checkPaymentReturn();
 }
