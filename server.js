@@ -1,6 +1,5 @@
 const express = require("express");
 const path = require("path");
-const fs = require("fs");
 const crypto = require("crypto");
 const helmet = require("helmet");
 const morgan = require("morgan");
@@ -19,60 +18,67 @@ const DB_FILE =
     process.env.DB_FILE ||
     path.join(__dirname, "allworldbrands.db");
 
+/* =========================================================
+   OCTO PAYMENT
+========================================================= */
+
 const OCTO_SHOP_ID =
-    process.env.OCTO_SHOP_ID ||
-    "43051";
+    process.env.OCTO_SHOP_ID || "43051";
 
 const OCTO_SECRET =
-    process.env.OCTO_SECRET ||
-    "";
+    process.env.OCTO_SECRET || "";
 
 const OCTO_UNIQUE_KEY =
-    process.env.OCTO_UNIQUE_KEY ||
-    "";
+    process.env.OCTO_UNIQUE_KEY || "";
 
 const OCTO_TEST =
-    String(process.env.OCTO_TEST || "false").toLowerCase() === "true";
+    String(process.env.OCTO_TEST || "false")
+        .toLowerCase() === "true";
 
 const OCTO_LANGUAGE =
-    process.env.OCTO_LANGUAGE ||
-    "en";
+    process.env.OCTO_LANGUAGE || "en";
 
 const BRAND_APPLICATION_AMOUNT =
     Number(process.env.BRAND_APPLICATION_AMOUNT || 1);
 
 const BRAND_APPLICATION_CURRENCY =
-    String(process.env.BRAND_APPLICATION_CURRENCY || "USD").toUpperCase();
+    String(
+        process.env.BRAND_APPLICATION_CURRENCY || "USD"
+    ).toUpperCase();
+
+const OCTO_TTL_MINUTES = 15;
+
+/* =========================================================
+   SITE
+========================================================= */
 
 const SITE_NAME =
     process.env.SITE_NAME ||
     "ALL WORLD BRANDS";
 
-const CONTACT_EMAIL =
-    process.env.CONTACT_EMAIL ||
-    "contact@allworldbrands.net";
-
-const CONTACT_PHONE =
-    process.env.CONTACT_PHONE ||
-    "";
-
-const CONTACT_WHATSAPP =
-    process.env.CONTACT_WHATSAPP ||
-    "";
-
-const CONTACT_ADDRESS =
-    process.env.CONTACT_ADDRESS ||
-    "";
-
-const CONTACT_HOURS =
-    process.env.CONTACT_HOURS ||
-    "";
-
 const SITE_TAGLINE =
     process.env.SITE_TAGLINE ||
     "Bring your brand to the world.";
 
-const OCTO_TTL_MINUTES = 15;
+const CONTACT_EMAIL =
+    process.env.CONTACT_EMAIL ||
+    "allworldbrandsnet@gmail.com";
+
+const CONTACT_PHONE =
+    process.env.CONTACT_PHONE ||
+    "+998 93 384 31 12";
+
+const CONTACT_WHATSAPP =
+    process.env.CONTACT_WHATSAPP ||
+    "+998 93 384 31 12";
+
+const CONTACT_TELEGRAM =
+    process.env.CONTACT_TELEGRAM ||
+    "@allworldbrandsnet";
+
+/* =========================================================
+   DATABASE
+========================================================= */
 
 const appDb = new sqlite3.Database(DB_FILE);
 
@@ -100,6 +106,10 @@ app.use(
 );
 
 appDb.run("PRAGMA foreign_keys = ON");
+
+/* =========================================================
+   DATABASE HELPERS
+========================================================= */
 
 function dbRun(sql, params = []) {
     return new Promise((resolve, reject) => {
@@ -164,6 +174,10 @@ async function addColumnIfMissing(
     }
 }
 
+/* =========================================================
+   GENERAL HELPERS
+========================================================= */
+
 function normalizeText(value, max = 1000) {
     return String(value || "")
         .trim()
@@ -221,6 +235,10 @@ function isSafeUrl(value) {
     }
 }
 
+/* =========================================================
+   CONTENT MODERATION
+========================================================= */
+
 function normalizeForModeration(value) {
     return String(value || "")
         .normalize("NFKC")
@@ -257,6 +275,10 @@ function isBlockedContent(...values) {
         containsAdultContent(value)
     );
 }
+
+/* =========================================================
+   PAYMENT HELPERS
+========================================================= */
 
 function formatPaymentDisplay(
     amount,
@@ -319,7 +341,10 @@ function octoStatusUrl() {
     return "https://secure.octo.uz/prepare_payment";
 }
 
-function makeOctoSignature(uuid, status) {
+function makeOctoSignature(
+    uuid,
+    status
+) {
     return crypto
         .createHash("sha1")
         .update(
@@ -376,7 +401,8 @@ async function octoRequest(payload) {
         }
     );
 
-    const text = await response.text();
+    const text =
+        await response.text();
 
     let json;
 
@@ -409,8 +435,12 @@ async function getOctoPaymentStatus(
     }
 
     const payload = {
-        octo_shop_id: OCTO_SHOP_ID,
-        octo_secret: OCTO_SECRET,
+        octo_shop_id:
+            OCTO_SHOP_ID,
+
+        octo_secret:
+            OCTO_SECRET,
+
         shop_transaction_id:
             String(transactionId)
     };
@@ -427,7 +457,8 @@ async function getOctoPaymentStatus(
         }
     );
 
-    const text = await response.text();
+    const text =
+        await response.text();
 
     let json;
 
@@ -549,6 +580,10 @@ function currentOctoTime() {
     );
 }
 
+/* =========================================================
+   LANGUAGE
+========================================================= */
+
 const COUNTRY_LANGUAGE_MAP = {
     UZ: "uz",
     TR: "tr",
@@ -556,67 +591,146 @@ const COUNTRY_LANGUAGE_MAP = {
     US: "en",
     CA: "en",
     AU: "en",
+    NZ: "en",
+
     DE: "de",
     AT: "de",
     CH: "de",
+
     FR: "fr",
+    BE: "fr",
+
     ES: "es",
     IT: "it",
     PT: "pt",
     BR: "pt",
+
     RU: "ru",
     UA: "uk",
+    BY: "be",
+
     KZ: "kk",
     KG: "ky",
     AZ: "az",
+    GE: "ka",
+    TJ: "tg",
+    TM: "tk",
+
     CN: "zh",
     TW: "zh",
+    HK: "zh",
+
     JP: "ja",
     KR: "ko",
+
     IN: "en",
+
     AE: "ar",
-    SA: "ar"
+    SA: "ar",
+    QA: "ar",
+    KW: "ar",
+    BH: "ar",
+    OM: "ar",
+    JO: "ar",
+    IQ: "ar",
+    EG: "ar",
+    MA: "ar",
+    TN: "ar",
+
+    IR: "fa",
+    IL: "he"
 };
 
+/* =========================================================
+   COUNTRIES + TERRITORIES
+   Project target: 261
+========================================================= */
+
 const COUNTRIES = [
+
     ["Afghanistan", "AF"],
     ["Albania", "AL"],
     ["Algeria", "DZ"],
     ["Andorra", "AD"],
     ["Angola", "AO"],
+    ["Antigua and Barbuda", "AG"],
     ["Argentina", "AR"],
     ["Armenia", "AM"],
     ["Australia", "AU"],
     ["Austria", "AT"],
     ["Azerbaijan", "AZ"],
+
     ["Bahamas", "BS"],
     ["Bahrain", "BH"],
     ["Bangladesh", "BD"],
+    ["Barbados", "BB"],
     ["Belarus", "BY"],
     ["Belgium", "BE"],
+    ["Belize", "BZ"],
+    ["Benin", "BJ"],
+    ["Bhutan", "BT"],
     ["Bolivia", "BO"],
     ["Bosnia and Herzegovina", "BA"],
+    ["Botswana", "BW"],
     ["Brazil", "BR"],
+    ["Brunei", "BN"],
     ["Bulgaria", "BG"],
+    ["Burkina Faso", "BF"],
+    ["Burundi", "BI"],
+
+    ["Cabo Verde", "CV"],
     ["Cambodia", "KH"],
+    ["Cameroon", "CM"],
     ["Canada", "CA"],
+    ["Central African Republic", "CF"],
+    ["Chad", "TD"],
     ["Chile", "CL"],
     ["China", "CN"],
     ["Colombia", "CO"],
+    ["Comoros", "KM"],
+    ["Congo", "CG"],
+    ["Costa Rica", "CR"],
+    ["Côte d'Ivoire", "CI"],
     ["Croatia", "HR"],
+    ["Cuba", "CU"],
     ["Cyprus", "CY"],
-    ["Czech Republic", "CZ"],
+    ["Czechia", "CZ"],
+
+    ["Democratic Republic of the Congo", "CD"],
     ["Denmark", "DK"],
+    ["Djibouti", "DJ"],
+    ["Dominica", "DM"],
+    ["Dominican Republic", "DO"],
+
     ["Ecuador", "EC"],
     ["Egypt", "EG"],
+    ["El Salvador", "SV"],
+    ["Equatorial Guinea", "GQ"],
+    ["Eritrea", "ER"],
     ["Estonia", "EE"],
+    ["Eswatini", "SZ"],
+    ["Ethiopia", "ET"],
+
+    ["Fiji", "FJ"],
     ["Finland", "FI"],
     ["France", "FR"],
+
+    ["Gabon", "GA"],
+    ["Gambia", "GM"],
     ["Georgia", "GE"],
     ["Germany", "DE"],
     ["Ghana", "GH"],
     ["Greece", "GR"],
+    ["Grenada", "GD"],
+    ["Guatemala", "GT"],
+    ["Guinea", "GN"],
+    ["Guinea-Bissau", "GW"],
+    ["Guyana", "GY"],
+
+    ["Haiti", "HT"],
+    ["Honduras", "HN"],
     ["Hungary", "HU"],
+
     ["Iceland", "IS"],
     ["India", "IN"],
     ["Indonesia", "ID"],
@@ -625,71 +739,184 @@ const COUNTRIES = [
     ["Ireland", "IE"],
     ["Israel", "IL"],
     ["Italy", "IT"],
+
+    ["Jamaica", "JM"],
     ["Japan", "JP"],
     ["Jordan", "JO"],
+
     ["Kazakhstan", "KZ"],
     ["Kenya", "KE"],
+    ["Kiribati", "KI"],
     ["Kuwait", "KW"],
     ["Kyrgyzstan", "KG"],
+
+    ["Laos", "LA"],
     ["Latvia", "LV"],
     ["Lebanon", "LB"],
+    ["Lesotho", "LS"],
+    ["Liberia", "LR"],
+    ["Libya", "LY"],
+    ["Liechtenstein", "LI"],
     ["Lithuania", "LT"],
     ["Luxembourg", "LU"],
+
+    ["Madagascar", "MG"],
+    ["Malawi", "MW"],
     ["Malaysia", "MY"],
+    ["Maldives", "MV"],
+    ["Mali", "ML"],
     ["Malta", "MT"],
+    ["Marshall Islands", "MH"],
+    ["Mauritania", "MR"],
+    ["Mauritius", "MU"],
     ["Mexico", "MX"],
+    ["Micronesia", "FM"],
     ["Moldova", "MD"],
     ["Monaco", "MC"],
     ["Mongolia", "MN"],
     ["Montenegro", "ME"],
     ["Morocco", "MA"],
+    ["Mozambique", "MZ"],
+    ["Myanmar", "MM"],
+
+    ["Namibia", "NA"],
+    ["Nauru", "NR"],
     ["Nepal", "NP"],
     ["Netherlands", "NL"],
     ["New Zealand", "NZ"],
+    ["Nicaragua", "NI"],
+    ["Niger", "NE"],
     ["Nigeria", "NG"],
+    ["North Korea", "KP"],
     ["North Macedonia", "MK"],
     ["Norway", "NO"],
+
     ["Oman", "OM"],
+
     ["Pakistan", "PK"],
+    ["Palau", "PW"],
+    ["Palestine", "PS"],
     ["Panama", "PA"],
+    ["Papua New Guinea", "PG"],
+    ["Paraguay", "PY"],
     ["Peru", "PE"],
     ["Philippines", "PH"],
     ["Poland", "PL"],
     ["Portugal", "PT"],
+
     ["Qatar", "QA"],
+
     ["Romania", "RO"],
     ["Russia", "RU"],
+    ["Rwanda", "RW"],
+
+    ["Saint Kitts and Nevis", "KN"],
+    ["Saint Lucia", "LC"],
+    ["Saint Vincent and the Grenadines", "VC"],
+    ["Samoa", "WS"],
+    ["San Marino", "SM"],
+    ["Sao Tome and Principe", "ST"],
     ["Saudi Arabia", "SA"],
+    ["Senegal", "SN"],
     ["Serbia", "RS"],
+    ["Seychelles", "SC"],
+    ["Sierra Leone", "SL"],
     ["Singapore", "SG"],
     ["Slovakia", "SK"],
     ["Slovenia", "SI"],
+    ["Solomon Islands", "SB"],
+    ["Somalia", "SO"],
     ["South Africa", "ZA"],
     ["South Korea", "KR"],
+    ["South Sudan", "SS"],
     ["Spain", "ES"],
     ["Sri Lanka", "LK"],
+    ["Sudan", "SD"],
+    ["Suriname", "SR"],
     ["Sweden", "SE"],
     ["Switzerland", "CH"],
+    ["Syria", "SY"],
+
     ["Taiwan", "TW"],
     ["Tajikistan", "TJ"],
+    ["Tanzania", "TZ"],
     ["Thailand", "TH"],
+    ["Timor-Leste", "TL"],
+    ["Togo", "TG"],
+    ["Tonga", "TO"],
+    ["Trinidad and Tobago", "TT"],
     ["Tunisia", "TN"],
     ["Turkey", "TR"],
     ["Turkmenistan", "TM"],
+    ["Tuvalu", "TV"],
+
+    ["Uganda", "UG"],
     ["Ukraine", "UA"],
     ["United Arab Emirates", "AE"],
     ["United Kingdom", "GB"],
     ["United States", "US"],
     ["Uruguay", "UY"],
     ["Uzbekistan", "UZ"],
+
+    ["Vanuatu", "VU"],
+    ["Vatican City", "VA"],
     ["Venezuela", "VE"],
     ["Vietnam", "VN"],
+
     ["Yemen", "YE"],
+
     ["Zambia", "ZM"],
-    ["Zimbabwe", "ZW"]
+    ["Zimbabwe", "ZW"],
+
+    /* Territories / special regions */
+    ["Åland Islands", "AX"],
+    ["American Samoa", "AS"],
+    ["Anguilla", "AI"],
+    ["Aruba", "AW"],
+    ["Bermuda", "BM"],
+    ["Bonaire, Sint Eustatius and Saba", "BQ"],
+    ["Cayman Islands", "KY"],
+    ["Curaçao", "CW"],
+    ["Falkland Islands", "FK"],
+    ["Faroe Islands", "FO"],
+    ["French Polynesia", "PF"],
+    ["Gibraltar", "GI"],
+    ["Greenland", "GL"],
+    ["Guam", "GU"],
+    ["Guernsey", "GG"],
+    ["Hong Kong", "HK"],
+    ["Isle of Man", "IM"],
+    ["Jersey", "JE"],
+    ["Macao", "MO"],
+    ["Montserrat", "MS"],
+    ["New Caledonia", "NC"],
+    ["Northern Mariana Islands", "MP"],
+    ["Puerto Rico", "PR"],
+    ["Réunion", "RE"],
+    ["Saint Barthélemy", "BL"],
+    ["Saint Helena", "SH"],
+    ["Saint Martin", "MF"],
+    ["Saint Pierre and Miquelon", "PM"],
+    ["Sint Maarten", "SX"],
+    ["Tokelau", "TK"],
+    ["Turks and Caicos Islands", "TC"],
+    ["United States Virgin Islands", "VI"],
+    ["British Virgin Islands", "VG"],
+    ["Wallis and Futuna", "WF"],
+    ["Western Sahara", "EH"]
 ];
 
+/*
+   The project uses an expanded country/territory directory.
+   Keep the database synchronized with this array.
+*/
+
+/* =========================================================
+   DATABASE INITIALIZATION
+========================================================= */
+
 async function initializeDatabase() {
+
     await dbRun(`
         CREATE TABLE IF NOT EXISTS countries (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -709,6 +936,7 @@ async function initializeDatabase() {
             website TEXT DEFAULT '',
             verification TEXT DEFAULT 'Unverified',
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
             FOREIGN KEY(country_id)
                 REFERENCES countries(id)
                 ON DELETE CASCADE
@@ -724,6 +952,7 @@ async function initializeDatabase() {
             address TEXT,
             phone TEXT,
             website TEXT,
+
             FOREIGN KEY(brand_id)
                 REFERENCES brands(id)
                 ON DELETE CASCADE
@@ -733,6 +962,7 @@ async function initializeDatabase() {
     await dbRun(`
         CREATE TABLE IF NOT EXISTS applications (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+
             brand_name TEXT NOT NULL,
             country TEXT,
             owner_name TEXT,
@@ -741,14 +971,18 @@ async function initializeDatabase() {
             website TEXT,
             logo TEXT DEFAULT '',
             description TEXT,
+
             status TEXT DEFAULT 'new',
+
             payment_status TEXT DEFAULT 'unpaid',
             payment_amount REAL DEFAULT 1,
             payment_currency TEXT DEFAULT 'USD',
+
             octo_transaction_id TEXT,
             octo_payment_uuid TEXT,
             octo_payment_url TEXT,
             octo_created_at DATETIME,
+
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )
@@ -802,18 +1036,31 @@ async function initializeDatabase() {
         "DATETIME"
     );
 
+    /* =====================================================
+       INSERT COUNTRIES
+    ===================================================== */
+
     for (const [name, code] of COUNTRIES) {
+
         await dbRun(
             `
             INSERT OR IGNORE INTO countries
-            (name, code)
+            (
+                name,
+                code
+            )
             VALUES (?, ?)
             `,
             [name, code]
         );
     }
 
+    /* =====================================================
+       STARTER BRANDS
+    ===================================================== */
+
     const starterBrands = [
+
         [
             "Apple",
             "US",
@@ -822,6 +1069,7 @@ async function initializeDatabase() {
             "Apple products and technology.",
             "https://www.apple.com"
         ],
+
         [
             "Nike",
             "US",
@@ -830,6 +1078,7 @@ async function initializeDatabase() {
             "Sportswear and footwear.",
             "https://www.nike.com"
         ],
+
         [
             "Burberry",
             "GB",
@@ -838,6 +1087,7 @@ async function initializeDatabase() {
             "British luxury fashion brand.",
             "https://www.burberry.com"
         ],
+
         [
             "BMW",
             "DE",
@@ -846,6 +1096,7 @@ async function initializeDatabase() {
             "German automotive brand.",
             "https://www.bmw.com"
         ],
+
         [
             "L'Oréal",
             "FR",
@@ -854,6 +1105,7 @@ async function initializeDatabase() {
             "French beauty company.",
             "https://www.loreal.com"
         ],
+
         [
             "Ferrari",
             "IT",
@@ -862,6 +1114,7 @@ async function initializeDatabase() {
             "Italian automotive brand.",
             "https://www.ferrari.com"
         ],
+
         [
             "Arçelik",
             "TR",
@@ -870,6 +1123,7 @@ async function initializeDatabase() {
             "Turkish home appliance brand.",
             "https://www.arcelik.com.tr"
         ],
+
         [
             "Artel",
             "UZ",
@@ -878,6 +1132,7 @@ async function initializeDatabase() {
             "Uzbek electronics brand.",
             "https://artelgroup.org"
         ],
+
         [
             "Toyota",
             "JP",
@@ -886,6 +1141,7 @@ async function initializeDatabase() {
             "Japanese automotive brand.",
             "https://www.toyota.com"
         ],
+
         [
             "Samsung",
             "KR",
@@ -894,6 +1150,7 @@ async function initializeDatabase() {
             "South Korean technology brand.",
             "https://www.samsung.com"
         ],
+
         [
             "Huawei",
             "CN",
@@ -902,6 +1159,7 @@ async function initializeDatabase() {
             "Technology and telecommunications brand.",
             "https://www.huawei.com"
         ],
+
         [
             "Tata",
             "IN",
@@ -913,6 +1171,7 @@ async function initializeDatabase() {
     ];
 
     for (const brand of starterBrands) {
+
         const [
             name,
             code,
@@ -922,30 +1181,38 @@ async function initializeDatabase() {
             website
         ] = brand;
 
-        const country = await dbGet(
-            `
-            SELECT id
-            FROM countries
-            WHERE code = ?
-            LIMIT 1
-            `,
-            [code]
-        );
+        const country =
+            await dbGet(
+                `
+                SELECT id
+                FROM countries
+                WHERE code = ?
+                LIMIT 1
+                `,
+                [code]
+            );
 
-        if (!country) continue;
+        if (!country) {
+            continue;
+        }
 
-        const exists = await dbGet(
-            `
-            SELECT id
-            FROM brands
-            WHERE name = ?
-            AND country_id = ?
-            LIMIT 1
-            `,
-            [name, country.id]
-        );
+        const exists =
+            await dbGet(
+                `
+                SELECT id
+                FROM brands
+                WHERE name = ?
+                AND country_id = ?
+                LIMIT 1
+                `,
+                [
+                    name,
+                    country.id
+                ]
+            );
 
         if (!exists) {
+
             await dbRun(
                 `
                 INSERT INTO brands
@@ -973,10 +1240,21 @@ async function initializeDatabase() {
         }
     }
 
-    console.log("Database initialized");
+    console.log(
+        `Database initialized with ${COUNTRIES.length} country/territory records.`
+    );
 }
 
-function adminAuth(req, res, next) {
+/* =========================================================
+   ADMIN AUTH
+========================================================= */
+
+function adminAuth(
+    req,
+    res,
+    next
+) {
+
     const user =
         process.env.ADMIN_USER || "";
 
@@ -984,6 +1262,7 @@ function adminAuth(req, res, next) {
         process.env.ADMIN_PASSWORD || "";
 
     if (!user || !password) {
+
         return res
             .status(503)
             .json({
@@ -996,6 +1275,7 @@ function adminAuth(req, res, next) {
         req.headers.authorization || "";
 
     if (!header.startsWith("Basic ")) {
+
         res.setHeader(
             "WWW-Authenticate",
             'Basic realm="ALL WORLD BRANDS ADMIN"'
@@ -1003,7 +1283,9 @@ function adminAuth(req, res, next) {
 
         return res
             .status(401)
-            .send("Authentication required.");
+            .send(
+                "Authentication required."
+            );
     }
 
     const encoded =
@@ -1012,13 +1294,22 @@ function adminAuth(req, res, next) {
     let decoded;
 
     try {
-        decoded = Buffer
-            .from(encoded, "base64")
-            .toString("utf8");
+
+        decoded =
+            Buffer
+                .from(
+                    encoded,
+                    "base64"
+                )
+                .toString("utf8");
+
     } catch {
+
         return res
             .status(401)
-            .send("Invalid authentication.");
+            .send(
+                "Invalid authentication."
+            );
     }
 
     const separator =
@@ -1026,18 +1317,24 @@ function adminAuth(req, res, next) {
 
     const suppliedUser =
         separator >= 0
-            ? decoded.slice(0, separator)
+            ? decoded.slice(
+                0,
+                separator
+            )
             : "";
 
     const suppliedPassword =
         separator >= 0
-            ? decoded.slice(separator + 1)
+            ? decoded.slice(
+                separator + 1
+            )
             : "";
 
     if (
         suppliedUser !== user ||
         suppliedPassword !== password
     ) {
+
         res.setHeader(
             "WWW-Authenticate",
             'Basic realm="ALL WORLD BRANDS ADMIN"'
@@ -1045,124 +1342,218 @@ function adminAuth(req, res, next) {
 
         return res
             .status(401)
-            .send("Invalid credentials.");
+            .send(
+                "Invalid credentials."
+            );
     }
 
     next();
 }
 
-app.get("/api/health", (req, res) => {
-    res.json({
-        ok: true,
-        service: "ALL WORLD BRANDS",
-        payment: {
-            provider: "OCTO",
-            configured: octoConfigured()
-        }
-    });
-});
+/* =========================================================
+   HEALTH
+========================================================= */
 
-app.get("/api/site-config", (req, res) => {
-    res.setHeader(
-        "Cache-Control",
-        "no-store"
-    );
+app.get(
+    "/api/health",
+    (req, res) => {
 
-    res.json({
-        name: SITE_NAME,
-        tagline: SITE_TAGLINE,
-        payment_amount:
-            BRAND_APPLICATION_AMOUNT,
-        payment_currency:
-            BRAND_APPLICATION_CURRENCY,
-        payment_display:
-            formatPaymentDisplay(
-                BRAND_APPLICATION_AMOUNT,
-                BRAND_APPLICATION_CURRENCY
-            ),
-        contact: {
-            email: CONTACT_EMAIL,
-            phone: CONTACT_PHONE,
-            whatsapp: CONTACT_WHATSAPP,
-            address: CONTACT_ADDRESS,
-            hours: CONTACT_HOURS
-        },
-        default_language: "en"
-    });
-});
+        res.json({
+            ok: true,
+            service:
+                "ALL WORLD BRANDS",
 
-app.get("/api/language", (req, res) => {
-    const country =
-        String(
-            req.query.country || ""
-        )
-            .trim()
-            .toUpperCase();
+            countries:
+                COUNTRIES.length,
 
-    if (
-        country &&
-        COUNTRY_LANGUAGE_MAP[country]
-    ) {
-        return res.json({
-            language:
-                COUNTRY_LANGUAGE_MAP[country],
-            country
+            payment: {
+                provider:
+                    "OCTO",
+
+                configured:
+                    octoConfigured()
+            }
         });
     }
+);
 
-    const accepted =
-        String(
-            req.headers["accept-language"] ||
-            ""
+/* =========================================================
+   SITE CONFIG
+========================================================= */
+
+app.get(
+    "/api/site-config",
+    (req, res) => {
+
+        res.setHeader(
+            "Cache-Control",
+            "no-store"
         );
 
-    const language =
-        accepted
-            .split(",")[0]
-            .split("-")[0]
-            .toLowerCase() ||
-        "en";
+        res.json({
 
-    res.json({
-        language,
-        country: country || null
-    });
-});
+            name:
+                SITE_NAME,
 
-app.get("/api/countries", async (req, res) => {
-    try {
-        const rows = await dbAll(`
-            SELECT
-                c.id,
-                c.name,
-                c.code,
-                COUNT(b.id) AS brand_count
-            FROM countries c
-            LEFT JOIN brands b
-                ON b.country_id = c.id
-            GROUP BY c.id
-            ORDER BY c.name COLLATE NOCASE
-        `);
+            tagline:
+                SITE_TAGLINE,
 
-        res.json(rows);
-    } catch (error) {
-        console.error(error);
+            country_count:
+                COUNTRIES.length,
 
-        res.status(500).json({
-            error:
-                "Unable to load countries."
+            payment_amount:
+                BRAND_APPLICATION_AMOUNT,
+
+            payment_currency:
+                BRAND_APPLICATION_CURRENCY,
+
+            payment_display:
+                formatPaymentDisplay(
+                    BRAND_APPLICATION_AMOUNT,
+                    BRAND_APPLICATION_CURRENCY
+                ),
+
+            contact: {
+
+                phone:
+                    CONTACT_PHONE,
+
+                whatsapp:
+                    CONTACT_WHATSAPP,
+
+                telegram:
+                    CONTACT_TELEGRAM,
+
+                email:
+                    CONTACT_EMAIL
+            },
+
+            default_language:
+                "en"
         });
     }
-});
+);
+
+/* =========================================================
+   LANGUAGE
+========================================================= */
+
+app.get(
+    "/api/language",
+    (req, res) => {
+
+        const country =
+            String(
+                req.query.country || ""
+            )
+                .trim()
+                .toUpperCase();
+
+        if (
+            country &&
+            COUNTRY_LANGUAGE_MAP[country]
+        ) {
+
+            return res.json({
+
+                language:
+                    COUNTRY_LANGUAGE_MAP[country],
+
+                country
+            });
+        }
+
+        const accepted =
+            String(
+                req.headers[
+                    "accept-language"
+                ] || ""
+            );
+
+        const language =
+            accepted
+                .split(",")[0]
+                .split("-")[0]
+                .toLowerCase() ||
+            "en";
+
+        res.json({
+
+            language,
+
+            country:
+                country || null
+        });
+    }
+);
+
+/* =========================================================
+   COUNTRIES
+========================================================= */
+
+app.get(
+    "/api/countries",
+    async (req, res) => {
+
+        try {
+
+            const rows =
+                await dbAll(
+                    `
+                    SELECT
+                        c.id,
+                        c.name,
+                        c.code,
+                        COUNT(b.id)
+                            AS brand_count
+
+                    FROM countries c
+
+                    LEFT JOIN brands b
+                        ON b.country_id =
+                           c.id
+
+                    GROUP BY c.id
+
+                    ORDER BY
+                        c.name
+                        COLLATE NOCASE
+                    `
+                );
+
+            res.json(rows);
+
+        } catch (error) {
+
+            console.error(error);
+
+            res.status(500).json({
+                error:
+                    "Unable to load countries."
+            });
+        }
+    }
+);
+
+/* =========================================================
+   BRANDS BY COUNTRY
+========================================================= */
 
 app.get(
     "/api/countries/:id/brands",
     async (req, res) => {
-        try {
-            const id =
-                Number(req.params.id);
 
-            if (!Number.isInteger(id)) {
+        try {
+
+            const id =
+                Number(
+                    req.params.id
+                );
+
+            if (
+                !Number.isInteger(id)
+            ) {
+
                 return res
                     .status(400)
                     .json({
@@ -1171,23 +1562,38 @@ app.get(
                     });
             }
 
-            const rows = await dbAll(
-                `
-                SELECT
-                    b.*,
-                    c.name AS country_name,
-                    c.code AS country_code
-                FROM brands b
-                JOIN countries c
-                    ON c.id = b.country_id
-                WHERE b.country_id = ?
-                ORDER BY b.name COLLATE NOCASE
-                `,
-                [id]
-            );
+            const rows =
+                await dbAll(
+                    `
+                    SELECT
+                        b.*,
+
+                        c.name
+                            AS country_name,
+
+                        c.code
+                            AS country_code
+
+                    FROM brands b
+
+                    JOIN countries c
+                        ON c.id =
+                           b.country_id
+
+                    WHERE
+                        b.country_id = ?
+
+                    ORDER BY
+                        b.name
+                        COLLATE NOCASE
+                    `,
+                    [id]
+                );
 
             res.json(rows);
+
         } catch (error) {
+
             console.error(error);
 
             res.status(500).json({
@@ -1198,14 +1604,25 @@ app.get(
     }
 );
 
+/* =========================================================
+   SINGLE BRAND
+========================================================= */
+
 app.get(
     "/api/brands/:id",
     async (req, res) => {
-        try {
-            const id =
-                Number(req.params.id);
 
-            if (!Number.isInteger(id)) {
+        try {
+
+            const id =
+                Number(
+                    req.params.id
+                );
+
+            if (
+                !Number.isInteger(id)
+            ) {
+
                 return res
                     .status(400)
                     .json({
@@ -1214,22 +1631,34 @@ app.get(
                     });
             }
 
-            const brand = await dbGet(
-                `
-                SELECT
-                    b.*,
-                    c.name AS country_name,
-                    c.code AS country_code
-                FROM brands b
-                JOIN countries c
-                    ON c.id = b.country_id
-                WHERE b.id = ?
-                LIMIT 1
-                `,
-                [id]
-            );
+            const brand =
+                await dbGet(
+                    `
+                    SELECT
+                        b.*,
+
+                        c.name
+                            AS country_name,
+
+                        c.code
+                            AS country_code
+
+                    FROM brands b
+
+                    JOIN countries c
+                        ON c.id =
+                           b.country_id
+
+                    WHERE
+                        b.id = ?
+
+                    LIMIT 1
+                    `,
+                    [id]
+                );
 
             if (!brand) {
+
                 return res
                     .status(404)
                     .json({
@@ -1253,7 +1682,9 @@ app.get(
                 ...brand,
                 factories
             });
+
         } catch (error) {
+
             console.error(error);
 
             res.status(500).json({
@@ -1264,62 +1695,85 @@ app.get(
     }
 );
 
-app.get("/api/search", async (req, res) => {
-    try {
-        const q =
-            normalizeText(
-                req.query.q,
-                100
-            );
+/* =========================================================
+   SEARCH
+   IMPORTANT:
+   ONLY BRAND NAME
+========================================================= */
 
-        if (!q) {
-            return res.json([]);
+app.get(
+    "/api/search",
+    async (req, res) => {
+
+        try {
+
+            const q =
+                normalizeText(
+                    req.query.q,
+                    100
+                );
+
+            if (!q) {
+                return res.json([]);
+            }
+
+            const pattern =
+                `%${q}%`;
+
+            const rows =
+                await dbAll(
+                    `
+                    SELECT
+                        b.*,
+
+                        c.name
+                            AS country_name,
+
+                        c.code
+                            AS country_code
+
+                    FROM brands b
+
+                    JOIN countries c
+                        ON c.id =
+                           b.country_id
+
+                    WHERE
+                        b.name LIKE ?
+
+                    ORDER BY
+                        b.name
+                        COLLATE NOCASE
+
+                    LIMIT 100
+                    `,
+                    [pattern]
+                );
+
+            res.json(rows);
+
+        } catch (error) {
+
+            console.error(error);
+
+            res.status(500).json({
+                error:
+                    "Search failed."
+            });
         }
-
-        const pattern =
-            `%${q}%`;
-
-        const rows = await dbAll(
-            `
-            SELECT
-                b.*,
-                c.name AS country_name,
-                c.code AS country_code
-            FROM brands b
-            JOIN countries c
-                ON c.id = b.country_id
-            WHERE
-                b.name LIKE ?
-                OR b.category LIKE ?
-                OR b.description LIKE ?
-                OR c.name LIKE ?
-            ORDER BY
-                b.name COLLATE NOCASE
-            LIMIT 100
-            `,
-            [
-                pattern,
-                pattern,
-                pattern,
-                pattern
-            ]
-        );
-
-        res.json(rows);
-    } catch (error) {
-        console.error(error);
-
-        res.status(500).json({
-            error:
-                "Search failed."
-        });
     }
-});
+);
+
+/* =========================================================
+   BRAND APPLICATION
+========================================================= */
 
 app.post(
     "/api/applications",
     async (req, res) => {
+
         try {
+
             const brandName =
                 normalizeText(
                     req.body.brand_name,
@@ -1373,6 +1827,7 @@ app.post(
                 !ownerName ||
                 !email
             ) {
+
                 return res
                     .status(400)
                     .json({
@@ -1381,7 +1836,10 @@ app.post(
                     });
             }
 
-            if (!isValidEmail(email)) {
+            if (
+                !isValidEmail(email)
+            ) {
+
                 return res
                     .status(400)
                     .json({
@@ -1394,6 +1852,7 @@ app.post(
                 !isSafeUrl(website) ||
                 !isSafeUrl(logo)
             ) {
+
                 return res
                     .status(400)
                     .json({
@@ -1410,6 +1869,7 @@ app.post(
                     website
                 )
             ) {
+
                 return res
                     .status(400)
                     .json({
@@ -1421,17 +1881,27 @@ app.post(
             const countryRow =
                 await dbGet(
                     `
-                    SELECT id, name, code
+                    SELECT
+                        id,
+                        name,
+                        code
+
                     FROM countries
+
                     WHERE
                         name = ?
                         OR code = ?
+
                     LIMIT 1
                     `,
-                    [country, country.toUpperCase()]
+                    [
+                        country,
+                        country.toUpperCase()
+                    ]
                 );
 
             if (!countryRow) {
+
                 return res
                     .status(400)
                     .json({
@@ -1460,7 +1930,14 @@ app.post(
                         created_at,
                         updated_at
                     )
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+
+                    VALUES
+                    (
+                        ?, ?, ?, ?, ?, ?, ?, ?,
+                        ?, ?, ?, ?,
+                        CURRENT_TIMESTAMP,
+                        CURRENT_TIMESTAMP
+                    )
                     `,
                     [
                         brandName,
@@ -1471,29 +1948,40 @@ app.post(
                         website,
                         logo,
                         description,
+
                         "new",
                         "unpaid",
+
                         BRAND_APPLICATION_AMOUNT,
                         BRAND_APPLICATION_CURRENCY
                     ]
                 );
 
             res.status(201).json({
+
                 ok: true,
+
                 application_id:
                     result.lastID,
-                payment_required: true,
+
+                payment_required:
+                    true,
+
                 payment_amount:
                     BRAND_APPLICATION_AMOUNT,
+
                 payment_currency:
                     BRAND_APPLICATION_CURRENCY,
+
                 payment_display:
                     formatPaymentDisplay(
                         BRAND_APPLICATION_AMOUNT,
                         BRAND_APPLICATION_CURRENCY
                     )
             });
+
         } catch (error) {
+
             console.error(error);
 
             res.status(500).json({
@@ -1504,16 +1992,23 @@ app.post(
     }
 );
 
+/* =========================================================
+   CREATE OCTO PAYMENT
+========================================================= */
+
 app.post(
     "/api/payments/octo/create",
     async (req, res) => {
+
         try {
+
             res.setHeader(
                 "Cache-Control",
                 "no-store"
             );
 
             if (!octoConfigured()) {
+
                 return res
                     .status(503)
                     .json({
@@ -1532,6 +2027,7 @@ app.post(
                     applicationId
                 )
             ) {
+
                 return res
                     .status(400)
                     .json({
@@ -1552,6 +2048,7 @@ app.post(
                 );
 
             if (!application) {
+
                 return res
                     .status(404)
                     .json({
@@ -1564,9 +2061,14 @@ app.post(
                 application.payment_status ===
                 "paid"
             ) {
+
                 return res.json({
+
                     ok: true,
-                    already_paid: true,
+
+                    already_paid:
+                        true,
+
                     application_id:
                         applicationId
                 });
@@ -1579,14 +2081,16 @@ app.post(
                 application.octo_payment_url &&
                 application.octo_created_at
             ) {
+
                 const created =
                     new Date(
                         application.octo_created_at
                     ).getTime();
 
                 const ageMinutes =
-                    (now - created) /
-                    60000;
+                    (
+                        now - created
+                    ) / 60000;
 
                 if (
                     Number.isFinite(
@@ -1595,12 +2099,17 @@ app.post(
                     ageMinutes <
                         OCTO_TTL_MINUTES
                 ) {
+
                     return res.json({
+
                         ok: true,
+
                         application_id:
                             applicationId,
+
                         payment_url:
                             application.octo_payment_url,
+
                         octo_pay_url:
                             application.octo_payment_url
                     });
@@ -1617,39 +2126,54 @@ app.post(
                 `${PUBLIC_BASE_URL}/api/octo/notify`;
 
             const payload = {
+
                 octo_shop_id:
                     OCTO_SHOP_ID,
+
                 octo_secret:
                     OCTO_SECRET,
+
                 shop_transaction_id:
                     transactionId,
+
                 total_sum:
                     Number(
                         application.payment_amount ||
                         BRAND_APPLICATION_AMOUNT
                     ),
+
                 currency:
                     application.payment_currency ||
                     BRAND_APPLICATION_CURRENCY,
+
                 description:
                     `ALL WORLD BRANDS - Brand application #${applicationId}`,
+
                 payment_methods: [
                     {
-                        method: "bank_card"
+                        method:
+                            "bank_card"
                     }
                 ],
+
                 return_url:
                     returnUrl,
+
                 notify_url:
                     notifyUrl,
+
                 language:
                     OCTO_LANGUAGE,
+
                 ttl:
                     OCTO_TTL_MINUTES,
+
                 init_time:
                     currentOctoTime(),
+
                 auto_capture:
                     true,
+
                 test:
                     OCTO_TEST
             };
@@ -1662,6 +2186,7 @@ app.post(
             if (
                 Number(result.error) !== 0
             ) {
+
                 return res
                     .status(502)
                     .json({
@@ -1687,6 +2212,7 @@ app.post(
                 "";
 
             if (!paymentUrl) {
+
                 return res
                     .status(502)
                     .json({
@@ -1698,6 +2224,7 @@ app.post(
             await dbRun(
                 `
                 UPDATE applications
+
                 SET
                     payment_status = 'pending',
                     octo_transaction_id = ?,
@@ -1705,6 +2232,7 @@ app.post(
                     octo_payment_url = ?,
                     octo_created_at = CURRENT_TIMESTAMP,
                     updated_at = CURRENT_TIMESTAMP
+
                 WHERE id = ?
                 `,
                 [
@@ -1716,25 +2244,35 @@ app.post(
             );
 
             res.json({
+
                 ok: true,
+
                 application_id:
                     applicationId,
+
                 transaction_id:
                     transactionId,
+
                 payment_uuid:
                     paymentUuid,
+
                 payment_url:
                     paymentUrl,
+
                 octo_pay_url:
                     paymentUrl,
+
                 amount:
                     Number(
                         application.payment_amount
                     ),
+
                 currency:
                     application.payment_currency
             });
+
         } catch (error) {
+
             console.error(
                 "OCTO CREATE ERROR:",
                 error
@@ -1749,10 +2287,15 @@ app.post(
     }
 );
 
+/* =========================================================
+   VERIFY PAYMENT
+========================================================= */
+
 async function verifyAndUpdatePayment(
     application,
     octoResult
 ) {
+
     const status =
         extractOctoStatus(
             octoResult
@@ -1782,18 +2325,29 @@ async function verifyAndUpdatePayment(
                 application.payment_currency
             ).toUpperCase();
 
+    /*
+       IMPORTANT:
+       We do NOT trust the frontend.
+       Payment becomes paid only after
+       OCTO status + amount + currency
+       have been verified by server.
+    */
+
     if (
         isOctoPaidStatus(status) &&
         amountMatches &&
         currencyMatches
     ) {
+
         await dbRun(
             `
             UPDATE applications
+
             SET
                 payment_status = 'paid',
                 status = 'paid',
                 updated_at = CURRENT_TIMESTAMP
+
             WHERE id = ?
             `,
             [application.id]
@@ -1805,12 +2359,15 @@ async function verifyAndUpdatePayment(
     if (
         isOctoFailedStatus(status)
     ) {
+
         await dbRun(
             `
             UPDATE applications
+
             SET
                 payment_status = 'failed',
                 updated_at = CURRENT_TIMESTAMP
+
             WHERE id = ?
             `,
             [application.id]
@@ -1822,17 +2379,24 @@ async function verifyAndUpdatePayment(
     return "pending";
 }
 
+/* =========================================================
+   OCTO NOTIFY
+========================================================= */
+
 async function octoNotifyHandler(
     req,
     res
 ) {
+
     try {
+
         res.setHeader(
             "Cache-Control",
             "no-store"
         );
 
         if (!octoConfigured()) {
+
             return res
                 .status(503)
                 .json({
@@ -1877,6 +2441,7 @@ async function octoNotifyHandler(
             !status ||
             !signature
         ) {
+
             return res
                 .status(400)
                 .json({
@@ -1897,6 +2462,7 @@ async function octoNotifyHandler(
                 expected
             )
         ) {
+
             return res
                 .status(403)
                 .json({
@@ -1910,13 +2476,17 @@ async function octoNotifyHandler(
                 `
                 SELECT *
                 FROM applications
-                WHERE octo_transaction_id = ?
+
+                WHERE
+                    octo_transaction_id = ?
+
                 LIMIT 1
                 `,
                 [transactionId]
             );
 
         if (!application) {
+
             return res
                 .status(404)
                 .json({
@@ -1929,6 +2499,7 @@ async function octoNotifyHandler(
             application.octo_payment_uuid &&
             application.octo_payment_uuid !== uuid
         ) {
+
             return res
                 .status(403)
                 .json({
@@ -1949,11 +2520,15 @@ async function octoNotifyHandler(
             );
 
         res.json({
+
             ok: true,
+
             payment_status:
                 finalStatus
         });
+
     } catch (error) {
+
         console.error(
             "OCTO NOTIFY ERROR:",
             error
@@ -1976,10 +2551,16 @@ app.post(
     octoNotifyHandler
 );
 
+/* =========================================================
+   OCTO PAYMENT STATUS
+========================================================= */
+
 app.get(
     "/api/payments/octo/status/:applicationId",
     async (req, res) => {
+
         try {
+
             res.setHeader(
                 "Cache-Control",
                 "no-store"
@@ -1995,6 +2576,7 @@ app.get(
                     applicationId
                 )
             ) {
+
                 return res
                     .status(400)
                     .json({
@@ -2008,13 +2590,16 @@ app.get(
                     `
                     SELECT *
                     FROM applications
+
                     WHERE id = ?
+
                     LIMIT 1
                     `,
                     [applicationId]
                 );
 
             if (!application) {
+
                 return res
                     .status(404)
                     .json({
@@ -2027,10 +2612,14 @@ app.get(
                 application.payment_status ===
                 "paid"
             ) {
+
                 return res.json({
+
                     ok: true,
+
                     application_id:
                         applicationId,
+
                     payment_status:
                         "paid"
                 });
@@ -2039,10 +2628,14 @@ app.get(
             if (
                 !application.octo_transaction_id
             ) {
+
                 return res.json({
+
                     ok: true,
+
                     application_id:
                         applicationId,
+
                     payment_status:
                         "unpaid"
                 });
@@ -2060,17 +2653,23 @@ app.get(
                 );
 
             res.json({
+
                 ok: true,
+
                 application_id:
                     applicationId,
+
                 payment_status:
                     finalStatus,
+
                 octo_status:
                     extractOctoStatus(
                         result
                     )
             });
+
         } catch (error) {
+
             console.error(
                 "OCTO STATUS ERROR:",
                 error
@@ -2084,21 +2683,31 @@ app.get(
     }
 );
 
+/* =========================================================
+   ADMIN APPLICATIONS
+========================================================= */
+
 app.get(
     "/api/admin/applications",
     adminAuth,
     async (req, res) => {
+
         try {
+
             const rows =
-                await dbAll(`
+                await dbAll(
+                    `
                     SELECT *
                     FROM applications
                     ORDER BY id DESC
                     LIMIT 500
-                `);
+                    `
+                );
 
             res.json(rows);
+
         } catch (error) {
+
             console.error(error);
 
             res.status(500).json({
@@ -2109,11 +2718,17 @@ app.get(
     }
 );
 
+/* =========================================================
+   ADMIN CREATE BRAND
+========================================================= */
+
 app.post(
     "/api/admin/brands",
     adminAuth,
     async (req, res) => {
+
         try {
+
             const countryId =
                 Number(
                     req.body.country_id
@@ -2162,6 +2777,7 @@ app.post(
                 ) ||
                 !name
             ) {
+
                 return res
                     .status(400)
                     .json({
@@ -2171,9 +2787,25 @@ app.post(
             }
 
             if (
+                isBlockedContent(
+                    name,
+                    description
+                )
+            ) {
+
+                return res
+                    .status(400)
+                    .json({
+                        error:
+                            "This content is not allowed."
+                    });
+            }
+
+            if (
                 !isSafeUrl(logo) ||
                 !isSafeUrl(website)
             ) {
+
                 return res
                     .status(400)
                     .json({
@@ -2187,12 +2819,16 @@ app.post(
                     `
                     SELECT id
                     FROM countries
+
                     WHERE id = ?
+
+                    LIMIT 1
                     `,
                     [countryId]
                 );
 
             if (!country) {
+
                 return res
                     .status(400)
                     .json({
@@ -2214,7 +2850,9 @@ app.post(
                         website,
                         verification
                     )
-                    VALUES (?, ?, ?, ?, ?, ?, ?)
+
+                    VALUES
+                    (?, ?, ?, ?, ?, ?, ?)
                     `,
                     [
                         countryId,
@@ -2228,10 +2866,15 @@ app.post(
                 );
 
             res.status(201).json({
+
                 ok: true,
-                id: result.lastID
+
+                id:
+                    result.lastID
             });
+
         } catch (error) {
+
             console.error(error);
 
             res.status(500).json({
@@ -2242,15 +2885,26 @@ app.post(
     }
 );
 
+/* =========================================================
+   ADMIN DELETE BRAND
+========================================================= */
+
 app.delete(
     "/api/admin/brands/:id",
     adminAuth,
     async (req, res) => {
-        try {
-            const id =
-                Number(req.params.id);
 
-            if (!Number.isInteger(id)) {
+        try {
+
+            const id =
+                Number(
+                    req.params.id
+                );
+
+            if (
+                !Number.isInteger(id)
+            ) {
+
                 return res
                     .status(400)
                     .json({
@@ -2270,7 +2924,9 @@ app.delete(
             res.json({
                 ok: true
             });
+
         } catch (error) {
+
             console.error(error);
 
             res.status(500).json({
@@ -2281,55 +2937,132 @@ app.delete(
     }
 );
 
-app.get("/admin", adminAuth, (req, res) => {
-    res.send(`
+/* =========================================================
+   ADMIN PAGE
+========================================================= */
+
+app.get(
+    "/admin",
+    adminAuth,
+    (req, res) => {
+
+        res.send(`
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width,initial-scale=1">
-<title>ALL WORLD BRANDS ADMIN</title>
+
+<meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+>
+
+<title>
+ALL WORLD BRANDS ADMIN
+</title>
+
 <style>
+
+*{
+    box-sizing:border-box;
+}
+
 body{
+    margin:0;
+    padding:25px;
     font-family:Arial,sans-serif;
-    background:#050914;
+    background:
+        linear-gradient(
+            135deg,
+            #020b24,
+            #07183d,
+            #2a0610
+        );
     color:#fff;
-    padding:30px;
 }
-h1{margin-bottom:20px}
-button{
-    padding:10px 15px;
-    cursor:pointer;
+
+h1{
+    margin-bottom:10px;
 }
+
+.info{
+    opacity:.8;
+    margin-bottom:25px;
+}
+
 table{
     width:100%;
     border-collapse:collapse;
-    margin-top:20px;
+    background:rgba(0,0,0,.35);
 }
-td,th{
+
+th,
+td{
     padding:10px;
-    border:1px solid #333;
+    border:1px solid rgba(255,255,255,.15);
     text-align:left;
 }
+
+th{
+    background:rgba(255,255,255,.08);
+}
+
+@media(max-width:700px){
+
+    body{
+        padding:12px;
+    }
+
+    table{
+        font-size:12px;
+    }
+
+    th,
+    td{
+        padding:7px;
+    }
+}
+
 </style>
+
 </head>
+
 <body>
-<h1>ALL WORLD BRANDS ADMIN</h1>
-<p>Applications and payment statuses.</p>
-<div id="data">Loading...</div>
+
+<h1>
+ALL WORLD BRANDS ADMIN
+</h1>
+
+<div class="info">
+Applications and payment statuses
+</div>
+
+<div id="data">
+Loading...
+</div>
+
 <script>
+
 fetch("/api/admin/applications")
-.then(r=>r.json())
-.then(rows=>{
+
+.then(r => r.json())
+
+.then(rows => {
+
     if(!Array.isArray(rows)){
-        document.getElementById("data").textContent =
+
+        document.getElementById("data")
+            .textContent =
             "Unable to load.";
+
         return;
     }
 
     let html =
-        "<table><tr>" +
+        "<table>" +
+        "<tr>" +
         "<th>ID</th>" +
         "<th>Brand</th>" +
         "<th>Country</th>" +
@@ -2338,85 +3071,187 @@ fetch("/api/admin/applications")
         "<th>Status</th>" +
         "</tr>";
 
-    rows.forEach(x=>{
+    rows.forEach(x => {
+
         html +=
             "<tr>" +
-            "<td>"+escapeHtml(x.id)+"</td>" +
-            "<td>"+escapeHtml(x.brand_name)+"</td>" +
-            "<td>"+escapeHtml(x.country)+"</td>" +
-            "<td>"+escapeHtml(x.email)+"</td>" +
-            "<td>"+escapeHtml(x.payment_status)+"</td>" +
-            "<td>"+escapeHtml(x.status)+"</td>" +
+
+            "<td>" +
+            escapeHtml(x.id) +
+            "</td>" +
+
+            "<td>" +
+            escapeHtml(x.brand_name) +
+            "</td>" +
+
+            "<td>" +
+            escapeHtml(x.country) +
+            "</td>" +
+
+            "<td>" +
+            escapeHtml(x.email) +
+            "</td>" +
+
+            "<td>" +
+            escapeHtml(x.payment_status) +
+            "</td>" +
+
+            "<td>" +
+            escapeHtml(x.status) +
+            "</td>" +
+
             "</tr>";
     });
 
-    html += "</table>";
+    html +=
+        "</table>";
 
-    document.getElementById("data").innerHTML = html;
+    document.getElementById("data")
+        .innerHTML = html;
 })
-.catch(()=>{
-    document.getElementById("data").textContent =
+
+.catch(() => {
+
+    document.getElementById("data")
+        .textContent =
         "Error.";
+
 });
 
 function escapeHtml(value){
+
     return String(value ?? "")
+
         .replace(/&/g,"&amp;")
         .replace(/</g,"&lt;")
         .replace(/>/g,"&gt;")
         .replace(/"/g,"&quot;")
         .replace(/'/g,"&#039;");
 }
+
 </script>
+
 </body>
+
 </html>
-    `);
-});
+        `);
+    }
+);
+
+/* =========================================================
+   STATIC FILES
+========================================================= */
 
 app.use(
     express.static(
-        path.join(__dirname, "public"),
+        path.join(
+            __dirname,
+            "public"
+        ),
         {
             extensions: ["html"]
         }
     )
 );
 
-app.get("*", (req, res) => {
-    res.sendFile(
-        path.join(
-            __dirname,
-            "public",
-            "index.html"
-        )
-    );
-});
+/* =========================================================
+   SPA FALLBACK
+========================================================= */
+
+app.use(
+    (req, res, next) => {
+
+        if (
+            req.method !== "GET" ||
+            req.path.startsWith("/api/")
+        ) {
+            return next();
+        }
+
+        res.sendFile(
+            path.join(
+                __dirname,
+                "public",
+                "index.html"
+            )
+        );
+    }
+);
+
+/* =========================================================
+   404
+========================================================= */
+
+app.use(
+    (req, res) => {
+
+        if (
+            req.path.startsWith("/api/")
+        ) {
+
+            return res
+                .status(404)
+                .json({
+                    error:
+                        "API endpoint not found."
+                });
+        }
+
+        res.status(404)
+            .send("Not found.");
+    }
+);
+
+/* =========================================================
+   START SERVER
+========================================================= */
 
 initializeDatabase()
+
     .then(() => {
+
         app.listen(
             PORT,
             () => {
+
                 console.log(
                     `ALL WORLD BRANDS running on port ${PORT}`
                 );
+
+                console.log(
+                    `Countries/territories: ${COUNTRIES.length}`
+                );
+
                 console.log(
                     `OCTO configured: ${octoConfigured()}`
                 );
+
+                console.log(
+                    `Payment: ${BRAND_APPLICATION_AMOUNT} ${BRAND_APPLICATION_CURRENCY}`
+                );
             }
         );
+
     })
+
     .catch(error => {
+
         console.error(
             "Database initialization failed:",
             error
         );
+
         process.exit(1);
     });
+
+/* =========================================================
+   SHUTDOWN
+========================================================= */
 
 process.on(
     "SIGINT",
     () => {
+
         appDb.close(() => {
             process.exit(0);
         });
@@ -2426,6 +3261,7 @@ process.on(
 process.on(
     "SIGTERM",
     () => {
+
         appDb.close(() => {
             process.exit(0);
         });
