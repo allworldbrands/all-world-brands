@@ -4,6 +4,7 @@ const fs = require("fs");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const sqlite3 = require("sqlite3").verbose();
+const crypto = require("crypto");
 
 const app = express();
 
@@ -15,6 +16,51 @@ const ADMIN_DIR = path.join(PUBLIC_DIR, "admin");
 const DB_PATH =
   process.env.DB_PATH ||
   path.join(__dirname, "allworldbrands.db");
+
+/*
+=====================================================
+OCTO PAYMENT CONFIG
+=====================================================
+*/
+
+const PUBLIC_BASE_URL = (
+  process.env.PUBLIC_BASE_URL ||
+  "https://allworldbrands.net"
+).replace(/\/+$/, "");
+
+const OCTO_SHOP_ID =
+  Number(process.env.OCTO_SHOP_ID || 0);
+
+const OCTO_SECRET =
+  process.env.OCTO_SECRET || "";
+
+const OCTO_UNIQUE_KEY =
+  process.env.OCTO_UNIQUE_KEY || "";
+
+const OCTO_TEST =
+  String(
+    process.env.OCTO_TEST || "true"
+  ).toLowerCase() === "true";
+
+const BRAND_APPLICATION_AMOUNT =
+  Number(
+    process.env.BRAND_APPLICATION_AMOUNT || "1"
+  );
+
+const BRAND_APPLICATION_CURRENCY =
+  String(
+    process.env.BRAND_APPLICATION_CURRENCY ||
+      "USD"
+  ).toUpperCase();
+
+const OCTO_PREPARE_URL =
+  "https://secure.octo.uz/prepare_payment";
+
+const OCTO_NOTIFY_URL =
+  `${PUBLIC_BASE_URL}/api/payments/octo/notify`;
+
+const OCTO_RETURN_URL =
+  `${PUBLIC_BASE_URL}/?payment=octo`;
 
 /*
 =====================================================
@@ -60,7 +106,10 @@ try {
     recursive: true
   });
 } catch (error) {
-  console.error("Directory error:", error);
+  console.error(
+    "Directory error:",
+    error
+  );
 }
 
 /*
@@ -107,16 +156,18 @@ function normalizeForModeration(value) {
 }
 
 function containsAdultContent(value) {
-  const text = normalizeForModeration(value);
+  const text =
+    normalizeForModeration(value);
 
   if (!text) {
     return false;
   }
 
-  return ADULT_CONTENT_WORDS.some((word) =>
-    text.includes(
-      normalizeForModeration(word)
-    )
+  return ADULT_CONTENT_WORDS.some(
+    (word) =>
+      text.includes(
+        normalizeForModeration(word)
+      )
   );
 }
 
@@ -138,7 +189,8 @@ function isSafeUrl(value) {
     return true;
   }
 
-  const text = String(value).trim();
+  const text =
+    String(value).trim();
 
   if (!text) {
     return true;
@@ -154,7 +206,8 @@ function isSafeUrl(value) {
     return false;
   }
 
-  const lower = text.toLowerCase();
+  const lower =
+    text.toLowerCase();
 
   if (
     lower.startsWith("javascript:") ||
@@ -165,18 +218,6 @@ function isSafeUrl(value) {
   ) {
     return false;
   }
-
-  /*
-    Local files are allowed:
-
-      /images/logo.png
-      /uploads/logo.jpg
-      ./images/logo.png
-
-    Protocol-relative URLs are blocked:
-
-      //evil-site.com
-  */
 
   if (text.startsWith("/")) {
     if (text.startsWith("//")) {
@@ -191,16 +232,13 @@ function isSafeUrl(value) {
   }
 
   try {
-    const url = new URL(text);
+    const url =
+      new URL(text);
 
-    if (
-      url.protocol !== "http:" &&
-      url.protocol !== "https:"
-    ) {
-      return false;
-    }
-
-    return true;
+    return (
+      url.protocol === "http:" ||
+      url.protocol === "https:"
+    );
   } catch (error) {
     return false;
   }
@@ -229,7 +267,8 @@ function cleanString(
 }
 
 function validId(value) {
-  const id = Number(value);
+  const id =
+    Number(value);
 
   if (
     !Number.isInteger(id) ||
@@ -242,10 +281,8 @@ function validId(value) {
 }
 
 function validEmail(email) {
-  const value = cleanString(
-    email,
-    254
-  );
+  const value =
+    cleanString(email, 254);
 
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
     value
@@ -271,25 +308,26 @@ DATABASE
 =====================================================
 */
 
-const db = new sqlite3.Database(
-  DB_PATH,
-  (error) => {
-    if (error) {
-      console.error(
-        "SQLite connection error:",
-        error
+const db =
+  new sqlite3.Database(
+    DB_PATH,
+    (error) => {
+      if (error) {
+        console.error(
+          "SQLite connection error:",
+          error
+        );
+
+        process.exit(1);
+      }
+
+      console.log(
+        "SQLite connected:"
       );
 
-      process.exit(1);
+      console.log(DB_PATH);
     }
-
-    console.log(
-      "SQLite connected:"
-    );
-
-    console.log(DB_PATH);
-  }
-);
+  );
 
 db.configure(
   "busyTimeout",
@@ -635,18 +673,21 @@ async function addColumnIfMissing(
   column,
   definition
 ) {
-  const columns = await dbAll(
-    `PRAGMA table_info(${table})`
-  );
+  const columns =
+    await dbAll(
+      `PRAGMA table_info(${table})`
+    );
 
-  const exists = columns.some(
-    (item) =>
-      item.name === column
-  );
+  const exists =
+    columns.some(
+      (item) =>
+        item.name === column
+    );
 
   if (!exists) {
     await dbRun(
-      `ALTER TABLE ${table} ADD COLUMN ${column} ${definition}`
+      `ALTER TABLE ${table}
+       ADD COLUMN ${column} ${definition}`
     );
 
     console.log(
@@ -662,12 +703,6 @@ DATABASE INITIALIZATION
 */
 
 async function initializeDatabase() {
-
-  /*
-  ---------------------------------------------------
-  PRAGMAS
-  ---------------------------------------------------
-  */
 
   await dbRun(
     "PRAGMA foreign_keys = ON"
@@ -767,6 +802,11 @@ async function initializeDatabase() {
 
       payment_status TEXT DEFAULT 'pending',
       amount REAL DEFAULT 0,
+      payment_currency TEXT DEFAULT 'USD',
+
+      octo_transaction_id TEXT,
+      octo_payment_uuid TEXT,
+      payment_updated_at DATETIME,
 
       status TEXT DEFAULT 'new',
 
@@ -776,7 +816,7 @@ async function initializeDatabase() {
 
   /*
   ---------------------------------------------------
-  SAFE MIGRATIONS
+  MIGRATIONS
   ---------------------------------------------------
   */
 
@@ -821,12 +861,6 @@ async function initializeDatabase() {
     "created_at",
     "DATETIME"
   );
-
-  await dbRun(`
-    UPDATE brands
-    SET created_at = CURRENT_TIMESTAMP
-    WHERE created_at IS NULL
-  `);
 
   await addColumnIfMissing(
     "applications",
@@ -896,6 +930,30 @@ async function initializeDatabase() {
 
   await addColumnIfMissing(
     "applications",
+    "payment_currency",
+    "TEXT DEFAULT 'USD'"
+  );
+
+  await addColumnIfMissing(
+    "applications",
+    "octo_transaction_id",
+    "TEXT"
+  );
+
+  await addColumnIfMissing(
+    "applications",
+    "octo_payment_uuid",
+    "TEXT"
+  );
+
+  await addColumnIfMissing(
+    "applications",
+    "payment_updated_at",
+    "DATETIME"
+  );
+
+  await addColumnIfMissing(
+    "applications",
     "status",
     "TEXT DEFAULT 'new'"
   );
@@ -905,12 +963,6 @@ async function initializeDatabase() {
     "created_at",
     "DATETIME"
   );
-
-  await dbRun(`
-    UPDATE applications
-    SET created_at = CURRENT_TIMESTAMP
-    WHERE created_at IS NULL
-  `);
 
   /*
   ---------------------------------------------------
@@ -938,13 +990,19 @@ async function initializeDatabase() {
 
   await dbRun(`
     CREATE INDEX IF NOT EXISTS
-    idx_applications_country_id
-    ON applications(country_id)
+    idx_applications_payment_status
+    ON applications(payment_status)
+  `);
+
+  await dbRun(`
+    CREATE INDEX IF NOT EXISTS
+    idx_applications_oct_transaction
+    ON applications(octo_transaction_id)
   `);
 
   /*
   ---------------------------------------------------
-  INSERT COUNTRIES
+  COUNTRIES SEED
   ---------------------------------------------------
   */
 
@@ -981,77 +1039,66 @@ async function initializeDatabase() {
       "Technology",
       "https://www.apple.com"
     ],
-
     [
       "Nike",
       "United States",
       "Sportswear",
       "https://www.nike.com"
     ],
-
     [
       "Burberry",
       "United Kingdom",
       "Fashion",
       "https://www.burberry.com"
     ],
-
     [
       "BMW",
       "Germany",
       "Automotive",
       "https://www.bmw.com"
     ],
-
     [
       "L'Oréal",
       "France",
       "Beauty",
       "https://www.loreal.com"
     ],
-
     [
       "Ferrari",
       "Italy",
       "Automotive",
       "https://www.ferrari.com"
     ],
-
     [
       "Arçelik",
       "Turkey",
       "Home Appliances",
       "https://www.arcelik.com"
     ],
-
     [
       "Artel",
       "Uzbekistan",
       "Electronics",
       "https://artelelectronics.com"
     ],
-
     [
       "Toyota",
       "Japan",
       "Automotive",
       "https://www.toyota.com"
     ],
-
     [
       "Samsung",
       "South Korea",
       "Electronics",
       "https://www.samsung.com"
     ],
-
     [
       "Huawei",
       "China",
       "Technology",
       "https://www.huawei.com"
     ],
-
     [
       "Tata",
       "India",
@@ -1061,16 +1108,13 @@ async function initializeDatabase() {
   ];
 
   for (
-    const brand
-    of starterBrands
-  ) {
-
     const [
       name,
       countryName,
       category,
       website
-    ] = brand;
+    ] of starterBrands
+  ) {
 
     const country =
       await dbGet(
@@ -1130,7 +1174,7 @@ async function initializeDatabase() {
 
 /*
 =====================================================
-MODERATION MIDDLEWARE
+MODERATION
 =====================================================
 */
 
@@ -1151,10 +1195,12 @@ function rejectAdultContent(
   ];
 
   if (
-    fields.some((field) =>
-      isBlockedContent(field)
+    fields.some(
+      (field) =>
+        isBlockedContent(field)
     )
   ) {
+
     return res.status(400).json({
       ok: false,
       error:
@@ -1187,6 +1233,7 @@ function adminAuth(
     !configuredUser ||
     !configuredPassword
   ) {
+
     return res.status(503).json({
       ok: false,
       error:
@@ -1232,6 +1279,7 @@ function adminAuth(
     decoded.indexOf(":");
 
   if (separator === -1) {
+
     return res.status(401).send(
       "Invalid authentication."
     );
@@ -1329,31 +1377,8 @@ app.get(
 
 /*
 =====================================================
-PUBLIC API
+COUNTRIES API
 =====================================================
-*/
-
-/*
------------------------------------------------------
-GET ALL COUNTRIES
------------------------------------------------------
-
-IMPORTANT:
-Frontend expects an ARRAY directly.
-
-NOT:
-
-{
-  ok: true,
-  countries: [...]
-}
-
-BUT:
-
-[
-  {...},
-  {...}
-]
 */
 
 app.get(
@@ -1372,11 +1397,6 @@ app.get(
           ORDER BY
             name COLLATE NOCASE ASC
         `);
-
-      /*
-        Frontend compatibility:
-        return ARRAY directly.
-      */
 
       res.json(rows);
 
@@ -1397,9 +1417,9 @@ app.get(
 );
 
 /*
------------------------------------------------------
-GET ONE COUNTRY
------------------------------------------------------
+=====================================================
+ONE COUNTRY
+=====================================================
 */
 
 app.get(
@@ -1466,9 +1486,9 @@ app.get(
 );
 
 /*
------------------------------------------------------
-GET BRANDS BY COUNTRY
------------------------------------------------------
+=====================================================
+BRANDS BY COUNTRY
+=====================================================
 */
 
 app.get(
@@ -1534,14 +1554,6 @@ app.get(
           [countryId]
         );
 
-      /*
-        Return both formats so the frontend
-        can safely use data.brands.
-
-        Existing index.html expects:
-          data.brands
-      */
-
       res.json({
         ok: true,
         country,
@@ -1565,9 +1577,9 @@ app.get(
 );
 
 /*
------------------------------------------------------
-GET ONE BRAND
------------------------------------------------------
+=====================================================
+ONE BRAND
+=====================================================
 */
 
 app.get(
@@ -1626,9 +1638,29 @@ app.get(
         });
       }
 
+      const factories =
+        await dbAll(
+          `
+          SELECT
+            id,
+            brand_id,
+            name,
+            city,
+            address,
+            phone,
+            website
+          FROM factories
+          WHERE brand_id = ?
+          ORDER BY
+            name COLLATE NOCASE ASC
+          `,
+          [id]
+        );
+
       res.json({
         ok: true,
-        brand
+        brand,
+        factories
       });
 
     } catch (error) {
@@ -1649,7 +1681,7 @@ app.get(
 
 /*
 =====================================================
-GLOBAL SEARCH
+SEARCH
 =====================================================
 */
 
@@ -1674,7 +1706,9 @@ app.get(
       });
     }
 
-    if (isBlockedContent(q)) {
+    if (
+      isBlockedContent(q)
+    ) {
 
       return res.status(400).json({
         ok: false,
@@ -1712,18 +1746,16 @@ app.get(
 
           WHERE
             b.name LIKE ?
-            OR b.description LIKE ?
             OR b.category LIKE ?
+            OR b.description LIKE ?
             OR c.name LIKE ?
 
           ORDER BY
-
             CASE
               WHEN b.name LIKE ? THEN 0
               WHEN c.name LIKE ? THEN 1
               ELSE 2
             END,
-
             b.name COLLATE NOCASE ASC
 
           LIMIT 100
@@ -1763,7 +1795,7 @@ app.get(
 
 /*
 =====================================================
-BRAND APPLICATION
+APPLICATION
 =====================================================
 */
 
@@ -1777,11 +1809,6 @@ app.post(
         req.body?.brand_name,
         200
       );
-
-    /*
-      Frontend sends country_id.
-      Older clients may send country.
-    */
 
     const countryId =
       validId(
@@ -1830,35 +1857,6 @@ app.post(
         5000
       );
 
-    /*
-      Frontend sends these fields.
-    */
-
-    let paymentStatus =
-      cleanString(
-        req.body?.payment_status,
-        30
-      ).toLowerCase();
-
-    const amountValue =
-      Number(
-        req.body?.amount || 0
-      );
-
-    const amount =
-      Number.isFinite(
-        amountValue
-      ) &&
-      amountValue >= 0
-        ? amountValue
-        : 0;
-
-    /*
-    ---------------------------------------------------
-    VALIDATION
-    ---------------------------------------------------
-    */
-
     if (!brandName) {
 
       return res.status(400).json({
@@ -1894,12 +1892,6 @@ app.post(
       });
     }
 
-    /*
-    ---------------------------------------------------
-    COUNTRY
-    ---------------------------------------------------
-    */
-
     try {
 
       if (countryId) {
@@ -1930,37 +1922,18 @@ app.post(
       }
 
       /*
-        If no country_id was sent,
-        preserve the old country text.
+        IMPORTANT:
+        Payment status and amount sent
+        from frontend are NOT trusted.
       */
 
-      /*
-    ---------------------------------------------------
-    PAYMENT STATUS
-    ---------------------------------------------------
-      */
-
-      const allowedPaymentStatuses = [
-        "pending",
-        "paid",
-        "failed",
-        "cancelled"
-      ];
-
-      if (
-        !allowedPaymentStatuses.includes(
-          paymentStatus
-        )
-      ) {
-        paymentStatus =
-          "pending";
-      }
-
-      /*
-    ---------------------------------------------------
-    INSERT APPLICATION
-    ---------------------------------------------------
-      */
+      const amount =
+        Number.isFinite(
+          BRAND_APPLICATION_AMOUNT
+        ) &&
+        BRAND_APPLICATION_AMOUNT > 0
+          ? BRAND_APPLICATION_AMOUNT
+          : 1;
 
       const result =
         await dbRun(
@@ -1978,6 +1951,7 @@ app.post(
             description,
             payment_status,
             amount,
+            payment_currency,
             status
           )
 
@@ -1992,9 +1966,10 @@ app.post(
             ?,
             ?,
             ?,
+            'pending',
             ?,
             ?,
-            ?
+            'new'
           )
           `,
           [
@@ -2007,9 +1982,8 @@ app.post(
             website,
             logo,
             description,
-            paymentStatus,
             amount,
-            "new"
+            BRAND_APPLICATION_CURRENCY
           ]
         );
 
@@ -2020,8 +1994,10 @@ app.post(
         id:
           result.lastID,
         payment_status:
-          paymentStatus,
-        amount
+          "pending",
+        amount,
+        currency:
+          BRAND_APPLICATION_CURRENCY
       });
 
     } catch (error) {
@@ -2042,14 +2018,957 @@ app.post(
 
 /*
 =====================================================
-ADMIN API
+OCTO HELPERS
 =====================================================
 */
 
+function generateTransactionId(
+  applicationId
+) {
+
+  const random =
+    crypto
+      .randomBytes(8)
+      .toString("hex");
+
+  return `AWB-${applicationId}-${Date.now()}-${random}`;
+}
+
+function sha1(value) {
+
+  return crypto
+    .createHash("sha1")
+    .update(String(value), "utf8")
+    .digest("hex");
+}
+
+function verifyOctoSignature(
+  uuid,
+  status,
+  signature
+) {
+
+  if (
+    !OCTO_UNIQUE_KEY ||
+    !uuid ||
+    !status ||
+    !signature
+  ) {
+    return false;
+  }
+
+  /*
+    OCTO:
+    SHA1(unique_key + uuid + status)
+  */
+
+  const expected =
+    sha1(
+      `${OCTO_UNIQUE_KEY}${uuid}${status}`
+    );
+
+  return (
+    expected.toLowerCase() ===
+    String(signature)
+      .trim()
+      .toLowerCase()
+  );
+}
+
+function octoConfigured() {
+
+  return (
+    Number.isFinite(OCTO_SHOP_ID) &&
+    OCTO_SHOP_ID > 0 &&
+    Boolean(OCTO_SECRET)
+  );
+}
+
 /*
------------------------------------------------------
-GET APPLICATIONS
------------------------------------------------------
+=====================================================
+OCTO STATUS REQUEST
+=====================================================
+*/
+
+async function getOctoPaymentStatus(
+  transactionId
+) {
+
+  if (
+    typeof fetch !== "function"
+  ) {
+    throw new Error(
+      "Node.js 18+ is required."
+    );
+  }
+
+  if (!octoConfigured()) {
+    throw new Error(
+      "OCTO credentials are not configured."
+    );
+  }
+
+  const response =
+    await fetch(
+      OCTO_PREPARE_URL,
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
+
+        body: JSON.stringify({
+          octo_shop_id:
+            OCTO_SHOP_ID,
+
+          octo_secret:
+            OCTO_SECRET,
+
+          shop_transaction_id:
+            transactionId
+        })
+      }
+    );
+
+  const text =
+    await response.text();
+
+  let data;
+
+  try {
+    data =
+      JSON.parse(text);
+  } catch (error) {
+    throw new Error(
+      "Invalid OCTO response."
+    );
+  }
+
+  if (!response.ok) {
+
+    throw new Error(
+      data?.error ||
+      data?.message ||
+      "OCTO status request failed."
+    );
+  }
+
+  return data;
+}
+
+/*
+=====================================================
+CREATE OCTO PAYMENT
+=====================================================
+*/
+
+app.post(
+  "/api/payments/octo/create",
+  async (req, res) => {
+
+    const applicationId =
+      validId(
+        req.body?.application_id
+      );
+
+    if (!applicationId) {
+
+      return res.status(400).json({
+        ok: false,
+        error:
+          "Valid application_id is required."
+      });
+    }
+
+    if (!octoConfigured()) {
+
+      return res.status(503).json({
+        ok: false,
+        error:
+          "OCTO payment is not configured."
+      });
+    }
+
+    try {
+
+      const application =
+        await dbGet(
+          `
+          SELECT
+            id,
+            brand_name,
+            country,
+            owner_name,
+            email,
+            phone,
+            payment_status,
+            amount,
+            payment_currency,
+            octo_transaction_id,
+            octo_payment_uuid
+
+          FROM applications
+
+          WHERE id = ?
+          `,
+          [applicationId]
+        );
+
+      if (!application) {
+
+        return res.status(404).json({
+          ok: false,
+          error:
+            "Application not found."
+        });
+      }
+
+      if (
+        application.payment_status ===
+        "paid"
+      ) {
+
+        return res.status(409).json({
+          ok: false,
+          error:
+            "Application is already paid."
+        });
+      }
+
+      const amount =
+        Number(
+          application.amount
+        ) > 0
+          ? Number(application.amount)
+          : BRAND_APPLICATION_AMOUNT;
+
+      const currency =
+        String(
+          application.payment_currency ||
+            BRAND_APPLICATION_CURRENCY
+        ).toUpperCase();
+
+      const transactionId =
+        generateTransactionId(
+          applicationId
+        );
+
+      const description =
+        `ALL WORLD BRANDS - Brand application #${applicationId} - ${application.brand_name}`
+          .slice(0, 250);
+
+      const paymentMethods = [
+        {
+          method:
+            "bank_card"
+        }
+      ];
+
+      const payload = {
+        octo_shop_id:
+          OCTO_SHOP_ID,
+
+        octo_secret:
+          OCTO_SECRET,
+
+        shop_transaction_id:
+          transactionId,
+
+        auto_capture:
+          true,
+
+        test:
+          OCTO_TEST,
+
+        init_time:
+          new Date().toISOString(),
+
+        total_sum:
+          amount,
+
+        currency:
+          currency,
+
+        description:
+          description,
+
+        payment_methods:
+          paymentMethods,
+
+        return_url:
+          `${OCTO_RETURN_URL}&application_id=${applicationId}`,
+
+        notify_url:
+          OCTO_NOTIFY_URL,
+
+        language:
+          "uz",
+
+        ttl:
+          15,
+
+        user_data: {
+          user_id:
+            String(applicationId),
+
+          phone:
+            application.phone || "",
+
+          email:
+            application.email || ""
+        }
+      };
+
+      const response =
+        await fetch(
+          OCTO_PREPARE_URL,
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+
+            body:
+              JSON.stringify(payload)
+          }
+        );
+
+      const text =
+        await response.text();
+
+      let data;
+
+      try {
+
+        data =
+          JSON.parse(text);
+
+      } catch (error) {
+
+        console.error(
+          "OCTO invalid JSON:",
+          text
+        );
+
+        return res.status(502).json({
+          ok: false,
+          error:
+            "Invalid response from OCTO."
+        });
+      }
+
+      if (!response.ok) {
+
+        console.error(
+          "OCTO HTTP error:",
+          data
+        );
+
+        return res.status(502).json({
+          ok: false,
+          error:
+            data?.error ||
+            data?.message ||
+            "OCTO payment creation failed."
+        });
+      }
+
+      const paymentData =
+        data?.data || data;
+
+      const paymentUuid =
+        paymentData?.octo_payment_UUID ||
+        paymentData?.octo_payment_uuid ||
+        paymentData?.payment_uuid ||
+        "";
+
+      const paymentUrl =
+        paymentData?.octo_pay_url ||
+        paymentData?.octo_pay_URL ||
+        paymentData?.pay_url ||
+        "";
+
+      if (!paymentUrl) {
+
+        console.error(
+          "OCTO payment URL missing:",
+          data
+        );
+
+        return res.status(502).json({
+          ok: false,
+          error:
+            "OCTO did not return a payment URL."
+        });
+      }
+
+      await dbRun(
+        `
+        UPDATE applications
+
+        SET
+          payment_status = 'pending',
+          amount = ?,
+          payment_currency = ?,
+          octo_transaction_id = ?,
+          octo_payment_uuid = ?,
+          payment_updated_at = CURRENT_TIMESTAMP
+
+        WHERE id = ?
+        `,
+        [
+          amount,
+          currency,
+          transactionId,
+          paymentUuid,
+          applicationId
+        ]
+      );
+
+      res.json({
+        ok: true,
+        payment_url:
+          paymentUrl,
+        application_id:
+          applicationId,
+        transaction_id:
+          transactionId,
+        payment_uuid:
+          paymentUuid,
+        amount,
+        currency,
+        test:
+          OCTO_TEST
+      });
+
+    } catch (error) {
+
+      console.error(
+        "OCTO create payment error:",
+        error
+      );
+
+      res.status(500).json({
+        ok: false,
+        error:
+          "Failed to create OCTO payment."
+      });
+    }
+  }
+);
+
+/*
+=====================================================
+OCTO NOTIFICATION
+=====================================================
+*/
+
+app.post(
+  "/api/payments/octo/notify",
+  async (req, res) => {
+
+    try {
+
+      const body =
+        req.body || {};
+
+      const transactionId =
+        cleanString(
+          body.shop_transaction_id,
+          300
+        );
+
+      const uuid =
+        cleanString(
+          body.octo_payment_UUID ||
+          body.octo_payment_uuid ||
+          "",
+          300
+        );
+
+      const status =
+        cleanString(
+          body.status,
+          100
+        );
+
+      const signature =
+        cleanString(
+          body.signature ||
+          "",
+          300
+        );
+
+      if (!transactionId) {
+
+        return res.status(400).json({
+          ok: false,
+          error:
+            "shop_transaction_id is required."
+        });
+      }
+
+      const application =
+        await dbGet(
+          `
+          SELECT
+            id,
+            amount,
+            payment_currency,
+            payment_status,
+            octo_transaction_id,
+            octo_payment_uuid
+
+          FROM applications
+
+          WHERE octo_transaction_id = ?
+          `,
+          [transactionId]
+        );
+
+      if (!application) {
+
+        return res.status(404).json({
+          ok: false,
+          error:
+            "Application not found."
+        });
+      }
+
+      /*
+      -------------------------------------------------
+      SIGNATURE
+      -------------------------------------------------
+      */
+
+      if (OCTO_UNIQUE_KEY) {
+
+        if (
+          !verifyOctoSignature(
+            uuid,
+            status,
+            signature
+          )
+        ) {
+
+          console.error(
+            "Invalid OCTO signature:",
+            transactionId
+          );
+
+          return res.status(403).json({
+            ok: false,
+            error:
+              "Invalid signature."
+          });
+        }
+      }
+
+      /*
+      -------------------------------------------------
+      ALWAYS VERIFY REAL STATUS WITH OCTO
+      -------------------------------------------------
+      */
+
+      const octoResult =
+        await getOctoPaymentStatus(
+          transactionId
+        );
+
+      const octoData =
+        octoResult?.data ||
+        octoResult;
+
+      const realStatus =
+        cleanString(
+          octoData?.status ||
+          status,
+          100
+        ).toLowerCase();
+
+      const octoAmount =
+        Number(
+          octoData?.total_sum ??
+          body.total_sum ??
+          application.amount
+        );
+
+      const octoCurrency =
+        String(
+          octoData?.currency ??
+          body.currency ??
+          application.payment_currency
+        ).toUpperCase();
+
+      /*
+      -------------------------------------------------
+      AMOUNT + CURRENCY CHECK
+      -------------------------------------------------
+      */
+
+      if (
+        Math.abs(
+          octoAmount -
+          Number(application.amount)
+        ) > 0.000001
+      ) {
+
+        console.error(
+          "OCTO amount mismatch:",
+          {
+            application:
+              application.id,
+            expected:
+              application.amount,
+            received:
+              octoAmount
+          }
+        );
+
+        return res.status(400).json({
+          ok: false,
+          error:
+            "Payment amount mismatch."
+        });
+      }
+
+      if (
+        octoCurrency !==
+        String(
+          application.payment_currency
+        ).toUpperCase()
+      ) {
+
+        console.error(
+          "OCTO currency mismatch:",
+          {
+            application:
+              application.id,
+            expected:
+              application.payment_currency,
+            received:
+              octoCurrency
+          }
+        );
+
+        return res.status(400).json({
+          ok: false,
+          error:
+            "Payment currency mismatch."
+        });
+      }
+
+      /*
+      -------------------------------------------------
+      STATUS MAPPING
+      -------------------------------------------------
+      */
+
+      let paymentStatus =
+        "pending";
+
+      if (
+        [
+          "paid",
+          "success",
+          "succeeded",
+          "completed",
+          "captured"
+        ].includes(realStatus)
+      ) {
+
+        paymentStatus =
+          "paid";
+
+      } else if (
+        [
+          "cancelled",
+          "canceled"
+        ].includes(realStatus)
+      ) {
+
+        paymentStatus =
+          "cancelled";
+
+      } else if (
+        [
+          "failed",
+          "error",
+          "declined"
+        ].includes(realStatus)
+      ) {
+
+        paymentStatus =
+          "failed";
+      }
+
+      await dbRun(
+        `
+        UPDATE applications
+
+        SET
+          payment_status = ?,
+          octo_payment_uuid = COALESCE(?, octo_payment_uuid),
+          payment_updated_at = CURRENT_TIMESTAMP
+
+        WHERE id = ?
+        `,
+        [
+          paymentStatus,
+          uuid || null,
+          application.id
+        ]
+      );
+
+      res.json({
+        ok: true,
+        status:
+          paymentStatus
+      });
+
+    } catch (error) {
+
+      console.error(
+        "OCTO notification error:",
+        error
+      );
+
+      res.status(500).json({
+        ok: false,
+        error:
+          "Notification processing failed."
+      });
+    }
+  }
+);
+
+/*
+=====================================================
+OCTO PAYMENT STATUS
+=====================================================
+*/
+
+app.get(
+  "/api/payments/octo/status/:id",
+  async (req, res) => {
+
+    const applicationId =
+      validId(
+        req.params.id
+      );
+
+    if (!applicationId) {
+
+      return res.status(400).json({
+        ok: false,
+        error:
+          "Invalid application ID."
+      });
+    }
+
+    try {
+
+      const application =
+        await dbGet(
+          `
+          SELECT
+            id,
+            payment_status,
+            amount,
+            payment_currency,
+            octo_transaction_id,
+            octo_payment_uuid
+
+          FROM applications
+
+          WHERE id = ?
+          `,
+          [applicationId]
+        );
+
+      if (!application) {
+
+        return res.status(404).json({
+          ok: false,
+          error:
+            "Application not found."
+        });
+      }
+
+      if (
+        application.payment_status ===
+        "paid"
+      ) {
+
+        return res.json({
+          ok: true,
+          payment_status:
+            "paid",
+          application_id:
+            application.id
+        });
+      }
+
+      if (
+        !application.octo_transaction_id
+      ) {
+
+        return res.json({
+          ok: true,
+          payment_status:
+            application.payment_status ||
+            "pending",
+          application_id:
+            application.id
+        });
+      }
+
+      if (!octoConfigured()) {
+
+        return res.json({
+          ok: true,
+          payment_status:
+            application.payment_status ||
+            "pending",
+          application_id:
+            application.id
+        });
+      }
+
+      const octoResult =
+        await getOctoPaymentStatus(
+          application.octo_transaction_id
+        );
+
+      const octoData =
+        octoResult?.data ||
+        octoResult;
+
+      const realStatus =
+        cleanString(
+          octoData?.status,
+          100
+        ).toLowerCase();
+
+      const octoAmount =
+        Number(
+          octoData?.total_sum ??
+          application.amount
+        );
+
+      const octoCurrency =
+        String(
+          octoData?.currency ??
+          application.payment_currency
+        ).toUpperCase();
+
+      let paymentStatus =
+        "pending";
+
+      if (
+        [
+          "paid",
+          "success",
+          "succeeded",
+          "completed",
+          "captured"
+        ].includes(realStatus)
+      ) {
+
+        if (
+          Math.abs(
+            octoAmount -
+            Number(application.amount)
+          ) <= 0.000001 &&
+          octoCurrency ===
+            String(
+              application.payment_currency
+            ).toUpperCase()
+        ) {
+
+          paymentStatus =
+            "paid";
+        }
+
+      } else if (
+        [
+          "cancelled",
+          "canceled"
+        ].includes(realStatus)
+      ) {
+
+        paymentStatus =
+          "cancelled";
+
+      } else if (
+        [
+          "failed",
+          "error",
+          "declined"
+        ].includes(realStatus)
+      ) {
+
+        paymentStatus =
+          "failed";
+      }
+
+      await dbRun(
+        `
+        UPDATE applications
+
+        SET
+          payment_status = ?,
+          octo_payment_uuid =
+            COALESCE(
+              ?,
+              octo_payment_uuid
+            ),
+          payment_updated_at =
+            CURRENT_TIMESTAMP
+
+        WHERE id = ?
+        `,
+        [
+          paymentStatus,
+          octoData?.octo_payment_UUID ||
+            octoData?.octo_payment_uuid ||
+            null,
+          application.id
+        ]
+      );
+
+      res.json({
+        ok: true,
+        payment_status:
+          paymentStatus,
+        application_id:
+          application.id
+      });
+
+    } catch (error) {
+
+      console.error(
+        "OCTO status error:",
+        error
+      );
+
+      res.status(500).json({
+        ok: false,
+        error:
+          "Failed to check payment status."
+      });
+    }
+  }
+);
+
+/*
+=====================================================
+ADMIN APPLICATIONS
+=====================================================
 */
 
 app.get(
@@ -2074,6 +2993,10 @@ app.get(
             a.description,
             a.payment_status,
             a.amount,
+            a.payment_currency,
+            a.octo_transaction_id,
+            a.octo_payment_uuid,
+            a.payment_updated_at,
             a.status,
             a.created_at,
 
@@ -2111,9 +3034,9 @@ app.get(
 );
 
 /*
------------------------------------------------------
-GET ADMIN BRANDS
------------------------------------------------------
+=====================================================
+ADMIN BRANDS
+=====================================================
 */
 
 app.get(
@@ -2170,9 +3093,9 @@ app.get(
 );
 
 /*
------------------------------------------------------
-CREATE BRAND
------------------------------------------------------
+=====================================================
+ADMIN CREATE BRAND
+=====================================================
 */
 
 app.post(
@@ -2337,9 +3260,9 @@ app.post(
 );
 
 /*
------------------------------------------------------
-UPDATE BRAND
------------------------------------------------------
+=====================================================
+ADMIN UPDATE BRAND
+=====================================================
 */
 
 app.put(
@@ -2520,9 +3443,9 @@ app.put(
 );
 
 /*
------------------------------------------------------
-DELETE BRAND
------------------------------------------------------
+=====================================================
+ADMIN DELETE BRAND
+=====================================================
 */
 
 app.delete(
@@ -2589,9 +3512,9 @@ app.delete(
 );
 
 /*
------------------------------------------------------
-UPDATE APPLICATION STATUS
------------------------------------------------------
+=====================================================
+ADMIN UPDATE APPLICATION STATUS
+=====================================================
 */
 
 app.put(
@@ -2635,7 +3558,7 @@ app.put(
       return res.status(400).json({
         ok: false,
         error:
-          "Invalid status. Use: new, reviewing, approved or rejected."
+          "Invalid status."
       });
     }
 
@@ -2645,7 +3568,9 @@ app.put(
         await dbRun(
           `
           UPDATE applications
+
           SET status = ?
+
           WHERE id = ?
           `,
           [
@@ -2688,9 +3613,9 @@ app.put(
 );
 
 /*
------------------------------------------------------
-UPDATE APPLICATION PAYMENT
------------------------------------------------------
+=====================================================
+ADMIN PAYMENT STATUS
+=====================================================
 */
 
 app.put(
@@ -2712,7 +3637,7 @@ app.put(
       });
     }
 
-    let paymentStatus =
+    const paymentStatus =
       cleanString(
         req.body?.payment_status,
         30
@@ -2746,7 +3671,9 @@ app.put(
           UPDATE applications
 
           SET
-            payment_status = ?
+            payment_status = ?,
+            payment_updated_at =
+              CURRENT_TIMESTAMP
 
           WHERE id = ?
           `,
@@ -2786,24 +3713,6 @@ app.put(
           "Failed to update payment status."
       });
     }
-  }
-);
-
-/*
-=====================================================
-UNKNOWN API ROUTE
-=====================================================
-*/
-
-app.use(
-  "/api",
-  (req, res) => {
-
-    res.status(404).json({
-      ok: false,
-      error:
-        "API endpoint not found."
-    });
   }
 );
 
@@ -2868,6 +3777,24 @@ app.use(
       index: "index.html"
     }
   )
+);
+
+/*
+=====================================================
+UNKNOWN API ROUTE
+=====================================================
+*/
+
+app.use(
+  "/api",
+  (req, res) => {
+
+    res.status(404).json({
+      ok: false,
+      error:
+        "API endpoint not found."
+    });
+  }
 );
 
 /*
@@ -2978,6 +3905,18 @@ async function startServer() {
 
         console.log(
           `Countries: ${countries.length}`
+        );
+
+        console.log(
+          `OCTO configured: ${
+            octoConfigured()
+          }`
+        );
+
+        console.log(
+          `OCTO test mode: ${
+            OCTO_TEST
+          }`
         );
 
         console.log(
