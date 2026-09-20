@@ -9,8 +9,10 @@ const sqlite3 = require("sqlite3").verbose();
 const app = express();
 
 const PORT = process.env.PORT || 3000;
+
 const DB_FILE =
-    process.env.DB_FILE || path.join(__dirname, "allworldbrands.db");
+    process.env.DB_FILE ||
+    path.join(__dirname, "allworldbrands.db");
 
 const PUBLIC_DIR = path.join(__dirname, "public");
 const ADMIN_DIR = path.join(PUBLIC_DIR, "admin");
@@ -22,26 +24,40 @@ db.serialize(() => {
     db.run("PRAGMA journal_mode = WAL");
 });
 
+
 /* =========================================================
    OCTO CONFIG
 ========================================================= */
 
 const PUBLIC_BASE_URL =
-    process.env.PUBLIC_BASE_URL || "https://allworldbrands.net";
+    String(
+        process.env.PUBLIC_BASE_URL ||
+        "https://allworldbrands.net"
+    ).replace(/\/+$/, "");
 
-const OCTO_SHOP_ID = Number(process.env.OCTO_SHOP_ID || 0);
-const OCTO_SECRET = process.env.OCTO_SECRET || "";
-const OCTO_UNIQUE_KEY = process.env.OCTO_UNIQUE_KEY || "";
+const OCTO_SHOP_ID =
+    Number(process.env.OCTO_SHOP_ID || 0);
+
+const OCTO_SECRET =
+    String(process.env.OCTO_SECRET || "").trim();
+
+const OCTO_UNIQUE_KEY =
+    String(process.env.OCTO_UNIQUE_KEY || "").trim();
 
 const OCTO_TEST =
-    String(process.env.OCTO_TEST || "true").toLowerCase() === "true";
+    String(
+        process.env.OCTO_TEST || "false"
+    ).toLowerCase() === "true";
 
-const BRAND_APPLICATION_AMOUNT = Number(
-    process.env.BRAND_APPLICATION_AMOUNT || 1
-);
+const BRAND_APPLICATION_AMOUNT =
+    Number(
+        process.env.BRAND_APPLICATION_AMOUNT || 1
+    );
 
 const BRAND_APPLICATION_CURRENCY =
-    process.env.BRAND_APPLICATION_CURRENCY || "USD";
+    String(
+        process.env.BRAND_APPLICATION_CURRENCY || "USD"
+    ).trim().toUpperCase();
 
 const OCTO_PREPARE_URL =
     "https://secure.octo.uz/prepare_payment";
@@ -53,6 +69,7 @@ const OCTO_RETURN_URL =
     `${PUBLIC_BASE_URL}/?payment=octo`;
 
 const OCTO_LANGUAGE = "uz";
+
 const OCTO_TTL = 15;
 
 
@@ -63,7 +80,9 @@ const OCTO_TTL = 15;
 function dbRun(sql, params = []) {
     return new Promise((resolve, reject) => {
         db.run(sql, params, function (err) {
-            if (err) return reject(err);
+            if (err) {
+                return reject(err);
+            }
 
             resolve({
                 lastID: this.lastID,
@@ -76,7 +95,10 @@ function dbRun(sql, params = []) {
 function dbGet(sql, params = []) {
     return new Promise((resolve, reject) => {
         db.get(sql, params, (err, row) => {
-            if (err) return reject(err);
+            if (err) {
+                return reject(err);
+            }
+
             resolve(row);
         });
     });
@@ -85,7 +107,10 @@ function dbGet(sql, params = []) {
 function dbAll(sql, params = []) {
     return new Promise((resolve, reject) => {
         db.all(sql, params, (err, rows) => {
-            if (err) return reject(err);
+            if (err) {
+                return reject(err);
+            }
+
             resolve(rows);
         });
     });
@@ -158,6 +183,7 @@ db.serialize(() => {
 
             octo_transaction_id TEXT,
             octo_payment_uuid TEXT,
+            octo_payment_url TEXT,
 
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
@@ -170,7 +196,11 @@ db.serialize(() => {
    MIGRATION
 ========================================================= */
 
-function addColumnIfMissing(table, column, definition) {
+function addColumnIfMissing(
+    table,
+    column,
+    definition
+) {
     return new Promise((resolve) => {
 
         db.all(
@@ -183,20 +213,24 @@ function addColumnIfMissing(table, column, definition) {
                         `PRAGMA error for ${table}:`,
                         err
                     );
+
                     return resolve();
                 }
 
-                const exists = rows.some(
-                    row => row.name === column
-                );
+                const exists =
+                    rows.some(
+                        row => row.name === column
+                    );
 
                 if (exists) {
                     return resolve();
                 }
 
                 db.run(
-                    `ALTER TABLE ${table}
-                     ADD COLUMN ${column} ${definition}`,
+                    `
+                    ALTER TABLE ${table}
+                    ADD COLUMN ${column} ${definition}
+                    `,
                     [],
                     (alterErr) => {
 
@@ -218,137 +252,160 @@ function addColumnIfMissing(table, column, definition) {
 
 (async () => {
 
-    await addColumnIfMissing(
-        "countries",
-        "code",
-        "TEXT"
-    );
+    const migrations = [
 
-    await addColumnIfMissing(
-        "brands",
-        "logo",
-        "TEXT DEFAULT ''"
-    );
+        [
+            "countries",
+            "code",
+            "TEXT"
+        ],
 
-    await addColumnIfMissing(
-        "brands",
-        "category",
-        "TEXT DEFAULT ''"
-    );
+        [
+            "brands",
+            "logo",
+            "TEXT DEFAULT ''"
+        ],
 
-    await addColumnIfMissing(
-        "brands",
-        "description",
-        "TEXT DEFAULT ''"
-    );
+        [
+            "brands",
+            "category",
+            "TEXT DEFAULT ''"
+        ],
 
-    await addColumnIfMissing(
-        "brands",
-        "website",
-        "TEXT DEFAULT ''"
-    );
+        [
+            "brands",
+            "description",
+            "TEXT DEFAULT ''"
+        ],
 
-    await addColumnIfMissing(
-        "brands",
-        "verification",
-        "TEXT DEFAULT 'Unverified'"
-    );
+        [
+            "brands",
+            "website",
+            "TEXT DEFAULT ''"
+        ],
 
-    await addColumnIfMissing(
-        "brands",
-        "created_at",
-        "DATETIME DEFAULT CURRENT_TIMESTAMP"
-    );
+        [
+            "brands",
+            "verification",
+            "TEXT DEFAULT 'Unverified'"
+        ],
 
-    await addColumnIfMissing(
-        "applications",
-        "brand_name",
-        "TEXT"
-    );
+        [
+            "brands",
+            "created_at",
+            "DATETIME DEFAULT CURRENT_TIMESTAMP"
+        ],
 
-    await addColumnIfMissing(
-        "applications",
-        "country",
-        "TEXT"
-    );
+        [
+            "applications",
+            "brand_name",
+            "TEXT"
+        ],
 
-    await addColumnIfMissing(
-        "applications",
-        "owner_name",
-        "TEXT"
-    );
+        [
+            "applications",
+            "country",
+            "TEXT"
+        ],
 
-    await addColumnIfMissing(
-        "applications",
-        "email",
-        "TEXT"
-    );
+        [
+            "applications",
+            "owner_name",
+            "TEXT"
+        ],
 
-    await addColumnIfMissing(
-        "applications",
-        "phone",
-        "TEXT"
-    );
+        [
+            "applications",
+            "email",
+            "TEXT"
+        ],
 
-    await addColumnIfMissing(
-        "applications",
-        "website",
-        "TEXT"
-    );
+        [
+            "applications",
+            "phone",
+            "TEXT"
+        ],
 
-    await addColumnIfMissing(
-        "applications",
-        "logo",
-        "TEXT DEFAULT ''"
-    );
+        [
+            "applications",
+            "website",
+            "TEXT"
+        ],
 
-    await addColumnIfMissing(
-        "applications",
-        "description",
-        "TEXT"
-    );
+        [
+            "applications",
+            "logo",
+            "TEXT DEFAULT ''"
+        ],
 
-    await addColumnIfMissing(
-        "applications",
-        "status",
-        "TEXT DEFAULT 'new'"
-    );
+        [
+            "applications",
+            "description",
+            "TEXT"
+        ],
 
-    await addColumnIfMissing(
-        "applications",
-        "payment_status",
-        "TEXT DEFAULT 'unpaid'"
-    );
+        [
+            "applications",
+            "status",
+            "TEXT DEFAULT 'new'"
+        ],
 
-    await addColumnIfMissing(
-        "applications",
-        "payment_amount",
-        "REAL DEFAULT 1"
-    );
+        [
+            "applications",
+            "payment_status",
+            "TEXT DEFAULT 'unpaid'"
+        ],
 
-    await addColumnIfMissing(
-        "applications",
-        "payment_currency",
-        "TEXT DEFAULT 'USD'"
-    );
+        [
+            "applications",
+            "payment_amount",
+            "REAL DEFAULT 1"
+        ],
 
-    await addColumnIfMissing(
-        "applications",
-        "octo_transaction_id",
-        "TEXT"
-    );
+        [
+            "applications",
+            "payment_currency",
+            "TEXT DEFAULT 'USD'"
+        ],
 
-    await addColumnIfMissing(
-        "applications",
-        "octo_payment_uuid",
-        "TEXT"
-    );
+        [
+            "applications",
+            "octo_transaction_id",
+            "TEXT"
+        ],
 
-    await addColumnIfMissing(
-        "applications",
-        "updated_at",
-        "DATETIME DEFAULT CURRENT_TIMESTAMP"
-    );
+        [
+            "applications",
+            "octo_payment_uuid",
+            "TEXT"
+        ],
+
+        [
+            "applications",
+            "octo_payment_url",
+            "TEXT"
+        ],
+
+        [
+            "applications",
+            "updated_at",
+            "DATETIME DEFAULT CURRENT_TIMESTAMP"
+        ]
+
+    ];
+
+    for (const [
+        table,
+        column,
+        definition
+    ] of migrations) {
+
+        await addColumnIfMissing(
+            table,
+            column,
+            definition
+        );
+    }
 
 })();
 
@@ -560,11 +617,13 @@ const countries = [
             );
 
         } catch (err) {
+
             console.error(
                 "Country seed error:",
                 name,
                 err.message
             );
+
         }
 
     }
@@ -584,6 +643,7 @@ const starterBrands = [
         "Technology brand profile.",
         "https://www.apple.com"
     ],
+
     [
         "United States",
         "Nike",
@@ -591,6 +651,7 @@ const starterBrands = [
         "Sportswear and footwear brand profile.",
         "https://www.nike.com"
     ],
+
     [
         "United Kingdom",
         "Burberry",
@@ -598,6 +659,7 @@ const starterBrands = [
         "British luxury fashion brand profile.",
         "https://www.burberry.com"
     ],
+
     [
         "Germany",
         "BMW",
@@ -605,6 +667,7 @@ const starterBrands = [
         "German automotive brand profile.",
         "https://www.bmw.com"
     ],
+
     [
         "France",
         "L'Oréal",
@@ -612,6 +675,7 @@ const starterBrands = [
         "Beauty brand profile.",
         "https://www.loreal.com"
     ],
+
     [
         "Italy",
         "Ferrari",
@@ -619,6 +683,7 @@ const starterBrands = [
         "Italian automotive brand profile.",
         "https://www.ferrari.com"
     ],
+
     [
         "Türkiye",
         "Arçelik",
@@ -626,6 +691,7 @@ const starterBrands = [
         "Home appliances brand profile.",
         "https://www.arcelik.com.tr"
     ],
+
     [
         "Uzbekistan",
         "Artel",
@@ -633,6 +699,7 @@ const starterBrands = [
         "Uzbek consumer electronics brand profile.",
         "https://artelelectronics.com"
     ],
+
     [
         "Japan",
         "Toyota",
@@ -640,6 +707,7 @@ const starterBrands = [
         "Japanese automotive brand profile.",
         "https://global.toyota"
     ],
+
     [
         "South Korea",
         "Samsung",
@@ -647,6 +715,7 @@ const starterBrands = [
         "Technology brand profile.",
         "https://www.samsung.com"
     ],
+
     [
         "China",
         "Huawei",
@@ -654,6 +723,7 @@ const starterBrands = [
         "Technology brand profile.",
         "https://www.huawei.com"
     ],
+
     [
         "India",
         "Tata",
@@ -666,53 +736,74 @@ const starterBrands = [
 
 (async () => {
 
-    const countRow = await dbGet(
-        "SELECT COUNT(*) AS count FROM brands"
-    );
+    try {
 
-    if (Number(countRow?.count || 0) > 0) {
-        return;
-    }
+        const countRow =
+            await dbGet(
+                "SELECT COUNT(*) AS count FROM brands"
+            );
 
-    for (const item of starterBrands) {
+        if (
+            Number(countRow?.count || 0) > 0
+        ) {
+            return;
+        }
 
-        const [
-            countryName,
-            brandName,
-            category,
-            description,
-            website
-        ] = item;
+        for (const item of starterBrands) {
 
-        const country = await dbGet(
-            "SELECT id FROM countries WHERE name = ?",
-            [countryName]
-        );
-
-        if (!country) continue;
-
-        await dbRun(
-            `
-            INSERT INTO brands
-            (
-                country_id,
-                name,
-                category,
-                description,
-                website,
-                verification
-            )
-            VALUES (?, ?, ?, ?, ?, ?)
-            `,
-            [
-                country.id,
+            const [
+                countryName,
                 brandName,
                 category,
                 description,
-                website,
-                "Official source"
-            ]
+                website
+            ] = item;
+
+            const country =
+                await dbGet(
+                    `
+                    SELECT id
+                    FROM countries
+                    WHERE name = ?
+                    `,
+                    [countryName]
+                );
+
+            if (!country) {
+                continue;
+            }
+
+            await dbRun(
+                `
+                INSERT INTO brands
+                (
+                    country_id,
+                    name,
+                    category,
+                    description,
+                    website,
+                    verification
+                )
+                VALUES (?, ?, ?, ?, ?, ?)
+                `,
+                [
+                    country.id,
+                    brandName,
+                    category,
+                    description,
+                    website,
+                    "Official source"
+                ]
+            );
+        }
+
+    } catch (err) {
+
+        console.error(
+            "Starter brands error:",
+            err
         );
+
     }
 
 })();
@@ -747,14 +838,21 @@ function normalizeForModeration(value) {
     return String(value || "")
         .toLowerCase()
         .normalize("NFKC")
-        .replace(/[\u0000-\u001f\u007f]/g, " ")
-        .replace(/\s+/g, " ")
+        .replace(
+            /[\u0000-\u001f\u007f]/g,
+            " "
+        )
+        .replace(
+            /\s+/g,
+            " "
+        )
         .trim();
 }
 
 function containsAdultContent(value) {
 
-    const text = normalizeForModeration(value);
+    const text =
+        normalizeForModeration(value);
 
     return ADULT_CONTENT_WORDS.some(
         word => text.includes(word)
@@ -775,27 +873,40 @@ function isBlockedContent(...values) {
 
 function isSafeUrl(value) {
 
-    if (!value) return true;
+    if (!value) {
+        return true;
+    }
 
-    const url = String(value).trim();
+    const url =
+        String(value).trim();
 
     if (url.length > 2048) {
         return false;
     }
 
-    if (/[\u0000-\u001f\u007f]/.test(url)) {
+    if (
+        /[\u0000-\u001f\u007f]/.test(url)
+    ) {
         return false;
     }
 
-    if (/^(javascript|data|vbscript|file|blob):/i.test(url)) {
+    if (
+        /^(javascript|data|vbscript|file|blob):/i.test(
+            url
+        )
+    ) {
         return false;
     }
 
-    if (/^https?:\/\//i.test(url)) {
+    if (
+        /^https?:\/\//i.test(url)
+    ) {
         return true;
     }
 
-    if (/^\/[^/]/.test(url)) {
+    if (
+        /^\/[^/]/.test(url)
+    ) {
         return true;
     }
 
@@ -815,7 +926,9 @@ app.use(
     })
 );
 
-app.use(morgan("tiny"));
+app.use(
+    morgan("tiny")
+);
 
 app.use(
     express.json({
@@ -841,20 +954,27 @@ const ADMIN_USER =
 const ADMIN_PASSWORD =
     process.env.ADMIN_PASSWORD || "";
 
-function adminAuth(req, res, next) {
+function adminAuth(
+    req,
+    res,
+    next
+) {
 
     if (!ADMIN_PASSWORD) {
 
         return res
             .status(500)
-            .send("Admin password is not configured.");
-
+            .send(
+                "Admin password is not configured."
+            );
     }
 
     const auth =
         req.headers.authorization || "";
 
-    if (!auth.startsWith("Basic ")) {
+    if (
+        !auth.startsWith("Basic ")
+    ) {
 
         res.setHeader(
             "WWW-Authenticate",
@@ -863,17 +983,22 @@ function adminAuth(req, res, next) {
 
         return res
             .status(401)
-            .send("Admin login required.");
-
+            .send(
+                "Admin login required."
+            );
     }
 
     let decoded;
 
     try {
 
-        decoded = Buffer
-            .from(auth.substring(6), "base64")
-            .toString("utf8");
+        decoded =
+            Buffer
+                .from(
+                    auth.substring(6),
+                    "base64"
+                )
+                .toString("utf8");
 
     } catch {
 
@@ -884,14 +1009,17 @@ function adminAuth(req, res, next) {
 
         return res
             .status(401)
-            .send("Invalid authentication.");
-
+            .send(
+                "Invalid authentication."
+            );
     }
 
     const separator =
         decoded.indexOf(":");
 
-    if (separator === -1) {
+    if (
+        separator === -1
+    ) {
 
         res.setHeader(
             "WWW-Authenticate",
@@ -900,15 +1028,21 @@ function adminAuth(req, res, next) {
 
         return res
             .status(401)
-            .send("Invalid authentication.");
-
+            .send(
+                "Invalid authentication."
+            );
     }
 
     const username =
-        decoded.substring(0, separator);
+        decoded.substring(
+            0,
+            separator
+        );
 
     const password =
-        decoded.substring(separator + 1);
+        decoded.substring(
+            separator + 1
+        );
 
     if (
         username !== ADMIN_USER ||
@@ -922,8 +1056,9 @@ function adminAuth(req, res, next) {
 
         return res
             .status(401)
-            .send("Wrong username or password.");
-
+            .send(
+                "Wrong username or password."
+            );
     }
 
     next();
@@ -938,12 +1073,14 @@ app.get(
     "/admin",
     adminAuth,
     (req, res) => {
+
         res.sendFile(
             path.join(
                 ADMIN_DIR,
                 "admin.html"
             )
         );
+
     }
 );
 
@@ -951,12 +1088,14 @@ app.get(
     "/admin/",
     adminAuth,
     (req, res) => {
+
         res.sendFile(
             path.join(
                 ADMIN_DIR,
                 "admin.html"
             )
         );
+
     }
 );
 
@@ -964,21 +1103,26 @@ app.get(
     "/admin/admin.html",
     adminAuth,
     (req, res) => {
+
         res.sendFile(
             path.join(
                 ADMIN_DIR,
                 "admin.html"
             )
         );
+
     }
 );
 
 app.use(
     "/admin",
     adminAuth,
-    express.static(ADMIN_DIR, {
-        index: false
-    })
+    express.static(
+        ADMIN_DIR,
+        {
+            index: false
+        }
+    )
 );
 
 
@@ -987,7 +1131,9 @@ app.use(
 ========================================================= */
 
 app.use(
-    express.static(PUBLIC_DIR)
+    express.static(
+        PUBLIC_DIR
+    )
 );
 
 
@@ -1001,26 +1147,39 @@ app.get(
 
         try {
 
-            const row = await dbGet(
-                "SELECT COUNT(*) AS count FROM countries"
-            );
+            const row =
+                await dbGet(
+                    `
+                    SELECT COUNT(*) AS count
+                    FROM countries
+                    `
+                );
 
             res.json({
                 ok: true,
-                service: "ALL WORLD BRANDS API",
-                countries: Number(row?.count || 0),
-                octo_configured: octoConfigured()
+                service:
+                    "ALL WORLD BRANDS API",
+                countries:
+                    Number(
+                        row?.count || 0
+                    ),
+                octo_configured:
+                    octoConfigured(),
+                octo_test:
+                    OCTO_TEST
             });
 
         } catch (err) {
 
             console.error(err);
 
-            res.status(500).json({
-                ok: false,
-                error: "Database error"
-            });
-
+            res
+                .status(500)
+                .json({
+                    ok: false,
+                    error:
+                        "Database error"
+                });
         }
     }
 );
@@ -1036,16 +1195,24 @@ app.get(
 
         try {
 
-            const rows = await dbAll(`
-                SELECT
-                    c.*,
-                    COUNT(b.id) AS brand_count
-                FROM countries c
-                LEFT JOIN brands b
-                    ON b.country_id = c.id
-                GROUP BY c.id
-                ORDER BY c.name COLLATE NOCASE
-            `);
+            const rows =
+                await dbAll(`
+                    SELECT
+                        c.id,
+                        c.name,
+                        c.code,
+                        COUNT(b.id)
+                            AS brand_count
+                    FROM countries c
+                    LEFT JOIN brands b
+                        ON b.country_id = c.id
+                    GROUP BY
+                        c.id,
+                        c.name,
+                        c.code
+                    ORDER BY
+                        c.name COLLATE NOCASE
+                `);
 
             res.json(rows);
 
@@ -1053,10 +1220,12 @@ app.get(
 
             console.error(err);
 
-            res.status(500).json({
-                error: "Could not load countries."
-            });
-
+            res
+                .status(500)
+                .json({
+                    error:
+                        "Could not load countries."
+                });
         }
     }
 );
@@ -1076,13 +1245,19 @@ app.get(
                 await dbGet(
                     `
                     SELECT
-                        c.*,
-                        COUNT(b.id) AS brand_count
+                        c.id,
+                        c.name,
+                        c.code,
+                        COUNT(b.id)
+                            AS brand_count
                     FROM countries c
                     LEFT JOIN brands b
                         ON b.country_id = c.id
                     WHERE c.id = ?
-                    GROUP BY c.id
+                    GROUP BY
+                        c.id,
+                        c.name,
+                        c.code
                     `,
                     [req.params.id]
                 );
@@ -1092,9 +1267,9 @@ app.get(
                 return res
                     .status(404)
                     .json({
-                        error: "Country not found."
+                        error:
+                            "Country not found."
                     });
-
             }
 
             res.json(country);
@@ -1103,10 +1278,12 @@ app.get(
 
             console.error(err);
 
-            res.status(500).json({
-                error: "Could not load country."
-            });
-
+            res
+                .status(500)
+                .json({
+                    error:
+                        "Could not load country."
+                });
         }
     }
 );
@@ -1122,20 +1299,25 @@ app.get(
 
         try {
 
-            const rows = await dbAll(
-                `
-                SELECT
-                    brands.*,
-                    countries.name AS country_name,
-                    countries.code AS country_code
-                FROM brands
-                LEFT JOIN countries
-                    ON brands.country_id = countries.id
-                WHERE brands.country_id = ?
-                ORDER BY brands.name COLLATE NOCASE
-                `,
-                [req.params.id]
-            );
+            const rows =
+                await dbAll(
+                    `
+                    SELECT
+                        brands.*,
+                        countries.name
+                            AS country_name,
+                        countries.code
+                            AS country_code
+                    FROM brands
+                    LEFT JOIN countries
+                        ON brands.country_id =
+                           countries.id
+                    WHERE brands.country_id = ?
+                    ORDER BY
+                        brands.name COLLATE NOCASE
+                    `,
+                    [req.params.id]
+                );
 
             res.json(rows);
 
@@ -1143,10 +1325,12 @@ app.get(
 
             console.error(err);
 
-            res.status(500).json({
-                error: "Could not load brands."
-            });
-
+            res
+                .status(500)
+                .json({
+                    error:
+                        "Could not load brands."
+                });
         }
     }
 );
@@ -1167,11 +1351,14 @@ app.get(
                     `
                     SELECT
                         brands.*,
-                        countries.name AS country_name,
-                        countries.code AS country_code
+                        countries.name
+                            AS country_name,
+                        countries.code
+                            AS country_code
                     FROM brands
                     LEFT JOIN countries
-                        ON brands.country_id = countries.id
+                        ON brands.country_id =
+                           countries.id
                     WHERE brands.id = ?
                     `,
                     [req.params.id]
@@ -1182,9 +1369,9 @@ app.get(
                 return res
                     .status(404)
                     .json({
-                        error: "Brand not found."
+                        error:
+                            "Brand not found."
                     });
-
             }
 
             brand.factories =
@@ -1193,7 +1380,8 @@ app.get(
                     SELECT *
                     FROM factories
                     WHERE brand_id = ?
-                    ORDER BY name COLLATE NOCASE
+                    ORDER BY
+                        name COLLATE NOCASE
                     `,
                     [req.params.id]
                 );
@@ -1204,10 +1392,12 @@ app.get(
 
             console.error(err);
 
-            res.status(500).json({
-                error: "Could not load brand."
-            });
-
+            res
+                .status(500)
+                .json({
+                    error:
+                        "Could not load brand."
+                });
         }
     }
 );
@@ -1224,14 +1414,16 @@ app.get(
         try {
 
             const q =
-                String(req.query.q || "")
-                    .trim();
+                String(
+                    req.query.q || ""
+                ).trim();
 
             if (!q) {
                 return res.json([]);
             }
 
-            const search = `%${q}%`;
+            const search =
+                `%${q}%`;
 
             const rows =
                 await dbAll(
@@ -1244,20 +1436,34 @@ app.get(
                         brands.description,
                         brands.website,
                         brands.verification,
-                        countries.name AS country_name,
-                        countries.code AS country_code
+                        countries.name
+                            AS country_name,
+                        countries.code
+                            AS country_code
                     FROM brands
                     LEFT JOIN countries
-                        ON brands.country_id = countries.id
+                        ON brands.country_id =
+                           countries.id
                     WHERE
                         brands.name LIKE ?
                         OR brands.category LIKE ?
                         OR brands.description LIKE ?
                         OR countries.name LIKE ?
-                    ORDER BY brands.name COLLATE NOCASE
+                    ORDER BY
+                        CASE
+                            WHEN brands.name LIKE ?
+                            THEN 0
+                            WHEN countries.name LIKE ?
+                            THEN 1
+                            ELSE 2
+                        END,
+                        brands.name
+                            COLLATE NOCASE
                     LIMIT 100
                     `,
                     [
+                        search,
+                        search,
                         search,
                         search,
                         search,
@@ -1269,12 +1475,17 @@ app.get(
 
         } catch (err) {
 
-            console.error(err);
+            console.error(
+                "SEARCH ERROR:",
+                err
+            );
 
-            res.status(500).json({
-                error: "Search failed."
-            });
-
+            res
+                .status(500)
+                .json({
+                    error:
+                        "Search failed."
+                });
         }
     }
 );
@@ -1290,7 +1501,8 @@ app.post(
 
         try {
 
-            const x = req.body || {};
+            const x =
+                req.body || {};
 
             const brandName =
                 String(
@@ -1306,33 +1518,27 @@ app.post(
 
             const ownerName =
                 String(
-                    x.owner_name ||
-                    x.name ||
-                    ""
+                    x.owner_name || ""
                 ).trim();
 
             const email =
                 String(
-                    x.email ||
-                    ""
+                    x.email || ""
                 ).trim();
 
             const phone =
                 String(
-                    x.phone ||
-                    ""
+                    x.phone || ""
                 ).trim();
 
             const website =
                 String(
-                    x.website ||
-                    ""
+                    x.website || ""
                 ).trim();
 
             const logo =
                 String(
-                    x.logo ||
-                    ""
+                    x.logo || ""
                 ).trim();
 
             const description =
@@ -1354,7 +1560,6 @@ app.post(
                         error:
                             "Brand name, country and email are required."
                     });
-
             }
 
             if (
@@ -1375,7 +1580,6 @@ app.post(
                         error:
                             "The submitted content is not allowed."
                     });
-
             }
 
             if (
@@ -1389,7 +1593,6 @@ app.post(
                         error:
                             "Invalid website URL."
                     });
-
             }
 
             if (
@@ -1403,7 +1606,21 @@ app.post(
                         error:
                             "Invalid logo URL."
                     });
+            }
 
+            if (
+                !Number.isFinite(
+                    BRAND_APPLICATION_AMOUNT
+                ) ||
+                BRAND_APPLICATION_AMOUNT <= 0
+            ) {
+
+                return res
+                    .status(500)
+                    .json({
+                        error:
+                            "Payment amount is not configured correctly."
+                    });
             }
 
             const result =
@@ -1442,22 +1659,30 @@ app.post(
                     ]
                 );
 
-            res.status(201).json({
-                ok: true,
-                id: result.lastID,
-                status: "new",
-                payment_status: "unpaid"
-            });
+            res
+                .status(201)
+                .json({
+                    ok: true,
+                    id: result.lastID,
+                    status: "new",
+                    payment_status:
+                        "unpaid",
+                    payment_amount:
+                        BRAND_APPLICATION_AMOUNT,
+                    payment_currency:
+                        BRAND_APPLICATION_CURRENCY
+                });
 
         } catch (err) {
 
             console.error(err);
 
-            res.status(500).json({
-                error:
-                    "Could not create application."
-            });
-
+            res
+                .status(500)
+                .json({
+                    error:
+                        "Could not create application."
+                });
         }
     }
 );
@@ -1470,51 +1695,62 @@ app.post(
 function octoConfigured() {
 
     return (
-        Number.isFinite(OCTO_SHOP_ID) &&
+        Number.isFinite(
+            OCTO_SHOP_ID
+        ) &&
         OCTO_SHOP_ID > 0 &&
-        Boolean(OCTO_SECRET)
+        Boolean(OCTO_SECRET) &&
+        Boolean(OCTO_UNIQUE_KEY)
     );
 }
 
 
-function generateTransactionId(applicationId) {
+function generateTransactionId(
+    applicationId
+) {
 
     return [
         `AWB-${applicationId}`,
         Date.now(),
-        crypto.randomBytes(6).toString("hex")
+        crypto
+            .randomBytes(8)
+            .toString("hex")
     ].join("-");
 
 }
 
 
-/*
- * OCTO requires:
- * yyyy-MM-dd HH:mm:ss
- *
- * This replaces ISO:
- * 2026-09-21T12:30:00.000Z
- *
- * with:
- * 2026-09-21 12:30:00
- */
-function formatOctoDate(date = new Date()) {
+function formatOctoDate(
+    date = new Date()
+) {
 
-    const pad = value =>
-        String(value).padStart(2, "0");
+    const pad =
+        value =>
+            String(value)
+                .padStart(2, "0");
 
     return [
         date.getFullYear(),
         "-",
-        pad(date.getMonth() + 1),
+        pad(
+            date.getMonth() + 1
+        ),
         "-",
-        pad(date.getDate()),
+        pad(
+            date.getDate()
+        ),
         " ",
-        pad(date.getHours()),
+        pad(
+            date.getHours()
+        ),
         ":",
-        pad(date.getMinutes()),
+        pad(
+            date.getMinutes()
+        ),
         ":",
-        pad(date.getSeconds())
+        pad(
+            date.getSeconds()
+        )
     ].join("");
 
 }
@@ -1524,9 +1760,43 @@ function sha1(value) {
 
     return crypto
         .createHash("sha1")
-        .update(String(value), "utf8")
+        .update(
+            String(value),
+            "utf8"
+        )
         .digest("hex");
 
+}
+
+
+function safeEqualText(
+    a,
+    b
+) {
+
+    const left =
+        Buffer.from(
+            String(a || "")
+                .toLowerCase()
+        );
+
+    const right =
+        Buffer.from(
+            String(b || "")
+                .toLowerCase()
+        );
+
+    if (
+        left.length !==
+        right.length
+    ) {
+        return false;
+    }
+
+    return crypto.timingSafeEqual(
+        left,
+        right
+    );
 }
 
 
@@ -1536,11 +1806,12 @@ function verifyOctoSignature(
     signature
 ) {
 
-    if (!OCTO_UNIQUE_KEY) {
-        return true;
-    }
-
-    if (!uuid || !status || !signature) {
+    if (
+        !OCTO_UNIQUE_KEY ||
+        !uuid ||
+        !status ||
+        !signature
+    ) {
         return false;
     }
 
@@ -1551,15 +1822,16 @@ function verifyOctoSignature(
             status
         );
 
-    return (
-        String(signature).toLowerCase() ===
-        expected.toLowerCase()
+    return safeEqualText(
+        signature,
+        expected
     );
-
 }
 
 
-function normalizeOctoStatus(value) {
+function normalizeOctoStatus(
+    value
+) {
 
     return String(
         value || ""
@@ -1570,45 +1842,53 @@ function normalizeOctoStatus(value) {
 }
 
 
-const OCTO_SUCCESS_STATUSES = new Set([
-    "paid",
-    "success",
-    "succeeded",
-    "completed",
-    "captured"
-]);
+const OCTO_SUCCESS_STATUSES =
+    new Set([
+        "paid",
+        "success",
+        "succeeded",
+        "completed",
+        "captured"
+    ]);
 
-const OCTO_CANCELLED_STATUSES = new Set([
-    "cancelled",
-    "canceled",
-    "cancel",
-    "expired"
-]);
+const OCTO_CANCELLED_STATUSES =
+    new Set([
+        "cancelled",
+        "canceled",
+        "cancel",
+        "expired"
+    ]);
 
-const OCTO_FAILED_STATUSES = new Set([
-    "failed",
-    "failure",
-    "declined",
-    "error"
-]);
+const OCTO_FAILED_STATUSES =
+    new Set([
+        "failed",
+        "failure",
+        "declined",
+        "error"
+    ]);
 
 
-/*
- * OCTO response helper.
- *
- * IMPORTANT FIX:
- * HTTP 200 alone is NOT enough.
- * OCTO also returns:
- *
- * {
- *   "error": 0,
- *   "data": {...}
- * }
- *
- * Therefore we check both HTTP status
- * and OCTO "error".
- */
-async function parseOctoResponse(response) {
+function getOctoErrorMessage(
+    json,
+    fallback
+) {
+
+    return (
+        json?.errMessage ||
+        json?.error_message ||
+        json?.errorMessage ||
+        json?.data?.errMessage ||
+        json?.data?.error_message ||
+        json?.data?.errorMessage ||
+        json?.message ||
+        fallback
+    );
+}
+
+
+async function parseOctoResponse(
+    response
+) {
 
     const text =
         await response.text();
@@ -1616,29 +1896,27 @@ async function parseOctoResponse(response) {
     let json = {};
 
     try {
-        json = text
-            ? JSON.parse(text)
-            : {};
+
+        json =
+            text
+                ? JSON.parse(text)
+                : {};
+
     } catch {
 
         throw new Error(
             "OCTO returned invalid JSON."
         );
-
     }
 
     if (!response.ok) {
 
-        const errorMessage =
-            json?.data?.error_message ||
-            json?.error_message ||
-            json?.message ||
-            `OCTO HTTP ${response.status}`;
-
         throw new Error(
-            errorMessage
+            getOctoErrorMessage(
+                json,
+                `OCTO HTTP ${response.status}`
+            )
         );
-
     }
 
     const octoError =
@@ -1650,25 +1928,153 @@ async function parseOctoResponse(response) {
         Number(octoError) !== 0
     ) {
 
-        const errorMessage =
-            json?.error_message ||
-            json?.data?.error_message ||
-            json?.message ||
-            `OCTO error: ${octoError}`;
-
         throw new Error(
-            errorMessage
+            getOctoErrorMessage(
+                json,
+                `OCTO error: ${octoError}`
+            )
         );
-
     }
 
     return json;
+}
 
+
+function getOctoData(
+    result
+) {
+
+    if (
+        result &&
+        result.data &&
+        typeof result.data === "object"
+    ) {
+        return result.data;
+    }
+
+    return result || {};
+}
+
+
+function extractOctoStatus(
+    result
+) {
+
+    const data =
+        getOctoData(result);
+
+    return normalizeOctoStatus(
+        data.status ||
+        result?.status ||
+        ""
+    );
+}
+
+
+function extractOctoAmount(
+    result
+) {
+
+    const data =
+        getOctoData(result);
+
+    const values = [
+        data.total_sum,
+        result?.total_sum,
+        data.amount,
+        result?.amount
+    ];
+
+    for (
+        const value of values
+    ) {
+
+        if (
+            value !== undefined &&
+            value !== null &&
+            value !== ""
+        ) {
+
+            const number =
+                Number(value);
+
+            if (
+                Number.isFinite(number)
+            ) {
+                return number;
+            }
+        }
+    }
+
+    return null;
+}
+
+
+function extractOctoCurrency(
+    result
+) {
+
+    const data =
+        getOctoData(result);
+
+    const value =
+        data.currency ||
+        result?.currency ||
+        "";
+
+    return String(
+        value || ""
+    )
+        .trim()
+        .toUpperCase();
+}
+
+
+function paymentMatchesApplication(
+    application,
+    result
+) {
+
+    const expectedAmount =
+        Number(
+            application.payment_amount ||
+            BRAND_APPLICATION_AMOUNT
+        );
+
+    const expectedCurrency =
+        String(
+            application.payment_currency ||
+            BRAND_APPLICATION_CURRENCY
+        )
+            .trim()
+            .toUpperCase();
+
+    const octoAmount =
+        extractOctoAmount(result);
+
+    const octoCurrency =
+        extractOctoCurrency(result);
+
+    if (
+        octoAmount !== null &&
+        octoAmount !== expectedAmount
+    ) {
+        return false;
+    }
+
+    if (
+        octoCurrency &&
+        octoCurrency !== expectedCurrency
+    ) {
+        return false;
+    }
+
+    return true;
 }
 
 
 /* =========================================================
-   OCTO STATUS
+   OCTO STATUS REQUEST
 ========================================================= */
 
 async function getOctoPaymentStatus(
@@ -1680,7 +2086,6 @@ async function getOctoPaymentStatus(
         throw new Error(
             "OCTO is not configured."
         );
-
     }
 
     const response =
@@ -1694,23 +2099,23 @@ async function getOctoPaymentStatus(
                         "application/json"
                 },
 
-                body: JSON.stringify({
-                    octo_shop_id:
-                        OCTO_SHOP_ID,
+                body:
+                    JSON.stringify({
+                        octo_shop_id:
+                            OCTO_SHOP_ID,
 
-                    octo_secret:
-                        OCTO_SECRET,
+                        octo_secret:
+                            OCTO_SECRET,
 
-                    shop_transaction_id:
-                        transactionId
-                })
+                        shop_transaction_id:
+                            transactionId
+                    })
             }
         );
 
-    return await parseOctoResponse(
+    return parseOctoResponse(
         response
     );
-
 }
 
 
@@ -1732,7 +2137,6 @@ app.post(
                         error:
                             "OCTO payment is not configured."
                     });
-
             }
 
             const applicationId =
@@ -1753,7 +2157,6 @@ app.post(
                         error:
                             "Invalid application_id."
                     });
-
             }
 
             const application =
@@ -1774,13 +2177,17 @@ app.post(
                         error:
                             "Application not found."
                     });
-
             }
 
-            if (
+            const currentPaymentStatus =
                 String(
-                    application.payment_status
-                ).toLowerCase() === "paid"
+                    application.payment_status ||
+                    "unpaid"
+                ).toLowerCase();
+
+            if (
+                currentPaymentStatus ===
+                "paid"
             ) {
 
                 return res
@@ -1789,7 +2196,42 @@ app.post(
                         error:
                             "This application is already paid."
                     });
+            }
 
+            /*
+             * Prevent duplicate OCTO payments.
+             * If an active payment already exists,
+             * return the same payment URL.
+             */
+            if (
+                (
+                    currentPaymentStatus ===
+                    "pending"
+                ) &&
+                application.octo_payment_url
+            ) {
+
+                return res.json({
+                    ok: true,
+                    application_id:
+                        application.id,
+                    transaction_id:
+                        application.octo_transaction_id,
+                    payment_uuid:
+                        application.octo_payment_uuid ||
+                        null,
+                    payment_url:
+                        application.octo_payment_url,
+                    amount:
+                        Number(
+                            application.payment_amount ||
+                            BRAND_APPLICATION_AMOUNT
+                        ),
+                    currency:
+                        application.payment_currency ||
+                        BRAND_APPLICATION_CURRENCY,
+                    reused: true
+                });
             }
 
             const transactionId =
@@ -1802,6 +2244,33 @@ app.post(
                 `&application_id=${encodeURIComponent(
                     application.id
                 )}`;
+
+            const amount =
+                Number(
+                    application.payment_amount ||
+                    BRAND_APPLICATION_AMOUNT
+                );
+
+            const currency =
+                String(
+                    application.payment_currency ||
+                    BRAND_APPLICATION_CURRENCY
+                )
+                    .trim()
+                    .toUpperCase();
+
+            if (
+                !Number.isFinite(amount) ||
+                amount <= 0
+            ) {
+
+                return res
+                    .status(500)
+                    .json({
+                        error:
+                            "Invalid payment amount."
+                    });
+            }
 
             const payload = {
 
@@ -1820,27 +2289,14 @@ app.post(
                 test:
                     OCTO_TEST,
 
-                /*
-                 * FIX #1:
-                 *
-                 * OCTO expects:
-                 * yyyy-MM-dd HH:mm:ss
-                 *
-                 * NOT:
-                 * new Date().toISOString()
-                 */
                 init_time:
                     formatOctoDate(),
 
                 total_sum:
-                    Number(
-                        application.payment_amount ||
-                        BRAND_APPLICATION_AMOUNT
-                    ),
+                    amount,
 
                 currency:
-                    application.payment_currency ||
-                    BRAND_APPLICATION_CURRENCY,
+                    currency,
 
                 description:
                     `ALL WORLD BRANDS - Brand application #${application.id}`,
@@ -1853,7 +2309,8 @@ app.post(
 
                 payment_methods: [
                     {
-                        method: "bank_card"
+                        method:
+                            "bank_card"
                     }
                 ],
 
@@ -1865,10 +2322,11 @@ app.post(
 
                 user_data: {
                     user_id:
-                        String(application.id)
+                        String(
+                            application.id
+                        )
                 }
             };
-
 
             const response =
                 await fetch(
@@ -1888,42 +2346,29 @@ app.post(
                     }
                 );
 
-
-            /*
-             * FIX #2:
-             *
-             * We now check:
-             *
-             * 1. HTTP status
-             * 2. OCTO error field
-             * 3. data object
-             */
             const result =
                 await parseOctoResponse(
                     response
                 );
 
-
             const data =
-                result?.data ||
-                result;
-
+                getOctoData(result);
 
             const paymentUrl =
-                data?.octo_pay_url ||
-                data?.payment_url ||
-                data?.pay_url ||
-                result?.octo_pay_url ||
-                result?.payment_url;
-
-
-            const paymentUuid =
-                data?.octo_payment_UUID ||
-                data?.octo_payment_uuid ||
-                result?.octo_payment_UUID ||
-                result?.octo_payment_uuid ||
+                data.octo_pay_url ||
+                data.payment_url ||
+                data.pay_url ||
+                result.octo_pay_url ||
+                result.payment_url ||
+                result.pay_url ||
                 null;
 
+            const paymentUuid =
+                data.octo_payment_UUID ||
+                data.octo_payment_uuid ||
+                result.octo_payment_UUID ||
+                result.octo_payment_uuid ||
+                null;
 
             if (!paymentUrl) {
 
@@ -1938,9 +2383,24 @@ app.post(
                         error:
                             "OCTO did not return a payment URL."
                     });
-
             }
 
+            if (
+                !isSafeUrl(paymentUrl)
+            ) {
+
+                console.error(
+                    "Unsafe OCTO payment URL:",
+                    paymentUrl
+                );
+
+                return res
+                    .status(502)
+                    .json({
+                        error:
+                            "OCTO returned an invalid payment URL."
+                    });
+            }
 
             await dbRun(
                 `
@@ -1948,17 +2408,19 @@ app.post(
                 SET
                     octo_transaction_id = ?,
                     octo_payment_uuid = ?,
+                    octo_payment_url = ?,
                     payment_status = 'pending',
-                    updated_at = CURRENT_TIMESTAMP
+                    updated_at =
+                        CURRENT_TIMESTAMP
                 WHERE id = ?
                 `,
                 [
                     transactionId,
                     paymentUuid,
+                    paymentUrl,
                     application.id
                 ]
             );
-
 
             return res.json({
 
@@ -1977,14 +2439,13 @@ app.post(
                     paymentUrl,
 
                 amount:
-                    Number(
-                        application.payment_amount ||
-                        BRAND_APPLICATION_AMOUNT
-                    ),
+                    amount,
 
                 currency:
-                    application.payment_currency ||
-                    BRAND_APPLICATION_CURRENCY
+                    currency,
+
+                test:
+                    OCTO_TEST
 
             });
 
@@ -2002,9 +2463,7 @@ app.post(
                         err.message ||
                         "OCTO payment creation failed."
                 });
-
         }
-
     }
 );
 
@@ -2032,20 +2491,13 @@ app.post(
                 body.octo_payment_uuid ||
                 "";
 
-            const status =
+            const callbackStatus =
                 body.status ||
                 "";
 
             const signature =
                 body.signature ||
                 "";
-
-            const callbackAmount =
-                body.total_sum;
-
-            const callbackCurrency =
-                body.currency;
-
 
             if (!transactionId) {
 
@@ -2055,9 +2507,7 @@ app.post(
                         error:
                             "Missing shop_transaction_id."
                     });
-
             }
-
 
             const application =
                 await dbGet(
@@ -2069,7 +2519,6 @@ app.post(
                     [transactionId]
                 );
 
-
             if (!application) {
 
                 return res
@@ -2078,15 +2527,15 @@ app.post(
                         error:
                             "Application not found."
                     });
-
             }
 
-
+            /*
+             * Signature is mandatory.
+             */
             if (
-                OCTO_UNIQUE_KEY &&
                 !verifyOctoSignature(
                     uuid,
-                    status,
+                    callbackStatus,
                     signature
                 )
             ) {
@@ -2101,14 +2550,8 @@ app.post(
                         error:
                             "Invalid signature."
                     });
-
             }
 
-
-            /*
-             * Ask OCTO directly for the current
-             * payment state.
-             */
             let statusResponse;
 
             try {
@@ -2131,31 +2574,55 @@ app.post(
                         error:
                             "Could not verify payment status."
                     });
-
             }
 
-
-            const statusData =
-                statusResponse?.data ||
-                statusResponse ||
-                {};
-
-
             const realStatus =
+                extractOctoStatus(
+                    statusResponse
+                ) ||
                 normalizeOctoStatus(
-                    statusData.status ||
-                    status
+                    callbackStatus
                 );
 
-
             /*
-             * Verify amount/currency from callback
-             * when OCTO provides them.
+             * OCTO status response must match
+             * the application amount/currency
+             * when those values are supplied.
              */
             if (
-                callbackAmount !== undefined &&
-                callbackAmount !== null &&
-                callbackAmount !== ""
+                !paymentMatchesApplication(
+                    application,
+                    statusResponse
+                )
+            ) {
+
+                console.error(
+                    "OCTO status amount/currency mismatch:",
+                    {
+                        applicationId:
+                            application.id,
+                        transactionId
+                    }
+                );
+
+                return res
+                    .status(400)
+                    .json({
+                        error:
+                            "Payment amount or currency mismatch."
+                    });
+            }
+
+            /*
+             * Callback amount/currency checks.
+             */
+            if (
+                body.total_sum !==
+                undefined &&
+                body.total_sum !==
+                null &&
+                body.total_sum !==
+                ""
             ) {
 
                 const expectedAmount =
@@ -2166,25 +2633,16 @@ app.post(
 
                 const receivedAmount =
                     Number(
-                        callbackAmount
+                        body.total_sum
                     );
 
                 if (
                     !Number.isFinite(
                         receivedAmount
                     ) ||
-                    receivedAmount !== expectedAmount
+                    receivedAmount !==
+                    expectedAmount
                 ) {
-
-                    console.error(
-                        "OCTO amount mismatch:",
-                        {
-                            expected:
-                                expectedAmount,
-                            received:
-                                receivedAmount
-                        }
-                    );
 
                     return res
                         .status(400)
@@ -2192,26 +2650,23 @@ app.post(
                             error:
                                 "Payment amount mismatch."
                         });
-
                 }
-
             }
 
-
             if (
-                callbackCurrency &&
+                body.currency &&
                 String(
-                    callbackCurrency
-                ).toUpperCase() !==
+                    body.currency
+                )
+                    .trim()
+                    .toUpperCase() !==
                 String(
                     application.payment_currency ||
                     BRAND_APPLICATION_CURRENCY
-                ).toUpperCase()
+                )
+                    .trim()
+                    .toUpperCase()
             ) {
-
-                console.error(
-                    "OCTO currency mismatch."
-                );
 
                 return res
                     .status(400)
@@ -2219,9 +2674,10 @@ app.post(
                         error:
                             "Payment currency mismatch."
                     });
-
             }
 
+            let paymentStatus =
+                "pending";
 
             if (
                 OCTO_SUCCESS_STATUSES.has(
@@ -2229,22 +2685,8 @@ app.post(
                 )
             ) {
 
-                await dbRun(
-                    `
-                    UPDATE applications
-                    SET
-                        payment_status = 'paid',
-                        octo_payment_uuid = ?,
-                        updated_at = CURRENT_TIMESTAMP
-                    WHERE id = ?
-                    `,
-                    [
-                        uuid ||
-                        application.octo_payment_uuid ||
-                        null,
-                        application.id
-                    ]
-                );
+                paymentStatus =
+                    "paid";
 
             } else if (
                 OCTO_CANCELLED_STATUSES.has(
@@ -2252,22 +2694,8 @@ app.post(
                 )
             ) {
 
-                await dbRun(
-                    `
-                    UPDATE applications
-                    SET
-                        payment_status = 'cancelled',
-                        octo_payment_uuid = ?,
-                        updated_at = CURRENT_TIMESTAMP
-                    WHERE id = ?
-                    `,
-                    [
-                        uuid ||
-                        application.octo_payment_uuid ||
-                        null,
-                        application.id
-                    ]
-                );
+                paymentStatus =
+                    "cancelled";
 
             } else if (
                 OCTO_FAILED_STATUSES.has(
@@ -2275,44 +2703,28 @@ app.post(
                 )
             ) {
 
-                await dbRun(
-                    `
-                    UPDATE applications
-                    SET
-                        payment_status = 'failed',
-                        octo_payment_uuid = ?,
-                        updated_at = CURRENT_TIMESTAMP
-                    WHERE id = ?
-                    `,
-                    [
-                        uuid ||
-                        application.octo_payment_uuid ||
-                        null,
-                        application.id
-                    ]
-                );
-
-            } else {
-
-                await dbRun(
-                    `
-                    UPDATE applications
-                    SET
-                        payment_status = 'pending',
-                        octo_payment_uuid = ?,
-                        updated_at = CURRENT_TIMESTAMP
-                    WHERE id = ?
-                    `,
-                    [
-                        uuid ||
-                        application.octo_payment_uuid ||
-                        null,
-                        application.id
-                    ]
-                );
-
+                paymentStatus =
+                    "failed";
             }
 
+            await dbRun(
+                `
+                UPDATE applications
+                SET
+                    payment_status = ?,
+                    octo_payment_uuid = ?,
+                    updated_at =
+                        CURRENT_TIMESTAMP
+                WHERE id = ?
+                `,
+                [
+                    paymentStatus,
+                    uuid ||
+                    application.octo_payment_uuid ||
+                    null,
+                    application.id
+                ]
+            );
 
             return res.json({
                 ok: true
@@ -2331,9 +2743,7 @@ app.post(
                     error:
                         "Notification processing failed."
                 });
-
         }
-
     }
 );
 
@@ -2349,7 +2759,9 @@ app.get(
         try {
 
             const applicationId =
-                Number(req.params.id);
+                Number(
+                    req.params.id
+                );
 
             if (
                 !Number.isInteger(
@@ -2364,9 +2776,7 @@ app.get(
                         error:
                             "Invalid application ID."
                     });
-
             }
-
 
             const application =
                 await dbGet(
@@ -2378,7 +2788,6 @@ app.get(
                     [applicationId]
                 );
 
-
             if (!application) {
 
                 return res
@@ -2387,14 +2796,13 @@ app.get(
                         error:
                             "Application not found."
                     });
-
             }
-
 
             if (
                 String(
                     application.payment_status
-                ).toLowerCase() === "paid"
+                ).toLowerCase() ===
+                "paid"
             ) {
 
                 return res.json({
@@ -2404,9 +2812,7 @@ app.get(
                     payment_status:
                         "paid"
                 });
-
             }
-
 
             if (
                 !application.octo_transaction_id
@@ -2420,32 +2826,48 @@ app.get(
                         application.payment_status ||
                         "unpaid"
                 });
-
             }
-
 
             const result =
                 await getOctoPaymentStatus(
                     application.octo_transaction_id
                 );
 
-
-            const data =
-                result?.data ||
-                result ||
-                {};
-
-
             const status =
-                normalizeOctoStatus(
-                    data.status
+                extractOctoStatus(
+                    result
                 );
 
+            /*
+             * Never mark the payment as paid
+             * from status alone when OCTO gives
+             * an amount/currency that does not
+             * match our application.
+             */
+            if (
+                !paymentMatchesApplication(
+                    application,
+                    result
+                )
+            ) {
+
+                return res
+                    .status(409)
+                    .json({
+                        ok: false,
+                        application_id:
+                            application.id,
+                        payment_status:
+                            "pending",
+                        octo_status:
+                            status,
+                        error:
+                            "Payment amount or currency mismatch."
+                    });
+            }
 
             let paymentStatus =
-                application.payment_status ||
                 "pending";
-
 
             if (
                 OCTO_SUCCESS_STATUSES.has(
@@ -2454,15 +2876,37 @@ app.get(
             ) {
 
                 /*
-                 * OCTO status endpoint officially
-                 * confirms current state.
+                 * If OCTO does not provide amount
+                 * or currency in the status response,
+                 * do not independently promote
+                 * an unpaid application to paid.
                  *
-                 * Amount/currency are not assumed
-                 * from fields that may not exist in
-                 * the status response.
+                 * The official notification endpoint
+                 * remains the final payment confirmation.
                  */
-                paymentStatus =
-                    "paid";
+                const amount =
+                    extractOctoAmount(
+                        result
+                    );
+
+                const currency =
+                    extractOctoCurrency(
+                        result
+                    );
+
+                if (
+                    amount !== null ||
+                    currency
+                ) {
+
+                    paymentStatus =
+                        "paid";
+
+                } else {
+
+                    paymentStatus =
+                        "pending";
+                }
 
             } else if (
                 OCTO_CANCELLED_STATUSES.has(
@@ -2481,29 +2925,32 @@ app.get(
 
                 paymentStatus =
                     "failed";
-
-            } else {
-
-                paymentStatus =
-                    "pending";
-
             }
 
+            /*
+             * Only automatically save status
+             * when it is safe to do so.
+             */
+            if (
+                paymentStatus !==
+                "paid"
+            ) {
 
-            await dbRun(
-                `
-                UPDATE applications
-                SET
-                    payment_status = ?,
-                    updated_at = CURRENT_TIMESTAMP
-                WHERE id = ?
-                `,
-                [
-                    paymentStatus,
-                    application.id
-                ]
-            );
-
+                await dbRun(
+                    `
+                    UPDATE applications
+                    SET
+                        payment_status = ?,
+                        updated_at =
+                            CURRENT_TIMESTAMP
+                    WHERE id = ?
+                    `,
+                    [
+                        paymentStatus,
+                        application.id
+                    ]
+                );
+            }
 
             return res.json({
                 ok: true,
@@ -2531,9 +2978,7 @@ app.get(
                         err.message ||
                         "Could not check OCTO payment status."
                 });
-
         }
-
     }
 );
 
@@ -2554,7 +2999,9 @@ app.get(
                     `
                     SELECT *
                     FROM applications
-                    ORDER BY created_at DESC, id DESC
+                    ORDER BY
+                        created_at DESC,
+                        id DESC
                     `
                 );
 
@@ -2564,11 +3011,12 @@ app.get(
 
             console.error(err);
 
-            res.status(500).json({
-                error:
-                    "Could not load applications."
-            });
-
+            res
+                .status(500)
+                .json({
+                    error:
+                        "Could not load applications."
+                });
         }
     }
 );
@@ -2591,12 +3039,35 @@ app.patch(
                     "new"
                 ).trim();
 
+            const allowedStatuses = [
+                "new",
+                "reviewing",
+                "approved",
+                "rejected",
+                "published"
+            ];
+
+            if (
+                !allowedStatuses.includes(
+                    status
+                )
+            ) {
+
+                return res
+                    .status(400)
+                    .json({
+                        error:
+                            "Invalid application status."
+                    });
+            }
+
             await dbRun(
                 `
                 UPDATE applications
                 SET
                     status = ?,
-                    updated_at = CURRENT_TIMESTAMP
+                    updated_at =
+                        CURRENT_TIMESTAMP
                 WHERE id = ?
                 `,
                 [
@@ -2606,18 +3077,20 @@ app.patch(
             );
 
             res.json({
-                ok: true
+                ok: true,
+                status
             });
 
         } catch (err) {
 
             console.error(err);
 
-            res.status(500).json({
-                error:
-                    "Could not update application."
-            });
-
+            res
+                .status(500)
+                .json({
+                    error:
+                        "Could not update application."
+                });
         }
     }
 );
@@ -2638,12 +3111,18 @@ app.patch(
                 String(
                     req.body?.payment_status ||
                     "unpaid"
-                ).trim().toLowerCase();
+                )
+                    .trim()
+                    .toLowerCase();
 
+            /*
+             * "paid" cannot be manually assigned.
+             * Paid must come from verified OCTO
+             * notification/status verification.
+             */
             const allowed = [
                 "unpaid",
                 "pending",
-                "paid",
                 "failed",
                 "cancelled"
             ];
@@ -2658,9 +3137,8 @@ app.patch(
                     .status(400)
                     .json({
                         error:
-                            "Invalid payment status."
+                            "Paid status can only be confirmed by verified OCTO payment."
                     });
-
             }
 
             await dbRun(
@@ -2668,7 +3146,8 @@ app.patch(
                 UPDATE applications
                 SET
                     payment_status = ?,
-                    updated_at = CURRENT_TIMESTAMP
+                    updated_at =
+                        CURRENT_TIMESTAMP
                 WHERE id = ?
                 `,
                 [
@@ -2687,11 +3166,12 @@ app.patch(
 
             console.error(err);
 
-            res.status(500).json({
-                error:
-                    "Could not update payment status."
-            });
-
+            res
+                .status(500)
+                .json({
+                    error:
+                        "Could not update payment status."
+                });
         }
     }
 );
@@ -2713,13 +3193,16 @@ app.get(
                     `
                     SELECT
                         brands.*,
-                        countries.name AS country_name,
-                        countries.code AS country_code
+                        countries.name
+                            AS country_name,
+                        countries.code
+                            AS country_code
                     FROM brands
                     LEFT JOIN countries
                         ON brands.country_id =
                            countries.id
-                    ORDER BY brands.id DESC
+                    ORDER BY
+                        brands.id DESC
                     `
                 );
 
@@ -2729,11 +3212,12 @@ app.get(
 
             console.error(err);
 
-            res.status(500).json({
-                error:
-                    "Could not load brands."
-            });
-
+            res
+                .status(500)
+                .json({
+                    error:
+                        "Could not load brands."
+                });
         }
     }
 );
@@ -2791,7 +3275,6 @@ app.post(
                     "Unverified"
                 ).trim();
 
-
             if (!name) {
 
                 return res
@@ -2800,9 +3283,42 @@ app.post(
                         error:
                             "Brand name is required."
                     });
-
             }
 
+            if (
+                !Number.isInteger(
+                    countryId
+                ) ||
+                countryId <= 0
+            ) {
+
+                return res
+                    .status(400)
+                    .json({
+                        error:
+                            "A valid country is required."
+                    });
+            }
+
+            const country =
+                await dbGet(
+                    `
+                    SELECT id
+                    FROM countries
+                    WHERE id = ?
+                    `,
+                    [countryId]
+                );
+
+            if (!country) {
+
+                return res
+                    .status(400)
+                    .json({
+                        error:
+                            "Country not found."
+                    });
+            }
 
             if (
                 isBlockedContent(
@@ -2819,9 +3335,7 @@ app.post(
                         error:
                             "The submitted content is not allowed."
                     });
-
             }
-
 
             if (
                 website &&
@@ -2834,9 +3348,7 @@ app.post(
                         error:
                             "Invalid website URL."
                     });
-
             }
-
 
             if (
                 logo &&
@@ -2849,37 +3361,7 @@ app.post(
                         error:
                             "Invalid logo URL."
                     });
-
             }
-
-
-            let validCountryId =
-                Number.isInteger(
-                    countryId
-                ) &&
-                countryId > 0
-                    ? countryId
-                    : null;
-
-
-            if (validCountryId) {
-
-                const country =
-                    await dbGet(
-                        `
-                        SELECT id
-                        FROM countries
-                        WHERE id = ?
-                        `,
-                        [validCountryId]
-                    );
-
-                if (!country) {
-                    validCountryId = null;
-                }
-
-            }
-
 
             const result =
                 await dbRun(
@@ -2897,7 +3379,7 @@ app.post(
                     VALUES (?, ?, ?, ?, ?, ?, ?)
                     `,
                     [
-                        validCountryId,
+                        countryId,
                         name,
                         logo,
                         category,
@@ -2906,7 +3388,6 @@ app.post(
                         verification
                     ]
                 );
-
 
             res.json({
                 ok: true,
@@ -2917,13 +3398,13 @@ app.post(
 
             console.error(err);
 
-            res.status(500).json({
-                error:
-                    "Could not create brand."
-            });
-
+            res
+                .status(500)
+                .json({
+                    error:
+                        "Could not create brand."
+                });
         }
-
     }
 );
 
@@ -2949,7 +3430,6 @@ app.patch(
                     [req.params.id]
                 );
 
-
             if (!current) {
 
                 return res
@@ -2958,9 +3438,7 @@ app.patch(
                         error:
                             "Brand not found."
                     });
-
             }
-
 
             const name =
                 String(
@@ -3010,7 +3488,6 @@ app.patch(
                     "Unverified"
                 ).trim();
 
-
             if (!name) {
 
                 return res
@@ -3019,9 +3496,42 @@ app.patch(
                         error:
                             "Brand name is required."
                     });
-
             }
 
+            if (
+                !Number.isInteger(
+                    countryId
+                ) ||
+                countryId <= 0
+            ) {
+
+                return res
+                    .status(400)
+                    .json({
+                        error:
+                            "A valid country is required."
+                    });
+            }
+
+            const country =
+                await dbGet(
+                    `
+                    SELECT id
+                    FROM countries
+                    WHERE id = ?
+                    `,
+                    [countryId]
+                );
+
+            if (!country) {
+
+                return res
+                    .status(400)
+                    .json({
+                        error:
+                            "Country not found."
+                    });
+            }
 
             if (
                 isBlockedContent(
@@ -3038,9 +3548,7 @@ app.patch(
                         error:
                             "The submitted content is not allowed."
                     });
-
             }
-
 
             if (
                 website &&
@@ -3053,9 +3561,7 @@ app.patch(
                         error:
                             "Invalid website URL."
                     });
-
             }
-
 
             if (
                 logo &&
@@ -3068,9 +3574,7 @@ app.patch(
                         error:
                             "Invalid logo URL."
                     });
-
             }
-
 
             await dbRun(
                 `
@@ -3086,9 +3590,7 @@ app.patch(
                 WHERE id = ?
                 `,
                 [
-                    Number.isInteger(countryId)
-                        ? countryId
-                        : current.country_id,
+                    countryId,
                     name,
                     logo,
                     category,
@@ -3099,7 +3601,6 @@ app.patch(
                 ]
             );
 
-
             res.json({
                 ok: true
             });
@@ -3108,13 +3609,13 @@ app.patch(
 
             console.error(err);
 
-            res.status(500).json({
-                error:
-                    "Could not update brand."
-            });
-
+            res
+                .status(500)
+                .json({
+                    error:
+                        "Could not update brand."
+                });
         }
-
     }
 );
 
@@ -3129,6 +3630,26 @@ app.delete(
     async (req, res) => {
 
         try {
+
+            const brand =
+                await dbGet(
+                    `
+                    SELECT id
+                    FROM brands
+                    WHERE id = ?
+                    `,
+                    [req.params.id]
+                );
+
+            if (!brand) {
+
+                return res
+                    .status(404)
+                    .json({
+                        error:
+                            "Brand not found."
+                    });
+            }
 
             await dbRun(
                 `
@@ -3146,13 +3667,136 @@ app.delete(
 
             console.error(err);
 
-            res.status(500).json({
-                error:
-                    "Could not delete brand."
-            });
-
+            res
+                .status(500)
+                .json({
+                    error:
+                        "Could not delete brand."
+                });
         }
+    }
+);
 
+
+/* =========================================================
+   LANGUAGE / LOCALIZATION
+========================================================= */
+
+const COUNTRY_LANGUAGE_MAP = {
+
+    UZ: "uz",
+    TR: "tr",
+    AZ: "az",
+    KZ: "kk",
+    KG: "ky",
+    TJ: "tg",
+    TM: "tk",
+    RU: "ru",
+
+    GB: "en",
+    US: "en",
+    CA: "en",
+    AU: "en",
+    NZ: "en",
+    IE: "en",
+
+    DE: "de",
+    AT: "de",
+    CH: "de",
+
+    FR: "fr",
+    BE: "fr",
+    LU: "fr",
+
+    ES: "es",
+    MX: "es",
+    AR: "es",
+    CO: "es",
+    CL: "es",
+    PE: "es",
+
+    IT: "it",
+
+    PT: "pt",
+    BR: "pt",
+
+    NL: "nl",
+
+    PL: "pl",
+
+    CZ: "cs",
+
+    SK: "sk",
+
+    HU: "hu",
+
+    RO: "ro",
+
+    BG: "bg",
+
+    GR: "el",
+
+    CN: "zh",
+    TW: "zh",
+    HK: "zh",
+
+    JP: "ja",
+
+    KR: "ko",
+
+    IN: "en",
+    SG: "en",
+    PH: "en",
+
+    ID: "id",
+
+    MY: "ms",
+
+    TH: "th",
+
+    VN: "vi",
+
+    SA: "ar",
+    AE: "ar",
+    QA: "ar",
+    KW: "ar",
+    BH: "ar",
+    OM: "ar",
+    JO: "ar",
+    IQ: "ar",
+    EG: "ar",
+    MA: "ar",
+    DZ: "ar",
+    TN: "ar"
+};
+
+
+app.get(
+    "/api/language",
+    (req, res) => {
+
+        const acceptLanguage =
+            String(
+                req.headers[
+                    "accept-language"
+                ] || ""
+            );
+
+        const firstLanguage =
+            acceptLanguage
+                .split(",")[0]
+                .split(";")[0]
+                .trim()
+                .toLowerCase();
+
+        const language =
+            firstLanguage ||
+            "en";
+
+        res.json({
+            ok: true,
+            language
+        });
     }
 );
 
@@ -3186,13 +3830,13 @@ app.use(
         if (
             fs.existsSync(indexFile)
         ) {
+
             return res.sendFile(
                 indexFile
             );
         }
 
         next();
-
     }
 );
 
@@ -3204,10 +3848,12 @@ app.use(
 app.use(
     (req, res) => {
 
-        res.status(404).json({
-            error: "Not found."
-        });
-
+        res
+            .status(404)
+            .json({
+                error:
+                    "Not found."
+            });
     }
 );
 
@@ -3224,11 +3870,12 @@ app.use(
             err
         );
 
-        res.status(500).json({
-            error:
-                "Internal server error."
-        });
-
+        res
+            .status(500)
+            .json({
+                error:
+                    "Internal server error."
+            });
     }
 );
 
@@ -3256,7 +3903,15 @@ const server =
             );
 
             console.log(
+                `OCTO shop ID: ${OCTO_SHOP_ID || "not configured"}`
+            );
+
+            console.log(
                 `OCTO notify URL: ${OCTO_NOTIFY_URL}`
+            );
+
+            console.log(
+                `OCTO return URL: ${OCTO_RETURN_URL}`
             );
 
         }
@@ -3286,7 +3941,6 @@ function shutdown(signal) {
         });
 
     });
-
 }
 
 
