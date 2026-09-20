@@ -23,6 +23,10 @@
 
 <style>
 
+/* =========================
+   RESET
+========================= */
+
 *{
     box-sizing:border-box;
     margin:0;
@@ -31,1452 +35,1244 @@
 
 html{
     scroll-behavior:smooth;
-    background:#020713;
 }
 
 body{
-    font-family:Arial,Helvetica,sans-serif;
-    background:#020713;
-    color:#fff;
     min-height:100vh;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+    color:#ffffff;
+    background:#020713;
     overflow-x:hidden;
 }
 
-button,
-input,
-select,
-textarea{
-    font:inherit;
-}
-
-button{
-    cursor:pointer;
-}
-
-/* =========================================
+/* =========================
    GLOBAL BACKGROUND
-========================================= */
+========================= */
 
 body::before{
     content:"";
     position:fixed;
     inset:0;
+
+    background-image:
+        linear-gradient(
+            rgba(2,7,19,.70),
+            rgba(2,7,19,.82)
+        ),
+        url("/brand-rain-background.png");
+
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+
+    opacity:.45;
     z-index:-10;
 
-    background:
-        #020713
-        url("/brand-rain-background.png")
-        center center / cover no-repeat;
-
-    transform:scale(1.03);
-
-    animation:bgBreath
-        18s
-        ease-in-out
-        infinite
-        alternate;
-
-    will-change:transform;
+    animation:
+        backgroundBreath 12s ease-in-out infinite;
 }
 
-body::after{
-    content:"";
-    position:fixed;
-    inset:0;
-    z-index:-9;
+@keyframes backgroundBreath{
 
-    pointer-events:none;
-
-    background:
-        linear-gradient(
-            180deg,
-            rgba(1,7,18,.48),
-            rgba(1,7,18,.16) 42%,
-            rgba(1,5,14,.62)
-        ),
-
-        radial-gradient(
-            circle at 50% 40%,
-            transparent 20%,
-            rgba(0,0,0,.38) 100%
-        );
-}
-
-@keyframes bgBreath{
-
-    from{
-        transform:scale(1.03);
+    0%,100%{
+        transform:scale(1);
+        opacity:.38;
     }
 
-    to{
-        transform:scale(1.09);
+    50%{
+        transform:scale(1.04);
+        opacity:.52;
     }
-
 }
 
-/* =========================================
-   RAIN EFFECT
-========================================= */
+/* =========================
+   RAIN
+========================= */
 
 #rainFX{
     position:fixed;
     inset:0;
-
-    z-index:-8;
-
     pointer-events:none;
-
     overflow:hidden;
-
-    opacity:.42;
+    z-index:-5;
 }
 
-.rain-streak{
+.rain-drop{
     position:absolute;
-
-    top:-18vh;
+    top:-120px;
 
     width:1px;
-    height:90px;
+    height:70px;
 
     background:
         linear-gradient(
-            to bottom,
             transparent,
-            rgba(180,225,255,.7),
+            rgba(255,255,255,.35),
             transparent
         );
 
-    transform:rotate(12deg);
-
     animation:
-        rainFall
-        linear
-        infinite;
-
-    filter:blur(.2px);
+        rainFall linear infinite;
 }
 
 @keyframes rainFall{
 
     from{
-        transform:
-            translate3d(
-                0,
-                -15vh,
-                0
-            )
-            rotate(12deg);
+        transform:translateY(-120px);
     }
 
     to{
-        transform:
-            translate3d(
-                -12vw,
-                120vh,
-                0
-            )
-            rotate(12deg);
+        transform:translateY(110vh);
     }
-
 }
 
-/* =========================================
+/* =========================
    GLOBE BACKGROUND
-========================================= */
+========================= */
 
 #globeBg{
     position:fixed;
-    inset:0;
+    width:620px;
+    height:620px;
 
-    z-index:-7;
+    right:-250px;
+    top:110px;
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            rgba(0,180,255,.18),
+            rgba(0,60,120,.06) 45%,
+            transparent 70%
+        );
+
+    border:1px solid rgba(0,170,255,.12);
+
+    box-shadow:
+        0 0 80px rgba(0,150,255,.12),
+        inset 0 0 80px rgba(0,150,255,.08);
 
     pointer-events:none;
+    z-index:-4;
+
+    animation:
+        globeFloat 15s ease-in-out infinite;
 }
 
-/* =========================================
+@keyframes globeFloat{
+
+    0%,100%{
+        transform:translateY(0) rotate(0deg);
+    }
+
+    50%{
+        transform:translateY(-20px) rotate(4deg);
+    }
+}
+
+/* =========================
    HEADER
-========================================= */
+========================= */
 
 header{
     position:sticky;
-
     top:0;
-
     z-index:1000;
 
-    background:
-        rgba(2,7,19,.72);
+    width:100%;
 
-    backdrop-filter:blur(18px);
-    -webkit-backdrop-filter:blur(18px);
+    background:
+        rgba(2,7,19,.88);
+
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
 
     border-bottom:
-        1px solid
-        rgba(255,255,255,.08);
+        1px solid rgba(255,255,255,.08);
 }
 
-.nav{
-    max-width:1400px;
+.header-inner{
+    width:100%;
+    max-width:1800px;
 
     margin:auto;
-
-    padding:
-        14px
-        24px;
+    padding:14px 24px;
 
     display:flex;
-
     align-items:center;
-
+    justify-content:space-between;
     gap:20px;
 }
 
-.logo-wrap{
-    display:flex;
-
-    align-items:center;
-
-    gap:12px;
-
-    min-width:max-content;
-}
-
-.logo-globe{
-    font-size:32px;
-}
-
 .logo{
-    font-size:20px;
+    color:#ffffff;
+    text-decoration:none;
 
+    font-size:22px;
     font-weight:900;
-
     letter-spacing:1px;
+
+    white-space:nowrap;
 }
 
-.tagline{
-    font-size:10px;
-
-    color:#8fa3c3;
-
-    margin-top:2px;
+.logo span{
+    color:#00b7ff;
 }
 
-.nav-links{
+nav{
     display:flex;
-
-    gap:5px;
-
-    margin-left:18px;
+    align-items:center;
+    gap:18px;
 }
 
-.nav-links button{
-    border:0;
+nav a{
+    color:#dcecff;
+    text-decoration:none;
 
-    background:transparent;
+    font-size:14px;
+    font-weight:700;
 
-    color:#dfe9fb;
-
-    padding:
-        10px
-        13px;
-
-    border-radius:10px;
+    transition:.2s;
 }
 
-.nav-links button:hover{
-    background:
-        rgba(255,255,255,.08);
+nav a:hover{
+    color:#00c8ff;
 }
 
 .header-search{
-    margin-left:auto;
+    width:260px;
+    max-width:30vw;
 
-    display:flex;
-
-    align-items:center;
-
-    border:
-        1px solid
-        rgba(71,128,255,.35);
-
-    background:
-        rgba(8,23,48,.72);
-
-    border-radius:14px;
-
-    overflow:hidden;
-
-    max-width:330px;
-
-    width:100%;
+    position:relative;
 }
 
 .header-search input{
     width:100%;
 
-    background:transparent;
-
-    border:0;
-
-    outline:0;
-
-    color:#fff;
-
-    padding:
-        11px
-        13px;
-}
-
-.lang{
-    padding:
-        8px
-        0
-        8px
-        12px;
-
-    color:#fff;
-
-    font-weight:700;
-}
-
-/* =========================================
-   HERO
-========================================= */
-
-.hero{
-    position:relative;
-
-    max-width:1400px;
-
-    margin:auto;
-
-    min-height:390px;
-
-    padding:
-        70px
-        24px
-        50px;
-
-    display:flex;
-
-    align-items:center;
-}
-
-.hero-copy{
-    max-width:680px;
-
-    position:relative;
-
-    z-index:2;
-}
-
-.eyebrow{
-    display:inline-flex;
-
-    padding:
-        8px
-        13px;
-
-    border:
-        1px solid
-        rgba(69,145,255,.45);
-
-    background:
-        rgba(8,29,60,.62);
+    padding:11px 15px;
 
     border-radius:999px;
 
-    color:#8bd5ff;
+    border:
+        1px solid rgba(255,255,255,.15);
+
+    outline:none;
+
+    background:
+        rgba(255,255,255,.07);
+
+    color:#ffffff;
+
+    font-size:14px;
+}
+
+.header-search input::placeholder{
+    color:#9fb0c8;
+}
+
+.language{
+    padding:9px 13px;
+
+    border-radius:999px;
+
+    border:
+        1px solid rgba(255,255,255,.12);
+
+    color:#dcecff;
 
     font-size:13px;
+    font-weight:700;
+
+    background:
+        rgba(255,255,255,.05);
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+    width:100%;
+    max-width:1500px;
+
+    margin:auto;
+
+    padding:
+        80px 24px
+        65px;
+
+    text-align:center;
+}
+
+.hero-badge{
+    display:inline-flex;
+
+    padding:8px 15px;
+
+    border-radius:999px;
+
+    border:
+        1px solid rgba(0,183,255,.30);
+
+    background:
+        rgba(0,183,255,.08);
+
+    color:#67d9ff;
+
+    font-size:12px;
+    font-weight:800;
+
+    letter-spacing:1px;
+    text-transform:uppercase;
 
     margin-bottom:20px;
 }
 
 .hero h1{
     font-size:
-        clamp(
-            42px,
-            6vw,
-            78px
-        );
+        clamp(42px, 6vw, 88px);
 
-    line-height:.98;
+    line-height:1;
 
-    font-weight:900;
+    font-weight:1000;
+
+    letter-spacing:-3px;
 
     margin-bottom:22px;
 
     text-shadow:
-        0 8px 40px
-        rgba(0,0,0,.5);
+        0 0 35px rgba(0,183,255,.18);
 }
 
-.gradient{
-    background:
-        linear-gradient(
-            90deg,
-            #19c8ff,
-            #7c5cff,
-            #ff4fd8
-        );
-
-    -webkit-background-clip:text;
-
-    background-clip:text;
-
-    color:transparent;
+.hero h1 span{
+    color:#00c8ff;
 }
 
 .hero p{
-    max-width:670px;
-
-    color:#b9c7df;
-
-    font-size:18px;
-
-    line-height:1.55;
-}
-
-.global-badge{
-    position:absolute;
-
-    right:30px;
-
-    top:80px;
-
-    padding:
-        18px
-        22px;
-
-    border:
-        1px solid
-        rgba(35,157,255,.55);
-
-    background:
-        rgba(5,22,47,.78);
-
-    border-radius:20px;
-
-    box-shadow:
-        0 15px 50px
-        rgba(0,0,0,.25);
-}
-
-.global-badge strong{
-    font-size:28px;
-
-    display:block;
-}
-
-.global-badge span{
-    color:#91a4c2;
-
-    font-size:12px;
-}
-
-/* =========================================
-   SEARCH
-========================================= */
-
-.search-box{
-    max-width:800px;
+    max-width:750px;
 
     margin:
-        28px
-        0
-        0;
+        0 auto 30px;
 
-    display:flex;
+    color:#aebdd0;
 
-    background:
-        rgba(7,20,42,.82);
+    font-size:
+        clamp(15px, 2vw, 19px);
 
-    border:
-        1px solid
-        #1d75d8;
-
-    border-radius:18px;
-
-    overflow:hidden;
-
-    box-shadow:
-        0 12px 40px
-        rgba(0,0,0,.22);
+    line-height:1.7;
 }
 
-.search-box input{
+/* =========================
+   MAIN SEARCH
+========================= */
+
+.main-search{
+    width:100%;
+    max-width:760px;
+
+    margin:auto;
+
+    position:relative;
+}
+
+.main-search input{
     width:100%;
 
-    border:0;
-
-    outline:0;
-
-    background:transparent;
-
-    color:#fff;
-
     padding:
-        17px
-        20px;
-}
+        18px 24px;
 
-.search-box button{
-    border:0;
+    border-radius:999px;
 
-    padding:
-        0
-        24px;
+    border:
+        1px solid rgba(255,255,255,.16);
+
+    outline:none;
 
     background:
-        linear-gradient(
-            90deg,
-            #12bde8,
-            #704cff
-        );
+        rgba(5,12,28,.88);
 
-    color:#fff;
+    color:#ffffff;
 
-    font-weight:800;
+    font-size:16px;
+
+    box-shadow:
+        0 15px 50px rgba(0,0,0,.25);
+
+    transition:.25s;
 }
 
-/* =========================================
-   MAIN
-========================================= */
+.main-search input:focus{
+    border-color:
+        rgba(0,200,255,.55);
 
-.container{
-    max-width:1400px;
+    box-shadow:
+        0 0 0 4px
+        rgba(0,200,255,.08),
+        0 15px 50px
+        rgba(0,0,0,.30);
+}
+
+.main-search input::placeholder{
+    color:#8294aa;
+}
+
+/* =========================
+   COUNTER
+========================= */
+
+.country-counter{
+    margin-top:18px;
+
+    color:#8ea2ba;
+
+    font-size:13px;
+}
+
+.country-counter strong{
+    color:#00c8ff;
+}
+
+/* =========================
+   COUNTRIES SECTION
+========================= */
+
+.countries-section{
+    width:100%;
+    max-width:1900px;
 
     margin:auto;
 
     padding:
-        10px
-        24px
-        70px;
-
-    position:relative;
-
-    z-index:2;
+        20px 20px
+        80px;
 }
 
 .section-head{
     display:flex;
+    align-items:end;
+    justify-content:space-between;
 
-    align-items:center;
+    gap:20px;
 
-    gap:15px;
-
-    margin:
-        18px
-        0
-        22px;
+    margin-bottom:25px;
 }
 
 .section-title{
-    font-size:30px;
+    font-size:28px;
+    font-weight:900;
 }
 
-.count-badge{
+.section-title span{
+    color:#00c8ff;
+}
+
+.section-subtitle{
+    color:#7f91a8;
     font-size:13px;
-
-    color:#cfe0ff;
-
-    padding:
-        7px
-        12px;
-
-    border:
-        1px solid
-        rgba(73,132,255,.4);
-
-    background:
-        rgba(8,28,61,.65);
-
-    border-radius:999px;
 }
 
-/* =========================================
-   COUNTRY GRID
-========================================= */
+/* =========================
+   COUNTRIES GRID
+   DESKTOP = 15 COLUMNS
+========================= */
 
 .countries-grid{
-
     display:grid;
 
     grid-template-columns:
-        repeat(
-            15,
-            minmax(0,1fr)
-        );
+        repeat(15, minmax(0, 1fr));
 
-    gap:20px;
+    gap:10px;
 }
 
-.country-card{
+/* =========================
+   COUNTRY CARD
+========================= */
 
+.country-card{
     position:relative;
 
     min-width:0;
 
-    height:178px;
-
-    border-radius:16px;
+    aspect-ratio:16 / 9;
 
     overflow:hidden;
 
+    border-radius:12px;
+
     border:
-        1px solid
-        rgba(62,157,255,.42);
+        1px solid rgba(255,255,255,.10);
 
     background:
-        #081a33
-        center/cover
-        no-repeat;
-
-    box-shadow:
-        0 12px 30px
-        rgba(0,0,0,.28);
-
-    transition:
-        transform .2s,
-        border-color .2s,
-        box-shadow .2s;
+        rgba(5,12,28,.82);
 
     cursor:pointer;
+
+    transition:
+        transform .22s ease,
+        border-color .22s ease,
+        box-shadow .22s ease;
 }
 
-.country-image{
+.country-card:hover{
+    transform:
+        translateY(-4px);
 
+    border-color:
+        rgba(0,200,255,.50);
+
+    box-shadow:
+        0 15px 35px
+        rgba(0,0,0,.35);
+}
+
+.country-card img{
     position:absolute;
-
     inset:0;
 
     width:100%;
-
     height:100%;
 
     object-fit:cover;
 
-    display:block;
+    opacity:.72;
 
-    z-index:0;
+    transition:
+        transform .35s ease,
+        opacity .35s ease;
 }
 
-.country-card::before{
+.country-card:hover img{
+    transform:scale(1.08);
+    opacity:.90;
+}
 
+.country-card::after{
     content:"";
 
     position:absolute;
-
     inset:0;
 
     background:
         linear-gradient(
-            180deg,
-            rgba(0,0,0,.05),
-            rgba(0,0,0,.12) 38%,
-            rgba(0,7,18,.92) 100%
+            to top,
+            rgba(0,0,0,.90),
+            rgba(0,0,0,.10)
         );
-
-    z-index:1;
-
-    pointer-events:none;
 }
 
-.country-card-overlay{
-
+.country-content{
     position:absolute;
 
-    inset:0;
+    left:9px;
+    right:9px;
+    bottom:8px;
 
-    background:
-        linear-gradient(
-            180deg,
-            rgba(0,0,0,.02),
-            rgba(0,7,18,.88) 100%
-        );
-
-    z-index:1;
-
-    pointer-events:none;
-}
-
-.country-card:hover{
-
-    transform:
-        translateY(-5px);
-
-    border-color:#5fbcff;
-
-    box-shadow:
-        0 18px 40px
-        rgba(0,120,255,.2);
+    z-index:2;
 }
 
 .country-flag{
-
-    position:absolute;
-
-    left:10px;
-
-    top:10px;
-
-    font-size:27px;
-
-    z-index:2;
-
-    filter:
-        drop-shadow(
-            0 3px 5px
-            rgba(0,0,0,.5)
-        );
+    font-size:18px;
+    margin-bottom:3px;
 }
 
-.country-info{
+.country-name{
+    font-size:12px;
 
-    position:absolute;
-
-    left:10px;
-
-    right:10px;
-
-    bottom:10px;
-
-    z-index:2;
-}
-
-.country-card h3{
-
-    font-size:14px;
-
-    line-height:1.12;
-
-    margin-bottom:5px;
+    font-weight:900;
 
     white-space:nowrap;
-
     overflow:hidden;
-
     text-overflow:ellipsis;
 }
 
-.country-meta{
+.country-brands{
+    margin-top:2px;
 
-    display:flex;
+    color:#8fa5bb;
 
-    align-items:center;
-
-    justify-content:space-between;
-
-    color:#c4d4ee;
-
-    font-size:10px;
+    font-size:9px;
 }
 
-.arrow{
+.country-arrow{
+    position:absolute;
 
-    width:25px;
+    top:7px;
+    right:7px;
 
-    height:25px;
+    z-index:3;
 
-    border:
-        1px solid
-        rgba(255,255,255,.7);
+    width:22px;
+    height:22px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
     border-radius:50%;
 
-    display:grid;
-
-    place-items:center;
-
-    color:#fff;
-
-    font-size:14px;
-
     background:
-        rgba(0,0,0,.2);
+        rgba(0,0,0,.45);
+
+    color:#ffffff;
+
+    font-size:12px;
 }
 
-/* =========================================
-   PROMO
-========================================= */
+/* =========================
+   ADD BRAND PROMO
+========================= */
 
 .promo{
+    width:100%;
+    max-width:1200px;
 
-    margin-top:60px;
+    margin:
+        0 auto 80px;
 
     padding:
-        45px
-        30px;
+        42px 30px;
 
-    border-radius:28px;
+    border-radius:24px;
+
+    border:
+        1px solid rgba(0,200,255,.18);
 
     background:
         linear-gradient(
             135deg,
-            rgba(17,188,230,.15),
-            rgba(108,76,255,.18),
-            rgba(255,70,220,.12)
+            rgba(0,183,255,.09),
+            rgba(90,30,255,.07)
         );
 
-    border:
-        1px solid
-        rgba(111,120,255,.3);
-
     text-align:center;
-
-    backdrop-filter:blur(8px);
 }
 
 .promo h2{
-
-    font-size:38px;
+    font-size:
+        clamp(26px, 4vw, 42px);
 
     margin-bottom:12px;
 }
 
 .promo p{
+    color:#9eb0c5;
 
-    color:#aeb9ce;
+    max-width:650px;
 
-    margin-bottom:25px;
+    margin:0 auto 24px;
+
+    line-height:1.6;
 }
 
-.primary-btn{
-
+.primary-button{
     border:0;
 
-    border-radius:15px;
-
     padding:
-        16px
-        28px;
+        13px 25px;
 
-    color:#fff;
-
-    font-weight:800;
+    border-radius:999px;
 
     background:
         linear-gradient(
-            90deg,
-            #0dbde8,
-            #764bff,
-            #e849d6
+            135deg,
+            #00b7ff,
+            #007cff
         );
 
+    color:#ffffff;
+
+    font-weight:900;
+
+    cursor:pointer;
+
     box-shadow:
-        0 10px 35px
-        rgba(91,74,255,.25);
+        0 10px 30px
+        rgba(0,150,255,.20);
+
+    transition:.2s;
 }
 
-/* =========================================
+.primary-button:hover{
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 14px 35px
+        rgba(0,150,255,.30);
+}
+
+/* =========================
    FOOTER
-========================================= */
+========================= */
 
 footer{
-
-    border-top:
-        1px solid
-        rgba(255,255,255,.08);
-
-    color:#75819a;
+    padding:
+        35px 20px;
 
     text-align:center;
 
-    padding:
-        30px
-        20px;
+    border-top:
+        1px solid rgba(255,255,255,.07);
 
-    background:
-        rgba(1,5,14,.45);
+    color:#71839a;
+
+    font-size:13px;
 }
 
-/* =========================================
+footer strong{
+    color:#00b7ff;
+}
+
+/* =========================
    MODAL
-========================================= */
+========================= */
 
 .modal{
-
-    display:none;
-
     position:fixed;
-
     inset:0;
 
     z-index:5000;
 
+    display:none;
+    align-items:center;
+    justify-content:center;
+
+    padding:20px;
+
     background:
-        rgba(0,0,0,.78);
+        rgba(0,0,0,.72);
 
-    backdrop-filter:blur(10px);
+    backdrop-filter:
+        blur(10px);
 
-    -webkit-backdrop-filter:blur(10px);
-
-    overflow-y:auto;
-
-    padding:25px;
+    -webkit-backdrop-filter:
+        blur(10px);
 }
 
-.modal.show{
-
+.modal.active{
     display:flex;
-
-    align-items:center;
-
-    justify-content:center;
 }
 
 .modal-box{
-
     width:100%;
+    max-width:620px;
 
-    max-width:650px;
+    max-height:
+        calc(100vh - 40px);
 
-    background:#080e1c;
+    overflow-y:auto;
+
+    border-radius:24px;
 
     border:
-        1px solid
-        #23314e;
+        1px solid rgba(255,255,255,.12);
 
-    border-radius:25px;
-
-    padding:30px;
-
-    position:relative;
+    background:
+        #07101f;
 
     box-shadow:
         0 30px 100px
-        rgba(0,0,0,.6);
+        rgba(0,0,0,.55);
+
+    padding:30px;
 }
 
-.close{
+.modal-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
 
-    position:absolute;
+    gap:20px;
 
-    right:20px;
+    margin-bottom:24px;
+}
 
-    top:20px;
+.modal-header h2{
+    font-size:25px;
+}
 
-    width:42px;
-
-    height:42px;
+.close-button{
+    width:38px;
+    height:38px;
 
     border-radius:50%;
 
     border:
-        1px solid
-        #26334d;
+        1px solid rgba(255,255,255,.10);
 
-    background:#0d1526;
+    background:
+        rgba(255,255,255,.06);
 
-    color:#fff;
+    color:#ffffff;
 
-    font-size:25px;
-}
+    cursor:pointer;
 
-.modal h2{
-
-    font-size:32px;
-
-    margin-bottom:7px;
-}
-
-.subtitle{
-
-    color:#8795af;
-
-    margin-bottom:25px;
+    font-size:20px;
 }
 
 .form-group{
-
-    margin-bottom:15px;
+    margin-bottom:16px;
 }
 
 .form-group label{
-
     display:block;
 
-    color:#b8c2d5;
-
-    font-size:14px;
-
     margin-bottom:7px;
+
+    color:#b8c7d8;
+
+    font-size:13px;
+
+    font-weight:700;
 }
 
 .form-group input,
-.form-group select,
-.form-group textarea{
-
+.form-group textarea,
+.form-group select{
     width:100%;
 
-    border:
-        1px solid
-        #25334e;
-
-    background:#0b1425;
-
-    color:#fff;
-
-    outline:none;
+    padding:
+        13px 14px;
 
     border-radius:12px;
 
-    padding:
-        13px
-        14px;
+    border:
+        1px solid rgba(255,255,255,.12);
+
+    outline:none;
+
+    background:
+        rgba(255,255,255,.05);
+
+    color:#ffffff;
+
+    font-family:inherit;
+
+    font-size:14px;
+}
+
+.form-group select option{
+    background:#07101f;
+    color:#ffffff;
 }
 
 .form-group textarea{
-
-    min-height:120px;
+    min-height:110px;
 
     resize:vertical;
 }
 
 .form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus{
-
-    border-color:#4b9dff;
-
-    box-shadow:
-        0 0 0 3px
-        rgba(55,139,255,.12);
+.form-group textarea:focus,
+.form-group select:focus{
+    border-color:
+        rgba(0,200,255,.55);
 }
 
 .form-actions{
-
     display:flex;
+    justify-content:flex-end;
 
-    gap:12px;
+    gap:10px;
 
     margin-top:22px;
 }
 
-.form-actions button{
+.secondary-button{
+    padding:
+        12px 20px;
 
-    flex:1;
-}
-
-/* =========================================
-   CHECKOUT
-========================================= */
-
-.checkout-card{
+    border-radius:999px;
 
     border:
-        1px solid
-        #25334e;
-
-    background:#0b1425;
-
-    border-radius:18px;
-
-    padding:20px;
-
-    margin-bottom:20px;
-}
-
-.checkout-row{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    gap:15px;
-
-    padding:9px 0;
-
-    border-bottom:
-        1px solid
-        rgba(255,255,255,.06);
-}
-
-.checkout-row:last-child{
-
-    border-bottom:0;
-}
-
-.checkout-label{
-
-    color:#8795af;
-}
-
-.checkout-value{
-
-    color:#fff;
-
-    text-align:right;
-
-    word-break:break-word;
-}
-
-.price{
-
-    font-size:28px;
-
-    font-weight:900;
-
-    color:#55d7ff;
-}
-
-/* =========================================
-   SUCCESS
-========================================= */
-
-.success-screen{
-
-    text-align:center;
-
-    padding:20px 0;
-}
-
-.success-icon{
-
-    width:80px;
-
-    height:80px;
-
-    border-radius:50%;
-
-    margin:
-        0
-        auto
-        20px;
-
-    display:grid;
-
-    place-items:center;
-
-    font-size:40px;
+        1px solid rgba(255,255,255,.12);
 
     background:
-        rgba(37,210,139,.14);
+        rgba(255,255,255,.06);
 
-    border:
-        1px solid
-        rgba(37,210,139,.45);
+    color:#dce8f5;
+
+    cursor:pointer;
+
+    font-weight:700;
 }
 
-.success-screen p{
+/* =========================
+   COUNTRY MODAL CONTENT
+========================= */
 
-    color:#9caac1;
+.country-modal-list{
+    display:grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0,1fr));
+
+    gap:12px;
+}
+
+.brand-card{
+    padding:16px;
+
+    border-radius:15px;
+
+    border:
+        1px solid rgba(255,255,255,.09);
+
+    background:
+        rgba(255,255,255,.04);
+}
+
+.brand-card h3{
+    margin-bottom:7px;
+
+    font-size:16px;
+}
+
+.brand-card p{
+    color:#8fa1b5;
+
+    font-size:13px;
+
+    line-height:1.5;
+}
+
+.brand-card a{
+    display:inline-block;
+
+    margin-top:10px;
+
+    color:#00c8ff;
+
+    font-size:12px;
+
+    text-decoration:none;
+}
+
+/* =========================
+   CHECKOUT
+========================= */
+
+.checkout-box{
+    text-align:center;
+}
+
+.checkout-price{
+    font-size:42px;
+    font-weight:1000;
+
+    color:#00c8ff;
+
+    margin:
+        15px 0;
+}
+
+.checkout-info{
+    color:#91a4ba;
+
+    font-size:14px;
 
     line-height:1.6;
 
-    margin:
-        12px
-        auto
-        20px;
-
-    max-width:500px;
+    margin-bottom:24px;
 }
 
-/* =========================================
+/* =========================
+   SUCCESS
+========================= */
+
+.success-box{
+    text-align:center;
+}
+
+.success-icon{
+    width:70px;
+    height:70px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    margin:0 auto 18px;
+
+    border-radius:50%;
+
+    background:
+        rgba(0,210,140,.12);
+
+    border:
+        1px solid rgba(0,210,140,.30);
+
+    color:#48e6ad;
+
+    font-size:35px;
+}
+
+.application-id{
+    margin-top:15px;
+
+    padding:12px;
+
+    border-radius:10px;
+
+    background:
+        rgba(255,255,255,.05);
+
+    color:#b7c7d8;
+
+    font-family:monospace;
+}
+
+/* =========================
    RESPONSIVE
-========================================= */
+========================= */
+
+@media(max-width:1600px){
+
+    .countries-grid{
+        grid-template-columns:
+            repeat(12, minmax(0,1fr));
+    }
+}
 
 @media(max-width:1200px){
 
     .countries-grid{
-
         grid-template-columns:
-            repeat(
-                10,
-                minmax(0,1fr)
-            );
-
-        gap:16px;
+            repeat(10, minmax(0,1fr));
     }
 
-    .country-card{
+    .header-search{
+        max-width:240px;
+    }
+}
 
-        height:155px;
+@media(max-width:1000px){
+
+    .countries-grid{
+        grid-template-columns:
+            repeat(8, minmax(0,1fr));
     }
 
+    nav{
+        gap:10px;
+    }
+
+    nav a{
+        font-size:12px;
+    }
 }
 
 @media(max-width:800px){
 
-    .nav{
+    .header-inner{
+        padding:12px 15px;
 
-        padding:
-            11px
-            14px;
-
-        gap:10px;
-    }
-
-    .nav-links{
-
-        display:none;
-    }
-
-    .logo-globe{
-
-        font-size:26px;
+        flex-wrap:wrap;
     }
 
     .logo{
-
-        font-size:16px;
+        font-size:18px;
     }
 
-    .tagline{
+    nav{
+        order:3;
 
-        font-size:8px;
+        width:100%;
+
+        justify-content:center;
     }
 
     .header-search{
-
-        max-width:210px;
+        width:220px;
+        max-width:45vw;
     }
 
     .hero{
-
-        min-height:330px;
-
         padding:
-            45px
-            16px
-            35px;
+            55px 18px
+            45px;
     }
 
-    .hero h1{
-
-        font-size:
-            clamp(
-                38px,
-                12vw,
-                62px
-            );
-    }
-
-    .hero p{
-
-        font-size:15px;
-    }
-
-    .global-badge{
-
-        display:none;
-    }
-
-    .container{
-
+    .countries-section{
         padding:
-            10px
-            12px
-            50px;
+            15px 12px
+            60px;
     }
 
     .countries-grid{
-
         grid-template-columns:
-            repeat(
-                5,
-                minmax(0,1fr)
-            );
+            repeat(5, minmax(0,1fr));
 
-        gap:9px;
+        gap:7px;
     }
 
     .country-card{
-
-        height:auto;
-
-        aspect-ratio:1/1;
-
-        border-radius:11px;
+        aspect-ratio:1 / 1;
+        border-radius:10px;
     }
 
-    .country-flag{
-
+    .country-content{
         left:6px;
-
-        top:6px;
-
-        font-size:20px;
-    }
-
-    .country-info{
-
-        left:6px;
-
         right:6px;
-
         bottom:6px;
     }
 
-    .country-card h3{
-
-        font-size:9px;
-
-        margin-bottom:3px;
+    .country-name{
+        font-size:10px;
     }
 
-    .country-meta{
-
-        font-size:7px;
+    .country-brands{
+        font-size:8px;
     }
 
-    .arrow{
-
-        width:18px;
-
-        height:18px;
-
-        font-size:11px;
+    .section-head{
+        align-items:flex-start;
+        flex-direction:column;
     }
-
-    .promo{
-
-        margin-top:35px;
-
-        padding:
-            30px
-            18px;
-    }
-
-    .promo h2{
-
-        font-size:28px;
-    }
-
-    .modal{
-
-        padding:10px;
-    }
-
-    .modal-box{
-
-        padding:22px;
-
-        border-radius:19px;
-    }
-
-    .modal h2{
-
-        font-size:25px;
-    }
-
 }
 
 @media(max-width:480px){
 
+    .header-inner{
+        gap:10px;
+    }
+
     .header-search{
+        order:2;
 
-        max-width:155px;
+        width:100%;
+        max-width:none;
     }
 
-    .header-search input{
-
-        padding:
-            9px
-            8px;
-
-        font-size:12px;
+    .language{
+        display:none;
     }
 
-    .lang{
+    nav{
+        gap:15px;
+    }
 
-        padding-left:5px;
-
+    nav a{
         font-size:11px;
     }
 
-    .hero{
-
-        padding-top:35px;
-    }
-
     .hero h1{
-
-        font-size:42px;
+        letter-spacing:-2px;
     }
 
-    .search-box button{
-
+    .main-search input{
         padding:
-            0
-            15px;
+            15px 18px;
     }
 
-    .section-title{
+    .countries-grid{
+        grid-template-columns:
+            repeat(5, minmax(0,1fr));
 
-        font-size:22px;
+        gap:5px;
     }
 
-    .count-badge{
-
-        font-size:10px;
-
-        padding:
-            5px
-            8px;
+    .country-card{
+        border-radius:8px;
     }
 
+    .country-flag{
+        font-size:14px;
+    }
+
+    .country-name{
+        font-size:8px;
+    }
+
+    .country-brands{
+        font-size:7px;
+    }
+
+    .country-arrow{
+        width:18px;
+        height:18px;
+
+        font-size:9px;
+    }
+
+    .modal-box{
+        padding:20px;
+
+        border-radius:18px;
+    }
+
+    .country-modal-list{
+        grid-template-columns:1fr;
+    }
+
+    .form-actions{
+        flex-direction:column;
+    }
+
+    .form-actions button{
+        width:100%;
+    }
 }
 
 </style>
+
 </head>
 
 <body>
 
-<div id="rainFX"></div>
+<!-- =========================
+     BACKGROUND
+========================= -->
 
+<div id="rainFX"></div>
 <div id="globeBg"></div>
+
+
+<!-- =========================
+     HEADER
+========================= -->
 
 <header>
 
-    <div class="nav">
+    <div class="header-inner">
 
-        <div class="logo-wrap">
+        <a
+            href="#"
+            class="logo"
+            onclick="goHome(); return false;"
+        >
+            ALL <span>WORLD</span> BRANDS
+        </a>
 
-            <div class="logo-globe">
-                🌎
-            </div>
+        <nav>
 
-            <div>
-
-                <div class="logo">
-                    ALL WORLD BRANDS
-                </div>
-
-                <div class="tagline">
-                    Discover brands from around the world
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="nav-links">
-
-            <button
-                type="button"
-                onclick="goHome()"
+            <a
+                href="#"
+                onclick="goHome(); return false;"
             >
                 Home
-            </button>
+            </a>
 
-            <button
-                type="button"
-                onclick="scrollToCountries()"
+            <a
+                href="#countries"
+                onclick="scrollToCountries();"
             >
                 Countries
-            </button>
+            </a>
 
-            <button
-                type="button"
-                onclick="openAddBrand()"
+            <a
+                href="#"
+                onclick="openAddBrand(); return false;"
             >
                 Add Brand
-            </button>
+            </a>
 
-        </div>
+        </nav>
 
         <div class="header-search">
 
@@ -1485,438 +1281,194 @@ footer{
                 type="search"
                 placeholder="Search country..."
                 autocomplete="off"
+                oninput="filterCountries(this.value)"
             >
 
-            <div class="lang">
-                EN
-            </div>
+        </div>
 
+        <div class="language">
+            EN
         </div>
 
     </div>
 
 </header>
 
+
+<!-- =========================
+     HERO
+========================= -->
+
+<main>
+
 <section class="hero">
 
-    <div class="hero-copy">
+    <div class="hero-badge">
+        GLOBAL BRAND DIRECTORY
+    </div>
 
-        <div class="eyebrow">
-            🌍 GLOBAL BRAND DIRECTORY
-        </div>
+    <h1>
+        ALL <span>WORLD</span> BRANDS
+    </h1>
 
-        <h1>
-            Discover
-            <span class="gradient">
-                Brands
-            </span>
-            Worldwide
-        </h1>
+    <p>
+        Discover countries, brands and businesses
+        from around the world in one global platform.
+    </p>
 
-        <p>
-            Explore brands from countries around the world,
-            discover their industries, websites and information
-            in one global directory.
-        </p>
+    <div class="main-search">
 
-        <div class="search-box">
-
-            <input
-                id="countrySearch"
-                type="search"
-                placeholder="Search countries..."
-                autocomplete="off"
-            >
-
-            <button
-                type="button"
-                onclick="performSearch()"
-            >
-                Search
-            </button>
-
-        </div>
+        <input
+            id="countrySearch"
+            type="search"
+            placeholder="Search for a country..."
+            autocomplete="off"
+            oninput="filterCountries(this.value)"
+        >
 
     </div>
 
-    <div class="global-badge">
+    <div class="country-counter">
 
         <strong id="heroCountryCount">
-            250+
+            0
         </strong>
 
-        <span>
-            Countries & territories
-        </span>
+        countries available
 
     </div>
 
 </section>
 
-<main class="container">
 
-    <section id="countriesSection">
+<!-- =========================
+     COUNTRIES
+========================= -->
 
-        <div class="section-head">
+<section
+    class="countries-section"
+    id="countries"
+>
 
-            <h2 class="section-title">
-                Countries
-            </h2>
+    <div class="section-head">
 
-            <span
-                class="count-badge"
-                id="countryCount"
-            >
-                Loading...
-            </span>
+        <div>
 
-        </div>
+            <div class="section-title">
+                Countries of the <span>World</span>
+            </div>
 
-        <div
-            id="countriesGrid"
-            class="countries-grid"
-        >
-
-            <div
-                style="
-                    grid-column:1/-1;
-                    text-align:center;
-                    padding:50px;
-                    color:#9aa7bd;
-                "
-            >
-                Loading countries...
+            <div class="section-subtitle">
+                Explore brands by country
             </div>
 
         </div>
 
-    </section>
+        <div class="country-counter">
 
-    <section class="promo">
+            <strong id="countryCount">
+                0
+            </strong>
 
-        <h2>
-            Add Your Brand
-        </h2>
+            countries
 
-        <p>
-            Is your brand missing?
-            Add it to the ALL WORLD BRANDS directory.
-        </p>
+        </div>
 
-        <button
-            class="primary-btn"
-            type="button"
-            onclick="openAddBrand()"
-        >
-            Add Brand — $1
-        </button>
+    </div>
 
-    </section>
+
+    <div
+        id="countriesGrid"
+        class="countries-grid"
+    >
+
+        <!-- Countries will be loaded here -->
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     ADD BRAND PROMO
+========================= -->
+
+<section class="promo">
+
+    <h2>
+        Is your brand missing?
+    </h2>
+
+    <p>
+        Add your brand to ALL WORLD BRANDS
+        and make it discoverable worldwide.
+    </p>
+
+    <button
+        class="primary-button"
+        type="button"
+        onclick="openAddBrand()"
+    >
+        Add Your Brand — $1
+    </button>
+
+</section>
 
 </main>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
 
 <footer>
 
     <div>
-        © 2026 ALL WORLD BRANDS
-    </div>
-
-    <div style="margin-top:8px;">
-        Global brand discovery platform
+        © 2026
+        <strong>ALL WORLD BRANDS</strong>
+        — Global Brand Directory
     </div>
 
 </footer>
 
-<!-- =========================================
-     ADD BRAND MODAL
-========================================= -->
+
+<!-- =========================
+     COUNTRY MODAL
+========================= -->
 
 <div
-    id="addBrandModal"
+    id="countryModal"
     class="modal"
+    onclick="closeCountryModal(event)"
 >
 
-    <div class="modal-box">
+    <div
+        class="modal-box"
+        onclick="event.stopPropagation()"
+    >
 
-        <button
-            class="close"
-            type="button"
-            onclick="closeModal()"
-        >
-            ×
-        </button>
+        <div class="modal-header">
 
-        <!-- FORM -->
-
-        <div
-            id="formScreen"
-        >
-
-            <h2>
-                Add Your Brand
+            <h2 id="countryModalTitle">
+                Country
             </h2>
 
-            <div class="subtitle">
-                Submit your brand to the global directory.
-            </div>
-
-            <form
-                id="brandForm"
+            <button
+                class="close-button"
+                type="button"
+                onclick="closeCountryModal()"
             >
-
-                <div class="form-group">
-
-                    <label for="brandName">
-                        Brand name
-                    </label>
-
-                    <input
-                        id="brandName"
-                        name="brand_name"
-                        type="text"
-                        maxlength="200"
-                        required
-                    >
-
-                </div>
-
-                <div class="form-group">
-
-                    <label for="brandCountry">
-                        Country
-                    </label>
-
-                    <select
-                        id="brandCountry"
-                        name="country_id"
-                        required
-                    >
-
-                        <option value="">
-                            Select country
-                        </option>
-
-                    </select>
-
-                </div>
-
-                <div class="form-group">
-
-                    <label for="brandWebsite">
-                        Website
-                    </label>
-
-                    <input
-                        id="brandWebsite"
-                        name="website"
-                        type="url"
-                        placeholder="https://example.com"
-                    >
-
-                </div>
-
-                <div class="form-group">
-
-                    <label for="applicantName">
-                        Your name
-                    </label>
-
-                    <input
-                        id="applicantName"
-                        name="owner_name"
-                        type="text"
-                        maxlength="200"
-                    >
-
-                </div>
-
-                <div class="form-group">
-
-                    <label for="applicantEmail">
-                        Email
-                    </label>
-
-                    <input
-                        id="applicantEmail"
-                        name="email"
-                        type="email"
-                        maxlength="254"
-                        required
-                    >
-
-                </div>
-
-                <div class="form-group">
-
-                    <label for="applicantPhone">
-                        Phone
-                    </label>
-
-                    <input
-                        id="applicantPhone"
-                        name="phone"
-                        type="tel"
-                        maxlength="100"
-                    >
-
-                </div>
-
-                <div class="form-group">
-
-                    <label for="brandDescription">
-                        Description
-                    </label>
-
-                    <textarea
-                        id="brandDescription"
-                        name="description"
-                        maxlength="5000"
-                    ></textarea>
-
-                </div>
-
-                <div class="form-actions">
-
-                    <button
-                        type="button"
-                        class="primary-btn"
-                        onclick="closeModal()"
-                    >
-                        Cancel
-                    </button>
-
-                    <button
-                        type="submit"
-                        class="primary-btn"
-                    >
-                        Continue — $1
-                    </button>
-
-                </div>
-
-            </form>
+                ×
+            </button>
 
         </div>
 
-        <!-- CHECKOUT -->
-
         <div
-            id="checkoutScreen"
-            style="display:none;"
+            id="countryModalContent"
+            class="country-modal-list"
         >
 
-            <h2>
-                Checkout
-            </h2>
-
-            <div class="subtitle">
-                Review your submission before payment.
-            </div>
-
-            <div class="checkout-card">
-
-                <div class="checkout-row">
-
-                    <span class="checkout-label">
-                        Brand
-                    </span>
-
-                    <span
-                        class="checkout-value"
-                        id="checkoutBrand"
-                    >
-                    </span>
-
-                </div>
-
-                <div class="checkout-row">
-
-                    <span class="checkout-label">
-                        Country
-                    </span>
-
-                    <span
-                        class="checkout-value"
-                        id="checkoutCountry"
-                    >
-                    </span>
-
-                </div>
-
-                <div class="checkout-row">
-
-                    <span class="checkout-label">
-                        Price
-                    </span>
-
-                    <span class="checkout-value price">
-                        $1
-                    </span>
-
-                </div>
-
-            </div>
-
-            <div class="form-actions">
-
-                <button
-                    type="button"
-                    class="primary-btn"
-                    onclick="backToForm()"
-                >
-                    Back
-                </button>
-
-                <button
-                    type="button"
-                    class="primary-btn"
-                    onclick="startGooglePay()"
-                >
-                    Google Pay
-                </button>
-
-            </div>
-
-        </div>
-
-        <!-- SUCCESS -->
-
-        <div
-            id="successScreen"
-            style="display:none;"
-        >
-
-            <div class="success-screen">
-
-                <div class="success-icon">
-                    ✓
-                </div>
-
-                <h2>
-                    Application Submitted
-                </h2>
-
-                <p>
-                    Thank you. Your brand application
-                    has been submitted successfully.
-                </p>
-
-                <p>
-                    Application ID:
-                    <strong id="applicationId">
-                        —
-                    </strong>
-                </p>
-
-                <button
-                    type="button"
-                    class="primary-btn"
-                    onclick="closeModal()"
-                >
-                    Done
-                </button>
-
-            </div>
+            <!-- Brands -->
 
         </div>
 
@@ -1924,11 +1476,326 @@ footer{
 
 </div>
 
+
+<!-- =========================
+     ADD BRAND MODAL
+========================= -->
+
+<div
+    id="addBrandModal"
+    class="modal"
+    onclick="closeAddBrand(event)"
+>
+
+    <div
+        class="modal-box"
+        onclick="event.stopPropagation()"
+    >
+
+        <div class="modal-header">
+
+            <h2>
+                Add Your Brand
+            </h2>
+
+            <button
+                class="close-button"
+                type="button"
+                onclick="closeAddBrand()"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="brandForm">
+
+            <div class="form-group">
+
+                <label for="brandName">
+                    Brand Name *
+                </label>
+
+                <input
+                    id="brandName"
+                    name="brandName"
+                    type="text"
+                    required
+                    maxlength="100"
+                    placeholder="Enter brand name"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="brandCountry">
+                    Country *
+                </label>
+
+                <select
+                    id="brandCountry"
+                    name="country"
+                    required
+                >
+
+                    <option value="">
+                        Select country
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="brandWebsite">
+                    Website
+                </label>
+
+                <input
+                    id="brandWebsite"
+                    name="website"
+                    type="url"
+                    maxlength="500"
+                    placeholder="https://example.com"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="applicantName">
+                    Owner / Contact Name *
+                </label>
+
+                <input
+                    id="applicantName"
+                    name="ownerName"
+                    type="text"
+                    required
+                    maxlength="120"
+                    placeholder="Your name"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="applicantEmail">
+                    Email *
+                </label>
+
+                <input
+                    id="applicantEmail"
+                    name="email"
+                    type="email"
+                    required
+                    maxlength="200"
+                    placeholder="you@example.com"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="applicantPhone">
+                    Phone
+                </label>
+
+                <input
+                    id="applicantPhone"
+                    name="phone"
+                    type="tel"
+                    maxlength="40"
+                    placeholder="+998 ..."
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="brandDescription">
+                    Brand Description
+                </label>
+
+                <textarea
+                    id="brandDescription"
+                    name="description"
+                    maxlength="1000"
+                    placeholder="Tell us about your brand..."
+                ></textarea>
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    onclick="closeAddBrand()"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    Continue
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     CHECKOUT MODAL
+========================= -->
+
+<div
+    id="checkoutModal"
+    class="modal"
+    onclick="closeCheckout(event)"
+>
+
+    <div
+        class="modal-box checkout-box"
+        onclick="event.stopPropagation()"
+    >
+
+        <div class="modal-header">
+
+            <h2>
+                Add Brand Payment
+            </h2>
+
+            <button
+                class="close-button"
+                type="button"
+                onclick="closeCheckout()"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <p>
+            Brand:
+            <strong id="checkoutBrand">
+                —
+            </strong>
+        </p>
+
+        <p>
+            Country:
+            <strong id="checkoutCountry">
+                —
+            </strong>
+        </p>
+
+        <div class="checkout-price">
+            $1
+        </div>
+
+        <div class="checkout-info">
+
+            Your application will be submitted
+            after successful payment verification.
+
+        </div>
+
+        <button
+            class="primary-button"
+            type="button"
+            onclick="startGooglePay()"
+        >
+            Continue to Payment
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     SUCCESS MODAL
+========================= -->
+
+<div
+    id="successModal"
+    class="modal"
+    onclick="closeSuccess(event)"
+>
+
+    <div
+        class="modal-box success-box"
+        onclick="event.stopPropagation()"
+    >
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+        <h2>
+            Application Received
+        </h2>
+
+        <p
+            style="
+                margin-top:12px;
+                color:#91a4ba;
+                line-height:1.6;
+            "
+        >
+            Your brand application has been received.
+        </p>
+
+        <div
+            id="applicationId"
+            class="application-id"
+        >
+            —
+        </div>
+
+        <button
+            class="primary-button"
+            style="margin-top:20px;"
+            type="button"
+            onclick="closeSuccess()"
+        >
+            Done
+        </button>
+
+    </div>
+
+</div>
+
+
 <script>
 
-/* =========================================
+/* =====================================================
+   ALL WORLD BRANDS
+   MAIN JAVASCRIPT
+===================================================== */
+
+
+/* =========================
    STATE
-========================================= */
+========================= */
 
 let countries = [];
 
@@ -1938,122 +1805,143 @@ let currentCountryBrands = [];
 
 let currentApplication = null;
 
-let currentPage = "countries";
 
-/* =========================================
-   COUNTRY FLAG
-   ISO-2 -> EMOJI
-========================================= */
+/* =========================
+   ELEMENT HELPER
+========================= */
 
-function countryCodeToFlag(code){
+function $(id){
 
-    const value =
-        String(code || "")
-            .trim()
-            .toUpperCase();
+    return document.getElementById(id);
 
-    if(value.length !== 2){
-        return "🌍";
-    }
-
-    return value
-        .split("")
-        .map(char =>
-            String.fromCodePoint(
-                127397 +
-                char.charCodeAt(0)
-            )
-        )
-        .join("");
 }
 
-/* =========================================
-   SAFE HTML
-========================================= */
+
+/* =========================
+   HTML SECURITY
+========================= */
 
 function escapeHtml(value){
 
     return String(value ?? "")
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
 }
+
 
 function escapeAttribute(value){
 
-    return escapeHtml(value)
-        .replace(/`/g,"&#096;");
+    return escapeHtml(value);
+
 }
 
-/* =========================================
-   COUNTRY IMAGE
-========================================= */
 
-function imageForCountry(
-    countryName,
-    brandId,
-    countryCode
-){
+/* =========================
+   COUNTRY FLAG
+========================= */
 
-    const code =
-        String(
-            countryCode || ""
-        )
+function countryCodeToFlag(code){
+
+    if(!code){
+        return "🌍";
+    }
+
+    const clean = String(code)
         .trim()
         .toUpperCase();
 
-    if(code){
-
-        return (
-            "/images/countries/" +
-            code +
-            ".png"
-        );
+    if(clean.length !== 2){
+        return "🌍";
     }
 
-    return "/brand-rain-background.png";
+    return clean
+        .split("")
+        .map(
+            char =>
+                String.fromCodePoint(
+                    127397 + char.charCodeAt(0)
+                )
+        )
+        .join("");
+
 }
 
-/* =========================================
+
+/* =========================
+   COUNTRY IMAGE
+========================= */
+
+function imageForCountry(country){
+
+    const code = String(
+        country.code || ""
+    )
+    .trim()
+    .toLowerCase();
+
+    if(code){
+
+        return `/images/countries/${code}.jpg`;
+
+    }
+
+    return "/images/countries/default.jpg";
+
+}
+
+
+/* =========================
+   SAFE URL
+========================= */
+
+function isSafeUrl(url){
+
+    if(!url){
+        return true;
+    }
+
+    try{
+
+        const parsed =
+            new URL(url);
+
+        const protocol =
+            parsed.protocol.toLowerCase();
+
+        return (
+            protocol === "http:" ||
+            protocol === "https:"
+        );
+
+    }catch{
+
+        return false;
+
+    }
+
+}
+
+
+/* =========================
    LOAD COUNTRIES
-========================================= */
+========================= */
 
 async function loadCountries(){
 
     const grid =
-        document.getElementById(
-            "countriesGrid"
-        );
+        $("countriesGrid");
 
     try{
-
-        grid.innerHTML = `
-            <div
-                style="
-                    grid-column:1/-1;
-                    text-align:center;
-                    padding:50px;
-                    color:#9aa7bd;
-                "
-            >
-                Loading countries...
-            </div>
-        `;
 
         const response =
             await fetch(
                 `/api/countries?_=${Date.now()}`,
                 {
-                    method:"GET",
-                    cache:"no-store",
-                    headers:{
-                        "Accept":
-                            "application/json",
-                        "Cache-Control":
-                            "no-cache"
-                    }
+                    cache:"no-store"
                 }
             );
 
@@ -2062,162 +1950,41 @@ async function loadCountries(){
             throw new Error(
                 `HTTP ${response.status}`
             );
+
         }
 
-        const raw =
+        const data =
             await response.json();
 
-        /*
-         * Backend currently returns:
-         *
-         * [
-         *   {
-         *      id,
-         *      name,
-         *      code,
-         *      brand_count
-         *   }
-         * ]
-         *
-         * We also accept wrapped formats
-         * for compatibility.
-         */
+        if(Array.isArray(data)){
 
-        let list;
-
-        if(Array.isArray(raw)){
-
-            list = raw;
+            countries = data;
 
         }else if(
-            Array.isArray(raw?.countries)
+            Array.isArray(data.countries)
         ){
 
-            list = raw.countries;
-
-        }else if(
-            Array.isArray(raw?.data)
-        ){
-
-            list = raw.data;
-
-        }else if(
-            Array.isArray(raw?.results)
-        ){
-
-            list = raw.results;
-
-        }else if(
-            Array.isArray(raw?.rows)
-        ){
-
-            list = raw.rows;
+            countries = data.countries;
 
         }else{
 
-            list = [];
-        }
-
-        countries =
-            list.map(
-                (country,index) => {
-
-                    const id =
-                        Number(
-                            country?.id ??
-                            country?.country_id ??
-                            country?.countryId ??
-                            index + 1
-                        );
-
-                    const name =
-                        String(
-                            country?.name ||
-                            country?.country_name ||
-                            country?.countryName ||
-                            country?.title ||
-                            "Unknown"
-                        );
-
-                    const code =
-                        String(
-                            country?.code ||
-                            country?.iso_code ||
-                            country?.iso2 ||
-                            country?.iso ||
-                            country?.country_code ||
-                            ""
-                        )
-                        .trim()
-                        .toUpperCase();
-
-                    const brandCount =
-                        Number(
-                            country?.brand_count ??
-                            country?.brands_count ??
-                            country?.brandCount ??
-                            country?.brandsCount ??
-                            country?.count ??
-                            0
-                        ) || 0;
-
-                    return {
-                        id,
-                        name,
-                        code,
-                        brand_count:
-                            brandCount
-                    };
-                }
-            )
-            .filter(
-                country =>
-                    Number.isInteger(
-                        country.id
-                    ) &&
-                    country.id > 0 &&
-                    country.name
+            throw new Error(
+                "Invalid countries response"
             );
 
+        }
+
+
         localStorage.setItem(
-            "allWorldBrandsCountries",
+            "awb_countries",
             JSON.stringify(countries)
         );
+
 
         renderCountries(countries);
 
         fillCountrySelect(countries);
 
-        const countElement =
-            document.getElementById(
-                "countryCount"
-            );
-
-        if(countElement){
-
-            countElement.textContent =
-                `${countries.length} countries`;
-        }
-
-        const heroCount =
-            document.getElementById(
-                "heroCountryCount"
-            );
-
-        if(heroCount){
-
-            heroCount.textContent =
-                countries.length >= 250
-                    ? "250+"
-                    : String(
-                        countries.length
-                    );
-        }
-
-        console.log(
-            "Countries loaded:",
-            countries.length
-        );
 
     }catch(error){
 
@@ -2226,50 +1993,25 @@ async function loadCountries(){
             error
         );
 
-        /*
-         * Try local cache.
-         */
 
         try{
 
             const cached =
                 localStorage.getItem(
-                    "allWorldBrandsCountries"
+                    "awb_countries"
                 );
 
             if(cached){
 
-                const parsed =
+                countries =
                     JSON.parse(cached);
 
-                if(
-                    Array.isArray(parsed) &&
-                    parsed.length
-                ){
+                renderCountries(countries);
 
-                    countries = parsed;
+                fillCountrySelect(countries);
 
-                    renderCountries(
-                        countries
-                    );
+                return;
 
-                    fillCountrySelect(
-                        countries
-                    );
-
-                    const countElement =
-                        document.getElementById(
-                            "countryCount"
-                        );
-
-                    if(countElement){
-
-                        countElement.textContent =
-                            `${countries.length} countries`;
-                    }
-
-                    return;
-                }
             }
 
         }catch(cacheError){
@@ -2278,1895 +2020,177 @@ async function loadCountries(){
                 "Cache error:",
                 cacheError
             );
+
         }
 
-        grid.innerHTML = `
-            <div
-                style="
+
+        if(grid){
+
+            grid.innerHTML = `
+                <div style="
                     grid-column:1/-1;
                     text-align:center;
-                    padding:50px;
-                    color:#ff9b9b;
-                "
-            >
-                Countries could not be loaded.
-                <br>
-                <small>
-                    Please refresh the page.
-                </small>
-            </div>
-        `;
+                    padding:50px 20px;
+                    color:#8fa1b5;
+                ">
+                    Countries could not be loaded.
+                    Please try again.
+                </div>
+            `;
+
+        }
+
     }
+
 }
 
-/* =========================================
+
+/* =========================
    RENDER COUNTRIES
-========================================= */
+========================= */
 
 function renderCountries(list){
 
     const grid =
-        document.getElementById(
-            "countriesGrid"
-        );
+        $("countriesGrid");
 
     if(!grid){
-
-        console.error(
-            "countriesGrid topilmadi."
-        );
-
         return;
     }
 
-    if(!Array.isArray(list)){
 
-        console.error(
-            "Countries array emas:",
-            list
-        );
+    grid.innerHTML = "";
 
-        grid.innerHTML = `
-            <div
-                style="
-                    grid-column:1/-1;
-                    text-align:center;
-                    padding:40px;
-                    color:#fff;
-                "
-            >
-                Countries could not be loaded.
-            </div>
-        `;
 
-        return;
-    }
-
-    if(list.length === 0){
-
-        grid.innerHTML = `
-            <div
-                style="
-                    grid-column:1/-1;
-                    text-align:center;
-                    padding:40px;
-                    color:#fff;
-                "
-            >
-                No countries found.
-            </div>
-        `;
-
-        return;
-    }
-
-    grid.innerHTML =
-        list.map(
-            country => {
-
-                const id =
-                    Number(
-                        country.id
-                    );
-
-                const name =
-                    String(
-                        country.name ||
-                        "Unknown"
-                    );
-
-                const code =
-                    String(
-                        country.code ||
-                        ""
-                    )
-                    .trim()
-                    .toUpperCase();
-
-                const brandCount =
-                    Number(
-                        country.brand_count ??
-                        country.brands_count ??
-                        country.brandCount ??
-                        country.brandsCount ??
-                        country.count ??
-                        0
-                    ) || 0;
-
-                const flag =
-                    countryCodeToFlag(
-                        code
-                    );
-
-                const image =
-                    code
-                        ? `/images/countries/${code}.png`
-                        : "/brand-rain-background.png";
-
-                return `
-                    <article
-                        class="country-card"
-                        id="country-${id}"
-                        data-country-id="${id}"
-                        onclick="openCountry(${id})"
-                    >
-
-                        <img
-                            class="country-image"
-                            src="${escapeAttribute(image)}"
-                            alt="${escapeAttribute(name)}"
-                            loading="lazy"
-                            decoding="async"
-                            onerror="
-                                this.onerror=null;
-                                this.src='/brand-rain-background.png';
-                            "
-                        >
-
-                        <div class="country-card-overlay"></div>
-
-                        <div class="country-flag">
-                            ${flag}
-                        </div>
-
-                        <div class="country-info">
-
-                            <h3>
-                                ${escapeHtml(name)}
-                            </h3>
-
-                            <div class="country-meta">
-
-                                <span>
-                                    ${escapeHtml(code)}
-                                    ·
-                                    ${brandCount}
-                                    ${brandCount === 1 ? "brand" : "brands"}
-                                </span>
-
-                                <span class="arrow">
-                                    →
-                                </span>
-
-                            </div>
-
-                        </div>
-
-                    </article>
-                `;
-            }
-        )
-        .join("");
-
-    console.log(
-        "Countries rendered:",
-        list.length
-    );
-}
-
-/* =========================================
-   COUNTRY SELECT
-========================================= */
-
-function fillCountrySelect(list){
-
-    const select =
-        document.getElementById(
-            "brandCountry"
-        );
-
-    if(!select){
-
-        return;
-    }
-
-    const current =
-        select.value;
-
-    select.innerHTML = `
-        <option value="">
-            Select country
-        </option>
-    `;
-
-    list.forEach(
-        country => {
-
-            const option =
-                document.createElement(
-                    "option"
-                );
-
-            option.value =
-                String(country.id);
-
-            option.textContent =
-                country.name;
-
-            select.appendChild(
-                option
-            );
-        }
-    );
-
-    if(current){
-
-        select.value =
-            current;
-    }
-}
-
-/* =========================================
-   SEARCH COUNTRIES
-========================================= */
-
-function filterCountries(){
-
-    const input =
-        document.getElementById(
-            "countrySearch"
-        );
-
-    const query =
-        String(
-            input?.value || ""
-        )
-        .trim()
-        .toLowerCase();
-
-    if(!query){
-
-        renderCountries(
-            countries
-        );
-
-        return;
-    }
-
-    const filtered =
-        countries.filter(
-            country => {
-
-                const name =
-                    String(
-                        country.name || ""
-                    )
-                    .toLowerCase();
-
-                const code =
-                    String(
-                        country.code || ""
-                    )
-                    .toLowerCase();
-
-                return (
-                    name.includes(query) ||
-                    code.includes(query)
-                );
-            }
-        );
-
-    renderCountries(
-        filtered
-    );
-}
-
-function performSearch(){
-
-    filterCountries();
-
-    document
-        .getElementById(
-            "countriesSection"
-        )
-        ?.scrollIntoView({
-            behavior:"smooth",
-            block:"start"
-        });
-}
-
-/* =========================================
-   SEARCH EVENTS
-========================================= */
-
-document
-    .getElementById(
-        "countrySearch"
-    )
-    .addEventListener(
-        "input",
-        filterCountries
-    );
-
-document
-    .getElementById(
-        "headerSearch"
-    )
-    .addEventListener(
-        "input",
-        function(){
-
-            const value =
-                this.value;
-
-            const countrySearch =
-                document.getElementById(
-                    "countrySearch"
-                );
-
-            if(countrySearch){
-
-                countrySearch.value =
-                    value;
-            }
-
-            filterCountries();
-        }
-    );
-
-/* =========================================
-   NAVIGATION
-========================================= */
-
-function scrollToCountries(){
-
-    document
-        .getElementById(
-            "countriesSection"
-        )
-        ?.scrollIntoView({
-            behavior:"smooth"
-        });
-}
-
-function goHome(){
-
-    renderState({
-        page:"countries"
-    });
-
-    window.scrollTo({
-        top:0,
-        behavior:"smooth"
-    });
-}
-
-/* =========================================
-   HISTORY
-========================================= */
-
-function setHistory(
-    state,
-    hash=""
-){
-
-    history.pushState(
-        state,
-        "",
-        hash || location.pathname
-    );
-}
-
-/* =========================================
-   RENDER STATE
-========================================= */
-
-function renderState(state){
-
-    const page =
-        state?.page ||
-        "countries";
-
-    if(page === "country"){
-
-        /*
-         * Country detail is loaded separately.
-         */
-
-        if(state.countryId){
-
-            openCountry(
-                state.countryId
-            );
-
-            return;
-        }
-    }
-
-    if(page === "modal"){
-
-        currentPage = "modal";
-
-        currentCountryId =
-            null;
-
-        showModalVisual(
-            "formScreen"
-        );
-
-        return;
-    }
-
-    if(page === "checkout"){
-
-        currentPage = "checkout";
-
-        showModalVisual(
-            "checkoutScreen"
-        );
-
-        return;
-    }
-
-    if(page === "success"){
-
-        currentPage = "success";
-
-        showModalVisual(
-            "successScreen"
-        );
-
-        return;
-    }
-
-    currentPage =
-        "countries";
-
-    currentCountryId =
-        null;
-
-    closeModalVisual();
-
-    renderCountries(
-        countries
-    );
-}
-
-/* =========================================
-   OPEN COUNTRY
-========================================= */
-
-async function openCountry(id){
-
-    const numericId =
-        Number(id);
-
-    if(
-        !Number.isInteger(
-            numericId
-        ) ||
-        numericId <= 0
-    ){
-
-        console.error(
-            "Invalid country ID:",
-            id
-        );
-
-        return;
-    }
-
-    currentCountryId =
-        numericId;
-
-    currentCountryBrands =
-        [];
-
-    const country =
-        countries.find(
-            c =>
-                Number(c.id) ===
-                numericId
-        );
-
-    setHistory(
-        {
-            page:"country",
-            countryId:numericId
-        },
-        "#country-" +
-        numericId
-    );
-
-    currentPage =
-        "country";
-
-    try{
-
-        const response =
-            await fetch(
-                `/api/countries/${numericId}/brands?_=${Date.now()}`,
-                {
-                    method:"GET",
-                    cache:"no-store",
-                    headers:{
-                        "Accept":
-                            "application/json"
-                    }
-                }
-            );
-
-        if(!response.ok){
-
-            throw new Error(
-                `HTTP ${response.status}`
-            );
-        }
-
-        const data =
-            await response.json();
-
-        /*
-         * Backend returns:
-         *
-         * {
-         *   ok:true,
-         *   country:{...},
-         *   brands:[...]
-         * }
-         *
-         * We support that plus arrays.
-         */
-
-        const brands =
-            Array.isArray(data)
-                ? data
-                : Array.isArray(
-                    data?.brands
-                )
-                    ? data.brands
-                    : Array.isArray(
-                        data?.data
-                    )
-                        ? data.data
-                        : Array.isArray(
-                            data?.results
-                        )
-                            ? data.results
-                            : [];
-
-        currentCountryBrands =
-            brands;
-
-        renderBrandCards(
-            currentCountryBrands,
-            numericId
-        );
-
-        document
-            .getElementById(
-                "countriesSection"
-            )
-            ?.scrollIntoView({
-                behavior:"smooth",
-                block:"start"
-            });
-
-    }catch(error){
-
-        console.error(
-            "Country brands error:",
-            error
-        );
-
-        renderBrandCards(
-            [],
-            numericId
-        );
-    }
-}
-
-/* =========================================
-   BRAND CARDS
-========================================= */
-
-function renderBrandCards(
-    brands,
-    countryId
-){
-
-    const grid =
-        document.getElementById(
-            "countriesGrid"
-        );
-
-    if(!grid){
-
-        return;
-    }
-
-    const country =
-        countries.find(
-            c =>
-                Number(c.id) ===
-                Number(countryId)
-        );
-
-    const countryCode =
-        country?.code ||
-        country?.iso_code ||
-        country?.iso2 ||
-        "";
-
-    const countryName =
-        country?.name ||
-        "World";
-
-    /*
-     * Country header.
-     */
-
-    const countryTitle =
-        document.querySelector(
-            "#countriesSection .section-title"
-        );
-
-    if(countryTitle){
-
-        countryTitle.textContent =
-            countryName;
-    }
-
-    if(!brands.length){
-
-        grid.innerHTML = `
-            <div
-                style="
-                    grid-column:1/-1;
-                    padding:50px 20px;
-                    text-align:center;
-                    color:#9aa7bd;
-                "
-            >
-
-                <div
-                    style="
-                        font-size:35px;
-                        margin-bottom:10px;
-                    "
-                >
-                    🏷️
-                </div>
-
-                Bu davlatda hozircha
-                brendlar ro‘yxati yo‘q.
-
-                <div style="margin-top:20px;">
-
-                    <button
-                        type="button"
-                        class="primary-btn"
-                        onclick="returnToCountries()"
-                    >
-                        ← Countries
-                    </button>
-
-                </div>
-
-            </div>
-        `;
-
-        return;
-    }
-
-    grid.innerHTML =
-        brands.map(
-            brand => {
-
-                const image =
-                    imageForCountry(
-                        countryName,
-                        brand.id,
-                        countryCode
-                    );
-
-                return `
-                    <article
-                        class="country-card"
-                        style="
-                            background-image:
-                                url('${escapeAttribute(image)}');
-                        "
-                    >
-
-                        <div
-                            class="country-card-overlay"
-                        ></div>
-
-                        <div
-                            class="country-flag"
-                        >
-                            ${countryCodeToFlag(
-                                countryCode
-                            )}
-                        </div>
-
-                        <div class="country-info">
-
-                            <h3>
-                                ${escapeHtml(
-                                    brand.name ||
-                                    "Brand"
-                                )}
-                            </h3>
-
-                            <div
-                                class="country-meta"
-                            >
-
-                                <span>
-                                    ${escapeHtml(
-                                        brand.category ||
-                                        "Brand"
-                                    )}
-                                </span>
-
-                                <span class="arrow">
-                                    →
-                                </span>
-
-                            </div>
-
-                        </div>
-
-                    </article>
-                `;
-            }
-        )
-        .join("");
-
-}
-
-/* =========================================
-   RETURN TO COUNTRIES
-========================================= */
-
-function returnToCountries(){
-
-    if(
-        history.state?.page &&
-        history.state.page !==
-            "countries"
-    ){
-
-        history.back();
-
-        return;
-    }
-
-    renderState({
-        page:"countries"
-    });
-}
-
-/* =========================================
-   BROWSER / ANDROID BACK
-========================================= */
-
-history.replaceState(
-    {
-        page:"countries"
-    },
-    "",
-    location.pathname
-);
-
-window.addEventListener(
-    "popstate",
-    function(event){
-
-        const state =
-            event.state ||
-            {
-                page:"countries"
-            };
-
-        renderState(
-            state
-        );
-    }
-);
-
-/* =========================================
-   MODAL
-========================================= */
-
-function showModalVisual(
-    screenId
-){
-
-    const modal =
-        document.getElementById(
-            "addBrandModal"
-        );
-
-    if(!modal){
-
-        return;
-    }
-
-    modal.classList.add(
-        "show"
-    );
-
-    showScreen(
-        screenId
-    );
-}
-
-function closeModalVisual(){
-
-    const modal =
-        document.getElementById(
-            "addBrandModal"
-        );
-
-    if(modal){
-
-        modal.classList.remove(
-            "show"
-        );
-    }
-}
-
-/* =========================================
-   OPEN ADD BRAND
-========================================= */
-
-function openAddBrand(){
-
-    if(
-        currentPage === "modal" ||
-        currentPage === "checkout" ||
-        currentPage === "success"
-    ){
-
-        return;
-    }
-
-    setHistory(
-        {
-            page:"modal"
-        },
-        "#add-brand"
-    );
-
-    currentPage =
-        "modal";
-
-    showModalVisual(
-        "formScreen"
-    );
-}
-
-/* =========================================
-   CLOSE MODAL
-========================================= */
-
-function closeModal(){
-
-    if(
-        history.state?.page === "modal" ||
-        history.state?.page === "checkout" ||
-        history.state?.page === "success"
-    ){
-
-        history.back();
-
-        return;
-    }
-
-    closeModalVisual();
-}
-
-/* =========================================
-   SCREEN CONTROL
-========================================= */
-
-function showScreen(id){
-
-    [
-        "formScreen",
-        "checkoutScreen",
-        "successScreen"
-    ].forEach(
-        screenId => {
-
-            const element =
-                document.getElementById(
-                    screenId
-                );
-
-            if(!element){
-
-                return;
-            }
-
-            element.style.display =
-                screenId === id
-                    ? "block"
-                    : "none";
-
-            element.classList.toggle(
-                "active",
-                screenId === id
-            );
-        }
-    );
-}
-
-/* =========================================
-   BRAND FORM
-========================================= */
-
-document
-    .getElementById(
-        "brandForm"
-    )
-    .addEventListener(
-        "submit",
-        function(event){
-
-            event.preventDefault();
-
-            const brandName =
-                document
-                    .getElementById(
-                        "brandName"
-                    )
-                    .value
-                    .trim();
-
-            const countrySelect =
-                document
-                    .getElementById(
-                        "brandCountry"
-                    );
-
-            const countryId =
-                countrySelect.value;
-
-            const countryName =
-                countrySelect
-                    .options[
-                        countrySelect
-                            .selectedIndex
-                    ]
-                    ?.text ||
-                "";
-
-            if(
-                !brandName ||
-                !countryId
-            ){
-
-                alert(
-                    "Brend nomi va davlatni kiriting."
-                );
-
-                return;
-            }
-
-            currentApplication = {
-
-                brandName,
-
-                countryId,
-
-                countryName,
-
-                website:
-                    document
-                        .getElementById(
-                            "brandWebsite"
-                        )
-                        .value
-                        .trim(),
-
-                applicantName:
-                    document
-                        .getElementById(
-                            "applicantName"
-                        )
-                        .value
-                        .trim(),
-
-                applicantEmail:
-                    document
-                        .getElementById(
-                            "applicantEmail"
-                        )
-                        .value
-                        .trim(),
-
-                applicantPhone:
-                    document
-                        .getElementById(
-                            "applicantPhone"
-                        )
-                        .value
-                        .trim(),
-
-                description:
-                    document
-                        .getElementById(
-                            "brandDescription"
-                        )
-                        .value
-                        .trim(),
-
-                amount:1
-            };
-
-            document
-                .getElementById(
-                    "checkoutBrand"
-                )
-                .textContent =
-                brandName;
-
-            document
-                .getElementById(
-                    "checkoutCountry"
-                )
-                .textContent =
-                countryName;
-
-            setHistory(
-                {
-                    page:"checkout"
-                },
-                "#checkout"
-            );
-
-            currentPage =
-                "checkout";
-
-            showModalVisual(
-                "checkoutScreen"
-            );
-        }
-    );
-
-/* =========================================
-   BACK TO FORM
-========================================= */
-
-function backToForm(){
-
-    if(
-        history.state?.page ===
-        "checkout"
-    ){
-
-        history.back();
-
-        return;
-    }
-
-    showModalVisual(
-        "formScreen"
-    );
-}
-
-/* =========================================
-   GOOGLE PAY
-========================================= */
-
-async function startGooglePay(){
-
-    if(!currentApplication){
-
-        alert(
-            "Avval arizani to‘ldiring."
-        );
-
-        return;
-    }
-
-    alert(
-        "Google Pay gateway hali ulanmagan. " +
-        "Haqiqiy to‘lovni ishga tushirish uchun " +
-        "PSP/gateway konfiguratsiyasi kerak."
-    );
-}
-
-/* =========================================
-   SAVE APPLICATION
-========================================= */
-
-async function saveApplicationAfterPayment(){
-
-    if(!currentApplication){
-
-        return;
-    }
-
-    try{
-
-        const response =
-            await fetch(
-                "/api/applications",
-                {
-                    method:"POST",
-
-                    headers:{
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify({
-
-                            brand_name:
-                                currentApplication
-                                    .brandName,
-
-                            country_id:
-                                currentApplication
-                                    .countryId,
-
-                            website:
-                                currentApplication
-                                    .website,
-
-                            owner_name:
-                                currentApplication
-                                    .applicantName,
-
-                            email:
-                                currentApplication
-                                    .applicantEmail,
-
-                            phone:
-                                currentApplication
-                                    .applicantPhone,
-
-                            description:
-                                currentApplication
-                                    .description,
-
-                            payment_status:
-                                "paid",
-
-                            amount:
-                                currentApplication
-                                    .amount
-
-                        })
-                }
-            );
-
-        const data =
-            await response.json();
-
-        if(!response.ok){
-
-            throw new Error(
-                data.error ||
-                data.message ||
-                "Application failed"
-            );
-        }
-
-        document
-            .getElementById(
-                "applicationId"
-            )
-            .textContent =
-            data.id ||
-            data.application_id ||
-            "Submitted";
-
-        setHistory(
-            {
-                page:"success"
-            },
-            "#success"
-        );
-
-        currentPage =
-            "success";
-
-        showModalVisual(
-            "successScreen"
-        );
-
-    }catch(error){
-
-        console.error(
-            error
-        );
-
-        alert(
-            "Arizani yuborib bo‘lmadi."
-        );
-    }
-}
-
-/* =========================================
-   CLOSE OUTSIDE
-========================================= */
-
-document
-    .getElementById(
-        "addBrandModal"
-    )
-    .addEventListener(
-        "click",
-        function(event){
-
-            if(
-                event.target === this
-            ){
-
-                closeModal();
-            }
-        }
-    );
-
-/* =========================================
-   RAIN
-========================================= */
-
-function createRain(){
-
-    const rain =
-        document.getElementById(
-            "rainFX"
-        );
-
-    if(!rain){
-
-        return;
-    }
-
-    rain.innerHTML = "";
-
-    const count =
-        window.innerWidth < 600
-            ? 35
-            : 70;
-
-    for(
-        let i = 0;
-        i < count;
-        i++
-    ){
-
-        const streak =
-            document.createElement(
-                "div"
-            );
-
-        streak.className =
-            "rain-streak";
-
-        streak.style.left =
-            Math.random() * 100 +
-            "%";
-
-        streak.style.animationDuration =
-            (
-                2 +
-                Math.random() * 5
-            ) +
-            "s";
-
-        streak.style.animationDelay =
-            (
-                -Math.random() * 6
-            ) +
-            "s";
-
-        streak.style.opacity =
-            (
-                .2 +
-                Math.random() * .6
-            );
-
-        rain.appendChild(
-            streak
-        );
-    }
-}
-
-/* =========================================
-   START
-========================================= */
-
-createRain();
-
-loadCountries();
-
-</script>
-
-</body>
-</html>
-<!-- =====================================================
-     2-QISM — JAVASCRIPT
-     ===================================================== -->
-
-<script>
-
-"use strict";
-
-/* =====================================================
-   GLOBAL VARIABLES
-   ===================================================== */
-
-let countries = [];
-let currentCountry = null;
-
-
-/* =====================================================
-   HELPERS
-   ===================================================== */
-
-function escapeHtml(value) {
-
-    return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
-
-
-/* =====================================================
-   COUNTRY CODE → FLAG
-   ===================================================== */
-
-function countryCodeToFlag(code) {
-
-    const value = String(code || "")
-        .trim()
-        .toUpperCase();
-
-    if (value.length !== 2) {
-        return "🌍";
-    }
-
-    return value
-        .split("")
-        .map(char =>
-            String.fromCodePoint(
-                127397 + char.charCodeAt(0)
-            )
-        )
-        .join("");
-}
-
-
-/* =====================================================
-   COUNTRY IMAGE
-   ===================================================== */
-
-function imageForCountry(code) {
-
-    const value = String(code || "")
-        .trim()
-        .toUpperCase();
-
-    if (!value) {
-        return "/brand-rain-background.png";
-    }
-
-    return `/images/countries/${value}.png`;
-}
-
-
-/* =====================================================
-   LOAD COUNTRIES
-   ===================================================== */
-
-async function loadCountries() {
-
-    const grid =
-        document.getElementById("countriesGrid");
-
-    if (!grid) {
-        console.error(
-            "countriesGrid element not found."
-        );
-        return;
-    }
-
-    grid.innerHTML = `
-        <div style="
-            grid-column:1/-1;
-            text-align:center;
-            padding:40px;
-            color:#fff;
-        ">
-            Loading countries...
-        </div>
-    `;
-
-    try {
-
-        const controller =
-            new AbortController();
-
-        const timeout =
-            setTimeout(
-                () => controller.abort(),
-                10000
-            );
-
-        const response =
-            await fetch(
-                "/api/countries",
-                {
-                    method: "GET",
-                    headers: {
-                        "Accept":
-                            "application/json"
-                    },
-                    cache: "no-store",
-                    signal:
-                        controller.signal
-                }
-            );
-
-        clearTimeout(timeout);
-
-        if (!response.ok) {
-
-            throw new Error(
-                `HTTP ${response.status}`
-            );
-        }
-
-        const data =
-            await response.json();
-
-        console.log(
-            "Countries API response:",
-            data
-        );
-
-
-        /* ---------------------------------------------
-           ACCEPT DIFFERENT API FORMATS
-           --------------------------------------------- */
-
-        let list = [];
-
-        if (Array.isArray(data)) {
-
-            list = data;
-
-        } else if (
-            Array.isArray(data.countries)
-        ) {
-
-            list = data.countries;
-
-        } else if (
-            Array.isArray(data.data)
-        ) {
-
-            list = data.data;
-
-        } else if (
-            Array.isArray(data.results)
-        ) {
-
-            list = data.results;
-
-        } else if (
-            Array.isArray(data.rows)
-        ) {
-
-            list = data.rows;
-        }
-
-
-        /* ---------------------------------------------
-           NORMALIZE
-           --------------------------------------------- */
-
-        countries = list.map(
-            (country, index) => {
-
-                return {
-
-                    id:
-                        Number(
-                            country.id ??
-                            country.country_id ??
-                            country.countryId ??
-                            index + 1
-                        ),
-
-                    name:
-                        String(
-                            country.name ||
-                            country.country_name ||
-                            country.countryName ||
-                            country.title ||
-                            "Unknown"
-                        ),
-
-                    code:
-                        String(
-                            country.code ||
-                            country.iso_code ||
-                            country.iso2 ||
-                            country.iso ||
-                            country.country_code ||
-                            ""
-                        )
-                        .trim()
-                        .toUpperCase(),
-
-                    brand_count:
-                        Number(
-                            country.brand_count ??
-                            country.brands_count ??
-                            country.brandCount ??
-                            country.brandsCount ??
-                            country.count ??
-                            0
-                        ) || 0
-                };
-
-            }
-        );
-
-
-        /* ---------------------------------------------
-           SAVE CACHE
-           --------------------------------------------- */
-
-        try {
-
-            localStorage.setItem(
-                "allWorldBrandsCountries",
-                JSON.stringify(countries)
-            );
-
-        } catch (error) {
-
-            console.warn(
-                "LocalStorage unavailable:",
-                error
-            );
-        }
-
-
-        /* ---------------------------------------------
-           RENDER
-           --------------------------------------------- */
-
-        renderCountries(
-            countries
-        );
-
-        fillCountrySelect(
-            countries
-        );
-
-
-        console.log(
-            `Countries loaded: ${countries.length}`
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "Countries loading error:",
-            error
-        );
-
-
-        /* ---------------------------------------------
-           TRY CACHE
-           --------------------------------------------- */
-
-        try {
-
-            const cached =
-                localStorage.getItem(
-                    "allWorldBrandsCountries"
-                );
-
-            if (cached) {
-
-                const parsed =
-                    JSON.parse(cached);
-
-                if (
-                    Array.isArray(parsed) &&
-                    parsed.length
-                ) {
-
-                    countries = parsed;
-
-                    renderCountries(
-                        countries
-                    );
-
-                    fillCountrySelect(
-                        countries
-                    );
-
-                    console.log(
-                        "Countries loaded from cache."
-                    );
-
-                    return;
-                }
-            }
-
-        } catch (cacheError) {
-
-            console.warn(
-                "Cache error:",
-                cacheError
-            );
-        }
-
-
-        grid.innerHTML = `
-            <div style="
-                grid-column:1/-1;
-                text-align:center;
-                padding:50px 20px;
-                color:#fff;
-            ">
-                <div style="
-                    font-size:42px;
-                    margin-bottom:15px;
-                ">
-                    🌍
-                </div>
-
-                <div style="
-                    font-size:20px;
-                    font-weight:700;
-                    margin-bottom:8px;
-                ">
-                    Countries could not be loaded
-                </div>
-
-                <div style="
-                    opacity:.7;
-                    font-size:14px;
-                ">
-                    Please refresh the page.
-                </div>
-            </div>
-        `;
-    }
-}
-
-
-/* =====================================================
-   RENDER COUNTRIES
-   ===================================================== */
-
-function renderCountries(list) {
-
-    const grid =
-        document.getElementById(
-            "countriesGrid"
-        );
-
-    if (!grid) {
-        return;
-    }
-
-    if (
-        !Array.isArray(list) ||
-        list.length === 0
-    ) {
+    if(!Array.isArray(list) || !list.length){
 
         grid.innerHTML = `
             <div style="
                 grid-column:1/-1;
                 text-align:center;
                 padding:40px;
-                color:#fff;
+                color:#8fa1b5;
             ">
                 No countries found.
             </div>
         `;
 
+        updateCountryCounters(0);
+
         return;
+
     }
 
 
-    grid.innerHTML =
-        list.map(country => {
+    list.forEach(country => {
 
-            const id =
-                Number(country.id);
+        const card =
+            document.createElement("div");
 
-            const name =
-                String(
-                    country.name ||
-                    "Unknown"
-                );
-
-            const code =
-                String(
-                    country.code || ""
-                )
-                .trim()
-                .toUpperCase();
-
-            const brandCount =
-                Number(
-                    country.brand_count || 0
-                );
+        card.className =
+            "country-card";
 
 
-            const flag =
-                countryCodeToFlag(
-                    code
-                );
-
-            const image =
-                imageForCountry(
-                    code
-                );
+        const image =
+            imageForCountry(country);
 
 
-            return `
-                <article
-                    class="country-card"
-                    data-country-id="${id}"
-                    data-country-name="${escapeHtml(name.toLowerCase())}"
-                    data-country-code="${escapeHtml(code.toLowerCase())}"
-                    onclick="openCountry(${id})"
-                >
-
-                    <div class="country-image-wrap">
-
-                        <img
-                            class="country-image"
-                            src="${image}"
-                            alt="${escapeHtml(name)}"
-                            loading="lazy"
-                            decoding="async"
-                            onerror="
-                                this.onerror=null;
-                                this.src='/brand-rain-background.png';
-                            "
-                        >
-
-                    </div>
-
-
-                    <div class="country-info">
-
-                        <div class="country-flag">
-                            ${flag}
-                        </div>
-
-                        <div class="country-name">
-                            ${escapeHtml(name)}
-                        </div>
-
-                        <div class="country-code">
-                            ${escapeHtml(code)}
-                        </div>
-
-                        <div class="country-brands">
-                            ${brandCount}
-                            ${
-                                brandCount === 1
-                                    ? "brand"
-                                    : "brands"
-                            }
-                        </div>
-
-                    </div>
-
-
-                    <div class="country-arrow">
-                        ›
-                    </div>
-
-                </article>
-            `;
-
-        }).join("");
-
-
-    console.log(
-        "Countries rendered:",
-        list.length
-    );
-}
-
-
-/* =====================================================
-   COUNTRY SEARCH
-   ===================================================== */
-
-function filterCountries(value) {
-
-    const query =
-        String(value || "")
-            .trim()
-            .toLowerCase();
-
-    if (!query) {
-
-        renderCountries(
-            countries
-        );
-
-        return;
-    }
-
-
-    const filtered =
-        countries.filter(country => {
-
-            const name =
-                String(
-                    country.name || ""
-                )
-                .toLowerCase();
-
-            const code =
-                String(
-                    country.code || ""
-                )
-                .toLowerCase();
-
-            return (
-                name.includes(query) ||
-                code.includes(query)
+        const flag =
+            countryCodeToFlag(
+                country.code
             );
 
-        });
+
+        const name =
+            country.name || "Unknown";
 
 
-    renderCountries(
-        filtered
+        card.innerHTML = `
+
+            <img
+                src="${escapeAttribute(image)}"
+                alt="${escapeAttribute(name)}"
+                loading="lazy"
+                onerror="
+                    this.style.display='none'
+                "
+            >
+
+            <div class="country-arrow">
+                →
+            </div>
+
+            <div class="country-content">
+
+                <div class="country-flag">
+                    ${flag}
+                </div>
+
+                <div class="country-name">
+                    ${escapeHtml(name)}
+                </div>
+
+                <div class="country-brands">
+                    View brands
+                </div>
+
+            </div>
+
+        `;
+
+
+        card.addEventListener(
+            "click",
+            () => openCountry(country.id)
+        );
+
+
+        grid.appendChild(card);
+
+    });
+
+
+    updateCountryCounters(
+        list.length
     );
+
 }
 
 
-/* =====================================================
-   COUNTRY SELECT
-   ===================================================== */
+/* =========================
+   COUNTER
+========================= */
 
-function fillCountrySelect(list) {
+function updateCountryCounters(count){
+
+    const a =
+        $("countryCount");
+
+    const b =
+        $("heroCountryCount");
+
+
+    if(a){
+        a.textContent = count;
+    }
+
+    if(b){
+        b.textContent = count;
+    }
+
+}
+
+
+/* =========================
+   COUNTRY SELECT
+========================= */
+
+function fillCountrySelect(list){
 
     const select =
-        document.getElementById(
-            "brandCountry"
-        );
+        $("brandCountry");
 
-    if (!select) {
+    if(!select){
         return;
     }
 
@@ -4181,328 +2205,135 @@ function fillCountrySelect(list) {
     list.forEach(country => {
 
         const option =
-            document.createElement(
-                "option"
-            );
+            document.createElement("option");
 
         option.value =
-            country.id;
+            country.name || "";
+
+        option.dataset.id =
+            country.id || "";
 
         option.textContent =
-            `${countryCodeToFlag(country.code)} ${country.name}`;
+            country.name || "Unknown";
 
-        select.appendChild(
-            option
-        );
+        select.appendChild(option);
 
     });
+
 }
 
 
-/* =====================================================
-   OPEN COUNTRY
-   ===================================================== */
+/* =========================
+   FILTER COUNTRIES
+========================= */
 
-async function openCountry(id) {
+function filterCountries(value){
 
-    const countryId =
-        Number(id);
+    const search =
+        String(value || "")
+            .trim()
+            .toLowerCase();
 
-    if (
-        !Number.isInteger(countryId) ||
-        countryId <= 0
-    ) {
+
+    if(!search){
+
+        renderCountries(countries);
+
         return;
+
     }
+
+
+    const filtered =
+        countries.filter(country => {
+
+            const name =
+                String(
+                    country.name || ""
+                ).toLowerCase();
+
+            const code =
+                String(
+                    country.code || ""
+                ).toLowerCase();
+
+            return (
+                name.includes(search) ||
+                code.includes(search)
+            );
+
+        });
+
+
+    renderCountries(filtered);
+
+}
+
+
+/* =========================
+   OPEN COUNTRY
+========================= */
+
+async function openCountry(id){
+
+    currentCountryId = id;
 
 
     const country =
         countries.find(
             item =>
-                Number(item.id) ===
-                countryId
+                Number(item.id) === Number(id)
         );
 
 
-    currentCountry =
-        country || null;
-
-
-    try {
-
-        const response =
-            await fetch(
-                `/api/countries/${countryId}/brands`,
-                {
-                    method: "GET",
-                    headers: {
-                        "Accept":
-                            "application/json"
-                    },
-                    cache: "no-store"
-                }
-            );
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                `HTTP ${response.status}`
-            );
-        }
-
-
-        const data =
-            await response.json();
-
-
-        console.log(
-            "Country details:",
-            data
-        );
-
-
-        showCountryDetails(
-            data,
-            country
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "Country loading error:",
-            error
-        );
-
-        showCountryDetails(
-            {
-                ok: true,
-                country: country,
-                brands: []
-            },
-            country
-        );
-    }
-}
-
-
-/* =====================================================
-   SHOW COUNTRY DETAILS
-   ===================================================== */
-
-function showCountryDetails(
-    data,
-    fallbackCountry
-) {
-
-    const country =
-        data?.country ||
-        fallbackCountry;
-
-
-    const brands =
-        Array.isArray(data?.brands)
-            ? data.brands
-            : [];
-
-
-    if (!country) {
+    if(!country){
         return;
     }
-
-
-    const name =
-        country.name ||
-        "Unknown";
-
-
-    const code =
-        String(
-            country.code || ""
-        )
-        .toUpperCase();
-
-
-    const flag =
-        countryCodeToFlag(
-            code
-        );
 
 
     const modal =
-        document.getElementById(
-            "countryModal"
-        );
-
-
-    if (!modal) {
-
-        console.warn(
-            "countryModal not found."
-        );
-
-        return;
-    }
-
+        $("countryModal");
 
     const title =
-        modal.querySelector(
-            "[data-country-title]"
-        );
+        $("countryModalTitle");
 
-    const flagElement =
-        modal.querySelector(
-            "[data-country-flag]"
-        );
-
-    const brandsContainer =
-        modal.querySelector(
-            "[data-country-brands]"
-        );
+    const content =
+        $("countryModalContent");
 
 
-    if (title) {
-        title.textContent =
-            name;
-    }
+    title.textContent =
+        `${countryCodeToFlag(country.code)} ${country.name}`;
 
 
-    if (flagElement) {
-        flagElement.textContent =
-            flag;
-    }
+    content.innerHTML = `
+        <div style="
+            grid-column:1/-1;
+            text-align:center;
+            padding:30px;
+            color:#8fa1b5;
+        ">
+            Loading brands...
+        </div>
+    `;
 
 
-    if (brandsContainer) {
-
-        if (!brands.length) {
-
-            brandsContainer.innerHTML = `
-                <div style="
-                    padding:30px;
-                    text-align:center;
-                    opacity:.7;
-                ">
-                    No brands registered yet.
-                </div>
-            `;
-
-        } else {
-
-            brandsContainer.innerHTML =
-                brands.map(
-                    brand => {
-
-                        return `
-                            <div
-                                class="brand-card"
-                                onclick="openBrand(${Number(brand.id)})"
-                            >
-
-                                <div class="brand-card-name">
-                                    ${escapeHtml(
-                                        brand.name
-                                    )}
-                                </div>
-
-                                <div class="brand-card-category">
-                                    ${escapeHtml(
-                                        brand.category || ""
-                                    )}
-                                </div>
-
-                                ${
-                                    brand.description
-                                        ? `
-                                            <div class="brand-card-description">
-                                                ${escapeHtml(
-                                                    brand.description
-                                                )}
-                                            </div>
-                                          `
-                                        : ""
-                                }
-
-                            </div>
-                        `;
-
-                    }
-                ).join("");
-        }
-    }
+    modal.classList.add("active");
 
 
-    modal.classList.add(
-        "active"
-    );
-
-    document.body.style.overflow =
-        "hidden";
-}
-
-
-/* =====================================================
-   CLOSE COUNTRY MODAL
-   ===================================================== */
-
-function closeCountryModal() {
-
-    const modal =
-        document.getElementById(
-            "countryModal"
-        );
-
-    if (modal) {
-
-        modal.classList.remove(
-            "active"
-        );
-
-    }
-
-    document.body.style.overflow =
-        "";
-}
-
-
-/* =====================================================
-   OPEN BRAND
-   ===================================================== */
-
-async function openBrand(id) {
-
-    const brandId =
-        Number(id);
-
-    if (
-        !Number.isInteger(brandId) ||
-        brandId <= 0
-    ) {
-        return;
-    }
-
-
-    try {
+    try{
 
         const response =
             await fetch(
-                `/api/brands/${brandId}`,
-                {
-                    method: "GET",
-                    headers: {
-                        "Accept":
-                            "application/json"
-                    },
-                    cache: "no-store"
-                }
+                `/api/countries/${encodeURIComponent(id)}/brands`
             );
 
 
-        if (!response.ok) {
+        if(!response.ok){
+
             throw new Error(
                 `HTTP ${response.status}`
             );
+
         }
 
 
@@ -4510,494 +2341,609 @@ async function openBrand(id) {
             await response.json();
 
 
-        console.log(
-            "Brand:",
-            data
+        if(Array.isArray(data)){
+
+            currentCountryBrands =
+                data;
+
+        }else if(
+            Array.isArray(data.brands)
+        ){
+
+            currentCountryBrands =
+                data.brands;
+
+        }else{
+
+            currentCountryBrands = [];
+
+        }
+
+
+        renderBrandCards(
+            currentCountryBrands
         );
 
 
-        showBrandDetails(
-            data.brand
-        );
-
-
-    } catch (error) {
+    }catch(error){
 
         console.error(
-            "Brand error:",
+            "Brand loading error:",
             error
         );
 
-    }
-}
 
-
-/* =====================================================
-   SHOW BRAND
-   ===================================================== */
-
-function showBrandDetails(brand) {
-
-    if (!brand) {
-        return;
-    }
-
-
-    const modal =
-        document.getElementById(
-            "brandModal"
-        );
-
-
-    if (!modal) {
-        return;
-    }
-
-
-    const title =
-        modal.querySelector(
-            "[data-brand-title]"
-        );
-
-    const category =
-        modal.querySelector(
-            "[data-brand-category]"
-        );
-
-    const description =
-        modal.querySelector(
-            "[data-brand-description]"
-        );
-
-    const website =
-        modal.querySelector(
-            "[data-brand-website]"
-        );
-
-    const logo =
-        modal.querySelector(
-            "[data-brand-logo]"
-        );
-
-
-    if (title) {
-        title.textContent =
-            brand.name || "";
-    }
-
-
-    if (category) {
-        category.textContent =
-            brand.category || "";
-    }
-
-
-    if (description) {
-        description.textContent =
-            brand.description || "";
-    }
-
-
-    if (website) {
-
-        if (brand.website) {
-
-            website.href =
-                brand.website;
-
-            website.textContent =
-                brand.website;
-
-            website.style.display =
-                "inline-block";
-
-        } else {
-
-            website.style.display =
-                "none";
-        }
-    }
-
-
-    if (logo) {
-
-        if (brand.logo) {
-
-            logo.src =
-                brand.logo;
-
-            logo.style.display =
-                "block";
-
-        } else {
-
-            logo.style.display =
-                "none";
-        }
-    }
-
-
-    modal.classList.add(
-        "active"
-    );
-
-    document.body.style.overflow =
-        "hidden";
-}
-
-
-/* =====================================================
-   CLOSE BRAND MODAL
-   ===================================================== */
-
-function closeBrandModal() {
-
-    const modal =
-        document.getElementById(
-            "brandModal"
-        );
-
-    if (modal) {
-
-        modal.classList.remove(
-            "active"
-        );
-
-    }
-
-    document.body.style.overflow =
-        "";
-}
-
-
-/* =====================================================
-   GLOBAL SEARCH
-   ===================================================== */
-
-async function searchBrands(query) {
-
-    const value =
-        String(query || "")
-            .trim();
-
-
-    if (!value) {
-        return;
-    }
-
-
-    try {
-
-        const response =
-            await fetch(
-                `/api/search?q=${encodeURIComponent(value)}`,
-                {
-                    method: "GET",
-                    headers: {
-                        "Accept":
-                            "application/json"
-                    },
-                    cache: "no-store"
-                }
-            );
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                `HTTP ${response.status}`
-            );
-        }
-
-
-        const data =
-            await response.json();
-
-
-        console.log(
-            "Search results:",
-            data
-        );
-
-
-        showSearchResults(
-            data.results || []
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "Search error:",
-            error
-        );
-    }
-}
-
-
-/* =====================================================
-   SHOW SEARCH RESULTS
-   ===================================================== */
-
-function showSearchResults(results) {
-
-    const container =
-        document.getElementById(
-            "searchResults"
-        );
-
-
-    if (!container) {
-        return;
-    }
-
-
-    if (
-        !Array.isArray(results) ||
-        results.length === 0
-    ) {
-
-        container.innerHTML = `
+        content.innerHTML = `
             <div style="
-                padding:25px;
+                grid-column:1/-1;
                 text-align:center;
-                opacity:.7;
+                padding:30px;
+                color:#8fa1b5;
             ">
-                No brands found.
+                Brands could not be loaded.
             </div>
         `;
 
-        container.style.display =
-            "block";
+    }
+
+}
+
+
+/* =========================
+   RENDER BRAND CARDS
+========================= */
+
+function renderBrandCards(brands){
+
+    const content =
+        $("countryModalContent");
+
+
+    if(!brands.length){
+
+        content.innerHTML = `
+            <div style="
+                grid-column:1/-1;
+                text-align:center;
+                padding:35px 15px;
+                color:#8fa1b5;
+            ">
+                No brands have been added
+                for this country yet.
+            </div>
+        `;
 
         return;
+
     }
 
 
-    container.innerHTML =
-        results.map(
-            brand => {
+    content.innerHTML = "";
 
-                return `
-                    <div
-                        class="search-result"
-                        onclick="openBrand(${Number(brand.id)})"
-                    >
 
-                        <strong>
-                            ${escapeHtml(
-                                brand.name
-                            )}
-                        </strong>
+    brands.forEach(brand => {
 
-                        <span>
-                            ${escapeHtml(
-                                brand.country || ""
-                            )}
-                        </span>
+        const card =
+            document.createElement("div");
 
-                    </div>
-                `;
+        card.className =
+            "brand-card";
 
+
+        const name =
+            brand.name || "Unnamed brand";
+
+
+        const category =
+            brand.category || "";
+
+
+        const description =
+            brand.description || "";
+
+
+        let website = "";
+
+
+        if(
+            brand.website &&
+            isSafeUrl(brand.website)
+        ){
+
+            website = `
+                <a
+                    href="${escapeAttribute(brand.website)}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Visit website →
+                </a>
+            `;
+
+        }
+
+
+        card.innerHTML = `
+
+            <h3>
+                ${escapeHtml(name)}
+            </h3>
+
+            ${
+                category
+                ?
+                `<p>
+                    ${escapeHtml(category)}
+                </p>`
+                :
+                ""
             }
-        ).join("");
+
+            ${
+                description
+                ?
+                `<p style="margin-top:6px;">
+                    ${escapeHtml(description)}
+                </p>`
+                :
+                ""
+            }
+
+            ${website}
+
+        `;
 
 
-    container.style.display =
-        "block";
+        content.appendChild(card);
+
+    });
+
 }
 
 
-/* =====================================================
-   CLOSE SEARCH RESULTS
-   ===================================================== */
+/* =========================
+   CLOSE COUNTRY
+========================= */
 
-function closeSearchResults() {
+function closeCountryModal(event){
 
-    const container =
-        document.getElementById(
-            "searchResults"
-        );
+    if(
+        event &&
+        event.target !== $("countryModal")
+    ){
 
-    if (container) {
-
-        container.style.display =
-            "none";
-
-    }
-}
-
-
-/* =====================================================
-   ADD BRAND FORM
-   ===================================================== */
-
-function openAddBrand() {
-
-    const modal =
-        document.getElementById(
-            "addBrandModal"
-        );
-
-    if (!modal) {
         return;
-    }
-
-
-    fillCountrySelect(
-        countries
-    );
-
-
-    modal.classList.add(
-        "active"
-    );
-
-    document.body.style.overflow =
-        "hidden";
-}
-
-
-function closeAddBrand() {
-
-    const modal =
-        document.getElementById(
-            "addBrandModal"
-        );
-
-    if (modal) {
-
-        modal.classList.remove(
-            "active"
-        );
 
     }
 
-    document.body.style.overflow =
-        "";
+
+    $("countryModal")
+        .classList.remove("active");
+
 }
 
 
-/* =====================================================
-   INITIALIZE
-   ===================================================== */
+/* =========================
+   OPEN ADD BRAND
+========================= */
 
-function startApp() {
+function openAddBrand(){
 
-    console.log(
-        "ALL WORLD BRANDS starting..."
-    );
+    $("addBrandModal")
+        .classList.add("active");
 
-
-    loadCountries();
+}
 
 
-    /* ---------------------------------------------
-       COUNTRY SEARCH INPUT
-       --------------------------------------------- */
+/* =========================
+   CLOSE ADD BRAND
+========================= */
 
-    const countrySearch =
-        document.getElementById(
-            "countrySearch"
-        );
+function closeAddBrand(event){
+
+    if(
+        event &&
+        event.target !== $("addBrandModal")
+    ){
+
+        return;
+
+    }
 
 
-    if (countrySearch) {
+    $("addBrandModal")
+        .classList.remove("active");
 
-        countrySearch.addEventListener(
-            "input",
-            event => {
+}
 
-                filterCountries(
-                    event.target.value
+
+/* =========================
+   BRAND FORM
+========================= */
+
+$("brandForm")
+    .addEventListener(
+        "submit",
+        function(event){
+
+            event.preventDefault();
+
+
+            const brandName =
+                $("brandName")
+                    .value
+                    .trim();
+
+
+            const country =
+                $("brandCountry")
+                    .value
+                    .trim();
+
+
+            const website =
+                $("brandWebsite")
+                    .value
+                    .trim();
+
+
+            const ownerName =
+                $("applicantName")
+                    .value
+                    .trim();
+
+
+            const email =
+                $("applicantEmail")
+                    .value
+                    .trim();
+
+
+            const phone =
+                $("applicantPhone")
+                    .value
+                    .trim();
+
+
+            const description =
+                $("brandDescription")
+                    .value
+                    .trim();
+
+
+            if(!brandName || !country){
+
+                alert(
+                    "Please enter brand name and country."
                 );
 
-            }
-        );
-
-    }
-
-
-    /* ---------------------------------------------
-       GLOBAL SEARCH
-       --------------------------------------------- */
-
-    const searchInput =
-        document.getElementById(
-            "searchInput"
-        );
-
-
-    if (searchInput) {
-
-        searchInput.addEventListener(
-            "keydown",
-            event => {
-
-                if (
-                    event.key === "Enter"
-                ) {
-
-                    searchBrands(
-                        event.target.value
-                    );
-
-                }
+                return;
 
             }
-        );
-
-    }
 
 
-    /* ---------------------------------------------
-       ESCAPE KEY
-       --------------------------------------------- */
+            if(
+                website &&
+                !isSafeUrl(website)
+            ){
 
-    document.addEventListener(
-        "keydown",
-        event => {
+                alert(
+                    "Please enter a valid website URL."
+                );
 
-            if (
-                event.key === "Escape"
-            ) {
-
-                closeCountryModal();
-                closeBrandModal();
-                closeAddBrand();
-                closeSearchResults();
+                return;
 
             }
+
+
+            currentApplication = {
+
+                brand_name:
+                    brandName,
+
+                country:
+                    country,
+
+                owner_name:
+                    ownerName,
+
+                email:
+                    email,
+
+                phone:
+                    phone,
+
+                website:
+                    website,
+
+                description:
+                    description
+
+            };
+
+
+            $("checkoutBrand")
+                .textContent =
+                brandName;
+
+
+            $("checkoutCountry")
+                .textContent =
+                country;
+
+
+            closeAddBrand();
+
+
+            $("checkoutModal")
+                .classList.add("active");
 
         }
     );
 
 
-    console.log(
-        "ALL WORLD BRANDS ready."
-    );
+/* =========================
+   CLOSE CHECKOUT
+========================= */
+
+function closeCheckout(event){
+
+    if(
+        event &&
+        event.target !== $("checkoutModal")
+    ){
+
+        return;
+
+    }
+
+
+    $("checkoutModal")
+        .classList.remove("active");
+
 }
 
 
-/* =====================================================
+/* =========================
+   PAYMENT
+========================= */
+
+async function startGooglePay(){
+
+    /*
+       IMPORTANT:
+
+       Bu joy hozircha haqiqiy
+       Google Pay to'lovi emas.
+
+       Frontenddan "paid" deb yuborish
+       xavfsiz emas.
+
+       Keyingi bosqichda server-side
+       payment verification qo'shiladi.
+    */
+
+
+    if(!currentApplication){
+
+        alert(
+            "Application data is missing."
+        );
+
+        return;
+
+    }
+
+
+    alert(
+        "Payment gateway will be connected here."
+    );
+
+}
+
+
+/* =========================
+   SUCCESS
+========================= */
+
+function showSuccess(applicationId){
+
+    $("checkoutModal")
+        .classList.remove("active");
+
+
+    $("applicationId")
+        .textContent =
+        applicationId || "Received";
+
+
+    $("successModal")
+        .classList.add("active");
+
+}
+
+
+function closeSuccess(event){
+
+    if(
+        event &&
+        event.target !== $("successModal")
+    ){
+
+        return;
+
+    }
+
+
+    $("successModal")
+        .classList.remove("active");
+
+}
+
+
+/* =========================
+   HOME
+========================= */
+
+function goHome(){
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+function scrollToCountries(){
+
+    const section =
+        $("countries");
+
+    if(section){
+
+        section.scrollIntoView({
+            behavior:"smooth"
+        });
+
+    }
+
+}
+
+
+/* =========================
+   ESC KEY
+========================= */
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key !== "Escape"){
+            return;
+        }
+
+
+        $("countryModal")
+            ?.classList.remove("active");
+
+
+        $("addBrandModal")
+            ?.classList.remove("active");
+
+
+        $("checkoutModal")
+            ?.classList.remove("active");
+
+
+        $("successModal")
+            ?.classList.remove("active");
+
+    }
+);
+
+
+/* =========================
+   RAIN EFFECT
+========================= */
+
+function createRain(){
+
+    const container =
+        $("rainFX");
+
+    if(!container){
+        return;
+    }
+
+
+    container.innerHTML = "";
+
+
+    const count =
+        window.innerWidth < 600
+            ? 45
+            : 90;
+
+
+    for(
+        let i = 0;
+        i < count;
+        i++
+    ){
+
+        const drop =
+            document.createElement("div");
+
+
+        drop.className =
+            "rain-drop";
+
+
+        drop.style.left =
+            `${Math.random() * 100}%`;
+
+
+        drop.style.height =
+            `${40 + Math.random() * 80}px`;
+
+
+        drop.style.opacity =
+            `${0.15 + Math.random() * 0.35}`;
+
+
+        drop.style.animationDuration =
+            `${1.5 + Math.random() * 3}s`;
+
+
+        drop.style.animationDelay =
+            `${Math.random() * 4}s`;
+
+
+        container.appendChild(drop);
+
+    }
+
+}
+
+
+/* =========================
    START
-   ===================================================== */
+========================= */
 
-if (
-    document.readyState ===
-    "loading"
-) {
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
 
-    document.addEventListener(
-        "DOMContentLoaded",
-        startApp
-    );
+        createRain();
 
-} else {
+        loadCountries();
 
-    startApp();
+    }
+);
 
-}
+
+/* =========================
+   RESIZE RAIN
+========================= */
+
+window.addEventListener(
+    "resize",
+    function(){
+
+        clearTimeout(
+            window.__rainResizeTimer
+        );
+
+
+        window.__rainResizeTimer =
+            setTimeout(
+                createRain,
+                400
+            );
+
+    }
+);
 
 </script>
 
