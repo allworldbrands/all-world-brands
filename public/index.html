@@ -523,6 +523,7 @@ header{
 
 /* =====================================================
    COUNTRY GRID
+   GORIZONTAL KARTALAR
 ===================================================== */
 
 .countries-grid{
@@ -530,7 +531,7 @@ header{
 
     grid-template-columns:
         repeat(
-            10,
+            5,
             minmax(0,1fr)
         );
 
@@ -562,13 +563,15 @@ header{
 
 /* =====================================================
    COUNTRY CARD
+   GORIZONTAL 16:9
 ===================================================== */
 
 .country-card{
     position:relative;
 
     min-width:0;
-    height:178px;
+
+    aspect-ratio:16 / 9;
 
     border-radius:16px;
     overflow:hidden;
@@ -1092,7 +1095,7 @@ footer{
     .countries-grid{
         grid-template-columns:
             repeat(
-                8,
+                4,
                 minmax(0,1fr)
             );
     }
@@ -1135,15 +1138,11 @@ footer{
     .countries-grid{
         grid-template-columns:
             repeat(
-                5,
+                3,
                 minmax(0,1fr)
             );
 
         gap:14px;
-    }
-
-    .country-card{
-        height:160px;
     }
 
 }
@@ -1238,7 +1237,7 @@ footer{
     .countries-grid{
         grid-template-columns:
             repeat(
-                5,
+                2,
                 minmax(0,1fr)
             );
 
@@ -1246,7 +1245,7 @@ footer{
     }
 
     .country-card{
-        height:145px;
+        aspect-ratio:16 / 9;
         border-radius:12px;
     }
 
@@ -1324,10 +1323,6 @@ footer{
 
     .countries-grid{
         gap:9px;
-    }
-
-    .country-card{
-        height:132px;
     }
 
 }
