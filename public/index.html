@@ -21,7 +21,6 @@
 
 <title>ALL WORLD BRANDS</title>
 
-
 <style>
 
 *{
@@ -56,7 +55,7 @@ button{
 
 
 /* =====================================================
-   MAIN LIVE BACKGROUND
+   BACKGROUND
 ===================================================== */
 
 body::before{
@@ -119,7 +118,7 @@ body::after{
 
 
 /* =====================================================
-   LIVE RAIN
+   RAIN
 ===================================================== */
 
 #rainFX{
@@ -170,11 +169,6 @@ body::after{
     }
 
 }
-
-
-/* =====================================================
-   GLOBE BACKGROUND
-===================================================== */
 
 #globeBg{
     position:fixed;
@@ -264,11 +258,6 @@ header{
         rgba(255,255,255,.08);
 }
 
-
-/* =====================================================
-   HEADER SEARCH / LANGUAGE
-===================================================== */
-
 .header-search{
     margin-left:auto;
 
@@ -307,7 +296,6 @@ header{
 
     color:#fff;
     font-weight:700;
-
     white-space:nowrap;
 }
 
@@ -403,11 +391,6 @@ header{
     font-size:18px;
     line-height:1.55;
 }
-
-
-/* =====================================================
-   GLOBAL BADGE
-===================================================== */
 
 .global-badge{
     position:absolute;
@@ -543,7 +526,7 @@ header{
 
 
 /* =====================================================
-   COUNTRY GRID
+   COUNTRIES
    DESKTOP = 25
 ===================================================== */
 
@@ -558,11 +541,6 @@ header{
 
     gap:8px;
 }
-
-
-/* =====================================================
-   COUNTRY IMAGE
-===================================================== */
 
 .country-image{
     position:absolute;
@@ -580,11 +558,6 @@ header{
     transition:
         transform .3s ease;
 }
-
-
-/* =====================================================
-   COUNTRY CARD
-===================================================== */
 
 .country-card{
     position:relative;
@@ -648,11 +621,6 @@ header{
     transform:scale(1.05);
 }
 
-
-/* =====================================================
-   FLAG
-===================================================== */
-
 .country-flag{
     position:absolute;
 
@@ -669,11 +637,6 @@ header{
             rgba(0,0,0,.5)
         );
 }
-
-
-/* =====================================================
-   COUNTRY TEXT
-===================================================== */
 
 .country-info{
     position:absolute;
@@ -721,11 +684,6 @@ header{
     text-overflow:ellipsis;
 }
 
-
-/* =====================================================
-   BRAND COUNT SQUARE
-===================================================== */
-
 .brand-count-box{
     min-width:30px;
     height:30px;
@@ -758,11 +716,6 @@ header{
         0 4px 12px
         rgba(0,0,0,.3);
 }
-
-
-/* =====================================================
-   ARROW
-===================================================== */
 
 .arrow{
     width:25px;
@@ -852,7 +805,7 @@ header{
 
 
 /* =====================================================
-   CUSTOMER SUPPORT
+   SUPPORT
 ===================================================== */
 
 .support-section{
@@ -1477,11 +1430,6 @@ footer{
             6px 8px;
     }
 
-
-    /* ================================================
-       PHONE = 10 COUNTRIES IN ONE ROW
-    ================================================ */
-
     .countries-grid{
         grid-template-columns:
             repeat(
@@ -1522,11 +1470,6 @@ footer{
     .country-meta-left{
         gap:2px;
     }
-
-
-    /* ================================================
-       BRAND COUNT SQUARE
-    ================================================ */
 
     .brand-count-box{
         min-width:20px;
@@ -1665,14 +1608,11 @@ footer{
 }
 
 </style>
-
 </head>
-
 
 <body>
 
 <div id="rainFX"></div>
-
 <div id="globeBg"></div>
 
 
@@ -1682,9 +1622,7 @@ footer{
 
     <div class="logo-wrap">
 
-        <div class="logo-globe">
-            🌐
-        </div>
+        <div class="logo-globe">🌐</div>
 
         <div>
 
@@ -1692,8 +1630,10 @@ footer{
                 ALL WORLD BRANDS
             </div>
 
-            <div class="tagline"
-                 data-i18n="tagline">
+            <div
+                class="tagline"
+                data-i18n="tagline"
+            >
                 Global Brands • Global Opportunities
             </div>
 
@@ -1781,12 +1721,7 @@ footer{
 
 
     <p data-i18n="heroText">
-
-        Discover brands, manufacturers
-        and business opportunities
-        from around the world
-        in one place.
-
+        Discover brands, manufacturers and business opportunities from around the world in one place.
     </p>
 
 
@@ -1818,9 +1753,7 @@ footer{
         Worldwide
     </span>
 
-    <strong>
-        200+
-    </strong>
+    <strong>200+</strong>
 
     <span data-i18n="countriesTerritories">
         countries and territories
@@ -1870,14 +1803,10 @@ footer{
     <p>
 
         <span data-i18n="promoText">
-            Submit your brand to the
-            ALL WORLD BRANDS directory.
-            Starting price
+            Submit your brand to the ALL WORLD BRANDS directory. Starting price
         </span>
 
-        <strong>
-            $1.00
-        </strong>.
+        <strong>$1.00</strong>.
 
     </p>
 
@@ -1895,130 +1824,114 @@ footer{
 
 <section class="support-section">
 
-    <div class="support-card">
+<div class="support-card">
 
-        <div class="support-icon">
-            💬
-        </div>
-
-
-        <div class="support-content">
-
-            <h2 data-i18n="customerSupport">
-                Customer Support
-            </h2>
-
-            <p data-i18n="supportText">
-
-                If you have questions,
-                suggestions or need help,
-                you can contact us 24/7.
-
-            </p>
+    <div class="support-icon">
+        💬
+    </div>
 
 
-            <div class="support-contacts">
+    <div class="support-content">
 
-                <div class="support-item">
+        <h2 data-i18n="customerSupport">
+            Customer Support
+        </h2>
 
-                    <span class="support-item-icon">
-                        📞
+        <p data-i18n="supportText">
+            If you have questions, suggestions or need help, you can contact us 24/7.
+        </p>
+
+
+        <div class="support-contacts">
+
+            <div class="support-item">
+
+                <span class="support-item-icon">📞</span>
+
+                <div>
+
+                    <span
+                        class="support-label"
+                        data-i18n="phone"
+                    >
+                        Phone
                     </span>
 
-                    <div>
-
-                        <span
-                            class="support-label"
-                            data-i18n="phone"
-                        >
-                            Phone
-                        </span>
-
-                        <strong>
-                            +998 93 384 31 12
-                        </strong>
-
-                    </div>
+                    <strong>
+                        +998 93 384 31 12
+                    </strong>
 
                 </div>
 
+            </div>
 
-                <a
-                    class="support-item support-link"
-                    href="https://t.me/allallworldbrandsnet"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
 
-                    <span class="support-item-icon">
-                        💬
+            <a
+                class="support-item support-link"
+                href="https://t.me/allallworldbrandsnet"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+
+                <span class="support-item-icon">💬</span>
+
+                <div>
+
+                    <span
+                        class="support-label"
+                        data-i18n="telegram"
+                    >
+                        Telegram
                     </span>
 
-                    <div>
+                    <strong>
+                        @allworldbrandsnet
+                    </strong>
 
-                        <span
-                            class="support-label"
-                            data-i18n="telegram"
-                        >
-                            Telegram
-                        </span>
+                </div>
 
-                        <strong>
-                            @allworldbrandsnet
-                        </strong>
-
-                    </div>
-
-                </a>
+            </a>
 
 
-                <a
-                    class="support-item support-link"
-                    href="mailto:allworldbrandsnet@gmail.com"
-                >
+            <a
+                class="support-item support-link"
+                href="mailto:allworldbrandsnet@gmail.com"
+            >
 
-                    <span class="support-item-icon">
-                        📧
+                <span class="support-item-icon">📧</span>
+
+                <div>
+
+                    <span
+                        class="support-label"
+                        data-i18n="email"
+                    >
+                        Email
                     </span>
 
-                    <div>
+                    <strong>
+                        allworldbrandsnet@gmail.com
+                    </strong>
 
-                        <span
-                            class="support-label"
-                            data-i18n="email"
-                        >
-                            Email
-                        </span>
+                </div>
 
-                        <strong>
-                            allworldbrandsnet@gmail.com
-                        </strong>
-
-                    </div>
-
-                </a>
+            </a>
 
 
-                <div class="support-item">
+            <div class="support-item">
 
-                    <span class="support-item-icon">
-                        🕐
+                <span class="support-item-icon">🕐</span>
+
+                <div>
+
+                    <span
+                        class="support-label"
+                        data-i18n="serviceHours"
+                    >
+                        Service Hours
                     </span>
 
-                    <div>
-
-                        <span
-                            class="support-label"
-                            data-i18n="serviceHours"
-                        >
-                            Service Hours
-                        </span>
-
-                        <strong>
-                            24/7
-                        </strong>
-
-                    </div>
+                    <strong>24/7</strong>
 
                 </div>
 
@@ -2027,6 +1940,8 @@ footer{
         </div>
 
     </div>
+
+</div>
 
 </section>
 
@@ -2215,10 +2130,6 @@ footer{
 </div>
 
 
-<!-- =====================================================
-     CHECKOUT
-===================================================== -->
-
 <div
     id="checkoutScreen"
     class="checkout-screen"
@@ -2325,18 +2236,13 @@ footer{
     class="payment-note"
     data-i18n="paymentNote"
 >
-    Real Google Pay payment will work after
-    the PSP/payment gateway is configured.
+    Real Google Pay payment will work after the PSP/payment gateway is configured.
 </p>
 
 </div>
 
 </div>
 
-
-<!-- =====================================================
-     SUCCESS
-===================================================== -->
 
 <div
     id="successScreen"
@@ -2360,11 +2266,11 @@ footer{
 
 <div class="application-id">
 
-    <span data-i18n="applicationId">
-        Application ID:
-    </span>
+<span data-i18n="applicationId">
+    Application ID:
+</span>
 
-    <strong id="applicationId"></strong>
+<strong id="applicationId"></strong>
 
 </div>
 
@@ -2389,923 +2295,329 @@ footer{
 <script>
 
 /* =====================================================
-   LANGUAGE SYSTEM
+   TRANSLATIONS
 ===================================================== */
 
 const translations = {
 
-    en: {
-
+    en:{
         code:"EN",
-
-        tagline:
-            "Global Brands • Global Opportunities",
-
-        countries:
-            "Countries",
-
-        addBrand:
-            "Add Brand",
-
-        searchPlaceholder:
-            "Search country, brand or category...",
-
-        eyebrow:
-            "🌍 Global brand directory",
-
-        heroTitle:
-            "All countries",
-
-        heroGradient:
-            "in one platform!",
-
-        heroText:
-            "Discover brands, manufacturers and business opportunities from around the world in one place.",
-
-        search:
-            "Search",
-
-        worldwide:
-            "Worldwide",
-
-        countriesTerritories:
-            "countries and territories",
-
-        countriesTitle:
-            "🌐 Countries",
-
-        loadingCountries:
-            "Loading countries...",
-
-        promoTitle:
-            "Take your brand to the world",
-
-        promoText:
-            "Submit your brand to the ALL WORLD BRANDS directory. Starting price",
-
-        addYourBrand:
-            "Add Your Brand — $1.00",
-
-        customerSupport:
-            "Customer Support",
-
-        supportText:
-            "If you have questions, suggestions or need help, you can contact us 24/7.",
-
-        phone:
-            "Phone",
-
-        telegram:
-            "Telegram",
-
-        email:
-            "Email",
-
-        serviceHours:
-            "Service Hours",
-
-        addBrandTitle:
-            "Add Brand",
-
-        addBrandSubtitle:
-            "Submit your brand for review — $1.00",
-
-        brandNameLabel:
-            "Brand Name *",
-
-        brandNamePlaceholder:
-            "Example: Artel",
-
-        countryLabel:
-            "Country *",
-
-        selectCountry:
-            "Select country",
-
-        websiteLabel:
-            "Website",
-
-        nameLabel:
-            "Your Name *",
-
-        fullNamePlaceholder:
-            "Your full name",
-
-        emailLabel:
-            "Email *",
-
-        phoneLabel:
-            "Phone",
-
-        descriptionLabel:
-            "Brand Description",
-
-        descriptionPlaceholder:
-            "Tell us about your brand...",
-
-        applicationFee:
-            "Application Fee",
-
-        proceedPayment:
-            "Proceed to Payment — $1.00",
-
-        back:
-            "← Back",
-
-        payment:
-            "Payment",
-
-        checkApplication:
-            "Please check your application before payment.",
-
-        brand:
-            "Brand",
-
-        country:
-            "Country",
-
-        service:
-            "Service",
-
-        total:
-            "Total",
-
-        paymentMethod:
-            "Payment Method",
-
-        paymentNote:
-            "Real Google Pay payment will work after the PSP/payment gateway is configured.",
-
-        applicationSubmitted:
-            "Application Submitted",
-
-        applicationReceived:
-            "Your brand application has been received.",
-
-        applicationId:
-            "Application ID:",
-
-        done:
-            "Done",
-
-        countriesLoadingError:
-            "Countries could not be loaded",
-
-        serverConnectionError:
-            "There was a problem connecting to the server.",
-
-        noCountry:
-            "No country found.",
-
-        brandsLoading:
-            "Loading brands...",
-
-        noBrands:
-            "There are currently no brands listed for this country.",
-
-        formRequired:
-            "Please enter the brand name and select a country.",
-
-        paymentGateway:
-            "Google Pay gateway is not connected yet. A PSP/payment gateway configuration is required to process real payments.",
-
-        applicationFailed:
-            "The application could not be submitted."
-
+        tagline:"Global Brands • Global Opportunities",
+        countries:"Countries",
+        addBrand:"Add Brand",
+        searchPlaceholder:"Search country, brand or category...",
+        eyebrow:"🌍 Global brand directory",
+        heroTitle:"All countries",
+        heroGradient:"in one platform!",
+        heroText:"Discover brands, manufacturers and business opportunities from around the world in one place.",
+        search:"Search",
+        worldwide:"Worldwide",
+        countriesTerritories:"countries and territories",
+        countriesTitle:"🌐 Countries",
+        loadingCountries:"Loading countries...",
+        promoTitle:"Take your brand to the world",
+        promoText:"Submit your brand to the ALL WORLD BRANDS directory. Starting price",
+        addYourBrand:"Add Your Brand — $1.00",
+        customerSupport:"Customer Support",
+        supportText:"If you have questions, suggestions or need help, you can contact us 24/7.",
+        phone:"Phone",
+        telegram:"Telegram",
+        email:"Email",
+        serviceHours:"Service Hours",
+        addBrandTitle:"Add Brand",
+        addBrandSubtitle:"Submit your brand for review — $1.00",
+        brandNameLabel:"Brand Name *",
+        brandNamePlaceholder:"Example: Artel",
+        countryLabel:"Country *",
+        selectCountry:"Select country",
+        websiteLabel:"Website",
+        nameLabel:"Your Name *",
+        fullNamePlaceholder:"Your full name",
+        emailLabel:"Email *",
+        phoneLabel:"Phone",
+        descriptionLabel:"Brand Description",
+        descriptionPlaceholder:"Tell us about your brand...",
+        applicationFee:"Application Fee",
+        proceedPayment:"Proceed to Payment — $1.00",
+        back:"← Back",
+        payment:"Payment",
+        checkApplication:"Please check your application before payment.",
+        brand:"Brand",
+        country:"Country",
+        service:"Service",
+        total:"Total",
+        paymentMethod:"Payment Method",
+        paymentNote:"Real Google Pay payment will work after the PSP/payment gateway is configured.",
+        applicationSubmitted:"Application Submitted",
+        applicationReceived:"Your brand application has been received.",
+        applicationId:"Application ID:",
+        done:"Done",
+        countriesLoadingError:"Countries could not be loaded",
+        serverConnectionError:"There was a problem connecting to the server.",
+        noCountry:"No country found.",
+        brandsLoading:"Loading brands...",
+        noBrands:"There are currently no brands listed for this country.",
+        formRequired:"Please enter the brand name and select a country.",
+        paymentGateway:"Google Pay gateway is not connected yet. A PSP/payment gateway configuration is required to process real payments.",
+        applicationFailed:"The application could not be submitted."
     },
 
-
-    uz: {
-
+    uz:{
         code:"UZ",
-
-        tagline:
-            "Global brendlar • Global imkoniyatlar",
-
-        countries:
-            "Davlatlar",
-
-        addBrand:
-            "Brend qo‘shish",
-
-        searchPlaceholder:
-            "Davlat, brend yoki kategoriya qidiring...",
-
-        eyebrow:
-            "🌍 Global brend katalogi",
-
-        heroTitle:
-            "Barcha davlatlar",
-
-        heroGradient:
-            "bir platformada!",
-
-        heroText:
-            "Dunyo bo‘ylab brendlar, ishlab chiqaruvchilar va biznes imkoniyatlarini bir joydan kashf qiling.",
-
-        search:
-            "Qidirish",
-
-        worldwide:
-            "Dunyo bo‘ylab",
-
-        countriesTerritories:
-            "davlat va hudud",
-
-        countriesTitle:
-            "🌐 Davlatlar",
-
-        loadingCountries:
-            "Davlatlar yuklanmoqda...",
-
-        promoTitle:
-            "Brendingizni dunyoga olib chiqing",
-
-        promoText:
-            "Brendingizni ALL WORLD BRANDS katalogiga yuboring. Boshlang‘ich narx",
-
-        addYourBrand:
-            "Brendingizni qo‘shing — $1.00",
-
-        customerSupport:
-            "Mijozlarga xizmat ko‘rsatish",
-
-        supportText:
-            "Savollar, takliflar yoki yordam kerak bo‘lsa, biz bilan 24/7 bog‘lanishingiz mumkin.",
-
-        phone:
-            "Telefon",
-
-        telegram:
-            "Telegram",
-
-        email:
-            "E-mail",
-
-        serviceHours:
-            "Xizmat vaqti",
-
-        addBrandTitle:
-            "Brend qo‘shish",
-
-        addBrandSubtitle:
-            "Brendingizni ko‘rib chiqish uchun yuboring — $1.00",
-
-        brandNameLabel:
-            "Brend nomi *",
-
-        brandNamePlaceholder:
-            "Masalan: Artel",
-
-        countryLabel:
-            "Davlat *",
-
-        selectCountry:
-            "Davlatni tanlang",
-
-        websiteLabel:
-            "Veb-sayt",
-
-        nameLabel:
-            "Ismingiz *",
-
-        fullNamePlaceholder:
-            "To‘liq ismingiz",
-
-        emailLabel:
-            "Email *",
-
-        phoneLabel:
-            "Telefon",
-
-        descriptionLabel:
-            "Brend tavsifi",
-
-        descriptionPlaceholder:
-            "Brendingiz haqida...",
-
-        applicationFee:
-            "Ariza to‘lovi",
-
-        proceedPayment:
-            "To‘lovga o‘tish — $1.00",
-
-        back:
-            "← Orqaga",
-
-        payment:
-            "To‘lov",
-
-        checkApplication:
-            "To‘lovdan oldin arizangizni tekshiring.",
-
-        brand:
-            "Brend",
-
-        country:
-            "Davlat",
-
-        service:
-            "Xizmat",
-
-        total:
-            "Jami",
-
-        paymentMethod:
-            "To‘lov usuli",
-
-        paymentNote:
-            "Haqiqiy Google Pay to‘lovi PSP/payment gateway sozlangandan keyin ishlaydi.",
-
-        applicationSubmitted:
-            "Ariza yuborildi",
-
-        applicationReceived:
-            "Brend arizangiz qabul qilindi.",
-
-        applicationId:
-            "Ariza ID:",
-
-        done:
-            "Tayyor",
-
-        countriesLoadingError:
-            "Davlatlar yuklanmadi",
-
-        serverConnectionError:
-            "Server bilan ulanishda muammo bor.",
-
-        noCountry:
-            "Davlat topilmadi.",
-
-        brandsLoading:
-            "Brendlar yuklanmoqda...",
-
-        noBrands:
-            "Bu davlatda hozircha brendlar ro‘yxati yo‘q.",
-
-        formRequired:
-            "Brend nomini kiriting va davlatni tanlang.",
-
-        paymentGateway:
-            "Google Pay gateway hali ulanmagan. Haqiqiy to‘lov uchun PSP/payment gateway konfiguratsiyasi kerak.",
-
-        applicationFailed:
-            "Arizani yuborib bo‘lmadi."
-
+        tagline:"Global brendlar • Global imkoniyatlar",
+        countries:"Davlatlar",
+        addBrand:"Brend qo‘shish",
+        searchPlaceholder:"Davlat, brend yoki kategoriya qidiring...",
+        eyebrow:"🌍 Global brend katalogi",
+        heroTitle:"Barcha davlatlar",
+        heroGradient:"bir platformada!",
+        heroText:"Dunyo bo‘ylab brendlar, ishlab chiqaruvchilar va biznes imkoniyatlarini bir joydan kashf qiling.",
+        search:"Qidirish",
+        worldwide:"Dunyo bo‘ylab",
+        countriesTerritories:"davlat va hudud",
+        countriesTitle:"🌐 Davlatlar",
+        loadingCountries:"Davlatlar yuklanmoqda...",
+        promoTitle:"Brendingizni dunyoga olib chiqing",
+        promoText:"Brendingizni ALL WORLD BRANDS katalogiga yuboring. Boshlang‘ich narx",
+        addYourBrand:"Brendingizni qo‘shing — $1.00",
+        customerSupport:"Mijozlarga xizmat ko‘rsatish",
+        supportText:"Savollar, takliflar yoki yordam kerak bo‘lsa, biz bilan 24/7 bog‘lanishingiz mumkin.",
+        phone:"Telefon",
+        telegram:"Telegram",
+        email:"E-mail",
+        serviceHours:"Xizmat vaqti",
+        addBrandTitle:"Brend qo‘shish",
+        addBrandSubtitle:"Brendingizni ko‘rib chiqish uchun yuboring — $1.00",
+        brandNameLabel:"Brend nomi *",
+        brandNamePlaceholder:"Masalan: Artel",
+        countryLabel:"Davlat *",
+        selectCountry:"Davlatni tanlang",
+        websiteLabel:"Veb-sayt",
+        nameLabel:"Ismingiz *",
+        fullNamePlaceholder:"To‘liq ismingiz",
+        emailLabel:"Email *",
+        phoneLabel:"Telefon",
+        descriptionLabel:"Brend tavsifi",
+        descriptionPlaceholder:"Brendingiz haqida...",
+        applicationFee:"Ariza to‘lovi",
+        proceedPayment:"To‘lovga o‘tish — $1.00",
+        back:"← Orqaga",
+        payment:"To‘lov",
+        checkApplication:"To‘lovdan oldin arizangizni tekshiring.",
+        brand:"Brend",
+        country:"Davlat",
+        service:"Xizmat",
+        total:"Jami",
+        paymentMethod:"To‘lov usuli",
+        paymentNote:"Haqiqiy Google Pay to‘lovi PSP/payment gateway sozlangandan keyin ishlaydi.",
+        applicationSubmitted:"Ariza yuborildi",
+        applicationReceived:"Brend arizangiz qabul qilindi.",
+        applicationId:"Ariza ID:",
+        done:"Tayyor",
+        countriesLoadingError:"Davlatlar yuklanmadi",
+        serverConnectionError:"Server bilan ulanishda muammo bor.",
+        noCountry:"Davlat topilmadi.",
+        brandsLoading:"Brendlar yuklanmoqda...",
+        noBrands:"Bu davlatda hozircha brendlar ro‘yxati yo‘q.",
+        formRequired:"Brend nomini kiriting va davlatni tanlang.",
+        paymentGateway:"Google Pay gateway hali ulanmagan. Haqiqiy to‘lov uchun PSP/payment gateway konfiguratsiyasi kerak.",
+        applicationFailed:"Arizani yuborib bo‘lmadi."
     },
 
-
-    ru: {
-
+    ru:{
         code:"RU",
-
-        tagline:
-            "Глобальные бренды • Глобальные возможности",
-
-        countries:
-            "Страны",
-
-        addBrand:
-            "Добавить бренд",
-
-        searchPlaceholder:
-            "Поиск страны, бренда или категории...",
-
-        eyebrow:
-            "🌍 Глобальный каталог брендов",
-
-        heroTitle:
-            "Все страны",
-
-        heroGradient:
-            "на одной платформе!",
-
-        heroText:
-            "Открывайте бренды, производителей и бизнес-возможности со всего мира в одном месте.",
-
-        search:
-            "Поиск",
-
-        worldwide:
-            "По всему миру",
-
-        countriesTerritories:
-            "стран и территорий",
-
-        countriesTitle:
-            "🌐 Страны",
-
-        loadingCountries:
-            "Загрузка стран...",
-
-        promoTitle:
-            "Выведите свой бренд на мировой рынок",
-
-        promoText:
-            "Отправьте свой бренд в каталог ALL WORLD BRANDS. Начальная цена",
-
-        addYourBrand:
-            "Добавить бренд — $1.00",
-
-        customerSupport:
-            "Служба поддержки",
-
-        supportText:
-            "Если у вас есть вопросы, предложения или вам нужна помощь, свяжитесь с нами 24/7.",
-
-        phone:
-            "Телефон",
-
-        telegram:
-            "Telegram",
-
-        email:
-            "Email",
-
-        serviceHours:
-            "Время работы",
-
-        addBrandTitle:
-            "Добавить бренд",
-
-        addBrandSubtitle:
-            "Отправьте бренд на рассмотрение — $1.00",
-
-        brandNameLabel:
-            "Название бренда *",
-
-        brandNamePlaceholder:
-            "Например: Artel",
-
-        countryLabel:
-            "Страна *",
-
-        selectCountry:
-            "Выберите страну",
-
-        websiteLabel:
-            "Веб-сайт",
-
-        nameLabel:
-            "Ваше имя *",
-
-        fullNamePlaceholder:
-            "Ваше полное имя",
-
-        emailLabel:
-            "Email *",
-
-        phoneLabel:
-            "Телефон",
-
-        descriptionLabel:
-            "Описание бренда",
-
-        descriptionPlaceholder:
-            "Расскажите о вашем бренде...",
-
-        applicationFee:
-            "Стоимость заявки",
-
-        proceedPayment:
-            "Перейти к оплате — $1.00",
-
-        back:
-            "← Назад",
-
-        payment:
-            "Оплата",
-
-        checkApplication:
-            "Проверьте заявку перед оплатой.",
-
-        brand:
-            "Бренд",
-
-        country:
-            "Страна",
-
-        service:
-            "Услуга",
-
-        total:
-            "Итого",
-
-        paymentMethod:
-            "Способ оплаты",
-
-        paymentNote:
-            "Настоящая оплата через Google Pay будет работать после настройки PSP/payment gateway.",
-
-        applicationSubmitted:
-            "Заявка отправлена",
-
-        applicationReceived:
-            "Ваша заявка на бренд получена.",
-
-        applicationId:
-            "ID заявки:",
-
-        done:
-            "Готово",
-
-        countriesLoadingError:
-            "Не удалось загрузить страны",
-
-        serverConnectionError:
-            "Возникла проблема с подключением к серверу.",
-
-        noCountry:
-            "Страна не найдена.",
-
-        brandsLoading:
-            "Загрузка брендов...",
-
-        noBrands:
-            "Для этой страны пока нет зарегистрированных брендов.",
-
-        formRequired:
-            "Введите название бренда и выберите страну.",
-
-        paymentGateway:
-            "Google Pay gateway пока не подключен. Для реальных платежей требуется настройка PSP/payment gateway.",
-
-        applicationFailed:
-            "Не удалось отправить заявку."
-
+        tagline:"Глобальные бренды • Глобальные возможности",
+        countries:"Страны",
+        addBrand:"Добавить бренд",
+        searchPlaceholder:"Поиск страны, бренда или категории...",
+        eyebrow:"🌍 Глобальный каталог брендов",
+        heroTitle:"Все страны",
+        heroGradient:"на одной платформе!",
+        heroText:"Открывайте бренды, производителей и бизнес-возможности со всего мира в одном месте.",
+        search:"Поиск",
+        worldwide:"По всему миру",
+        countriesTerritories:"стран и территорий",
+        countriesTitle:"🌐 Страны",
+        loadingCountries:"Загрузка стран...",
+        promoTitle:"Выведите свой бренд на мировой рынок",
+        promoText:"Отправьте свой бренд в каталог ALL WORLD BRANDS. Начальная цена",
+        addYourBrand:"Добавить бренд — $1.00",
+        customerSupport:"Служба поддержки",
+        supportText:"Если у вас есть вопросы, предложения или вам нужна помощь, свяжитесь с нами 24/7.",
+        phone:"Телефон",
+        telegram:"Telegram",
+        email:"Email",
+        serviceHours:"Время работы",
+        addBrandTitle:"Добавить бренд",
+        addBrandSubtitle:"Отправьте бренд на рассмотрение — $1.00",
+        brandNameLabel:"Название бренда *",
+        brandNamePlaceholder:"Например: Artel",
+        countryLabel:"Страна *",
+        selectCountry:"Выберите страну",
+        websiteLabel:"Веб-сайт",
+        nameLabel:"Ваше имя *",
+        fullNamePlaceholder:"Ваше полное имя",
+        emailLabel:"Email *",
+        phoneLabel:"Телефон",
+        descriptionLabel:"Описание бренда",
+        descriptionPlaceholder:"Расскажите о вашем бренде...",
+        applicationFee:"Стоимость заявки",
+        proceedPayment:"Перейти к оплате — $1.00",
+        back:"← Назад",
+        payment:"Оплата",
+        checkApplication:"Проверьте заявку перед оплатой.",
+        brand:"Бренд",
+        country:"Страна",
+        service:"Услуга",
+        total:"Итого",
+        paymentMethod:"Способ оплаты",
+        paymentNote:"Настоящая оплата через Google Pay будет работать после настройки PSP/payment gateway.",
+        applicationSubmitted:"Заявка отправлена",
+        applicationReceived:"Ваша заявка на бренд получена.",
+        applicationId:"ID заявки:",
+        done:"Готово",
+        countriesLoadingError:"Не удалось загрузить страны",
+        serverConnectionError:"Возникла проблема с подключением к серверу.",
+        noCountry:"Страна не найдена.",
+        brandsLoading:"Загрузка брендов...",
+        noBrands:"Для этой страны пока нет зарегистрированных брендов.",
+        formRequired:"Введите название бренда и выберите страну.",
+        paymentGateway:"Google Pay gateway пока не подключен. Для реальных платежей требуется настройка PSP/payment gateway.",
+        applicationFailed:"Не удалось отправить заявку."
     },
 
-
-    tr: {
-
+    tr:{
         code:"TR",
-
-        tagline:
-            "Küresel Markalar • Küresel Fırsatlar",
-
-        countries:
-            "Ülkeler",
-
-        addBrand:
-            "Marka Ekle",
-
-        searchPlaceholder:
-            "Ülke, marka veya kategori ara...",
-
-        eyebrow:
-            "🌍 Küresel marka dizini",
-
-        heroTitle:
-            "Tüm ülkeler",
-
-        heroGradient:
-            "tek platformda!",
-
-        heroText:
-            "Dünyanın dört bir yanındaki markaları, üreticileri ve iş fırsatlarını tek bir yerde keşfedin.",
-
-        search:
-            "Ara",
-
-        worldwide:
-            "Dünya çapında",
-
-        countriesTerritories:
-            "ülke ve bölge",
-
-        countriesTitle:
-            "🌐 Ülkeler",
-
-        loadingCountries:
-            "Ülkeler yükleniyor...",
-
-        promoTitle:
-            "Markanızı dünyaya taşıyın",
-
-        promoText:
-            "Markanızı ALL WORLD BRANDS dizinine gönderin. Başlangıç fiyatı",
-
-        addYourBrand:
-            "Markanızı Ekleyin — $1.00",
-
-        customerSupport:
-            "Müşteri Desteği",
-
-        supportText:
-            "Sorularınız, önerileriniz veya yardıma ihtiyacınız varsa bizimle 7/24 iletişime geçebilirsiniz.",
-
-        phone:
-            "Telefon",
-
-        telegram:
-            "Telegram",
-
-        email:
-            "E-posta",
-
-        serviceHours:
-            "Hizmet Saatleri",
-
-        addBrandTitle:
-            "Marka Ekle",
-
-        addBrandSubtitle:
-            "Markanızı inceleme için gönderin — $1.00",
-
-        brandNameLabel:
-            "Marka Adı *",
-
-        brandNamePlaceholder:
-            "Örneğin: Artel",
-
-        countryLabel:
-            "Ülke *",
-
-        selectCountry:
-            "Ülke seçin",
-
-        websiteLabel:
-            "Web sitesi",
-
-        nameLabel:
-            "Adınız *",
-
-        fullNamePlaceholder:
-            "Adınız ve soyadınız",
-
-        emailLabel:
-            "E-posta *",
-
-        phoneLabel:
-            "Telefon",
-
-        descriptionLabel:
-            "Marka Açıklaması",
-
-        descriptionPlaceholder:
-            "Markanız hakkında bilgi verin...",
-
-        applicationFee:
-            "Başvuru Ücreti",
-
-        proceedPayment:
-            "Ödemeye Geç — $1.00",
-
-        back:
-            "← Geri",
-
-        payment:
-            "Ödeme",
-
-        checkApplication:
-            "Ödeme yapmadan önce başvurunuzu kontrol edin.",
-
-        brand:
-            "Marka",
-
-        country:
-            "Ülke",
-
-        service:
-            "Hizmet",
-
-        total:
-            "Toplam",
-
-        paymentMethod:
-            "Ödeme Yöntemi",
-
-        paymentNote:
-            "Gerçek Google Pay ödemesi PSP/payment gateway yapılandırıldıktan sonra çalışacaktır.",
-
-        applicationSubmitted:
-            "Başvuru Gönderildi",
-
-        applicationReceived:
-            "Marka başvurunuz alındı.",
-
-        applicationId:
-            "Başvuru ID:",
-
-        done:
-            "Tamam",
-
-        countriesLoadingError:
-            "Ülkeler yüklenemedi",
-
-        serverConnectionError:
-            "Sunucuya bağlanırken bir sorun oluştu.",
-
-        noCountry:
-            "Ülke bulunamadı.",
-
-        brandsLoading:
-            "Markalar yükleniyor...",
-
-        noBrands:
-            "Bu ülkede henüz listelenen marka bulunmuyor.",
-
-        formRequired:
-            "Marka adını girin ve ülke seçin.",
-
-        paymentGateway:
-            "Google Pay gateway henüz bağlı değil. Gerçek ödemeler için PSP/payment gateway yapılandırması gerekiyor.",
-
-        applicationFailed:
-            "Başvuru gönderilemedi."
-
+        tagline:"Küresel Markalar • Küresel Fırsatlar",
+        countries:"Ülkeler",
+        addBrand:"Marka Ekle",
+        searchPlaceholder:"Ülke, marka veya kategori ara...",
+        eyebrow:"🌍 Küresel marka dizini",
+        heroTitle:"Tüm ülkeler",
+        heroGradient:"tek platformda!",
+        heroText:"Dünyanın dört bir yanındaki markaları, üreticileri ve iş fırsatlarını tek bir yerde keşfedin.",
+        search:"Ara",
+        worldwide:"Dünya çapında",
+        countriesTerritories:"ülke ve bölge",
+        countriesTitle:"🌐 Ülkeler",
+        loadingCountries:"Ülkeler yükleniyor...",
+        promoTitle:"Markanızı dünyaya taşıyın",
+        promoText:"Markanızı ALL WORLD BRANDS dizinine gönderin. Başlangıç fiyatı",
+        addYourBrand:"Markanızı Ekleyin — $1.00",
+        customerSupport:"Müşteri Desteği",
+        supportText:"Sorularınız, önerileriniz veya yardıma ihtiyacınız varsa bizimle 7/24 iletişime geçebilirsiniz.",
+        phone:"Telefon",
+        telegram:"Telegram",
+        email:"E-posta",
+        serviceHours:"Hizmet Saatleri",
+        addBrandTitle:"Marka Ekle",
+        addBrandSubtitle:"Markanızı inceleme için gönderin — $1.00",
+        brandNameLabel:"Marka Adı *",
+        brandNamePlaceholder:"Örneğin: Artel",
+        countryLabel:"Ülke *",
+        selectCountry:"Ülke seçin",
+        websiteLabel:"Web sitesi",
+        nameLabel:"Adınız *",
+        fullNamePlaceholder:"Adınız ve soyadınız",
+        emailLabel:"E-posta *",
+        phoneLabel:"Telefon",
+        descriptionLabel:"Marka Açıklaması",
+        descriptionPlaceholder:"Markanız hakkında bilgi verin...",
+        applicationFee:"Başvuru Ücreti",
+        proceedPayment:"Ödemeye Geç — $1.00",
+        back:"← Geri",
+        payment:"Ödeme",
+        checkApplication:"Ödeme yapmadan önce başvurunuzu kontrol edin.",
+        brand:"Marka",
+        country:"Ülke",
+        service:"Hizmet",
+        total:"Toplam",
+        paymentMethod:"Ödeme Yöntemi",
+        paymentNote:"Gerçek Google Pay ödemesi PSP/payment gateway yapılandırıldıktan sonra çalışacaktır.",
+        applicationSubmitted:"Başvuru Gönderildi",
+        applicationReceived:"Marka başvurunuz alındı.",
+        applicationId:"Başvuru ID:",
+        done:"Tamam",
+        countriesLoadingError:"Ülkeler yüklenemedi",
+        serverConnectionError:"Sunucuya bağlanırken bir sorun oluştu.",
+        noCountry:"Ülke bulunamadı.",
+        brandsLoading:"Markalar yükleniyor...",
+        noBrands:"Bu ülkede henüz listelenen marka bulunmuyor.",
+        formRequired:"Marka adını girin ve ülke seçin.",
+        paymentGateway:"Google Pay gateway henüz bağlı değil. Gerçek ödemeler için PSP/payment gateway yapılandırması gerekiyor.",
+        applicationFailed:"Başvuru gönderilemedi."
     },
 
-
-    de: {
-
+    de:{
         code:"DE",
-
-        tagline:
-            "Globale Marken • Globale Möglichkeiten",
-
-        countries:
-            "Länder",
-
-        addBrand:
-            "Marke hinzufügen",
-
-        searchPlaceholder:
-            "Land, Marke oder Kategorie suchen...",
-
-        eyebrow:
-            "🌍 Globales Markenverzeichnis",
-
-        heroTitle:
-            "Alle Länder",
-
-        heroGradient:
-            "auf einer Plattform!",
-
-        heroText:
-            "Entdecken Sie Marken, Hersteller und Geschäftsmöglichkeiten aus aller Welt an einem Ort.",
-
-        search:
-            "Suchen",
-
-        worldwide:
-            "Weltweit",
-
-        countriesTerritories:
-            "Länder und Gebiete",
-
-        countriesTitle:
-            "🌐 Länder",
-
-        loadingCountries:
-            "Länder werden geladen...",
-
-        promoTitle:
-            "Bringen Sie Ihre Marke in die Welt",
-
-        promoText:
-            "Senden Sie Ihre Marke an das ALL WORLD BRANDS Verzeichnis. Startpreis",
-
-        addYourBrand:
-            "Marke hinzufügen — $1.00",
-
-        customerSupport:
-            "Kundensupport",
-
-        supportText:
-            "Wenn Sie Fragen, Vorschläge oder Hilfe benötigen, können Sie uns rund um die Uhr kontaktieren.",
-
-        phone:
-            "Telefon",
-
-        telegram:
-            "Telegram",
-
-        email:
-            "E-Mail",
-
-        serviceHours:
-            "Servicezeiten",
-
-        addBrandTitle:
-            "Marke hinzufügen",
-
-        addBrandSubtitle:
-            "Senden Sie Ihre Marke zur Prüfung — $1.00",
-
-        brandNameLabel:
-            "Markenname *",
-
-        brandNamePlaceholder:
-            "Beispiel: Artel",
-
-        countryLabel:
-            "Land *",
-
-        selectCountry:
-            "Land auswählen",
-
-        websiteLabel:
-            "Webseite",
-
-        nameLabel:
-            "Ihr Name *",
-
-        fullNamePlaceholder:
-            "Ihr vollständiger Name",
-
-        emailLabel:
-            "E-Mail *",
-
-        phoneLabel:
-            "Telefon",
-
-        descriptionLabel:
-            "Markenbeschreibung",
-
-        descriptionPlaceholder:
-            "Erzählen Sie uns von Ihrer Marke...",
-
-        applicationFee:
-            "Anmeldegebühr",
-
-        proceedPayment:
-            "Zur Zahlung — $1.00",
-
-        back:
-            "← Zurück",
-
-        payment:
-            "Zahlung",
-
-        checkApplication:
-            "Bitte überprüfen Sie Ihre Bewerbung vor der Zahlung.",
-
-        brand:
-            "Marke",
-
-        country:
-            "Land",
-
-        service:
-            "Dienstleistung",
-
-        total:
-            "Gesamt",
-
-        paymentMethod:
-            "Zahlungsmethode",
-
-        paymentNote:
-            "Die echte Google-Pay-Zahlung funktioniert nach der Konfiguration des PSP/payment gateway.",
-
-        applicationSubmitted:
-            "Bewerbung gesendet",
-
-        applicationReceived:
-            "Ihre Markenbewerbung wurde empfangen.",
-
-        applicationId:
-            "Bewerbungs-ID:",
-
-        done:
-            "Fertig",
-
-        countriesLoadingError:
-            "Länder konnten nicht geladen werden",
-
-        serverConnectionError:
-            "Es gab ein Problem mit der Verbindung zum Server.",
-
-        noCountry:
-            "Kein Land gefunden.",
-
-        brandsLoading:
-            "Marken werden geladen...",
-
-        noBrands:
-            "Für dieses Land sind derzeit keine Marken gelistet.",
-
-        formRequired:
-            "Bitte geben Sie den Markennamen ein und wählen Sie ein Land.",
-
-        paymentGateway:
-            "Google Pay gateway ist noch nicht verbunden. Für echte Zahlungen ist eine PSP/payment gateway-Konfiguration erforderlich.",
-
-        applicationFailed:
-            "Die Bewerbung konnte nicht gesendet werden."
-
+        tagline:"Globale Marken • Globale Möglichkeiten",
+        countries:"Länder",
+        addBrand:"Marke hinzufügen",
+        searchPlaceholder:"Land, Marke oder Kategorie suchen...",
+        eyebrow:"🌍 Globales Markenverzeichnis",
+        heroTitle:"Alle Länder",
+        heroGradient:"auf einer Plattform!",
+        heroText:"Entdecken Sie Marken, Hersteller und Geschäftsmöglichkeiten aus aller Welt an einem Ort.",
+        search:"Suchen",
+        worldwide:"Weltweit",
+        countriesTerritories:"Länder und Gebiete",
+        countriesTitle:"🌐 Länder",
+        loadingCountries:"Länder werden geladen...",
+        promoTitle:"Bringen Sie Ihre Marke in die Welt",
+        promoText:"Senden Sie Ihre Marke an das ALL WORLD BRANDS Verzeichnis. Startpreis",
+        addYourBrand:"Marke hinzufügen — $1.00",
+        customerSupport:"Kundensupport",
+        supportText:"Wenn Sie Fragen, Vorschläge oder Hilfe benötigen, können Sie uns rund um die Uhr kontaktieren.",
+        phone:"Telefon",
+        telegram:"Telegram",
+        email:"E-Mail",
+        serviceHours:"Servicezeiten",
+        addBrandTitle:"Marke hinzufügen",
+        addBrandSubtitle:"Senden Sie Ihre Marke zur Prüfung — $1.00",
+        brandNameLabel:"Markenname *",
+        brandNamePlaceholder:"Beispiel: Artel",
+        countryLabel:"Land *",
+        selectCountry:"Land auswählen",
+        websiteLabel:"Webseite",
+        nameLabel:"Ihr Name *",
+        fullNamePlaceholder:"Ihr vollständiger Name",
+        emailLabel:"E-Mail *",
+        phoneLabel:"Telefon",
+        descriptionLabel:"Markenbeschreibung",
+        descriptionPlaceholder:"Erzählen Sie uns von Ihrer Marke...",
+        applicationFee:"Anmeldegebühr",
+        proceedPayment:"Zur Zahlung — $1.00",
+        back:"← Zurück",
+        payment:"Zahlung",
+        checkApplication:"Bitte überprüfen Sie Ihre Bewerbung vor der Zahlung.",
+        brand:"Marke",
+        country:"Land",
+        service:"Dienstleistung",
+        total:"Gesamt",
+        paymentMethod:"Zahlungsmethode",
+        paymentNote:"Die echte Google-Pay-Zahlung funktioniert nach der Konfiguration des PSP/payment gateway.",
+        applicationSubmitted:"Bewerbung gesendet",
+        applicationReceived:"Ihre Markenbewerbung wurde empfangen.",
+        applicationId:"Bewerbungs-ID:",
+        done:"Fertig",
+        countriesLoadingError:"Länder konnten nicht geladen werden",
+        serverConnectionError:"Es gab ein Problem mit der Verbindung zum Server.",
+        noCountry:"Kein Land gefunden.",
+        brandsLoading:"Marken werden geladen...",
+        noBrands:"Für dieses Land sind derzeit keine Marken gelistet.",
+        formRequired:"Bitte geben Sie den Markennamen ein und wählen Sie ein Land.",
+        paymentGateway:"Google Pay gateway ist noch nicht verbunden. Für echte Zahlungen ist eine PSP/payment gateway-Konfiguration erforderlich.",
+        applicationFailed:"Die Bewerbung konnte nicht gesendet werden."
     }
 
 };
 
 
 /* =====================================================
-   LANGUAGE DETECTION
+   LANGUAGE
 ===================================================== */
 
-const supportedLanguages = [
+const supportedLanguages=[
     "en",
     "uz",
     "ru",
@@ -3313,27 +2625,25 @@ const supportedLanguages = [
     "de"
 ];
 
-
-let currentLanguage = "en";
+let currentLanguage="en";
 
 
 function detectBrowserLanguage(){
 
-    const browserLanguages =
+    const list =
         navigator.languages &&
         navigator.languages.length
         ? navigator.languages
         : [
-            navigator.language ||
-            "en"
+            navigator.language || "en"
         ];
 
 
     for(
-        const language of browserLanguages
+        const language of list
     ){
 
-        const shortLanguage =
+        const short =
             String(language)
             .toLowerCase()
             .split("-")[0];
@@ -3341,10 +2651,10 @@ function detectBrowserLanguage(){
 
         if(
             supportedLanguages
-            .includes(shortLanguage)
+            .includes(short)
         ){
 
-            return shortLanguage;
+            return short;
 
         }
 
@@ -3358,20 +2668,19 @@ function detectBrowserLanguage(){
 
 function setLanguage(
     language,
-    save = true
+    save=true
 ){
 
     if(
         !translations[language]
     ){
 
-        language = "en";
+        language="en";
 
     }
 
 
-    currentLanguage =
-        language;
+    currentLanguage=language;
 
 
     if(save){
@@ -3388,11 +2697,8 @@ function setLanguage(
     }
 
 
-    document.documentElement
-        .setAttribute(
-            "lang",
-            language
-        );
+    document.documentElement.lang =
+        language;
 
 
     const dictionary =
@@ -3407,8 +2713,7 @@ function setLanguage(
             element => {
 
                 const key =
-                    element
-                    .getAttribute(
+                    element.getAttribute(
                         "data-i18n"
                     );
 
@@ -3435,8 +2740,7 @@ function setLanguage(
             element => {
 
                 const key =
-                    element
-                    .getAttribute(
+                    element.getAttribute(
                         "data-i18n-placeholder"
                     );
 
@@ -3455,15 +2759,15 @@ function setLanguage(
         );
 
 
-    const languageButton =
+    const button =
         document.getElementById(
             "languageButton"
         );
 
 
-    if(languageButton){
+    if(button){
 
-        languageButton.textContent =
+        button.textContent =
             "🌐 " +
             dictionary.code;
 
@@ -3475,34 +2779,25 @@ function setLanguage(
 }
 
 
-/* =====================================================
-   LANGUAGE CYCLE
-===================================================== */
-
 function cycleLanguage(){
 
     const index =
-        supportedLanguages
-        .indexOf(
+        supportedLanguages.indexOf(
             currentLanguage
         );
 
 
-    const nextIndex =
+    const next =
         (index + 1) %
         supportedLanguages.length;
 
 
     setLanguage(
-        supportedLanguages[nextIndex]
+        supportedLanguages[next]
     );
 
 }
 
-
-/* =====================================================
-   DYNAMIC LANGUAGE
-===================================================== */
 
 function updateDynamicLanguage(){
 
@@ -3527,26 +2822,19 @@ function updateDynamicLanguage(){
     }
 
 
-    const countrySelect =
+    const select =
         document.getElementById(
             "brandCountry"
         );
 
 
     if(
-        countrySelect &&
-        countrySelect.options.length
+        select &&
+        select.options.length
     ){
 
-        const firstOption =
-            countrySelect.options[0];
-
-        if(firstOption){
-
-            firstOption.textContent =
-                dictionary.selectCountry;
-
-        }
+        select.options[0].textContent =
+            dictionary.selectCountry;
 
     }
 
@@ -3559,12 +2847,12 @@ function updateDynamicLanguage(){
 
 (function(){
 
-    let savedLanguage = null;
+    let saved=null;
 
 
     try{
 
-        savedLanguage =
+        saved =
             localStorage.getItem(
                 "allWorldBrandsLanguage"
             );
@@ -3572,15 +2860,14 @@ function updateDynamicLanguage(){
     }catch(error){}
 
 
-    const detectedLanguage =
-        supportedLanguages
-        .includes(savedLanguage)
-        ? savedLanguage
+    const language =
+        supportedLanguages.includes(saved)
+        ? saved
         : detectBrowserLanguage();
 
 
     setLanguage(
-        detectedLanguage,
+        language,
         false
     );
 
@@ -3588,26 +2875,26 @@ function updateDynamicLanguage(){
 
 
 /* =====================================================
-   GLOBAL STATE
+   STATE
 ===================================================== */
 
-let countries = [];
+let countries=[];
 
-let currentApplication = null;
+let currentApplication=null;
 
-let currentCountryId = null;
+let currentCountryId=null;
 
-let currentCountryBrands = [];
+let currentCountryBrands=[];
 
-let currentPage = "countries";
+let currentPage="countries";
 
-let countriesRequest = null;
+let countriesRequest=null;
 
-let isRestoringHistory = false;
+let isRestoringHistory=false;
 
 
 /* =====================================================
-   RAIN GENERATOR
+   RAIN
 ===================================================== */
 
 function createRain(){
@@ -3629,12 +2916,12 @@ function createRain(){
         : 85;
 
 
-    container.innerHTML = "";
+    container.innerHTML="";
 
 
     for(
-        let i = 0;
-        i < amount;
+        let i=0;
+        i<amount;
         i++
     ){
 
@@ -3649,29 +2936,29 @@ function createRain(){
 
 
         drop.style.left =
-            Math.random() * 110 + "%";
+            Math.random()*110+"%";
 
 
         drop.style.height =
-            40 +
-            Math.random() * 100 +
+            40+
+            Math.random()*100+
             "px";
 
 
         drop.style.opacity =
-            .18 +
-            Math.random() * .55;
+            .18+
+            Math.random()*.55;
 
 
         drop.style.animationDuration =
-            2.8 +
-            Math.random() * 4.5 +
+            2.8+
+            Math.random()*4.5+
             "s";
 
 
         drop.style.animationDelay =
-            "-" +
-            Math.random() * 6 +
+            "-"+
+            Math.random()*6+
             "s";
 
 
@@ -3682,7 +2969,6 @@ function createRain(){
     }
 
 }
-
 
 createRain();
 
@@ -3712,8 +2998,8 @@ window.addEventListener(
 
 function fetchWithTimeout(
     url,
-    options = {},
-    timeout = 10000
+    options={},
+    timeout=10000
 ){
 
     const controller =
@@ -3754,21 +3040,101 @@ function imageForCountry(
 ){
 
     const cleanCode =
-        String(
-            code || ""
-        )
+        String(code || "")
         .trim()
         .toUpperCase();
 
 
     if(cleanCode){
 
-        return `/images/countries/${cleanCode}.png`;
+        return (
+            "/images/countries/" +
+            cleanCode +
+            ".png"
+        );
 
     }
 
 
-    return `/brand-rain-background.png`;
+    return "/brand-rain-background.png";
+
+}
+
+
+/* =====================================================
+   NORMALIZE COUNTRIES
+===================================================== */
+
+function normalizeCountries(list){
+
+    if(!Array.isArray(list)){
+        return [];
+    }
+
+
+    return list
+        .map(
+            (country,index) => {
+
+                const id =
+                    country.id ??
+                    country.country_id ??
+                    country.countryId ??
+                    index+1;
+
+
+                const name =
+                    country.name ||
+                    country.country_name ||
+                    country.countryName ||
+                    country.title ||
+                    "Unknown";
+
+
+                const code =
+                    country.code ||
+                    country.iso_code ||
+                    country.iso2 ||
+                    country.iso ||
+                    country.country_code ||
+                    "";
+
+
+                const brandCount =
+                    country.brand_count ??
+                    country.brands_count ??
+                    country.brandCount ??
+                    country.brandsCount ??
+                    country.count ??
+                    0;
+
+
+                return {
+
+                    ...country,
+
+                    id:Number(id),
+
+                    name:String(name),
+
+                    code:
+                        String(code)
+                        .trim()
+                        .toUpperCase(),
+
+                    brand_count:
+                        Number(brandCount)||0
+
+                };
+
+            }
+        )
+        .filter(
+            country =>
+                Number.isFinite(
+                    country.id
+                )
+        );
 
 }
 
@@ -3794,7 +3160,7 @@ async function loadCountries(){
     if(!grid || !count){
 
         console.error(
-            "countriesGrid or countryCount not found."
+            "Country elements not found."
         );
 
         return;
@@ -3808,6 +3174,10 @@ async function loadCountries(){
         ].loadingCountries;
 
 
+    /*
+     * CACHE
+     */
+
     try{
 
         const cached =
@@ -3818,37 +3188,39 @@ async function loadCountries(){
 
         if(cached){
 
-            const cachedCountries =
-                JSON.parse(
-                    cached
-                );
+            const parsed =
+                JSON.parse(cached);
 
 
             if(
-                Array.isArray(
-                    cachedCountries
-                ) &&
-                cachedCountries.length
+                Array.isArray(parsed) &&
+                parsed.length
             ){
 
                 countries =
-                    cachedCountries;
-
-
-                count.textContent =
-                    getCountryCountText(
-                        countries.length
+                    normalizeCountries(
+                        parsed
                     );
 
 
-                renderCountries(
-                    countries
-                );
+                if(countries.length){
+
+                    count.textContent =
+                        getCountryCountText(
+                            countries.length
+                        );
 
 
-                fillCountrySelect(
-                    countries
-                );
+                    renderCountries(
+                        countries
+                    );
+
+
+                    fillCountrySelect(
+                        countries
+                    );
+
+                }
 
             }
 
@@ -3857,12 +3229,16 @@ async function loadCountries(){
     }catch(error){
 
         console.warn(
-            "Country cache error:",
+            "Cache error:",
             error
         );
 
     }
 
+
+    /*
+     * API
+     */
 
     try{
 
@@ -3889,7 +3265,7 @@ async function loadCountries(){
         if(!response.ok){
 
             throw new Error(
-                `HTTP ${response.status}`
+                "HTTP "+response.status
             );
 
         }
@@ -3899,19 +3275,73 @@ async function loadCountries(){
             await response.json();
 
 
-        if(
-            !Array.isArray(data)
+        console.log(
+            "API /api/countries:",
+            data
+        );
+
+
+        let rawCountries=null;
+
+
+        if(Array.isArray(data)){
+
+            rawCountries=data;
+
+        }
+        else if(
+            data &&
+            Array.isArray(data.countries)
         ){
 
+            rawCountries=data.countries;
+
+        }
+        else if(
+            data &&
+            Array.isArray(data.data)
+        ){
+
+            rawCountries=data.data;
+
+        }
+        else if(
+            data &&
+            Array.isArray(data.results)
+        ){
+
+            rawCountries=data.results;
+
+        }
+        else if(
+            data &&
+            Array.isArray(data.rows)
+        ){
+
+            rawCountries=data.rows;
+
+        }
+
+
+        if(!Array.isArray(rawCountries)){
+
+            console.error(
+                "Invalid countries response:",
+                data
+            );
+
+
             throw new Error(
-                "API did not return an array"
+                "Invalid countries API format"
             );
 
         }
 
 
         countries =
-            data;
+            normalizeCountries(
+                rawCountries
+            );
 
 
         try{
@@ -3923,11 +3353,11 @@ async function loadCountries(){
                 )
             );
 
-        }catch(cacheError){
+        }catch(error){
 
             console.warn(
                 "Cache save error:",
-                cacheError
+                error
             );
 
         }
@@ -3949,6 +3379,12 @@ async function loadCountries(){
         );
 
 
+        console.log(
+            "Countries loaded:",
+            countries.length
+        );
+
+
     }catch(error){
 
         console.error(
@@ -3957,61 +3393,96 @@ async function loadCountries(){
         );
 
 
-        if(!countries.length){
+        /*
+         * CACHE mavjud bo‘lsa,
+         * ekranda qoldiramiz.
+         */
 
-            const dictionary =
-                translations[
-                    currentLanguage
-                ];
-
-
-            grid.innerHTML = `
-
-                <div style="
-                    grid-column:1/-1;
-                    padding:30px;
-                    text-align:center;
-                    color:#ff9a9a;
-                    background:rgba(255,70,70,.06);
-                    border:1px solid rgba(255,70,70,.18);
-                    border-radius:16px;
-                ">
-
-                    <div style="
-                        font-size:30px;
-                        margin-bottom:10px;
-                    ">
-                        🌐
-                    </div>
-
-                    <div style="
-                        font-size:16px;
-                        font-weight:700;
-                        margin-bottom:6px;
-                    ">
-                        ${escapeHtml(
-                            dictionary.countriesLoadingError
-                        )}
-                    </div>
-
-                    <div style="
-                        color:#8795af;
-                        font-size:13px;
-                    ">
-                        ${escapeHtml(
-                            dictionary.serverConnectionError
-                        )}
-                    </div>
-
-                </div>
-
-            `;
-
+        if(
+            countries &&
+            countries.length
+        ){
 
             count.textContent =
-                "Error";
+                getCountryCountText(
+                    countries.length
+                );
+
+            return;
 
         }
+
+
+        const dictionary =
+            translations[
+                currentLanguage
+            ];
+
+
+        grid.innerHTML=`
+
+            <div style="
+                grid-column:1/-1;
+                padding:35px 20px;
+                text-align:center;
+                color:#ff9a9a;
+                background:rgba(255,70,70,.06);
+                border:1px solid rgba(255,70,70,.18);
+                border-radius:16px;
+            ">
+
+                <div style="
+                    font-size:35px;
+                    margin-bottom:12px;
+                ">
+                    🌐
+                </div>
+
+                <div style="
+                    font-size:17px;
+                    font-weight:800;
+                    margin-bottom:8px;
+                ">
+                    ${escapeHtml(
+                        dictionary.countriesLoadingError
+                    )}
+                </div>
+
+                <div style="
+                    color:#8795af;
+                    font-size:13px;
+                    margin-bottom:18px;
+                ">
+                    ${escapeHtml(
+                        dictionary.serverConnectionError
+                    )}
+                </div>
+
+                <button
+                    type="button"
+                    onclick="loadCountries()"
+                    style="
+                        border:0;
+                        border-radius:10px;
+                        padding:11px 18px;
+                        color:#fff;
+                        font-weight:800;
+                        background:linear-gradient(
+                            90deg,
+                            #0bbce5,
+                            #754bff
+                        );
+                    "
+                >
+                    Retry
+                </button>
+
+            </div>
+
+        `;
+
+
+        count.textContent="Error";
 
     }
 
@@ -4024,30 +3495,29 @@ async function loadCountries(){
 
 function getCountryCountText(number){
 
-    if(currentLanguage === "uz"){
+    if(currentLanguage==="uz"){
 
         return `Jami ${number} ta davlat va hudud`;
 
     }
 
-    if(currentLanguage === "ru"){
+    if(currentLanguage==="ru"){
 
         return `Всего ${number} стран и территорий`;
 
     }
 
-    if(currentLanguage === "tr"){
+    if(currentLanguage==="tr"){
 
         return `Toplam ${number} ülke ve bölge`;
 
     }
 
-    if(currentLanguage === "de"){
+    if(currentLanguage==="de"){
 
         return `${number} Länder und Gebiete insgesamt`;
 
     }
-
 
     return `${number} countries and territories`;
 
@@ -4071,7 +3541,7 @@ function countryCodeToFlag(code){
         .trim();
 
 
-    if(clean.length !== 2){
+    if(clean.length!==2){
         return "🌎";
     }
 
@@ -4081,7 +3551,7 @@ function countryCodeToFlag(code){
         .map(
             letter =>
                 String.fromCodePoint(
-                    127397 +
+                    127397+
                     letter.charCodeAt(0)
                 )
         )
@@ -4112,7 +3582,7 @@ function renderCountries(list){
         !list.length
     ){
 
-        grid.innerHTML = `
+        grid.innerHTML=`
 
             <div style="
                 grid-column:1/-1;
@@ -4132,7 +3602,6 @@ function renderCountries(list){
 
         `;
 
-
         return;
 
     }
@@ -4142,9 +3611,16 @@ function renderCountries(list){
         list.map(
             country => {
 
+                const id =
+                    country.id ??
+                    country.country_id ??
+                    0;
+
+
                 const name =
                     country.name ||
                     country.country_name ||
+                    country.countryName ||
                     "Unknown";
 
 
@@ -4152,19 +3628,23 @@ function renderCountries(list){
                     country.code ||
                     country.iso_code ||
                     country.iso2 ||
+                    country.country_code ||
                     "";
 
 
                 const count =
                     country.brand_count ??
                     country.brands_count ??
-                    "0";
+                    country.brandCount ??
+                    country.brandsCount ??
+                    country.count ??
+                    0;
 
 
                 const image =
                     imageForCountry(
                         name,
-                        country.id,
+                        id,
                         code
                     );
 
@@ -4175,7 +3655,7 @@ function renderCountries(list){
     class="country-card"
     data-country-name="${escapeAttribute(name)}"
     data-country-code="${escapeAttribute(code)}"
-    onclick="openCountry(${Number(country.id)})"
+    onclick="openCountry(${Number(id)})"
 >
 
 <img
@@ -4184,7 +3664,10 @@ function renderCountries(list){
     alt="${escapeAttribute(name)}"
     loading="lazy"
     decoding="async"
-    onerror="this.onerror=null;this.src='/brand-rain-background.png';"
+    onerror="
+        this.onerror=null;
+        this.src='/brand-rain-background.png';
+    "
 >
 
 
@@ -4204,18 +3687,13 @@ function renderCountries(list){
 
 <span class="country-meta-left">
 
-    <span class="country-code">
-        ${escapeHtml(code)}
-    </span>
+<span class="country-code">
+    ${escapeHtml(code)}
+</span>
 
-
-    ${
-        count !== ""
-        ?
-        `<span class="brand-count-box">${escapeHtml(count)}</span>`
-        :
-        ""
-    }
+<span class="brand-count-box">
+    ${escapeHtml(count)}
+</span>
 
 </span>
 
@@ -4255,7 +3733,7 @@ function fillCountrySelect(list){
     }
 
 
-    select.innerHTML = `
+    select.innerHTML=`
 
         <option value="">
             ${escapeHtml(
@@ -4268,8 +3746,26 @@ function fillCountrySelect(list){
     `;
 
 
+    if(!Array.isArray(list)){
+        return;
+    }
+
+
     list.forEach(
         country => {
+
+            const id =
+                country.id ??
+                country.country_id ??
+                "";
+
+
+            const name =
+                country.name ||
+                country.country_name ||
+                country.countryName ||
+                "Unknown";
+
 
             const option =
                 document.createElement(
@@ -4277,14 +3773,9 @@ function fillCountrySelect(list){
                 );
 
 
-            option.value =
-                country.id;
+            option.value=id;
 
-
-            option.textContent =
-                country.name ||
-                country.country_name ||
-                "Unknown";
+            option.textContent=name;
 
 
             select.appendChild(
@@ -4311,8 +3802,7 @@ function syncSearch(value){
 
     if(search){
 
-        search.value =
-            value;
+        search.value=value;
 
     }
 
@@ -4344,8 +3834,7 @@ function filterCountries(){
     if(!query){
 
         if(
-            currentPage ===
-            "countries"
+            currentPage==="countries"
         ){
 
             renderCountries(
@@ -4367,8 +3856,10 @@ function filterCountries(){
                     String(
                         country.name ||
                         country.country_name ||
+                        country.countryName ||
                         ""
-                    ).toLowerCase();
+                    )
+                    .toLowerCase();
 
 
                 const code =
@@ -4376,8 +3867,10 @@ function filterCountries(){
                         country.code ||
                         country.iso_code ||
                         country.iso2 ||
+                        country.country_code ||
                         ""
-                    ).toLowerCase();
+                    )
+                    .toLowerCase();
 
 
                 return (
@@ -4501,14 +3994,43 @@ async function loadCountryBrands(
             await response.json();
 
 
-        currentCountryBrands =
-            Array.isArray(data)
-            ? data
-            : (
-                Array.isArray(data.brands)
-                ? data.brands
-                : []
-            );
+        if(Array.isArray(data)){
+
+            currentCountryBrands=data;
+
+        }
+        else if(
+            data &&
+            Array.isArray(data.brands)
+        ){
+
+            currentCountryBrands =
+                data.brands;
+
+        }
+        else if(
+            data &&
+            Array.isArray(data.data)
+        ){
+
+            currentCountryBrands =
+                data.data;
+
+        }
+        else if(
+            data &&
+            Array.isArray(data.results)
+        ){
+
+            currentCountryBrands =
+                data.results;
+
+        }
+        else{
+
+            currentCountryBrands=[];
+
+        }
 
 
         return currentCountryBrands;
@@ -4521,9 +4043,7 @@ async function loadCountryBrands(
         );
 
 
-        currentCountryBrands =
-            [];
-
+        currentCountryBrands=[];
 
         return [];
 
@@ -4550,17 +4070,16 @@ async function openCountry(id){
     const country =
         countries.find(
             c =>
-                Number(c.id) ===
+                Number(c.id)===
                 numericId
         );
 
 
-    currentCountryId =
+    currentCountryId=
         numericId;
 
 
-    currentCountryBrands =
-        [];
+    currentCountryBrands=[];
 
 
     if(!isRestoringHistory){
@@ -4570,15 +4089,13 @@ async function openCountry(id){
                 page:"country",
                 countryId:numericId
             },
-            "#country-" +
-            numericId
+            "#country-"+numericId
         );
 
     }
 
 
-    currentPage =
-        "country";
+    currentPage="country";
 
 
     closeModalVisual();
@@ -4590,7 +4107,12 @@ async function openCountry(id){
         );
 
 
-    grid.innerHTML = `
+    if(!grid){
+        return;
+    }
+
+
+    grid.innerHTML=`
 
         <div style="
             grid-column:1/-1;
@@ -4631,18 +4153,24 @@ async function openCountry(id){
     );
 
 
-    window.scrollTo({
+    const section =
+        document.getElementById(
+            "countriesSection"
+        );
 
-        top:
-            document
-            .getElementById(
-                "countriesSection"
-            )
-            .offsetTop - 70,
 
-        behavior:"smooth"
+    if(section){
 
-    });
+        window.scrollTo({
+
+            top:
+                section.offsetTop-70,
+
+            behavior:"smooth"
+
+        });
+
+    }
 
 }
 
@@ -4662,10 +4190,15 @@ function renderBrandCards(
         );
 
 
+    if(!grid){
+        return;
+    }
+
+
     const country =
         countries.find(
             c =>
-                Number(c.id) ===
+                Number(c.id)===
                 Number(countryId)
         );
 
@@ -4682,7 +4215,7 @@ function renderBrandCards(
         !brands.length
     ){
 
-        grid.innerHTML = `
+        grid.innerHTML=`
 
             <div style="
                 grid-column:1/-1;
@@ -4708,7 +4241,6 @@ function renderBrandCards(
 
         `;
 
-
         return;
 
     }
@@ -4729,9 +4261,7 @@ function renderBrandCards(
 
                 return `
 
-<div
-    class="country-card"
->
+<div class="country-card">
 
 <img
     class="country-image"
@@ -4742,7 +4272,10 @@ function renderBrandCards(
     )}"
     loading="lazy"
     decoding="async"
-    onerror="this.onerror=null;this.src='/brand-rain-background.png';"
+    onerror="
+        this.onerror=null;
+        this.src='/brand-rain-background.png';
+    "
 >
 
 
@@ -4760,12 +4293,12 @@ function renderBrandCards(
 
 <span class="country-meta-left">
 
-    <span class="country-code">
-        ${escapeHtml(
-            brand.category ||
-            "Brand"
-        )}
-    </span>
+<span class="country-code">
+    ${escapeHtml(
+        brand.category ||
+        "Brand"
+    )}
+</span>
 
 </span>
 
@@ -4789,7 +4322,7 @@ function renderBrandCards(
 
 
 /* =====================================================
-   HISTORY RENDER
+   HISTORY STATE
 ===================================================== */
 
 async function renderState(state){
@@ -4799,44 +4332,33 @@ async function renderState(state){
         "countries";
 
 
-    if(page === "countries"){
+    if(page==="countries"){
 
-        currentPage =
-            "countries";
+        currentPage="countries";
 
+        currentCountryId=null;
 
-        currentCountryId =
-            null;
-
-
-        currentCountryBrands =
-            [];
-
+        currentCountryBrands=[];
 
         closeModalVisual();
-
 
         renderCountries(
             countries
         );
-
 
         window.scrollTo({
             top:0,
             behavior:"smooth"
         });
 
-
         return;
 
     }
 
 
-    if(page === "country"){
+    if(page==="country"){
 
-        currentPage =
-            "country";
-
+        currentPage="country";
 
         currentCountryId =
             Number(
@@ -4870,7 +4392,7 @@ async function renderState(state){
             window.scrollTo({
 
                 top:
-                    section.offsetTop - 70,
+                    section.offsetTop-70,
 
                 behavior:"smooth"
 
@@ -4878,54 +4400,43 @@ async function renderState(state){
 
         }
 
-
         return;
 
     }
 
 
-    if(page === "modal"){
+    if(page==="modal"){
 
-        currentPage =
-            "modal";
-
+        currentPage="modal";
 
         showModalVisual(
             "formScreen"
         );
 
-
         return;
 
     }
 
 
-    if(page === "checkout"){
+    if(page==="checkout"){
 
-        currentPage =
-            "checkout";
+        currentPage="checkout";
 
 
         if(currentApplication){
 
-            document
-                .getElementById(
-                    "checkoutBrand"
-                )
-                .textContent =
-                    currentApplication
-                    .brandName ||
-                    "";
+            document.getElementById(
+                "checkoutBrand"
+            ).textContent =
+                currentApplication.brandName ||
+                "";
 
 
-            document
-                .getElementById(
-                    "checkoutCountry"
-                )
-                .textContent =
-                    currentApplication
-                    .countryName ||
-                    "";
+            document.getElementById(
+                "checkoutCountry"
+            ).textContent =
+                currentApplication.countryName ||
+                "";
 
         }
 
@@ -4934,42 +4445,31 @@ async function renderState(state){
             "checkoutScreen"
         );
 
-
         return;
 
     }
 
 
-    if(page === "success"){
+    if(page==="success"){
 
-        currentPage =
-            "success";
-
+        currentPage="success";
 
         showModalVisual(
             "successScreen"
         );
 
-
         return;
 
     }
 
 
-    currentPage =
-        "countries";
+    currentPage="countries";
 
+    currentCountryId=null;
 
-    currentCountryId =
-        null;
-
-
-    currentCountryBrands =
-        [];
-
+    currentCountryBrands=[];
 
     closeModalVisual();
-
 
     renderCountries(
         countries
@@ -4986,8 +4486,7 @@ window.addEventListener(
     "popstate",
     async function(event){
 
-        isRestoringHistory =
-            true;
+        isRestoringHistory=true;
 
 
         try{
@@ -5005,8 +4504,7 @@ window.addEventListener(
 
         }finally{
 
-            isRestoringHistory =
-                false;
+            isRestoringHistory=false;
 
         }
 
@@ -5033,9 +4531,7 @@ function showModalVisual(
     }
 
 
-    modal.classList.add(
-        "show"
-    );
+    modal.classList.add("show");
 
 
     showScreen(
@@ -5058,9 +4554,7 @@ function closeModalVisual(){
     }
 
 
-    modal.classList.remove(
-        "show"
-    );
+    modal.classList.remove("show");
 
 }
 
@@ -5072,9 +4566,9 @@ function closeModalVisual(){
 function openAddBrand(){
 
     if(
-        currentPage === "modal" ||
-        currentPage === "checkout" ||
-        currentPage === "success"
+        currentPage==="modal" ||
+        currentPage==="checkout" ||
+        currentPage==="success"
     ){
 
         return;
@@ -5090,8 +4584,7 @@ function openAddBrand(){
     );
 
 
-    currentPage =
-        "modal";
+    currentPage="modal";
 
 
     showModalVisual(
@@ -5112,13 +4605,12 @@ function closeModal(){
 
 
     if(
-        page === "modal" ||
-        page === "checkout" ||
-        page === "success"
+        page==="modal" ||
+        page==="checkout" ||
+        page==="success"
     ){
 
         history.back();
-
 
         return;
 
@@ -5131,7 +4623,7 @@ function closeModal(){
 
 
 /* =====================================================
-   SCREEN CONTROL
+   SCREEN
 ===================================================== */
 
 function showScreen(id){
@@ -5155,14 +4647,14 @@ function showScreen(id){
 
 
             element.style.display =
-                screenId === id
+                screenId===id
                 ? "block"
                 : "none";
 
 
             element.classList.toggle(
                 "active",
-                screenId === id
+                screenId===id
             );
 
         }
@@ -5172,7 +4664,7 @@ function showScreen(id){
 
 
 /* =====================================================
-   BRAND FORM
+   FORM
 ===================================================== */
 
 function initBrandForm(){
@@ -5196,8 +4688,7 @@ function initBrandForm(){
 
 
             const brandName =
-                document
-                .getElementById(
+                document.getElementById(
                     "brandName"
                 )
                 .value
@@ -5205,8 +4696,7 @@ function initBrandForm(){
 
 
             const countrySelect =
-                document
-                .getElementById(
+                document.getElementById(
                     "brandCountry"
                 );
 
@@ -5218,8 +4708,7 @@ function initBrandForm(){
             const countryName =
                 countrySelect
                 .options[
-                    countrySelect
-                    .selectedIndex
+                    countrySelect.selectedIndex
                 ]
                 ?.text ||
                 "";
@@ -5236,13 +4725,12 @@ function initBrandForm(){
                     ].formRequired
                 );
 
-
                 return;
 
             }
 
 
-            currentApplication = {
+            currentApplication={
 
                 brandName,
 
@@ -5251,40 +4739,35 @@ function initBrandForm(){
                 countryName,
 
                 website:
-                    document
-                    .getElementById(
+                    document.getElementById(
                         "brandWebsite"
                     )
                     .value
                     .trim(),
 
                 applicantName:
-                    document
-                    .getElementById(
+                    document.getElementById(
                         "applicantName"
                     )
                     .value
                     .trim(),
 
                 applicantEmail:
-                    document
-                    .getElementById(
+                    document.getElementById(
                         "applicantEmail"
                     )
                     .value
                     .trim(),
 
                 applicantPhone:
-                    document
-                    .getElementById(
+                    document.getElementById(
                         "applicantPhone"
                     )
                     .value
                     .trim(),
 
                 description:
-                    document
-                    .getElementById(
+                    document.getElementById(
                         "brandDescription"
                     )
                     .value
@@ -5295,20 +4778,16 @@ function initBrandForm(){
             };
 
 
-            document
-                .getElementById(
-                    "checkoutBrand"
-                )
-                .textContent =
-                    brandName;
+            document.getElementById(
+                "checkoutBrand"
+            ).textContent =
+                brandName;
 
 
-            document
-                .getElementById(
-                    "checkoutCountry"
-                )
-                .textContent =
-                    countryName;
+            document.getElementById(
+                "checkoutCountry"
+            ).textContent =
+                countryName;
 
 
             setHistory(
@@ -5319,8 +4798,7 @@ function initBrandForm(){
             );
 
 
-            currentPage =
-                "checkout";
+            currentPage="checkout";
 
 
             showModalVisual(
@@ -5336,8 +4814,7 @@ function initBrandForm(){
 function backToForm(){
 
     if(
-        history.state?.page ===
-        "checkout"
+        history.state?.page==="checkout"
     ){
 
         history.back();
@@ -5368,7 +4845,6 @@ async function startGooglePay(){
             ].formRequired
         );
 
-
         return;
 
     }
@@ -5384,7 +4860,7 @@ async function startGooglePay(){
 
 
 /* =====================================================
-   SAVE APPLICATION
+   APPLICATION
 ===================================================== */
 
 async function saveApplicationAfterPayment(){
@@ -5411,39 +4887,31 @@ async function saveApplicationAfterPayment(){
                         JSON.stringify({
 
                             brand_name:
-                                currentApplication
-                                .brandName,
+                                currentApplication.brandName,
 
                             country_id:
-                                currentApplication
-                                .countryId,
+                                currentApplication.countryId,
 
                             website:
-                                currentApplication
-                                .website,
+                                currentApplication.website,
 
                             owner_name:
-                                currentApplication
-                                .applicantName,
+                                currentApplication.applicantName,
 
                             email:
-                                currentApplication
-                                .applicantEmail,
+                                currentApplication.applicantEmail,
 
                             phone:
-                                currentApplication
-                                .applicantPhone,
+                                currentApplication.applicantPhone,
 
                             description:
-                                currentApplication
-                                .description,
+                                currentApplication.description,
 
                             payment_status:
                                 "paid",
 
                             amount:
-                                currentApplication
-                                .amount
+                                currentApplication.amount
 
                         })
                 }
@@ -5465,14 +4933,12 @@ async function saveApplicationAfterPayment(){
         }
 
 
-        document
-            .getElementById(
-                "applicationId"
-            )
-            .textContent =
-                data.id ||
-                data.application_id ||
-                "Submitted";
+        document.getElementById(
+            "applicationId"
+        ).textContent =
+            data.id ||
+            data.application_id ||
+            "Submitted";
 
 
         setHistory(
@@ -5483,8 +4949,7 @@ async function saveApplicationAfterPayment(){
         );
 
 
-        currentPage =
-            "success";
+        currentPage="success";
 
 
         showModalVisual(
@@ -5495,6 +4960,7 @@ async function saveApplicationAfterPayment(){
     }catch(error){
 
         console.error(
+            "Application error:",
             error
         );
 
@@ -5517,7 +4983,7 @@ async function saveApplicationAfterPayment(){
 function escapeHtml(value){
 
     return String(
-        value || ""
+        value ?? ""
     )
 
     .replace(
@@ -5552,7 +5018,8 @@ function escapeAttribute(value){
 
     return escapeHtml(
         value
-    ).replace(
+    )
+    .replace(
         /`/g,
         "&#096;"
     );
@@ -5561,7 +5028,7 @@ function escapeAttribute(value){
 
 
 /* =====================================================
-   CLOSE OUTSIDE
+   MODAL OUTSIDE CLICK
 ===================================================== */
 
 document
@@ -5573,7 +5040,7 @@ document
         function(event){
 
             if(
-                event.target === this
+                event.target===this
             ){
 
                 closeModal();
@@ -5593,7 +5060,7 @@ document.addEventListener(
     function(event){
 
         if(
-            event.key === "Escape"
+            event.key==="Escape"
         ){
 
             const modal =
@@ -5623,20 +5090,38 @@ document.addEventListener(
    START
 ===================================================== */
 
+function startApp(){
+
+    try{
+
+        initBrandForm();
+
+    }catch(error){
+
+        console.error(
+            "Form initialization error:",
+            error
+        );
+
+    }
+
+
+    loadCountries();
+
+}
+
+
+/*
+ * DOM tayyor bo‘lganda ishga tushadi.
+ */
+
 if(
-    document.readyState ===
-    "loading"
+    document.readyState==="loading"
 ){
 
     document.addEventListener(
         "DOMContentLoaded",
-        function(){
-
-            initBrandForm();
-
-            loadCountries();
-
-        },
+        startApp,
         {
             once:true
         }
@@ -5644,9 +5129,7 @@ if(
 
 }else{
 
-    initBrandForm();
-
-    loadCountries();
+    startApp();
 
 }
 
