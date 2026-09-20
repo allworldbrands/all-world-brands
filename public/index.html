@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 
 <meta
@@ -21,6 +22,7 @@
 <title>ALL WORLD BRANDS</title>
 
 <style>
+
 *{
     box-sizing:border-box;
     margin:0;
@@ -40,11 +42,28 @@ body{
     color:#fff;
     background:
         radial-gradient(
-            circle at 50% 0%,
-            #10234b 0%,
-            #050914 42%,
-            #02040a 100%
+            circle at 15% 10%,
+            rgba(180,0,35,.28),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 85% 25%,
+            rgba(25,45,110,.45),
+            transparent 32%
+        ),
+        radial-gradient(
+            circle at 50% 100%,
+            rgba(150,0,35,.20),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #020713 0%,
+            #07152f 45%,
+            #180914 75%,
+            #03050c 100%
         );
+    background-attachment:fixed;
     overflow-x:hidden;
 }
 
@@ -56,14 +75,32 @@ body::before{
     z-index:-3;
     background:
         radial-gradient(
-            circle at 15% 20%,
-            rgba(255,210,0,.08),
+            circle at 20% 20%,
+            rgba(0,80,180,.08),
             transparent 25%
         ),
         radial-gradient(
-            circle at 85% 80%,
-            rgba(255,0,50,.07),
-            transparent 25%
+            circle at 80% 70%,
+            rgba(255,0,50,.10),
+            transparent 28%
+        );
+}
+
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:-2;
+    opacity:.35;
+    background:
+        linear-gradient(
+            115deg,
+            transparent 0%,
+            rgba(255,0,50,.035) 35%,
+            transparent 55%,
+            rgba(20,80,180,.04) 75%,
+            transparent 100%
         );
 }
 
@@ -88,15 +125,20 @@ button{
     margin:auto;
 }
 
-/* HEADER */
+/* =========================
+   HEADER
+========================= */
 
 header{
     position:sticky;
     top:0;
     z-index:1000;
-    background:rgba(2,7,19,.88);
+    background:
+        rgba(2,7,19,.90);
     backdrop-filter:blur(18px);
-    border-bottom:1px solid rgba(255,255,255,.08);
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.08);
 }
 
 .header-inner{
@@ -108,14 +150,15 @@ header{
 }
 
 .logo{
-    font-size:clamp(18px,2vw,28px);
+    font-size:
+        clamp(18px,2vw,28px);
     font-weight:900;
     letter-spacing:1.5px;
     white-space:nowrap;
 }
 
 .logo span{
-    color:#ffd400;
+    color:#ff304f;
 }
 
 .header-actions{
@@ -127,27 +170,41 @@ header{
 .price-badge{
     padding:10px 16px;
     border-radius:999px;
+
     background:
         linear-gradient(
             135deg,
-            #ffd400,
-            #ff7b00
+            #ff304f,
+            #b9002d
         );
-    color:#090909;
+
+    color:#fff;
+
     font-weight:900;
+
     box-shadow:
-        0 8px 30px rgba(255,190,0,.2);
+        0 8px 30px
+        rgba(220,0,50,.22);
 }
 
 .contact-btn{
-    border:1px solid rgba(255,255,255,.16);
-    background:rgba(255,255,255,.05);
+    border:
+        1px solid
+        rgba(255,255,255,.16);
+
+    background:
+        rgba(255,255,255,.05);
+
     color:#fff;
+
     border-radius:999px;
+
     padding:10px 15px;
 }
 
-/* HERO */
+/* =========================
+   HERO
+========================= */
 
 .hero{
     text-align:center;
@@ -157,30 +214,35 @@ header{
 .hero h1{
     font-size:
         clamp(32px,5vw,76px);
+
     line-height:1;
     font-weight:1000;
     letter-spacing:-2px;
 }
 
 .hero h1 span{
-    color:#ffd400;
+    color:#ff304f;
 }
 
 .hero p{
     max-width:900px;
     margin:18px auto 0;
+
     color:#b9c3d5;
+
     font-size:
         clamp(15px,2vw,20px);
 }
 
 .tagline{
     margin-top:14px;
-    color:#ffd400;
+    color:#ff304f;
     font-weight:800;
 }
 
-/* SEARCH */
+/* =========================
+   SEARCH
+========================= */
 
 .search-area{
     max-width:900px;
@@ -190,15 +252,27 @@ header{
 .search-box{
     width:100%;
     min-height:58px;
+
     border-radius:18px;
-    border:1px solid rgba(255,255,255,.15);
-    background:rgba(255,255,255,.07);
+
+    border:
+        1px solid
+        rgba(255,255,255,.15);
+
+    background:
+        rgba(3,12,30,.78);
+
     color:#fff;
+
     outline:none;
+
     padding:0 20px;
+
     font-size:18px;
+
     box-shadow:
-        0 15px 50px rgba(0,0,0,.2);
+        0 15px 50px
+        rgba(0,0,0,.25);
 }
 
 .search-box::placeholder{
@@ -206,19 +280,26 @@ header{
 }
 
 .search-box:focus{
-    border-color:#ffd400;
+    border-color:#ff304f;
+
     box-shadow:
-        0 0 0 3px rgba(255,212,0,.1);
+        0 0 0 3px
+        rgba(255,48,79,.12);
 }
 
 .search-message{
     min-height:24px;
+
     text-align:center;
+
     margin-top:10px;
+
     color:#9da8ba;
 }
 
-/* COUNTRY GRID */
+/* =========================
+   SECTION TITLES
+========================= */
 
 .section-title{
     text-align:center;
@@ -235,128 +316,194 @@ header{
     color:#8994a8;
 }
 
+/* =========================
+   COUNTRIES
+========================= */
+
 .countries-grid{
     display:grid;
+
     grid-template-columns:
         repeat(15,minmax(0,1fr));
+
     gap:10px;
 }
 
 .country-card{
     position:relative;
+
     min-width:0;
+
     aspect-ratio:16/9;
+
     overflow:hidden;
+
     border-radius:12px;
-    border:1px solid rgba(255,255,255,.14);
+
+    border:
+        1px solid
+        rgba(255,255,255,.14);
+
     background:
         linear-gradient(
             135deg,
-            rgba(255,212,0,.95),
-            rgba(255,35,65,.9)
+            #071b45,
+            #6d071f
         );
+
     box-shadow:
-        0 8px 25px rgba(0,0,0,.2);
+        0 8px 25px
+        rgba(0,0,0,.25);
+
     transition:
         transform .2s ease,
         border-color .2s ease,
         box-shadow .2s ease;
+
+    padding:0;
 }
 
 .country-card::before{
     content:"";
+
     position:absolute;
+
     inset:0;
+
     background:
         linear-gradient(
             135deg,
-            rgba(255,215,0,.92),
-            rgba(255,25,60,.82)
+            rgba(10,50,120,.95),
+            rgba(170,0,45,.92)
         );
+
     z-index:0;
 }
 
 .country-card::after{
     content:"";
+
     position:absolute;
+
     inset:0;
+
     background:
         linear-gradient(
             to top,
             rgba(0,0,0,.72),
-            rgba(0,0,0,.08) 65%
+            rgba(0,0,0,.05) 70%
         );
+
     z-index:1;
 }
 
 .country-card:hover{
-    transform:translateY(-4px);
-    border-color:#ffd400;
+    transform:
+        translateY(-4px);
+
+    border-color:
+        #ff304f;
+
     box-shadow:
-        0 15px 35px rgba(0,0,0,.35);
+        0 15px 35px
+        rgba(0,0,0,.40);
 }
 
 .country-flag{
     position:absolute;
+
     left:8px;
     bottom:8px;
+
     width:34%;
     height:45%;
+
     object-fit:contain;
+
     object-position:center;
+
     z-index:3;
+
     filter:
-        drop-shadow(0 4px 8px rgba(0,0,0,.45));
+        drop-shadow(
+            0 4px 8px
+            rgba(0,0,0,.55)
+        );
 }
 
 .country-name{
     position:absolute;
+
     left:8px;
     right:8px;
     top:8px;
+
     z-index:3;
+
     font-size:
         clamp(10px,1vw,18px);
+
     line-height:1.1;
+
     font-weight:900;
+
     text-shadow:
-        0 2px 5px rgba(0,0,0,.75);
+        0 2px 5px
+        rgba(0,0,0,.80);
 }
 
-.country-count{
-    position:absolute;
-    right:8px;
-    bottom:8px;
-    z-index:3;
-    padding:5px 7px;
-    border-radius:8px;
-    background:rgba(0,0,0,.55);
-    font-size:10px;
-    font-weight:900;
-}
+/*
+   IMPORTANT:
+   Country card brand count is intentionally removed.
+*/
 
-/* BRANDS */
+/* =========================
+   BRANDS
+========================= */
 
 .view-bar{
     display:flex;
+
     justify-content:space-between;
+
     align-items:center;
+
     gap:15px;
+
     margin:20px 0;
 }
 
+.country-brand-count{
+    margin-top:8px;
+
+    color:#ff304f;
+
+    font-size:15px;
+
+    font-weight:800;
+}
+
 .back-btn{
-    border:1px solid rgba(255,255,255,.16);
-    background:rgba(255,255,255,.06);
+    border:
+        1px solid
+        rgba(255,255,255,.16);
+
+    background:
+        rgba(255,255,255,.06);
+
     color:#fff;
+
     border-radius:12px;
+
     padding:10px 15px;
 }
 
 .brand-grid{
     display:grid;
+
     grid-template-columns:
         repeat(5,minmax(0,1fr));
+
     gap:15px;
 }
 
@@ -367,25 +514,40 @@ header{
             rgba(255,255,255,.08),
             rgba(255,255,255,.025)
         );
-    border:1px solid rgba(255,255,255,.1);
+
+    border:
+        1px solid
+        rgba(255,255,255,.10);
+
     border-radius:18px;
+
     padding:20px;
+
     min-height:190px;
+
     transition:.2s ease;
 }
 
 .brand-card:hover{
-    transform:translateY(-4px);
-    border-color:#ffd400;
+    transform:
+        translateY(-4px);
+
+    border-color:
+        #ff304f;
 }
 
 .brand-logo{
     width:75px;
     height:75px;
+
     object-fit:contain;
+
     border-radius:15px;
+
     background:#fff;
+
     padding:7px;
+
     margin-bottom:14px;
 }
 
@@ -396,33 +558,45 @@ header{
 
 .brand-category{
     margin-top:6px;
-    color:#ffd400;
+
+    color:#ff304f;
+
     font-size:13px;
 }
 
 .brand-country{
     margin-top:5px;
+
     color:#9da8ba;
+
     font-size:13px;
 }
 
-/* FORM */
+/* =========================
+   FORM
+========================= */
 
 .form-section{
     margin:80px auto;
+
     max-width:950px;
 }
 
 .form-card{
     padding:30px;
+
     border-radius:24px;
+
     background:
         linear-gradient(
             145deg,
             rgba(255,255,255,.08),
             rgba(255,255,255,.025)
         );
-    border:1px solid rgba(255,255,255,.1);
+
+    border:
+        1px solid
+        rgba(255,255,255,.10);
 }
 
 .form-card h2{
@@ -431,19 +605,24 @@ header{
 
 .form-card > p{
     color:#9da8ba;
+
     margin:10px 0 25px;
 }
 
 .form-grid{
     display:grid;
+
     grid-template-columns:
         repeat(2,minmax(0,1fr));
+
     gap:15px;
 }
 
 .field{
     display:flex;
+
     flex-direction:column;
+
     gap:7px;
 }
 
@@ -453,7 +632,9 @@ header{
 
 .field label{
     color:#c7cfdd;
+
     font-size:14px;
+
     font-weight:700;
 }
 
@@ -461,112 +642,190 @@ header{
 .field textarea,
 .field select{
     width:100%;
-    border:1px solid rgba(255,255,255,.13);
+
+    border:
+        1px solid
+        rgba(255,255,255,.13);
+
     background:#080f1f;
+
     color:#fff;
+
     border-radius:12px;
+
     padding:13px;
+
     outline:none;
 }
 
 .field textarea{
     min-height:120px;
+
     resize:vertical;
 }
 
 .field input:focus,
 .field textarea:focus,
 .field select:focus{
-    border-color:#ffd400;
+    border-color:#ff304f;
 }
 
 .payment-info{
     grid-column:1/-1;
+
     padding:16px;
+
     border-radius:14px;
+
     background:
-        rgba(255,212,0,.08);
-    border:1px solid
-        rgba(255,212,0,.2);
+        rgba(255,48,79,.08);
+
+    border:
+        1px solid
+        rgba(255,48,79,.22);
 }
 
 .payment-info strong{
-    color:#ffd400;
+    color:#ff304f;
 }
 
 .submit-btn{
     grid-column:1/-1;
+
     border:0;
+
     border-radius:14px;
+
     min-height:54px;
+
     background:
         linear-gradient(
             135deg,
-            #ffd400,
-            #ff7900
+            #ff304f,
+            #b9002d
         );
-    color:#050505;
+
+    color:#fff;
+
     font-weight:1000;
+
     font-size:17px;
 }
 
 .submit-btn:disabled{
     opacity:.55;
+
     cursor:not-allowed;
 }
 
 .form-message{
     grid-column:1/-1;
+
     min-height:25px;
-    color:#ffd400;
+
+    color:#ff304f;
+
     text-align:center;
 }
 
-/* CONTACT */
+/* =========================
+   CONTACT
+========================= */
 
 .contact-section{
-    margin:80px auto;
-    max-width:1000px;
+    margin:55px auto 30px;
+
+    max-width:850px;
+
     text-align:center;
+}
+
+.contact-section .section-title{
+    margin-bottom:15px;
+}
+
+.contact-section .section-title h2{
+    font-size:22px;
+}
+
+.contact-section .section-title p{
+    font-size:13px;
 }
 
 .contact-grid{
-    display:grid;
-    grid-template-columns:
-        repeat(3,minmax(0,1fr));
-    gap:15px;
-    margin-top:25px;
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    flex-wrap:wrap;
+
+    gap:8px;
+
+    margin-top:12px;
 }
 
 .contact-card{
-    padding:25px;
-    border-radius:18px;
-    background:rgba(255,255,255,.05);
-    border:1px solid rgba(255,255,255,.1);
+    padding:8px 11px;
+
+    border-radius:10px;
+
+    background:
+        rgba(255,255,255,.035);
+
+    border:
+        1px solid
+        rgba(255,255,255,.07);
+
+    min-width:auto;
 }
 
 .contact-card strong{
-    display:block;
-    color:#ffd400;
-    margin-bottom:8px;
+    display:inline;
+
+    color:#ff304f;
+
+    margin-right:5px;
+
+    font-size:11px;
 }
 
 .contact-card span{
     color:#c4ccda;
+
+    font-size:11px;
+
     word-break:break-word;
 }
 
-/* MODAL */
+.contact-card.address-card,
+.contact-card.hours-card{
+    display:none;
+}
+
+/* =========================
+   MODAL
+========================= */
 
 .modal{
     position:fixed;
+
     inset:0;
+
     z-index:5000;
+
     display:none;
+
     align-items:center;
+
     justify-content:center;
+
     padding:20px;
-    background:rgba(0,0,0,.72);
+
+    background:
+        rgba(0,0,0,.72);
+
     backdrop-filter:blur(8px);
 }
 
@@ -576,67 +835,103 @@ header{
 
 .modal-box{
     width:min(700px,100%);
+
     max-height:90vh;
+
     overflow:auto;
+
     background:#07101f;
-    border:1px solid rgba(255,255,255,.12);
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
     border-radius:24px;
+
     padding:25px;
+
     position:relative;
 }
 
 .modal-close{
     position:absolute;
+
     right:15px;
     top:12px;
+
     border:0;
+
     background:transparent;
+
     color:#fff;
+
     font-size:30px;
 }
 
 .modal-title{
     padding-right:35px;
+
     font-size:28px;
 }
 
 .modal-content{
     margin-top:18px;
+
     color:#c6cfdd;
+
     line-height:1.6;
 }
 
 .modal-content img{
     max-width:120px;
+
     max-height:120px;
+
     object-fit:contain;
+
     background:#fff;
+
     border-radius:15px;
+
     padding:8px;
+
     margin-bottom:15px;
 }
 
 .modal-content a{
-    color:#ffd400;
+    color:#ff304f;
 }
 
-/* FOOTER */
+/* =========================
+   FOOTER
+========================= */
 
 footer{
-    margin-top:80px;
-    padding:35px 15px;
+    margin-top:45px;
+
+    padding:25px 15px;
+
     text-align:center;
+
     color:#778399;
-    border-top:1px solid rgba(255,255,255,.07);
+
+    border-top:
+        1px solid
+        rgba(255,255,255,.07);
+
+    font-size:12px;
 }
 
 footer strong{
-    color:#ffd400;
+    color:#ff304f;
 }
 
-/* RESPONSIVE */
+/* =========================
+   RESPONSIVE
+========================= */
 
 @media(max-width:1500px){
+
     .countries-grid{
         grid-template-columns:
             repeat(12,minmax(0,1fr));
@@ -644,6 +939,7 @@ footer strong{
 }
 
 @media(max-width:1200px){
+
     .countries-grid{
         grid-template-columns:
             repeat(10,minmax(0,1fr));
@@ -656,6 +952,7 @@ footer strong{
 }
 
 @media(max-width:850px){
+
     .countries-grid{
         grid-template-columns:
             repeat(6,minmax(0,1fr));
@@ -665,14 +962,10 @@ footer strong{
         grid-template-columns:
             repeat(3,minmax(0,1fr));
     }
-
-    .contact-grid{
-        grid-template-columns:
-            repeat(2,minmax(0,1fr));
-    }
 }
 
 @media(max-width:600px){
+
     .header-inner{
         min-height:62px;
     }
@@ -683,6 +976,7 @@ footer strong{
 
     .price-badge{
         padding:8px 11px;
+
         font-size:13px;
     }
 
@@ -697,6 +991,7 @@ footer strong{
     .countries-grid{
         grid-template-columns:
             repeat(6,minmax(0,1fr));
+
         gap:6px;
     }
 
@@ -708,11 +1003,6 @@ footer strong{
         font-size:8px;
     }
 
-    .country-count{
-        font-size:7px;
-        padding:3px 4px;
-    }
-
     .country-flag{
         left:4px;
         bottom:4px;
@@ -721,11 +1011,13 @@ footer strong{
     .brand-grid{
         grid-template-columns:
             repeat(2,minmax(0,1fr));
+
         gap:10px;
     }
 
     .brand-card{
         padding:14px;
+
         min-height:160px;
     }
 
@@ -754,20 +1046,32 @@ footer strong{
     }
 
     .contact-grid{
-        grid-template-columns:1fr;
+        gap:5px;
+    }
+
+    .contact-card{
+        padding:7px 8px;
+    }
+
+    .contact-card strong,
+    .contact-card span{
+        font-size:10px;
     }
 
     .view-bar{
         align-items:flex-start;
+
         flex-direction:column;
     }
 }
+
 </style>
 </head>
 
 <body>
 
 <header>
+
     <div class="container header-inner">
 
         <div class="logo">
@@ -775,6 +1079,7 @@ footer strong{
         </div>
 
         <div class="header-actions">
+
             <div
                 class="price-badge"
                 id="headerPrice"
@@ -785,12 +1090,15 @@ footer strong{
             <button
                 class="contact-btn"
                 onclick="scrollToContact()"
+                type="button"
             >
                 Contact
             </button>
+
         </div>
 
     </div>
+
 </header>
 
 <main>
@@ -824,8 +1132,9 @@ footer strong{
             id="searchInput"
             class="search-box"
             type="search"
-            placeholder="Search brands, categories or countries..."
+            placeholder="Search brand name..."
             autocomplete="off"
+            maxlength="120"
         >
 
         <div
@@ -845,11 +1154,11 @@ footer strong{
     <div class="section-title">
 
         <h2>
-            Countries
+            Countries & Territories
         </h2>
 
         <p>
-            Choose a country to discover its brands.
+            Choose a country or territory to discover its brands.
         </p>
 
     </div>
@@ -870,14 +1179,24 @@ footer strong{
     <div class="view-bar">
 
         <div>
+
             <h2 id="selectedCountryName">
                 Brands
             </h2>
+
+            <div
+                id="selectedCountryCount"
+                class="country-brand-count"
+            >
+                0 brands
+            </div>
+
         </div>
 
         <button
             class="back-btn"
             onclick="returnToCountries()"
+            type="button"
         >
             ← Back to countries
         </button>
@@ -937,9 +1256,11 @@ footer strong{
                     name="country"
                     required
                 >
+
                     <option value="">
                         Select country
                     </option>
+
                 </select>
 
             </div>
@@ -1039,9 +1360,7 @@ footer strong{
 
                 Brand registration/payment:
 
-                <strong
-                    id="formPrice"
-                >
+                <strong id="formPrice">
                     $1
                 </strong>
 
@@ -1083,7 +1402,7 @@ footer strong{
         </h2>
 
         <p>
-            Contact ALL WORLD BRANDS.
+            ALL WORLD BRANDS
         </p>
 
     </div>
@@ -1093,23 +1412,11 @@ footer strong{
         <div class="contact-card">
 
             <strong>
-                Email
-            </strong>
-
-            <span id="contactEmail">
-                contact@allworldbrands.net
-            </span>
-
-        </div>
-
-        <div class="contact-card">
-
-            <strong>
                 Phone
             </strong>
 
             <span id="contactPhone">
-                —
+                +998 93 384 31 12
             </span>
 
         </div>
@@ -1121,7 +1428,7 @@ footer strong{
             </strong>
 
             <span id="contactWhatsapp">
-                —
+                +998 93 384 31 12
             </span>
 
         </div>
@@ -1129,11 +1436,11 @@ footer strong{
         <div class="contact-card">
 
             <strong>
-                Address
+                Telegram
             </strong>
 
-            <span id="contactAddress">
-                —
+            <span id="contactTelegram">
+                @allworldbrandsnet
             </span>
 
         </div>
@@ -1141,11 +1448,11 @@ footer strong{
         <div class="contact-card">
 
             <strong>
-                Working hours
+                Email
             </strong>
 
-            <span id="contactHours">
-                —
+            <span id="contactEmail">
+                allworldbrandsnet@gmail.com
             </span>
 
         </div>
@@ -1184,6 +1491,7 @@ footer strong{
         <button
             class="modal-close"
             onclick="closeModal()"
+            type="button"
         >
             ×
         </button>
@@ -1205,16 +1513,25 @@ footer strong{
 </div>
 
 <script>
+
 "use strict";
 
 let countries = [];
+
 let siteConfig = {};
+
 let currentCountry = null;
 
 const $ = id =>
     document.getElementById(id);
 
+
+/* =========================
+   HTML SECURITY
+========================= */
+
 function escapeHtml(value){
+
     return String(value ?? "")
         .replace(/&/g,"&amp;")
         .replace(/</g,"&lt;")
@@ -1223,7 +1540,13 @@ function escapeHtml(value){
         .replace(/'/g,"&#039;");
 }
 
+
+/* =========================
+   SAFE URL
+========================= */
+
 function safeUrl(value){
+
     const url =
         String(value || "").trim();
 
@@ -1249,6 +1572,7 @@ function safeUrl(value){
     }
 
     try{
+
         const parsed =
             new URL(url);
 
@@ -1260,12 +1584,20 @@ function safeUrl(value){
         }
 
         return parsed.href;
+
     }catch{
+
         return "";
     }
 }
 
+
+/* =========================
+   COUNTRY FLAG
+========================= */
+
 function imageForCountry(code){
+
     if(!code){
         return "";
     }
@@ -1277,7 +1609,13 @@ function imageForCountry(code){
     );
 }
 
-function showModal(title, content){
+
+/* =========================
+   MODAL
+========================= */
+
+function showModal(title,content){
+
     $("modalTitle").textContent =
         title || "Information";
 
@@ -1287,22 +1625,42 @@ function showModal(title, content){
     $("modal").classList.add("show");
 }
 
+
 function closeModal(){
-    $("modal").classList.remove("show");
+
+    $("modal")
+        .classList
+        .remove("show");
 }
 
+
 function closeModalOutside(event){
-    if(event.target === $("modal")){
+
+    if(
+        event.target ===
+        $("modal")
+    ){
         closeModal();
     }
 }
 
+
+/* =========================
+   CONTACT
+========================= */
+
 function scrollToContact(){
+
     $("contactSection")
         .scrollIntoView({
             behavior:"smooth"
         });
 }
+
+
+/* =========================
+   SITE CONFIG
+========================= */
 
 async function loadSiteConfig(){
 
@@ -1328,38 +1686,45 @@ async function loadSiteConfig(){
             "$1";
 
         $("headerPrice")
-            .textContent = price;
+            .textContent =
+            price;
 
         $("formPrice")
-            .textContent = price;
+            .textContent =
+            price;
 
         $("tagline")
             .textContent =
-                siteConfig.tagline ||
-                "Bring your brand to the world.";
+            siteConfig.tagline ||
+            "Bring your brand to the world.";
 
         const contact =
             siteConfig.contact || {};
 
         $("contactEmail")
             .textContent =
-                contact.email || "—";
+            contact.email ||
+            "allworldbrandsnet@gmail.com";
 
         $("contactPhone")
             .textContent =
-                contact.phone || "—";
+            contact.phone ||
+            "+998 93 384 31 12";
 
         $("contactWhatsapp")
             .textContent =
-                contact.whatsapp || "—";
+            contact.whatsapp ||
+            "+998 93 384 31 12";
 
-        $("contactAddress")
-            .textContent =
-                contact.address || "—";
+        if(
+            contact.telegram
+        ){
 
-        $("contactHours")
-            .textContent =
-                contact.hours || "—";
+            $("contactTelegram")
+                .textContent =
+                contact.telegram;
+
+        }
 
     }catch(error){
 
@@ -1370,6 +1735,11 @@ async function loadSiteConfig(){
 
     }
 }
+
+
+/* =========================
+   LOAD COUNTRIES
+========================= */
 
 async function loadCountries(){
 
@@ -1384,6 +1754,7 @@ async function loadCountries(){
             );
 
         if(!response.ok){
+
             throw new Error(
                 "Country request failed"
             );
@@ -1393,6 +1764,7 @@ async function loadCountries(){
             await response.json();
 
         renderCountries();
+
         fillCountrySelect();
 
     }catch(error){
@@ -1401,18 +1773,24 @@ async function loadCountries(){
 
         $("countriesGrid")
             .innerHTML =
-                `
-                <div style="
-                    grid-column:1/-1;
-                    text-align:center;
-                    color:#ff7b7b;
-                    padding:30px;
-                ">
-                    Unable to load countries.
-                </div>
-                `;
+            `
+            <div style="
+                grid-column:1/-1;
+                text-align:center;
+                color:#ff7b7b;
+                padding:30px;
+            ">
+                Unable to load countries.
+            </div>
+            `;
+
     }
 }
+
+
+/* =========================
+   RENDER COUNTRIES
+========================= */
 
 function renderCountries(){
 
@@ -1424,9 +1802,12 @@ function renderCountries(){
     countries.forEach(country => {
 
         const card =
-            document.createElement("button");
+            document.createElement(
+                "button"
+            );
 
         card.type = "button";
+
         card.className =
             "country-card";
 
@@ -1438,7 +1819,9 @@ function renderCountries(){
         if(image){
 
             const flag =
-                document.createElement("img");
+                document.createElement(
+                    "img"
+                );
 
             flag.className =
                 "country-flag";
@@ -1447,18 +1830,23 @@ function renderCountries(){
                 country.name +
                 " flag";
 
-            flag.src = image;
+            flag.src =
+                image;
 
             flag.onerror = () => {
+
                 flag.style.display =
                     "none";
+
             };
 
             card.appendChild(flag);
         }
 
         const name =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
         name.className =
             "country-name";
@@ -1468,16 +1856,11 @@ function renderCountries(){
 
         card.appendChild(name);
 
-        const count =
-            document.createElement("div");
-
-        count.className =
-            "country-count";
-
-        count.textContent =
-            `${Number(country.brand_count || 0)} brands`;
-
-        card.appendChild(count);
+        /*
+           IMPORTANT:
+           Brand count is NOT shown
+           on country cards.
+        */
 
         card.addEventListener(
             "click",
@@ -1486,8 +1869,14 @@ function renderCountries(){
         );
 
         grid.appendChild(card);
+
     });
 }
+
+
+/* =========================
+   COUNTRY SELECT
+========================= */
 
 function fillCountrySelect(){
 
@@ -1504,7 +1893,9 @@ function fillCountrySelect(){
     countries.forEach(country => {
 
         const option =
-            document.createElement("option");
+            document.createElement(
+                "option"
+            );
 
         option.value =
             country.name;
@@ -1513,8 +1904,14 @@ function fillCountrySelect(){
             country.name;
 
         select.appendChild(option);
+
     });
 }
+
+
+/* =========================
+   OPEN COUNTRY
+========================= */
 
 async function openCountry(country){
 
@@ -1522,27 +1919,33 @@ async function openCountry(country){
         country;
 
     $("countriesSection")
-        .style.display = "none";
+        .style.display =
+        "none";
 
     $("brandsSection")
-        .style.display = "block";
+        .style.display =
+        "block";
 
     $("selectedCountryName")
         .textContent =
-            country.name;
+        country.name;
+
+    $("selectedCountryCount")
+        .textContent =
+        "Loading brands...";
 
     $("brandsGrid")
         .innerHTML =
-            `
-            <div style="
-                grid-column:1/-1;
-                text-align:center;
-                padding:40px;
-                color:#9da8ba;
-            ">
-                Loading brands...
-            </div>
-            `;
+        `
+        <div style="
+            grid-column:1/-1;
+            text-align:center;
+            padding:40px;
+            color:#9da8ba;
+        ">
+            Loading brands...
+        </div>
+        `;
 
     $("brandsSection")
         .scrollIntoView({
@@ -1560,6 +1963,7 @@ async function openCountry(country){
             );
 
         if(!response.ok){
+
             throw new Error(
                 "Brand request failed"
             );
@@ -1567,6 +1971,10 @@ async function openCountry(country){
 
         const brands =
             await response.json();
+
+        $("selectedCountryCount")
+            .textContent =
+            `${brands.length} brands`;
 
         renderBrands(brands);
 
@@ -1589,20 +1997,30 @@ async function openCountry(country){
 
         console.error(error);
 
+        $("selectedCountryCount")
+            .textContent =
+            "0 brands";
+
         $("brandsGrid")
             .innerHTML =
-                `
-                <div style="
-                    grid-column:1/-1;
-                    text-align:center;
-                    color:#ff7b7b;
-                    padding:40px;
-                ">
-                    Unable to load brands.
-                </div>
-                `;
+            `
+            <div style="
+                grid-column:1/-1;
+                text-align:center;
+                color:#ff7b7b;
+                padding:40px;
+            ">
+                Unable to load brands.
+            </div>
+            `;
+
     }
 }
+
+
+/* =========================
+   RENDER BRANDS
+========================= */
 
 function renderBrands(brands){
 
@@ -1631,7 +2049,9 @@ function renderBrands(brands){
     brands.forEach(brand => {
 
         const card =
-            document.createElement("article");
+            document.createElement(
+                "article"
+            );
 
         card.className =
             "brand-card";
@@ -1639,7 +2059,9 @@ function renderBrands(brands){
         let logoHtml = "";
 
         const logo =
-            safeUrl(brand.logo);
+            safeUrl(
+                brand.logo
+            );
 
         if(logo){
 
@@ -1659,7 +2081,9 @@ function renderBrands(brands){
             ${logoHtml}
 
             <div class="brand-name">
-                ${escapeHtml(brand.name)}
+                ${escapeHtml(
+                    brand.name
+                )}
             </div>
 
             <div class="brand-category">
@@ -1686,24 +2110,41 @@ function renderBrands(brands){
         );
 
         grid.appendChild(card);
+
     });
 }
+
+
+/* =========================
+   BACK TO COUNTRIES
+========================= */
 
 function returnToCountries(){
 
     currentCountry = null;
 
     $("brandsSection")
-        .style.display = "none";
+        .style.display =
+        "none";
 
     $("countriesSection")
-        .style.display = "block";
+        .style.display =
+        "block";
+
+    $("selectedCountryCount")
+        .textContent =
+        "0 brands";
 
     $("countriesSection")
         .scrollIntoView({
             behavior:"smooth"
         });
 }
+
+
+/* =========================
+   OPEN BRAND
+========================= */
 
 async function openBrand(id){
 
@@ -1718,6 +2159,7 @@ async function openBrand(id){
             );
 
         if(!response.ok){
+
             throw new Error(
                 "Brand request failed"
             );
@@ -1727,7 +2169,9 @@ async function openBrand(id){
             await response.json();
 
         const logo =
-            safeUrl(brand.logo);
+            safeUrl(
+                brand.logo
+            );
 
         let html = "";
 
@@ -1784,7 +2228,9 @@ async function openBrand(id){
             `;
 
         const website =
-            safeUrl(brand.website);
+            safeUrl(
+                brand.website
+            );
 
         if(website){
 
@@ -1813,7 +2259,8 @@ async function openBrand(id){
                 `
                 <hr style="
                     margin:20px 0;
-                    border-color:rgba(255,255,255,.1);
+                    border-color:
+                        rgba(255,255,255,.1);
                 ">
 
                 <h3>
@@ -1821,36 +2268,42 @@ async function openBrand(id){
                 </h3>
                 `;
 
-            brand.factories.forEach(factory => {
+            brand.factories.forEach(
+                factory => {
 
-                html +=
-                    `
-                    <div style="
-                        margin-top:15px;
-                        padding:12px;
-                        border-radius:10px;
-                        background:rgba(255,255,255,.04);
-                    ">
-                        <strong>
+                    html +=
+                        `
+                        <div style="
+                            margin-top:15px;
+                            padding:12px;
+                            border-radius:10px;
+                            background:
+                                rgba(255,255,255,.04);
+                        ">
+
+                            <strong>
+                                ${escapeHtml(
+                                    factory.name || ""
+                                )}
+                            </strong>
+
+                            <br>
+
                             ${escapeHtml(
-                                factory.name || ""
+                                factory.city || ""
                             )}
-                        </strong>
 
-                        <br>
+                            <br>
 
-                        ${escapeHtml(
-                            factory.city || ""
-                        )}
+                            ${escapeHtml(
+                                factory.address || ""
+                            )}
 
-                        <br>
+                        </div>
+                        `;
 
-                        ${escapeHtml(
-                            factory.address || ""
-                        )}
-                    </div>
-                    `;
-            });
+                }
+            );
         }
 
         showModal(
@@ -1866,8 +2319,15 @@ async function openBrand(id){
             "Error",
             "<p>Unable to load brand information.</p>"
         );
+
     }
 }
+
+
+/* =========================
+   SEARCH
+   BRAND NAME ONLY
+========================= */
 
 let searchTimer = null;
 
@@ -1886,7 +2346,8 @@ $("searchInput")
             if(!value){
 
                 $("searchMessage")
-                    .textContent = "";
+                    .textContent =
+                    "";
 
                 return;
             }
@@ -1897,8 +2358,10 @@ $("searchInput")
                         searchBrands(value),
                     300
                 );
+
         }
     );
+
 
 async function searchBrands(query){
 
@@ -1906,7 +2369,12 @@ async function searchBrands(query){
 
         $("searchMessage")
             .textContent =
-                "Searching...";
+            "Searching...";
+
+        /*
+           The server endpoint must search
+           ONLY brands.name.
+        */
 
         const response =
             await fetch(
@@ -1917,6 +2385,7 @@ async function searchBrands(query){
             );
 
         if(!response.ok){
+
             throw new Error(
                 "Search failed"
             );
@@ -1929,16 +2398,18 @@ async function searchBrands(query){
 
             $("searchMessage")
                 .textContent =
-                    "No brands found.";
+                "No brands found.";
 
             return;
         }
 
         $("searchMessage")
             .textContent =
-            `${results.length} result(s) found.`;
+            `${results.length} brand(s) found.`;
 
-        renderSearchResults(results);
+        renderSearchResults(
+            results
+        );
 
     }catch(error){
 
@@ -1946,9 +2417,15 @@ async function searchBrands(query){
 
         $("searchMessage")
             .textContent =
-                "Search failed.";
+            "Search failed.";
+
     }
 }
+
+
+/* =========================
+   SEARCH RESULTS
+========================= */
 
 function renderSearchResults(results){
 
@@ -1958,16 +2435,24 @@ function renderSearchResults(results){
     grid.innerHTML = "";
 
     $("countriesSection")
-        .style.display = "none";
+        .style.display =
+        "none";
 
     $("brandsSection")
-        .style.display = "block";
+        .style.display =
+        "block";
 
     $("selectedCountryName")
         .textContent =
-            "Search Results";
+        "Search Results";
 
-    renderBrands(results);
+    $("selectedCountryCount")
+        .textContent =
+        `${results.length} brands`;
+
+    renderBrands(
+        results
+    );
 
     $("brandsSection")
         .scrollIntoView({
@@ -1975,11 +2460,17 @@ function renderSearchResults(results){
         });
 }
 
+
+/* =========================
+   APPLICATION
+========================= */
+
 $("applicationForm")
     .addEventListener(
         "submit",
         submitApplication
     );
+
 
 async function submitApplication(event){
 
@@ -2013,12 +2504,16 @@ async function submitApplication(event){
                 "/api/applications",
                 {
                     method:"POST",
+
                     headers:{
                         "Content-Type":
                             "application/json"
                     },
+
                     body:
-                        JSON.stringify(data)
+                        JSON.stringify(
+                            data
+                        )
                 }
             );
 
@@ -2056,10 +2551,12 @@ async function submitApplication(event){
                 "/api/payments/octo/create",
                 {
                     method:"POST",
+
                     headers:{
                         "Content-Type":
                             "application/json"
                     },
+
                     body:
                         JSON.stringify({
                             application_id:
@@ -2083,6 +2580,8 @@ async function submitApplication(event){
 
             message.textContent =
                 "Payment is already confirmed.";
+
+            button.disabled = false;
 
             return;
         }
@@ -2116,6 +2615,11 @@ async function submitApplication(event){
     }
 }
 
+
+/* =========================
+   PAYMENT RETURN
+========================= */
+
 async function checkPaymentReturn(){
 
     const params =
@@ -2127,6 +2631,7 @@ async function checkPaymentReturn(){
         params.get("payment") !==
         "octo"
     ){
+
         return;
     }
 
@@ -2144,6 +2649,7 @@ async function checkPaymentReturn(){
     }
 
     if(!applicationId){
+
         return;
     }
 
@@ -2184,7 +2690,7 @@ async function checkPaymentReturn(){
 
                 <p style="
                     margin-top:10px;
-                    color:#ffd400;
+                    color:#ff304f;
                     font-weight:800;
                 ">
                     Your brand application has been received.
@@ -2252,6 +2758,11 @@ async function checkPaymentReturn(){
     }
 }
 
+
+/* =========================
+   INITIALIZE
+========================= */
+
 async function initialize(){
 
     await Promise.all([
@@ -2263,6 +2774,7 @@ async function initialize(){
 }
 
 initialize();
+
 </script>
 
 </body>
