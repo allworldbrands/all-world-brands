@@ -523,7 +523,6 @@ header{
 
 /* =====================================================
    COUNTRY GRID
-   GORIZONTAL KARTALAR
 ===================================================== */
 
 .countries-grid{
@@ -563,7 +562,6 @@ header{
 
 /* =====================================================
    COUNTRY CARD
-   GORIZONTAL 16:9
 ===================================================== */
 
 .country-card{
@@ -773,6 +771,164 @@ header{
     box-shadow:
         0 10px 35px
         rgba(91,74,255,.25);
+}
+
+
+/* =====================================================
+   CUSTOMER SUPPORT
+===================================================== */
+
+.support-section{
+    margin-top:50px;
+}
+
+.support-card{
+    display:flex;
+    align-items:flex-start;
+    gap:24px;
+
+    padding:32px;
+
+    border-radius:24px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(8,29,60,.82),
+            rgba(18,20,55,.78)
+        );
+
+    border:
+        1px solid
+        rgba(71,128,255,.28);
+
+    box-shadow:
+        0 15px 45px
+        rgba(0,0,0,.22);
+
+    backdrop-filter:
+        blur(10px);
+
+    -webkit-backdrop-filter:
+        blur(10px);
+}
+
+.support-icon{
+    width:58px;
+    height:58px;
+
+    flex-shrink:0;
+
+    display:grid;
+    place-items:center;
+
+    border-radius:17px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(18,189,232,.25),
+            rgba(118,75,255,.28)
+        );
+
+    border:
+        1px solid
+        rgba(91,140,255,.35);
+
+    font-size:27px;
+}
+
+.support-content{
+    width:100%;
+}
+
+.support-content h2{
+    font-size:28px;
+    margin-bottom:8px;
+}
+
+.support-content p{
+    color:#9eacc4;
+    line-height:1.55;
+    margin-bottom:22px;
+}
+
+.support-contacts{
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,minmax(0,1fr));
+
+    gap:12px;
+}
+
+.support-item{
+    min-width:0;
+
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    padding:15px;
+
+    border-radius:14px;
+
+    background:
+        rgba(4,14,31,.62);
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+    color:#fff;
+
+    text-decoration:none;
+}
+
+.support-link{
+    transition:
+        transform .2s ease,
+        background .2s ease,
+        border-color .2s ease;
+}
+
+.support-link:hover{
+    transform:translateY(-3px);
+
+    background:
+        rgba(25,61,110,.55);
+
+    border-color:
+        rgba(88,158,255,.45);
+}
+
+.support-item-icon{
+    font-size:22px;
+    flex-shrink:0;
+}
+
+.support-item div{
+    min-width:0;
+}
+
+.support-label{
+    display:block;
+
+    color:#7f91af;
+
+    font-size:11px;
+
+    margin-bottom:4px;
+}
+
+.support-item strong{
+    display:block;
+
+    color:#eaf2ff;
+
+    font-size:13px;
+
+    overflow-wrap:anywhere;
 }
 
 
@@ -1145,6 +1301,14 @@ footer{
         gap:14px;
     }
 
+    .support-contacts{
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0,1fr)
+            );
+    }
+
 }
 
 
@@ -1283,6 +1447,41 @@ footer{
 
     .promo h2{
         font-size:28px;
+    }
+
+    .support-section{
+        margin-top:35px;
+    }
+
+    .support-card{
+        padding:22px 16px;
+        gap:15px;
+        border-radius:20px;
+    }
+
+    .support-icon{
+        width:45px;
+        height:45px;
+        border-radius:13px;
+        font-size:21px;
+    }
+
+    .support-content h2{
+        font-size:22px;
+    }
+
+    .support-content p{
+        font-size:13px;
+        margin-bottom:17px;
+    }
+
+    .support-contacts{
+        grid-template-columns:1fr;
+        gap:9px;
+    }
+
+    .support-item{
+        padding:13px;
     }
 
     .modal{
@@ -1534,6 +1733,143 @@ footer{
         Brendingizni qo‘shing — $1.00
 
     </button>
+
+</section>
+
+
+<!-- =====================================================
+     CUSTOMER SUPPORT
+===================================================== -->
+
+<section class="support-section">
+
+    <div class="support-card">
+
+        <div class="support-icon">
+            💬
+        </div>
+
+        <div class="support-content">
+
+            <h2>
+                Mijozlarga xizmat ko‘rsatish
+            </h2>
+
+            <p>
+                Savollar, takliflar yoki yordam kerak bo‘lsa,
+                biz bilan 24/7 bog‘lanishingiz mumkin.
+            </p>
+
+            <div class="support-contacts">
+
+
+                <!-- PHONE
+                     Oddiy matn.
+                     Bosilganda qo‘ng‘iroq qilmaydi.
+                -->
+
+                <div class="support-item">
+
+                    <span class="support-item-icon">
+                        📞
+                    </span>
+
+                    <div>
+
+                        <span class="support-label">
+                            Telefon
+                        </span>
+
+                        <strong>
+                            +998 93 384 31 12
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TELEGRAM -->
+
+                <a
+                    class="support-item support-link"
+                    href="https://t.me/allallworldbrandsnet"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+
+                    <span class="support-item-icon">
+                        💬
+                    </span>
+
+                    <div>
+
+                        <span class="support-label">
+                            Telegram
+                        </span>
+
+                        <strong>
+                            @allallworldbrandsnet
+                        </strong>
+
+                    </div>
+
+                </a>
+
+
+                <!-- EMAIL -->
+
+                <a
+                    class="support-item support-link"
+                    href="mailto:allworldbrandsnet@gmail.com"
+                >
+
+                    <span class="support-item-icon">
+                        📧
+                    </span>
+
+                    <div>
+
+                        <span class="support-label">
+                            E-mail
+                        </span>
+
+                        <strong>
+                            allworldbrandsnet@gmail.com
+                        </strong>
+
+                    </div>
+
+                </a>
+
+
+                <!-- 24/7 -->
+
+                <div class="support-item">
+
+                    <span class="support-item-icon">
+                        🕐
+                    </span>
+
+                    <div>
+
+                        <span class="support-label">
+                            Xizmat vaqti
+                        </span>
+
+                        <strong>
+                            24/7
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </section>
 
