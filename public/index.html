@@ -1,32 +1,17 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
->
+<meta name="description"
+      content="ALL WORLD BRANDS — Discover brands and countries from around the world">
 
-<meta
-    name="description"
-    content="ALL WORLD BRANDS — Discover brands and countries from around the world"
->
-
-<meta
-    name="theme-color"
-    content="#020713"
->
+<meta name="theme-color" content="#020713">
 
 <title>ALL WORLD BRANDS</title>
 
 <style>
-
-/* =====================================================
-   RESET
-===================================================== */
-
 *{
     box-sizing:border-box;
     margin:0;
@@ -39,2166 +24,1343 @@ html{
 
 body{
     min-height:100vh;
-
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
+    font-family:Arial,Helvetica,sans-serif;
     color:#fff;
-
     background:
-        radial-gradient(
-            circle at 50% -10%,
-            rgba(0,150,255,.18),
-            transparent 35%
-        ),
-        radial-gradient(
-            circle at 100% 30%,
-            rgba(0,255,220,.08),
-            transparent 30%
-        ),
-        linear-gradient(
-            180deg,
-            #020713 0%,
-            #030a18 45%,
-            #01040c 100%
-        );
-
+        radial-gradient(circle at 50% -10%,rgba(0,170,255,.18),transparent 38%),
+        linear-gradient(180deg,#020713 0%,#030916 50%,#01040b 100%);
     overflow-x:hidden;
 }
 
-/* =====================================================
-   GLOBAL BACKGROUND
-===================================================== */
-
-body::before{
-    content:"";
-
-    position:fixed;
-    inset:0;
-
-    background-image:
-        url("/brand-rain-background.png");
-
-    background-size:cover;
-    background-position:center;
-    background-repeat:no-repeat;
-
-    opacity:.16;
-
-    pointer-events:none;
-
-    z-index:-5;
+button,
+input,
+textarea,
+select{
+    font:inherit;
 }
 
-body::after{
-    content:"";
-
-    position:fixed;
-    inset:0;
-
-    background:
-        radial-gradient(
-            circle at center,
-            transparent 0%,
-            rgba(0,0,0,.18) 45%,
-            rgba(0,0,0,.72) 100%
-        );
-
-    pointer-events:none;
-
-    z-index:-4;
+button{
+    cursor:pointer;
 }
 
-/* =====================================================
-   RAIN
-===================================================== */
+a{
+    color:inherit;
+    text-decoration:none;
+}
+
+/* =========================
+   BACKGROUND
+========================= */
 
 #rainFX{
     position:fixed;
     inset:0;
-
     pointer-events:none;
-
-    overflow:hidden;
-
     z-index:-2;
+    overflow:hidden;
 }
 
 .rain-line{
     position:absolute;
-
+    top:-150px;
     width:1px;
-    height:80px;
-
-    background:
-        linear-gradient(
-            transparent,
-            rgba(80,180,255,.25),
-            transparent
-        );
-
-    animation:
-        rainFall linear infinite;
+    height:120px;
+    background:linear-gradient(
+        transparent,
+        rgba(0,180,255,.45),
+        transparent
+    );
+    animation:rainFall linear infinite;
+    opacity:.35;
 }
 
 @keyframes rainFall{
-
     from{
-        transform:translateY(-120px);
+        transform:translateY(-150px);
     }
-
     to{
         transform:translateY(110vh);
     }
-
 }
 
-/* =====================================================
-   GLOBE
-===================================================== */
-
-.globe-bg{
-    position:fixed;
-
-    width:700px;
-    height:700px;
-
-    left:50%;
-    top:52%;
-
-    transform:
-        translate(-50%,-50%);
-
-    border-radius:50%;
-
-    border:
-        1px solid
-        rgba(0,180,255,.10);
-
-    box-shadow:
-        0 0 100px rgba(0,150,255,.06),
-        inset 0 0 100px rgba(0,150,255,.05);
-
-    pointer-events:none;
-
-    z-index:-3;
-}
-
-.globe-bg::before,
-.globe-bg::after{
-    content:"";
-
-    position:absolute;
-
-    inset:8%;
-
-    border:
-        1px solid
-        rgba(0,180,255,.07);
-
-    border-radius:50%;
-}
-
-.globe-bg::after{
-    transform:rotate(90deg);
-}
-
-/* =====================================================
+/* =========================
    HEADER
-===================================================== */
+========================= */
 
 header{
     position:sticky;
-
     top:0;
-
-    z-index:100;
-
+    z-index:1000;
     width:100%;
-
-    padding:
-        14px 22px;
-
-    background:
-        rgba(2,7,19,.82);
-
-    backdrop-filter:
-        blur(18px);
-
-    -webkit-backdrop-filter:
-        blur(18px);
-
-    border-bottom:
-        1px solid
-        rgba(255,255,255,.08);
-
-    box-shadow:
-        0 8px 35px
-        rgba(0,0,0,.25);
+    border-bottom:1px solid rgba(0,180,255,.15);
+    background:rgba(2,7,19,.88);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
 }
 
 .header-inner{
-    width:100%;
-
-    max-width:1800px;
-
+    width:min(1450px,94%);
+    min-height:76px;
     margin:auto;
-
     display:flex;
-
     align-items:center;
-
+    justify-content:space-between;
     gap:20px;
 }
 
-/* =====================================================
-   LOGO
-===================================================== */
-
 .logo{
-    flex-shrink:0;
-
-    color:#fff;
-
-    text-decoration:none;
-
-    font-size:21px;
-
-    font-weight:900;
-
-    letter-spacing:1.5px;
-
+    display:flex;
+    align-items:center;
+    gap:10px;
     white-space:nowrap;
-
-    text-shadow:
-        0 0 20px
-        rgba(0,180,255,.25);
+    font-size:21px;
+    font-weight:900;
+    letter-spacing:1px;
 }
 
-/* =====================================================
-   SEARCH
-===================================================== */
-
-.header-search{
-    flex:1;
-
-    max-width:650px;
-
-    margin-left:auto;
-}
-
-.header-search input{
-    width:100%;
-
-    height:46px;
-
-    padding:
-        0 18px;
-
-    border-radius:14px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.12);
-
-    outline:none;
-
-    color:#fff;
-
+.logo-icon{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
     background:
-        rgba(255,255,255,.055);
-
-    font-size:15px;
-
-    transition:.25s;
-}
-
-.header-search input::placeholder{
-    color:
-        rgba(255,255,255,.48);
-}
-
-.header-search input:focus{
-    border-color:
-        rgba(0,190,255,.55);
-
-    background:
-        rgba(255,255,255,.075);
-
+        radial-gradient(circle at 35% 30%,#2edcff,#0069ff 48%,#00132e 75%);
     box-shadow:
-        0 0 0 3px
-        rgba(0,180,255,.08);
+        0 0 18px rgba(0,174,255,.5),
+        inset 0 0 15px rgba(255,255,255,.15);
 }
 
-/* =====================================================
-   MAIN
-===================================================== */
-
-main{
-    width:100%;
+.logo span{
+    color:#39d9ff;
 }
 
-/* =====================================================
+nav{
+    display:flex;
+    align-items:center;
+    gap:24px;
+}
+
+nav a{
+    color:#b9c9db;
+    font-size:14px;
+    font-weight:700;
+    transition:.2s;
+}
+
+nav a:hover{
+    color:#36d8ff;
+}
+
+.header-status{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:#8fa5bc;
+    font-size:12px;
+}
+
+.status-dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#29e68a;
+    box-shadow:0 0 12px #29e68a;
+}
+
+/* =========================
    HERO
-===================================================== */
+========================= */
 
 .hero{
-    min-height:360px;
-
+    width:min(1450px,94%);
+    margin:0 auto;
+    min-height:470px;
     display:flex;
-
     flex-direction:column;
-
     align-items:center;
-
     justify-content:center;
-
     text-align:center;
+    padding:70px 0 50px;
+}
 
-    padding:
-        70px 20px 55px;
+.hero-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 15px;
+    border:1px solid rgba(0,196,255,.25);
+    border-radius:999px;
+    background:rgba(0,135,255,.07);
+    color:#66ddff;
+    font-size:12px;
+    font-weight:800;
+    margin-bottom:24px;
 }
 
 .hero h1{
-    font-size:
-        clamp(
-            38px,
-            6vw,
-            88px
-        );
-
-    line-height:1;
-
-    font-weight:1000;
-
-    letter-spacing:-2px;
-
+    font-size:clamp(42px,7vw,92px);
+    line-height:.95;
+    font-weight:950;
+    letter-spacing:-3px;
     text-transform:uppercase;
-
-    background:
-        linear-gradient(
-            90deg,
-            #fff,
-            #63d9ff,
-            #fff
-        );
-
+    background:linear-gradient(90deg,#fff,#59dcff,#fff);
     -webkit-background-clip:text;
     background-clip:text;
-
     color:transparent;
-
-    text-shadow:
-        0 0 40px
-        rgba(0,180,255,.12);
+    text-shadow:0 0 35px rgba(0,190,255,.12);
 }
 
 .hero p{
-    margin-top:22px;
-
-    max-width:720px;
-
-    color:
-        rgba(255,255,255,.65);
-
-    font-size:
-        clamp(
-            15px,
-            2vw,
-            19px
-        );
-
-    line-height:1.6;
+    max-width:760px;
+    margin:25px auto 30px;
+    color:#91a8bf;
+    font-size:17px;
+    line-height:1.7;
 }
 
-/* =====================================================
-   SECTION
-===================================================== */
+.search-box{
+    width:min(760px,100%);
+    position:relative;
+}
+
+.search-box input{
+    width:100%;
+    height:62px;
+    padding:0 58px 0 22px;
+    color:#fff;
+    border:1px solid rgba(0,190,255,.25);
+    outline:none;
+    border-radius:18px;
+    background:rgba(5,15,31,.88);
+    box-shadow:
+        0 0 35px rgba(0,130,255,.08),
+        inset 0 0 25px rgba(0,110,255,.04);
+}
+
+.search-box input:focus{
+    border-color:rgba(55,217,255,.65);
+    box-shadow:0 0 30px rgba(0,180,255,.14);
+}
+
+.search-icon{
+    position:absolute;
+    right:20px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#43d8ff;
+    font-size:22px;
+}
+
+/* =========================
+   COMMON
+========================= */
 
 .section{
-    width:100%;
-
-    max-width:1900px;
-
+    width:min(1450px,94%);
     margin:0 auto;
-
-    padding:
-        20px 20px 70px;
+    padding:45px 0;
 }
 
-.section-title{
+.section-head{
     display:flex;
-
-    align-items:center;
-
+    align-items:end;
     justify-content:space-between;
-
-    gap:15px;
-
+    gap:20px;
     margin-bottom:25px;
 }
 
-.section-title h2{
-    font-size:
-        clamp(
-            22px,
-            3vw,
-            34px
-        );
-
+.section-title{
+    font-size:30px;
     font-weight:900;
+    letter-spacing:-.5px;
 }
 
-.section-title span{
-    color:
-        rgba(255,255,255,.42);
-
+.section-subtitle{
+    margin-top:7px;
+    color:#71869d;
     font-size:13px;
 }
 
-/* =====================================================
-   COUNTRIES GRID
-   DESKTOP = 15
-===================================================== */
-
-.countries-grid{
-    width:100%;
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(
-            15,
-            minmax(0,1fr)
-        );
-
-    gap:12px;
+.counter{
+    color:#4ddcff;
+    font-size:13px;
+    font-weight:800;
 }
 
-/* =====================================================
-   COUNTRY CARD
-===================================================== */
+/* =========================
+   COUNTRIES
+========================= */
+
+.countries-grid{
+    display:grid;
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    gap:16px;
+}
 
 .country-card{
     position:relative;
-
-    aspect-ratio:16 / 9;
-
     min-width:0;
-
+    aspect-ratio:16/9;
     overflow:hidden;
-
-    display:flex;
-
-    align-items:flex-end;
-
-    justify-content:flex-start;
-
-    padding:12px;
-
-    border-radius:15px;
-
-    cursor:pointer;
-
-    border:
-        1px solid
-        rgba(255,255,255,.10);
-
+    border-radius:17px;
+    border:1px solid rgba(80,180,255,.13);
     background:
-        radial-gradient(
-            circle at 15% 10%,
-            rgba(0,190,255,.24),
-            transparent 38%
-        ),
-        radial-gradient(
-            circle at 90% 90%,
-            rgba(110,70,255,.20),
-            transparent 42%
-        ),
-        linear-gradient(
-            135deg,
-            #0a1830,
-            #07101f 48%,
-            #0a1428
-        );
-
-    box-shadow:
-        inset 0 1px 0
-        rgba(255,255,255,.06),
-
-        0 8px 22px
-        rgba(0,0,0,.18);
-
+        linear-gradient(145deg,rgba(15,35,62,.95),rgba(3,11,23,.98));
     transition:
-        transform .22s ease,
-        border-color .22s ease,
-        box-shadow .22s ease;
+        transform .25s ease,
+        border-color .25s ease,
+        box-shadow .25s ease;
+    cursor:pointer;
+}
+
+.country-card:hover{
+    transform:translateY(-5px);
+    border-color:rgba(55,215,255,.55);
+    box-shadow:0 14px 35px rgba(0,120,255,.13);
 }
 
 .country-card::before{
     content:"";
-
     position:absolute;
-
     inset:0;
-
     background:
         linear-gradient(
             135deg,
-            rgba(255,255,255,.07),
-            transparent 35%,
-            rgba(0,160,255,.05)
+            rgba(30,190,255,.12),
+            transparent 45%,
+            rgba(90,0,255,.07)
         );
-
     pointer-events:none;
 }
 
-.country-card::after{
-    content:"";
-
+.country-image{
     position:absolute;
-
-    width:100px;
-    height:100px;
-
-    right:-40px;
-    top:-40px;
-
-    border-radius:50%;
-
-    background:
-        rgba(0,190,255,.12);
-
-    filter:blur(15px);
-
-    pointer-events:none;
-}
-
-.country-card:hover{
-    transform:
-        translateY(-4px)
-        scale(1.025);
-
-    border-color:
-        rgba(0,190,255,.42);
-
-    box-shadow:
-        0 15px 35px
-        rgba(0,0,0,.32),
-
-        0 0 25px
-        rgba(0,170,255,.08);
-}
-
-.country-content{
-    position:relative;
-
-    z-index:2;
-
+    inset:0;
     width:100%;
-
-    min-width:0;
+    height:100%;
+    object-fit:cover;
+    opacity:.42;
+    transition:.3s;
 }
 
-.country-code{
-    display:inline-flex;
+.country-card:hover .country-image{
+    opacity:.58;
+    transform:scale(1.04);
+}
 
-    align-items:center;
-    justify-content:center;
-
-    margin-bottom:6px;
-
-    padding:
-        3px 7px;
-
-    border-radius:6px;
-
+.country-overlay{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:flex-end;
+    padding:18px;
     background:
-        rgba(255,255,255,.08);
+        linear-gradient(
+            transparent 20%,
+            rgba(1,5,13,.94) 100%
+        );
+}
 
-    color:
-        rgba(255,255,255,.55);
-
-    font-size:9px;
-
-    font-weight:800;
-
-    letter-spacing:.7px;
+.country-info{
+    position:relative;
+    z-index:2;
 }
 
 .country-name{
-    display:block;
-
-    width:100%;
-
-    overflow:hidden;
-
-    text-overflow:ellipsis;
-
-    white-space:nowrap;
-
-    font-size:
-        clamp(
-            10px,
-            .75vw,
-            15px
-        );
-
-    font-weight:800;
-
-    color:#fff;
-
-    text-shadow:
-        0 2px 8px
-        rgba(0,0,0,.55);
+    font-size:17px;
+    font-weight:900;
 }
 
-/* =====================================================
-   LOADING / EMPTY
-===================================================== */
-
-.loading{
-    grid-column:
-        1 / -1;
-
-    text-align:center;
-
-    padding:60px 20px;
-
-    color:
-        rgba(255,255,255,.5);
+.country-meta{
+    margin-top:5px;
+    color:#7f96ad;
+    font-size:11px;
 }
 
-.empty{
-    grid-column:
-        1 / -1;
-
-    padding:50px 20px;
-
-    text-align:center;
-
-    color:
-        rgba(255,255,255,.45);
-}
-
-/* =====================================================
-   SEARCH RESULTS
-===================================================== */
-
-.search-results{
-    display:none;
-
-    margin-top:20px;
-}
-
-.search-results.active{
-    display:block;
-}
-
-.search-results-title{
-    margin-bottom:15px;
-
-    color:
-        rgba(255,255,255,.55);
-
-    font-size:14px;
-}
-
-.search-result-card{
-    display:flex;
-
-    align-items:center;
-
-    gap:15px;
-
-    padding:16px;
-
-    margin-bottom:10px;
-
-    border-radius:15px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.08);
-
-    background:
-        rgba(255,255,255,.035);
-
-    cursor:pointer;
-
-    transition:.2s;
-}
-
-.search-result-card:hover{
-    border-color:
-        rgba(0,190,255,.35);
-
-    background:
-        rgba(0,150,255,.07);
-
-    transform:
-        translateY(-2px);
-}
-
-.search-result-icon{
-    width:46px;
-    height:46px;
-
-    flex:0 0 46px;
-
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-
-    border-radius:12px;
-
-    background:
-        rgba(0,160,255,.10);
-
-    border:
-        1px solid
-        rgba(0,190,255,.15);
-
-    font-size:20px;
-}
-
-.search-result-info{
-    min-width:0;
-}
-
-.search-result-info h3{
-    font-size:16px;
-
-    margin-bottom:4px;
-}
-
-.search-result-info p{
-    color:
-        rgba(255,255,255,.48);
-
-    font-size:13px;
-}
-
-/* =====================================================
-   PROMO
-===================================================== */
-
-.promo{
-    max-width:1100px;
-
-    margin:
-        10px auto 80px;
-
-    padding:
-        42px 30px;
-
-    border-radius:24px;
-
-    text-align:center;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(0,140,255,.13),
-            rgba(100,60,255,.10)
-        );
-
-    border:
-        1px solid
-        rgba(255,255,255,.10);
-
-    box-shadow:
-        0 25px 80px
-        rgba(0,0,0,.22);
-}
-
-.promo h2{
-    font-size:
-        clamp(
-            25px,
-            4vw,
-            42px
-        );
-
-    margin-bottom:12px;
-}
-
-.promo p{
-    color:
-        rgba(255,255,255,.6);
-
-    line-height:1.6;
-
-    margin-bottom:25px;
-}
-
-/* =====================================================
-   BUTTON
-===================================================== */
-
-.btn{
-    border:0;
-
-    outline:none;
-
-    cursor:pointer;
-
-    padding:
-        13px 24px;
-
-    border-radius:12px;
-
-    font-size:15px;
-
-    font-weight:800;
-
-    color:#fff;
-
-    background:
-        linear-gradient(
-            135deg,
-            #008cff,
-            #0066ff
-        );
-
-    box-shadow:
-        0 10px 30px
-        rgba(0,120,255,.22);
-
-    transition:.2s;
-}
-
-.btn:hover{
-    transform:
-        translateY(-2px);
-
-    box-shadow:
-        0 14px 35px
-        rgba(0,120,255,.30);
-}
-
-.btn:disabled{
-    opacity:.6;
-
-    cursor:not-allowed;
-
-    transform:none;
-}
-
-/* =====================================================
-   FOOTER
-===================================================== */
-
-footer{
-    width:100%;
-
-    padding:
-        50px 20px 35px;
-
-    border-top:
-        1px solid
-        rgba(255,255,255,.08);
-
-    background:
-        rgba(1,4,12,.70);
-}
-
-.footer-inner{
-    max-width:1200px;
-
-    margin:auto;
-
+/* =========================
+   BRANDS
+========================= */
+
+.brands-grid{
     display:grid;
-
-    grid-template-columns:
-        repeat(3,1fr);
-
-    gap:25px;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:16px;
 }
 
-.footer-box{
+.brand-card{
+    min-width:0;
+    border:1px solid rgba(100,180,255,.13);
+    border-radius:18px;
     padding:20px;
-
-    border-radius:16px;
-
-    background:
-        rgba(255,255,255,.035);
-
-    border:
-        1px solid
-        rgba(255,255,255,.07);
-}
-
-.footer-box h3{
-    margin-bottom:12px;
-
-    font-size:16px;
-}
-
-.footer-box p{
-    color:
-        rgba(255,255,255,.55);
-
-    line-height:1.7;
-
-    font-size:14px;
-}
-
-.contact-value{
-    display:block;
-
-    margin-top:7px;
-
-    color:
-        rgba(255,255,255,.75);
-
-    word-break:break-word;
-}
-
-.contact-link{
-    color:#63d9ff;
-
-    text-decoration:none;
-}
-
-.contact-link:hover{
-    text-decoration:underline;
-}
-
-.copyright{
-    max-width:1200px;
-
-    margin:
-        30px auto 0;
-
-    padding-top:25px;
-
-    border-top:
-        1px solid
-        rgba(255,255,255,.06);
-
-    text-align:center;
-
-    color:
-        rgba(255,255,255,.32);
-
-    font-size:12px;
-}
-
-/* =====================================================
-   MODAL
-===================================================== */
-
-.modal{
-    position:fixed;
-
-    inset:0;
-
-    z-index:1000;
-
-    display:none;
-
-    align-items:center;
-
-    justify-content:center;
-
-    padding:20px;
-
-    background:
-        rgba(0,0,0,.72);
-
-    backdrop-filter:
-        blur(10px);
-
-    -webkit-backdrop-filter:
-        blur(10px);
-}
-
-.modal.active{
-    display:flex;
-}
-
-.modal-box{
-    width:100%;
-
-    max-width:620px;
-
-    max-height:
-        calc(100vh - 40px);
-
-    overflow-y:auto;
-
-    padding:28px;
-
-    border-radius:22px;
-
     background:
         linear-gradient(
             145deg,
-            #081323,
-            #030813
+            rgba(11,25,44,.95),
+            rgba(3,10,20,.98)
         );
-
-    border:
-        1px solid
-        rgba(255,255,255,.11);
-
-    box-shadow:
-        0 30px 100px
-        rgba(0,0,0,.55);
-}
-
-.modal-header{
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-
-    gap:15px;
-
-    margin-bottom:22px;
-}
-
-.modal-header h2{
-    font-size:25px;
-}
-
-.close-btn{
-    width:36px;
-    height:36px;
-
-    border:0;
-
-    border-radius:10px;
-
+    transition:.25s;
     cursor:pointer;
-
-    color:#fff;
-
-    background:
-        rgba(255,255,255,.07);
-
-    font-size:20px;
 }
 
-/* =====================================================
-   FORM
-===================================================== */
+.brand-card:hover{
+    transform:translateY(-4px);
+    border-color:rgba(55,215,255,.5);
+    box-shadow:0 14px 35px rgba(0,120,255,.12);
+}
+
+.brand-logo{
+    width:64px;
+    height:64px;
+    border-radius:15px;
+    display:grid;
+    place-items:center;
+    overflow:hidden;
+    margin-bottom:16px;
+    background:#071321;
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.brand-logo img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+}
+
+.brand-logo-fallback{
+    color:#42d8ff;
+    font-size:25px;
+    font-weight:900;
+}
+
+.brand-name{
+    font-size:18px;
+    font-weight:900;
+}
+
+.brand-country{
+    margin-top:5px;
+    color:#5edcff;
+    font-size:12px;
+}
+
+.brand-category{
+    margin-top:12px;
+    color:#7e94aa;
+    font-size:12px;
+}
+
+.brand-description{
+    margin-top:10px;
+    color:#91a3b7;
+    font-size:13px;
+    line-height:1.55;
+    display:-webkit-box;
+    -webkit-line-clamp:3;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+}
+
+/* =========================
+   SEARCH RESULTS
+========================= */
+
+#searchResultsSection{
+    display:none;
+}
+
+.search-results{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:16px;
+}
+
+/* =========================
+   ADD BRAND
+========================= */
+
+.application-section{
+    width:min(950px,94%);
+    margin:30px auto 70px;
+}
+
+.application-box{
+    padding:35px;
+    border-radius:24px;
+    border:1px solid rgba(0,190,255,.18);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(8,22,40,.94),
+            rgba(2,9,19,.98)
+        );
+    box-shadow:0 20px 60px rgba(0,0,0,.22);
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:16px;
+    margin-top:25px;
+}
 
 .form-group{
-    margin-bottom:16px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.form-group.full{
+    grid-column:1/-1;
 }
 
 .form-group label{
-    display:block;
-
-    margin-bottom:7px;
-
-    color:
-        rgba(255,255,255,.65);
-
-    font-size:13px;
+    color:#9bb0c5;
+    font-size:12px;
+    font-weight:800;
 }
 
 .form-group input,
 .form-group textarea,
 .form-group select{
     width:100%;
-
-    border:
-        1px solid
-        rgba(255,255,255,.12);
-
+    border:1px solid rgba(100,180,255,.16);
+    border-radius:12px;
     outline:none;
-
-    border-radius:11px;
-
-    padding:
-        12px 13px;
-
+    background:#050f1e;
     color:#fff;
-
-    background:
-        rgba(255,255,255,.05);
-
-    font-size:14px;
+    padding:13px 14px;
 }
 
-.form-group select option{
-    color:#000;
-
-    background:#fff;
+.form-group input{
+    height:48px;
 }
 
 .form-group textarea{
-    min-height:110px;
-
+    min-height:120px;
     resize:vertical;
 }
 
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus{
-    border-color:
-        rgba(0,190,255,.55);
-
-    box-shadow:
-        0 0 0 3px
-        rgba(0,180,255,.07);
+    border-color:rgba(50,215,255,.65);
 }
 
-.form-actions{
-    display:flex;
-
-    justify-content:flex-end;
-
-    gap:10px;
-
+.submit-btn{
+    width:100%;
+    height:52px;
     margin-top:20px;
-}
-
-/* =====================================================
-   BRANDS
-===================================================== */
-
-.brand-list{
-    display:grid;
-
-    gap:12px;
-}
-
-.brand-card{
-    padding:16px;
-
-    border-radius:15px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.08);
-
-    background:
-        rgba(255,255,255,.035);
-}
-
-.brand-card h3{
-    margin-bottom:7px;
-
-    font-size:17px;
-}
-
-.brand-card p{
-    color:
-        rgba(255,255,255,.55);
-
-    font-size:13px;
-
-    line-height:1.5;
-}
-
-.brand-card a{
-    display:inline-block;
-
-    margin-top:9px;
-
-    color:#63d9ff;
-
-    text-decoration:none;
-
-    font-size:13px;
-}
-
-/* =====================================================
-   CHECKOUT
-===================================================== */
-
-.checkout-info{
-    padding:18px;
-
-    margin-bottom:18px;
-
-    border-radius:15px;
-
-    background:
-        rgba(255,255,255,.04);
-
-    border:
-        1px solid
-        rgba(255,255,255,.08);
-}
-
-.checkout-price{
-    margin-top:8px;
-
-    font-size:30px;
-
+    border:0;
+    border-radius:13px;
+    color:#00111a;
+    background:linear-gradient(90deg,#34d8ff,#6ff2ff);
+    font-size:15px;
     font-weight:900;
-
-    color:#63d9ff;
+    transition:.2s;
 }
 
-.payment-status{
+.submit-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 25px rgba(0,205,255,.18);
+}
+
+.submit-btn:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+    transform:none;
+}
+
+.form-message{
+    display:none;
     margin-top:15px;
-
-    padding:12px;
-
+    padding:12px 14px;
     border-radius:10px;
-
     font-size:13px;
-
     line-height:1.5;
-
-    color:
-        rgba(255,255,255,.60);
-
-    background:
-        rgba(255,255,255,.035);
 }
 
-/* =====================================================
-   SUCCESS
-===================================================== */
-
-.success{
-    text-align:center;
-
-    padding:15px 5px;
+.form-message.show{
+    display:block;
 }
 
-.success-icon{
-    width:70px;
-    height:70px;
+.form-message.success{
+    color:#7dffbf;
+    background:rgba(30,220,130,.08);
+    border:1px solid rgba(30,220,130,.2);
+}
 
-    margin:
-        0 auto 18px;
+.form-message.error{
+    color:#ff9d9d;
+    background:rgba(255,50,70,.08);
+    border:1px solid rgba(255,50,70,.2);
+}
 
-    display:flex;
+/* =========================
+   MODAL
+========================= */
 
+.modal{
+    position:fixed;
+    inset:0;
+    z-index:2000;
+    display:none;
     align-items:center;
-
     justify-content:center;
+    padding:20px;
+    background:rgba(0,0,0,.76);
+    backdrop-filter:blur(8px);
+}
 
-    border-radius:50%;
+.modal.show{
+    display:flex;
+}
 
-    font-size:32px;
-
+.modal-box{
+    width:min(700px,100%);
+    max-height:90vh;
+    overflow:auto;
+    position:relative;
+    padding:30px;
+    border-radius:22px;
+    border:1px solid rgba(60,210,255,.22);
     background:
-        rgba(0,200,120,.12);
-
-    border:
-        1px solid
-        rgba(0,220,150,.25);
+        linear-gradient(
+            145deg,
+            #071528,
+            #020813
+        );
+    box-shadow:0 30px 100px rgba(0,0,0,.55);
 }
 
-.success h2{
-    margin-bottom:10px;
+.modal-close{
+    position:absolute;
+    right:17px;
+    top:15px;
+    width:38px;
+    height:38px;
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:50%;
+    color:#fff;
+    background:#071321;
+    font-size:20px;
 }
 
-.success p{
-    color:
-        rgba(255,255,255,.55);
-
-    line-height:1.6;
+.modal-logo{
+    width:80px;
+    height:80px;
+    border-radius:18px;
+    display:grid;
+    place-items:center;
+    overflow:hidden;
+    background:#081526;
+    border:1px solid rgba(255,255,255,.08);
+    margin-bottom:18px;
 }
 
-/* =====================================================
+.modal-logo img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+}
+
+.modal-title{
+    font-size:30px;
+    font-weight:900;
+}
+
+.modal-country{
+    margin-top:6px;
+    color:#46d9ff;
+}
+
+.modal-description{
+    margin-top:20px;
+    color:#9aacc0;
+    line-height:1.7;
+    white-space:pre-wrap;
+}
+
+.modal-link{
+    display:inline-flex;
+    margin-top:20px;
+    padding:11px 16px;
+    border-radius:10px;
+    border:1px solid rgba(60,210,255,.2);
+    color:#55ddff;
+    background:rgba(0,170,255,.06);
+}
+
+.factory-list{
+    margin-top:25px;
+}
+
+.factory-list h3{
+    margin-bottom:12px;
+    font-size:16px;
+}
+
+.factory-item{
+    padding:12px;
+    margin-bottom:8px;
+    border-radius:10px;
+    background:rgba(255,255,255,.03);
+    color:#94a8bc;
+    font-size:13px;
+}
+
+/* =========================
+   LOADING / EMPTY
+========================= */
+
+.loading{
+    grid-column:1/-1;
+    text-align:center;
+    padding:40px 10px;
+    color:#6f879e;
+}
+
+.empty{
+    grid-column:1/-1;
+    padding:40px 10px;
+    text-align:center;
+    color:#71869d;
+    border:1px dashed rgba(100,180,255,.15);
+    border-radius:16px;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+    margin-top:60px;
+    border-top:1px solid rgba(100,180,255,.1);
+    background:#01050d;
+}
+
+.footer-inner{
+    width:min(1450px,94%);
+    margin:auto;
+    padding:35px 0;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+}
+
+.footer-brand{
+    color:#7f95aa;
+    font-size:12px;
+}
+
+.footer-brand strong{
+    color:#40d9ff;
+}
+
+.footer-links{
+    display:flex;
+    gap:18px;
+    color:#71879d;
+    font-size:12px;
+}
+
+/* =========================
    RESPONSIVE
-===================================================== */
+========================= */
 
-@media(max-width:1600px){
-
-    .countries-grid{
-        grid-template-columns:
-            repeat(
-                12,
-                minmax(0,1fr)
-            );
-    }
-
-}
-
-@media(max-width:1300px){
+@media(max-width:1100px){
 
     .countries-grid{
-        grid-template-columns:
-            repeat(
-                10,
-                minmax(0,1fr)
-            );
+        grid-template-columns:repeat(4,minmax(0,1fr));
     }
 
+    .brands-grid,
+    .search-results{
+        grid-template-columns:repeat(3,minmax(0,1fr));
+    }
 }
-
-@media(max-width:1050px){
-
-    .countries-grid{
-        grid-template-columns:
-            repeat(
-                8,
-                minmax(0,1fr)
-            );
-    }
-
-    .footer-inner{
-        grid-template-columns:
-            1fr 1fr;
-    }
-
-}
-
-/* =====================================================
-   MOBILE
-   5 COUNTRIES PER ROW
-===================================================== */
 
 @media(max-width:800px){
 
-    header{
-        padding:
-            10px 12px;
-    }
-
     .header-inner{
-        gap:10px;
+        min-height:68px;
     }
 
-    .logo{
-        font-size:15px;
-
-        letter-spacing:.8px;
+    nav{
+        display:none;
     }
 
-    .header-search{
-        max-width:none;
-    }
-
-    .header-search input{
-        height:42px;
-
-        padding:
-            0 12px;
-
-        font-size:13px;
+    .header-status{
+        display:none;
     }
 
     .hero{
-        min-height:280px;
-
-        padding:
-            50px 15px 40px;
+        min-height:410px;
+        padding-top:50px;
     }
 
     .hero h1{
-        letter-spacing:-1px;
-    }
-
-    .section{
-        padding:
-            15px 10px 50px;
-    }
-
-    .section-title{
-        margin-bottom:18px;
+        letter-spacing:-2px;
     }
 
     .countries-grid{
-        grid-template-columns:
-            repeat(
-                5,
-                minmax(0,1fr)
-            );
+        grid-template-columns:repeat(3,minmax(0,1fr));
+    }
 
-        gap:7px;
+    .brands-grid,
+    .search-results{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .form-group.full{
+        grid-column:auto;
+    }
+
+    .application-box{
+        padding:25px;
+    }
+}
+
+@media(max-width:560px){
+
+    .logo{
+        font-size:16px;
+    }
+
+    .logo-icon{
+        width:36px;
+        height:36px;
+    }
+
+    .hero{
+        padding:42px 0 30px;
+    }
+
+    .hero h1{
+        font-size:42px;
+    }
+
+    .hero p{
+        font-size:14px;
+        line-height:1.6;
+    }
+
+    .search-box input{
+        height:55px;
+    }
+
+    .section{
+        padding:30px 0;
+    }
+
+    .section-title{
+        font-size:24px;
+    }
+
+    .countries-grid{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:10px;
     }
 
     .country-card{
-        aspect-ratio:
-            1 / 1;
-
-        border-radius:10px;
-
-        padding:7px;
+        border-radius:13px;
     }
 
-    .country-code{
-        font-size:7px;
-
-        padding:
-            2px 4px;
-
-        margin-bottom:3px;
+    .country-overlay{
+        padding:12px;
     }
 
     .country-name{
-        font-size:
-            clamp(
-                7px,
-                2.1vw,
-                11px
-            );
+        font-size:14px;
     }
 
-    .promo{
-        margin:
-            0 10px 55px;
+    .country-meta{
+        font-size:10px;
+    }
 
-        padding:
-            30px 18px;
+    .brands-grid,
+    .search-results{
+        grid-template-columns:1fr;
+    }
 
+    .application-section{
+        width:94%;
+    }
+
+    .application-box{
+        padding:20px;
         border-radius:18px;
     }
 
     .footer-inner{
-        grid-template-columns:
-            1fr;
+        flex-direction:column;
+        align-items:flex-start;
     }
-
-    .modal{
-        padding:10px;
-    }
-
-    .modal-box{
-        padding:20px;
-
-        border-radius:18px;
-    }
-
 }
-
-/* =====================================================
-   VERY SMALL PHONES
-===================================================== */
-
-@media(max-width:380px){
-
-    .logo{
-        font-size:13px;
-    }
-
-    .header-search input{
-        font-size:12px;
-    }
-
-    .countries-grid{
-        gap:5px;
-    }
-
-    .country-card{
-        padding:5px;
-
-        border-radius:8px;
-    }
-
-    .country-name{
-        font-size:7px;
-    }
-
-}
-
-/* =====================================================
-   REDUCED MOTION
-===================================================== */
-
-@media(prefers-reduced-motion:reduce){
-
-    *{
-        animation-duration:
-            .01ms !important;
-
-        animation-iteration-count:
-            1 !important;
-
-        transition-duration:
-            .01ms !important;
-
-        scroll-behavior:auto !important;
-    }
-
-}
-
 </style>
-
 </head>
 
 <body>
 
-<!-- =====================================================
-     BACKGROUND
-===================================================== -->
-
-<div class="globe-bg"></div>
-
 <div id="rainFX"></div>
 
-
-<!-- =====================================================
-     HEADER
-===================================================== -->
-
 <header>
-
     <div class="header-inner">
 
-        <a
-            href="/"
-            class="logo"
-        >
-            ALL WORLD BRANDS
+        <a href="/" class="logo">
+            <div class="logo-icon">🌐</div>
+            <div>ALL <span>WORLD</span> BRANDS</div>
         </a>
 
-        <div class="header-search">
+        <nav>
+            <a href="#countries">Countries</a>
+            <a href="#brands">Brands</a>
+            <a href="#add-brand">Add Your Brand</a>
+        </nav>
 
-            <input
-                id="headerSearch"
-                type="search"
-                placeholder="Search countries or brands..."
-                autocomplete="off"
-                aria-label="Search countries or brands"
-            >
-
+        <div class="header-status">
+            <span class="status-dot"></span>
+            GLOBAL DATABASE
         </div>
 
     </div>
-
 </header>
-
-
-<!-- =====================================================
-     MAIN
-===================================================== -->
 
 <main>
 
-    <!-- HERO -->
+<section class="hero">
 
-    <section class="hero">
-
-        <h1>
-            ALL WORLD BRANDS
-        </h1>
-
-        <p>
-            Discover brands, companies and countries
-            from around the world in one global platform.
-        </p>
-
-    </section>
-
-
-    <!-- =================================================
-         COUNTRIES
-    ================================================== -->
-
-    <section class="section">
-
-        <div class="section-title">
-
-            <h2>
-                Countries
-            </h2>
-
-            <span id="countryCount">
-                Loading...
-            </span>
-
-        </div>
-
-
-        <div
-            id="countriesGrid"
-            class="countries-grid"
-        >
-
-            <div class="loading">
-                Loading countries...
-            </div>
-
-        </div>
-
-
-        <!-- SEARCH RESULTS -->
-
-        <div
-            id="searchResults"
-            class="search-results"
-        >
-
-            <div
-                id="searchResultsTitle"
-                class="search-results-title"
-            ></div>
-
-            <div
-                id="searchResultsList"
-            ></div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =================================================
-         ADD BRAND
-    ================================================== -->
-
-    <section class="promo">
-
-        <h2>
-            Add Your Brand
-        </h2>
-
-        <p>
-            Is your brand missing?
-            Add your company to ALL WORLD BRANDS
-            and let people discover it worldwide.
-        </p>
-
-        <button
-            class="btn"
-            type="button"
-            onclick="openAddBrand()"
-        >
-            Add Brand — $1
-        </button>
-
-    </section>
-
-</main>
-
-
-<!-- =====================================================
-     FOOTER
-===================================================== -->
-
-<footer>
-
-    <div class="footer-inner">
-
-        <div class="footer-box">
-
-            <h3>
-                ALL WORLD BRANDS
-            </h3>
-
-            <p>
-                A global platform for discovering
-                brands and companies from around
-                the world.
-            </p>
-
-        </div>
-
-
-        <div class="footer-box">
-
-            <h3>
-                Contact
-            </h3>
-
-            <!-- Phone intentionally NOT tel: -->
-
-            <span class="contact-value">
-                +998 93 384 31 12
-            </span>
-
-            <a
-                class="contact-value contact-link"
-                href="https://t.me/allworldbrandsnet"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-                @allworldbrandsnet
-            </a>
-
-            <span class="contact-value">
-                allworldbrandsnet@gmail.com
-            </span>
-
-        </div>
-
-
-        <div class="footer-box">
-
-            <h3>
-                For Brands
-            </h3>
-
-            <p>
-                Add your brand to our global
-                directory and reach people
-                searching for brands worldwide.
-            </p>
-
-        </div>
-
+    <div class="hero-badge">
+        🌍 GLOBAL BRAND DIRECTORY
     </div>
 
+    <h1>ALL WORLD BRANDS</h1>
 
-    <div class="copyright">
+    <p>
+        Discover brands, companies and products from countries
+        around the world in one global platform.
+    </p>
 
-        © 2026 ALL WORLD BRANDS.
-        All rights reserved.
-
+    <div class="search-box">
+        <input
+            id="searchInput"
+            type="search"
+            autocomplete="off"
+            placeholder="Search brands, countries or categories..."
+        >
+        <span class="search-icon">⌕</span>
     </div>
 
-</footer>
+</section>
 
-
-<!-- =====================================================
-     COUNTRY MODAL
-===================================================== -->
-
-<div
-    id="countryModal"
-    class="modal"
-    aria-hidden="true"
+<section
+    class="section"
+    id="searchResultsSection"
 >
 
-    <div class="modal-box">
-
-        <div class="modal-header">
-
-            <h2 id="countryModalTitle">
-                Country
-            </h2>
-
-            <button
-                class="close-btn"
-                type="button"
-                onclick="closeModal('countryModal')"
-                aria-label="Close"
-            >
-                ×
-            </button>
-
+    <div class="section-head">
+        <div>
+            <h2 class="section-title">Search Results</h2>
+            <p class="section-subtitle">
+                Brands matching your search
+            </p>
         </div>
 
         <div
-            id="countryBrands"
-            class="brand-list"
+            class="counter"
+            id="searchCounter"
+        ></div>
+    </div>
+
+    <div
+        class="search-results"
+        id="searchResults"
+    ></div>
+
+</section>
+
+<section
+    class="section"
+    id="countries"
+>
+
+    <div class="section-head">
+
+        <div>
+            <h2 class="section-title">Countries</h2>
+            <p class="section-subtitle">
+                Explore brands by country
+            </p>
+        </div>
+
+        <div
+            class="counter"
+            id="countryCounter"
         >
-            Loading...
+            0 countries
         </div>
 
     </div>
 
-</div>
+    <div
+        class="countries-grid"
+        id="countriesGrid"
+    >
+        <div class="loading">
+            Loading countries...
+        </div>
+    </div>
 
+</section>
 
-<!-- =====================================================
-     ADD BRAND MODAL
-===================================================== -->
-
-<div
-    id="addBrandModal"
-    class="modal"
-    aria-hidden="true"
+<section
+    class="section"
+    id="brands"
 >
 
-    <div class="modal-box">
+    <div class="section-head">
 
-        <div class="modal-header">
-
-            <h2>
-                Add Your Brand
+        <div>
+            <h2 class="section-title" id="brandsTitle">
+                Featured Brands
             </h2>
 
-            <button
-                class="close-btn"
-                type="button"
-                onclick="closeModal('addBrandModal')"
-                aria-label="Close"
-            >
-                ×
-            </button>
-
+            <p class="section-subtitle" id="brandsSubtitle">
+                Discover brands from around the world
+            </p>
         </div>
 
+        <div
+            class="counter"
+            id="brandCounter"
+        ></div>
 
-        <form
-            id="brandForm"
-            novalidate
-        >
+    </div>
 
-            <div class="form-group">
+    <div
+        class="brands-grid"
+        id="brandsGrid"
+    >
+        <div class="loading">
+            Loading brands...
+        </div>
+    </div>
 
-                <label for="brandName">
-                    Brand Name *
-                </label>
+</section>
 
-                <input
-                    id="brandName"
-                    name="brand_name"
-                    type="text"
-                    required
-                    maxlength="120"
-                    autocomplete="organization"
-                    placeholder="Your brand name"
-                >
+<section
+    class="application-section"
+    id="add-brand"
+>
+
+    <div class="application-box">
+
+        <div class="section-head">
+            <div>
+                <h2 class="section-title">
+                    Add Your Brand
+                </h2>
+
+                <p class="section-subtitle">
+                    Submit your brand to ALL WORLD BRANDS
+                </p>
+            </div>
+        </div>
+
+        <form id="brandApplicationForm">
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label for="brandName">
+                        Brand Name *
+                    </label>
+
+                    <input
+                        id="brandName"
+                        name="brand_name"
+                        type="text"
+                        required
+                        maxlength="120"
+                        placeholder="Brand name"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="country">
+                        Country *
+                    </label>
+
+                    <input
+                        id="country"
+                        name="country"
+                        type="text"
+                        required
+                        maxlength="100"
+                        placeholder="Country"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="ownerName">
+                        Owner / Representative *
+                    </label>
+
+                    <input
+                        id="ownerName"
+                        name="owner_name"
+                        type="text"
+                        required
+                        maxlength="120"
+                        placeholder="Full name"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="email">
+                        Email *
+                    </label>
+
+                    <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        required
+                        maxlength="180"
+                        placeholder="email@example.com"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">
+                        Phone
+                    </label>
+
+                    <input
+                        id="phone"
+                        name="phone"
+                        type="tel"
+                        maxlength="50"
+                        placeholder="+998..."
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="website">
+                        Website
+                    </label>
+
+                    <input
+                        id="website"
+                        name="website"
+                        type="url"
+                        maxlength="500"
+                        placeholder="https://example.com"
+                    >
+                </div>
+
+                <div class="form-group full">
+                    <label for="description">
+                        Brand Description
+                    </label>
+
+                    <textarea
+                        id="description"
+                        name="description"
+                        maxlength="3000"
+                        placeholder="Tell us about your brand..."
+                    ></textarea>
+                </div>
 
             </div>
 
+            <button
+                type="submit"
+                class="submit-btn"
+                id="submitBrandBtn"
+            >
+                SUBMIT BRAND
+            </button>
 
-            <div class="form-group">
-
-                <label for="brandCountry">
-                    Country *
-                </label>
-
-                <select
-                    id="brandCountry"
-                    name="country"
-                    required
-                >
-
-                    <option value="">
-                        Select country
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="ownerName">
-                    Owner Name
-                </label>
-
-                <input
-                    id="ownerName"
-                    name="owner_name"
-                    type="text"
-                    maxlength="120"
-                    autocomplete="name"
-                    placeholder="Owner name"
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="brandEmail">
-                    Email *
-                </label>
-
-                <input
-                    id="brandEmail"
-                    name="email"
-                    type="email"
-                    required
-                    maxlength="180"
-                    autocomplete="email"
-                    placeholder="email@example.com"
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="brandPhone">
-                    Phone
-                </label>
-
-                <input
-                    id="brandPhone"
-                    name="phone"
-                    type="text"
-                    maxlength="50"
-                    autocomplete="tel"
-                    placeholder="+998..."
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="brandWebsite">
-                    Website
-                </label>
-
-                <input
-                    id="brandWebsite"
-                    name="website"
-                    type="url"
-                    maxlength="500"
-                    placeholder="https://example.com"
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="brandLogo">
-                    Logo URL
-                </label>
-
-                <input
-                    id="brandLogo"
-                    name="logo"
-                    type="url"
-                    maxlength="500"
-                    placeholder="https://example.com/logo.png"
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="brandDescription">
-                    Description
-                </label>
-
-                <textarea
-                    id="brandDescription"
-                    name="description"
-                    maxlength="2000"
-                    placeholder="Tell us about your brand..."
-                ></textarea>
-
-            </div>
-
-
-            <div class="form-actions">
-
-                <button
-                    class="btn"
-                    type="button"
-                    onclick="closeModal('addBrandModal')"
-                >
-                    Cancel
-                </button>
-
-                <button
-                    class="btn"
-                    type="submit"
-                >
-                    Continue
-                </button>
-
-            </div>
+            <div
+                id="formMessage"
+                class="form-message"
+            ></div>
 
         </form>
 
     </div>
 
-</div>
+</section>
 
+</main>
 
-<!-- =====================================================
-     CHECKOUT MODAL
-===================================================== -->
+<footer>
+
+    <div class="footer-inner">
+
+        <div class="footer-brand">
+            © <span id="currentYear"></span>
+            <strong>ALL WORLD BRANDS</strong>
+            — Global Brand Directory
+        </div>
+
+        <div class="footer-links">
+            <a href="#countries">Countries</a>
+            <a href="#brands">Brands</a>
+            <a href="#add-brand">Add Brand</a>
+        </div>
+
+    </div>
+
+</footer>
+
+<!-- BRAND MODAL -->
 
 <div
-    id="checkoutModal"
     class="modal"
+    id="brandModal"
     aria-hidden="true"
 >
 
     <div class="modal-box">
 
-        <div class="modal-header">
-
-            <h2>
-                Checkout
-            </h2>
-
-            <button
-                class="close-btn"
-                type="button"
-                onclick="closeModal('checkoutModal')"
-                aria-label="Close"
-            >
-                ×
-            </button>
-
-        </div>
-
-
-        <div class="checkout-info">
-
-            <div>
-                Brand listing
-            </div>
-
-            <div
-                id="checkoutPrice"
-                class="checkout-price"
-            >
-                $1
-            </div>
-
-        </div>
-
-
-        <p
-            id="checkoutMessage"
-            style="
-                color:rgba(255,255,255,.55);
-                line-height:1.6;
-                margin-bottom:20px;
-            "
+        <button
+            class="modal-close"
+            id="modalClose"
+            type="button"
+            aria-label="Close"
         >
-            Secure payment will open through the payment provider.
-        </p>
-
+            ×
+        </button>
 
         <div
-            id="paymentStatus"
-            class="payment-status"
+            class="modal-logo"
+            id="modalLogo"
+        ></div>
+
+        <div
+            class="modal-title"
+            id="modalTitle"
+        ></div>
+
+        <div
+            class="modal-country"
+            id="modalCountry"
+        ></div>
+
+        <div
+            class="modal-description"
+            id="modalDescription"
+        ></div>
+
+        <a
+            class="modal-link"
+            id="modalWebsite"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            style="display:none"
         >
-            Your application will be created first.
-            After that you will be redirected to secure payment.
-        </div>
+            Visit Website ↗
+        </a>
 
+        <div
+            class="factory-list"
+            id="factoryList"
+            style="display:none"
+        >
 
-        <div class="form-actions">
+            <h3>Factories</h3>
 
-            <button
-                class="btn"
-                type="button"
-                onclick="closeModal('checkoutModal')"
-            >
-                Cancel
-            </button>
-
-            <button
-                id="payButton"
-                class="btn"
-                type="button"
-                onclick="startPayment()"
-            >
-                Pay $1
-            </button>
+            <div id="factoryItems"></div>
 
         </div>
 
     </div>
 
 </div>
-
-
-<!-- =====================================================
-     SUCCESS MODAL
-===================================================== -->
-
-<div
-    id="successModal"
-    class="modal"
-    aria-hidden="true"
->
-
-    <div class="modal-box">
-
-        <div class="success">
-
-            <div class="success-icon">
-                ✓
-            </div>
-
-            <h2>
-                Payment Received
-            </h2>
-
-            <p>
-                Your payment has been confirmed.
-                Your brand application has been
-                received and will be reviewed by
-                our team.
-            </p>
-
-            <div style="margin-top:22px;">
-
-                <button
-                    class="btn"
-                    type="button"
-                    onclick="closeModal('successModal')"
-                >
-                    Done
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     PAYMENT PENDING MODAL
-===================================================== -->
-
-<div
-    id="pendingModal"
-    class="modal"
-    aria-hidden="true"
->
-
-    <div class="modal-box">
-
-        <div class="success">
-
-            <div class="success-icon">
-                !
-            </div>
-
-            <h2>
-                Payment Pending
-            </h2>
-
-            <p>
-                Your application was received,
-                but the payment is still being
-                confirmed.
-            </p>
-
-            <div style="margin-top:22px;">
-
-                <button
-                    class="btn"
-                    type="button"
-                    onclick="closeModal('pendingModal')"
-                >
-                    Close
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
 
 <script>
-
-/* =====================================================
-   ALL WORLD BRANDS
-   FRONTEND JAVASCRIPT
-===================================================== */
-
 "use strict";
 
+/* =========================
+   GLOBALS
+========================= */
 
-/* =====================================================
+const API_BASE = "";
+
+const countriesGrid = document.getElementById("countriesGrid");
+const brandsGrid = document.getElementById("brandsGrid");
+const searchResults = document.getElementById("searchResults");
+const searchResultsSection =
+    document.getElementById("searchResultsSection");
+
+const searchInput =
+    document.getElementById("searchInput");
+
+const countryCounter =
+    document.getElementById("countryCounter");
+
+const brandCounter =
+    document.getElementById("brandCounter");
+
+const brandsTitle =
+    document.getElementById("brandsTitle");
+
+const brandsSubtitle =
+    document.getElementById("brandsSubtitle");
+
+const searchCounter =
+    document.getElementById("searchCounter");
+
+const applicationForm =
+    document.getElementById("brandApplicationForm");
+
+const submitBrandBtn =
+    document.getElementById("submitBrandBtn");
+
+const formMessage =
+    document.getElementById("formMessage");
+
+const modal =
+    document.getElementById("brandModal");
+
+const modalClose =
+    document.getElementById("modalClose");
+
+const modalLogo =
+    document.getElementById("modalLogo");
+
+const modalTitle =
+    document.getElementById("modalTitle");
+
+const modalCountry =
+    document.getElementById("modalCountry");
+
+const modalDescription =
+    document.getElementById("modalDescription");
+
+const modalWebsite =
+    document.getElementById("modalWebsite");
+
+const factoryList =
+    document.getElementById("factoryList");
+
+const factoryItems =
+    document.getElementById("factoryItems");
+
+document.getElementById("currentYear").textContent =
+    new Date().getFullYear();
+
+/* =========================
    HELPERS
-===================================================== */
-
-const $ = (selector) =>
-    document.querySelector(selector);
-
+========================= */
 
 function escapeHtml(value){
 
@@ -2208,696 +1370,684 @@ function escapeHtml(value){
         .replace(/>/g,"&gt;")
         .replace(/"/g,"&quot;")
         .replace(/'/g,"&#039;");
-
 }
 
-
-function isSafeUrl(value){
+function safeUrl(value){
 
     if(!value){
-        return true;
+        return "";
     }
 
-    const text =
-        String(value)
-            .trim()
-            .toLowerCase();
+    try{
 
-    if(text.length > 2048){
-        return false;
+        const url =
+            new URL(
+                String(value),
+                window.location.origin
+            );
+
+        if(
+            url.protocol !== "http:" &&
+            url.protocol !== "https:"
+        ){
+            return "";
+        }
+
+        return url.href;
+
+    }catch{
+
+        return "";
     }
-
-    return !(
-        text.startsWith("javascript:") ||
-        text.startsWith("data:") ||
-        text.startsWith("vbscript:") ||
-        text.startsWith("file:") ||
-        text.startsWith("blob:")
-    );
-
 }
-
 
 async function apiFetch(
     url,
     options = {}
 ){
 
+    const config = {
+        ...options,
+        headers:{
+            ...(options.body
+                ? {"Content-Type":"application/json"}
+                : {}),
+            ...(options.headers || {})
+        }
+    };
+
     const response =
         await fetch(
-            url,
-            {
-                credentials:"same-origin",
-                ...options
-            }
+            API_BASE + url,
+            config
         );
 
     let data = null;
 
     try{
-
-        data =
-            await response.json();
-
+        data = await response.json();
     }catch{
-
         data = null;
-
     }
 
     if(!response.ok){
 
-        throw new Error(
+        const message =
+            data?.message ||
             data?.error ||
-            `Request failed: ${response.status}`
-        );
+            `Request failed (${response.status})`;
 
+        throw new Error(message);
     }
 
     return data;
-
 }
 
+function showFormMessage(
+    message,
+    type = "error"
+){
 
-/* =====================================================
-   STATE
-===================================================== */
+    formMessage.textContent = message;
 
-let allCountries = [];
+    formMessage.className =
+        `form-message show ${type}`;
+}
 
-let currentApplication = null;
+function hideFormMessage(){
 
+    formMessage.textContent = "";
 
-/* =====================================================
+    formMessage.className =
+        "form-message";
+}
+
+function getInitials(name){
+
+    const text =
+        String(name || "?")
+            .trim();
+
+    if(!text){
+        return "?";
+    }
+
+    return text
+        .split(/\s+/)
+        .slice(0,2)
+        .map(word => word[0])
+        .join("")
+        .toUpperCase();
+}
+
+function countrySlug(name){
+
+    return String(name || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g,"")
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]+/g,"-")
+        .replace(/^-+|-+$/g,"");
+}
+
+/* =========================
+   RAIN EFFECT
+========================= */
+
+function createRain(){
+
+    const container =
+        document.getElementById("rainFX");
+
+    const amount =
+        window.innerWidth < 600
+            ? 35
+            : 70;
+
+    for(let i = 0; i < amount; i++){
+
+        const line =
+            document.createElement("div");
+
+        line.className = "rain-line";
+
+        line.style.left =
+            `${Math.random() * 100}%`;
+
+        line.style.height =
+            `${60 + Math.random() * 130}px`;
+
+        line.style.animationDuration =
+            `${3 + Math.random() * 7}s`;
+
+        line.style.animationDelay =
+            `${Math.random() * 7}s`;
+
+        line.style.opacity =
+            `${0.15 + Math.random() * 0.35}`;
+
+        container.appendChild(line);
+    }
+}
+
+/* =========================
+   COUNTRY IMAGE
+========================= */
+
+function countryImage(country){
+
+    const slug =
+        countrySlug(
+            country?.name
+        );
+
+    if(!slug){
+        return "";
+    }
+
+    return `/images/countries/${slug}.jpg`;
+}
+
+/* =========================
    LOAD COUNTRIES
-===================================================== */
+========================= */
 
 async function loadCountries(){
 
-    const grid =
-        $("#countriesGrid");
-
-    const count =
-        $("#countryCount");
+    countriesGrid.innerHTML =
+        `<div class="loading">
+            Loading countries...
+        </div>`;
 
     try{
-
-        grid.innerHTML =
-            `
-            <div class="loading">
-                Loading countries...
-            </div>
-            `;
 
         const data =
             await apiFetch(
                 "/api/countries"
             );
 
-        if(!Array.isArray(data)){
+        const countries =
+            Array.isArray(data)
+                ? data
+                : Array.isArray(data?.countries)
+                    ? data.countries
+                    : [];
 
-            throw new Error(
-                "Invalid countries response"
-            );
+        countryCounter.textContent =
+            `${countries.length} countries`;
 
+        if(!countries.length){
+
+            countriesGrid.innerHTML =
+                `<div class="empty">
+                    No countries available.
+                </div>`;
+
+            return;
         }
 
-        allCountries = data;
+        countriesGrid.innerHTML =
+            countries
+                .map(country => {
 
-        renderCountries(
-            allCountries
-        );
+                    const image =
+                        countryImage(country);
 
-        fillCountrySelect(
-            allCountries
-        );
-
-    }catch(error){
-
-        console.error(
-            "Countries error:",
-            error
-        );
-
-        grid.innerHTML =
-            `
-            <div class="empty">
-                Failed to load countries.
-                Please try again later.
-            </div>
-            `;
-
-        count.textContent =
-            "Error";
-
-    }
-
-}
-
-
-/* =====================================================
-   RENDER COUNTRIES
-===================================================== */
-
-function renderCountries(
-    countries
-){
-
-    const grid =
-        $("#countriesGrid");
-
-    const count =
-        $("#countryCount");
-
-    count.textContent =
-        `${countries.length} countries`;
-
-    if(!countries.length){
-
-        grid.innerHTML =
-            `
-            <div class="empty">
-                No countries found.
-            </div>
-            `;
-
-        return;
-
-    }
-
-    grid.innerHTML =
-        countries
-            .map(
-                country => {
-
-                    const id =
-                        Number(country.id);
-
-                    const name =
-                        escapeHtml(
-                            country.name
-                        );
-
-                    const code =
-                        escapeHtml(
-                            country.code || ""
-                        );
+                    const imageHtml =
+                        image
+                            ? `
+                                <img
+                                    class="country-image"
+                                    src="${escapeHtml(image)}"
+                                    alt="${escapeHtml(country.name)}"
+                                    loading="lazy"
+                                    onerror="this.style.display='none'"
+                                >
+                              `
+                            : "";
 
                     return `
                         <article
                             class="country-card"
-                            data-country-id="${id}"
-                            data-country-name="${escapeHtml(
-                                String(country.name || "")
-                                    .toLowerCase()
-                            )}"
-                            onclick="openCountry(${id})"
+                            data-country-id="${Number(country.id) || 0}"
+                            data-country-name="${escapeHtml(country.name)}"
                         >
 
-                            <div class="country-content">
+                            ${imageHtml}
 
-                                ${
-                                    code
-                                    ?
-                                    `
-                                    <span class="country-code">
-                                        ${code}
-                                    </span>
-                                    `
-                                    :
-                                    ""
-                                }
+                            <div class="country-overlay">
 
-                                <span class="country-name">
-                                    ${name}
-                                </span>
+                                <div class="country-info">
+
+                                    <div class="country-name">
+                                        ${escapeHtml(country.name)}
+                                    </div>
+
+                                    <div class="country-meta">
+                                        Explore brands →
+                                    </div>
+
+                                </div>
 
                             </div>
 
                         </article>
                     `;
 
-                }
-            )
-            .join("");
-
-}
-
-
-/* =====================================================
-   COUNTRY SELECT
-===================================================== */
-
-function fillCountrySelect(
-    countries
-){
-
-    const select =
-        $("#brandCountry");
-
-    if(!select){
-        return;
-    }
-
-    select.innerHTML =
-        `
-        <option value="">
-            Select country
-        </option>
-        `;
-
-    countries.forEach(
-        country => {
-
-            const option =
-                document.createElement(
-                    "option"
-                );
-
-            option.value =
-                country.name || "";
-
-            option.textContent =
-                country.name || "";
-
-            option.dataset.id =
-                country.id || "";
-
-            select.appendChild(
-                option
-            );
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   SEARCH
-===================================================== */
-
-let searchTimer = null;
-
-
-async function performSearch(
-    query
-){
-
-    const results =
-        $("#searchResults");
-
-    const title =
-        $("#searchResultsTitle");
-
-    const list =
-        $("#searchResultsList");
-
-    if(!results){
-        return;
-    }
-
-    query =
-        String(query || "")
-            .trim();
-
-    if(!query){
-
-        results.classList.remove(
-            "active"
-        );
-
-        list.innerHTML = "";
-
-        return;
-
-    }
-
-    /*
-        Country search is handled locally.
-    */
-
-    const countryMatches =
-        allCountries.filter(
-            country => {
-
-                const name =
-                    String(
-                        country.name || ""
-                    ).toLowerCase();
-
-                const code =
-                    String(
-                        country.code || ""
-                    ).toLowerCase();
-
-                const q =
-                    query.toLowerCase();
-
-                return (
-                    name.includes(q) ||
-                    code.includes(q)
-                );
-
-            }
-        );
-
-
-    try{
-
-        const data =
-            await apiFetch(
-                `/api/search?q=${encodeURIComponent(query)}`
-            );
-
-        const brandResults =
-            Array.isArray(data?.results)
-                ? data.results
-                : [];
-
-
-        renderSearchResults(
-            countryMatches,
-            brandResults,
-            query
-        );
-
-    }catch(error){
-
-        console.error(
-            "Search error:",
-            error
-        );
-
-        renderSearchResults(
-            countryMatches,
-            [],
-            query
-        );
-
-    }
-
-}
-
-
-function renderSearchResults(
-    countryMatches,
-    brandResults,
-    query
-){
-
-    const results =
-        $("#searchResults");
-
-    const title =
-        $("#searchResultsTitle");
-
-    const list =
-        $("#searchResultsList");
-
-    if(!results){
-        return;
-    }
-
-    const total =
-        countryMatches.length +
-        brandResults.length;
-
-    results.classList.add(
-        "active"
-    );
-
-    title.textContent =
-        `${total} result${total === 1 ? "" : "s"} for "${query}"`;
-
-
-    if(!total){
-
-        list.innerHTML =
-            `
-            <div class="empty">
-                No countries or brands found.
-            </div>
-            `;
-
-        return;
-
-    }
-
-
-    let html = "";
-
-
-    countryMatches
-        .slice(0,20)
-        .forEach(
-            country => {
-
-                const id =
-                    Number(country.id);
-
-                html += `
-                    <div
-                        class="search-result-card"
-                        onclick="openCountry(${id})"
-                    >
-
-                        <div class="search-result-icon">
-                            🌍
-                        </div>
-
-                        <div class="search-result-info">
-
-                            <h3>
-                                ${escapeHtml(country.name)}
-                            </h3>
-
-                            <p>
-                                Country
-                                ${
-                                    country.code
-                                    ?
-                                    `• ${escapeHtml(country.code)}`
-                                    :
-                                    ""
-                                }
-                            </p>
-
-                        </div>
-
-                    </div>
-                `;
-
-            }
-        );
-
-
-    brandResults
-        .slice(0,30)
-        .forEach(
-            brand => {
-
-                const brandId =
-                    Number(brand.id);
-
-                const name =
-                    escapeHtml(
-                        brand.name
-                    );
-
-                const country =
-                    escapeHtml(
-                        brand.country_name ||
-                        brand.country ||
-                        ""
-                    );
-
-                const category =
-                    escapeHtml(
-                        brand.category || ""
-                    );
-
-                html += `
-                    <div
-                        class="search-result-card"
-                        onclick="openBrand(${brandId})"
-                    >
-
-                        <div class="search-result-icon">
-                            🏷️
-                        </div>
-
-                        <div class="search-result-info">
-
-                            <h3>
-                                ${name}
-                            </h3>
-
-                            <p>
-                                Brand
-                                ${
-                                    country
-                                    ?
-                                    ` • ${country}`
-                                    :
-                                    ""
-                                }
-
-                                ${
-                                    category
-                                    ?
-                                    ` • ${category}`
-                                    :
-                                    ""
-                                }
-                            </p>
-
-                        </div>
-
-                    </div>
-                `;
-
-            }
-        );
-
-
-    list.innerHTML =
-        html;
-
-}
-
-
-/* =====================================================
-   HEADER SEARCH
-===================================================== */
-
-const headerSearch =
-    $("#headerSearch");
-
-if(headerSearch){
-
-    headerSearch.addEventListener(
-        "input",
-        function(){
-
-            const query =
-                this.value.trim();
-
-            clearTimeout(
-                searchTimer
-            );
-
-            if(!query){
-
-                $("#searchResults")
-                    ?.classList
-                    .remove("active");
-
-                renderCountries(
-                    allCountries
-                );
-
-                return;
-
-            }
-
-            /*
-                Keep country grid visible
-                while search is active.
-            */
-
-            searchTimer =
-                setTimeout(
+                })
+                .join("");
+
+        countriesGrid
+            .querySelectorAll(".country-card")
+            .forEach(card => {
+
+                card.addEventListener(
+                    "click",
                     () => {
 
-                        performSearch(
-                            query
-                        );
+                        const id =
+                            Number(
+                                card.dataset.countryId
+                            );
 
-                    },
-                    250
+                        const name =
+                            card.dataset.countryName;
+
+                        if(id){
+                            loadCountryBrands(
+                                id,
+                                name
+                            );
+                        }
+
+                    }
                 );
 
-        }
-    );
+            });
 
+    }catch(error){
+
+        console.error(error);
+
+        countriesGrid.innerHTML =
+            `<div class="empty">
+                Failed to load countries.
+            </div>`;
+
+    }
 }
 
+/* =========================
+   BRAND LOGO
+========================= */
 
-/* =====================================================
-   OPEN COUNTRY
-===================================================== */
-
-async function openCountry(
-    countryId
+function renderBrandLogo(
+    brand,
+    className = "brand-logo"
 ){
 
-    const modal =
-        $("#countryModal");
+    const logo =
+        safeUrl(brand?.logo);
 
-    const title =
-        $("#countryModalTitle");
+    if(logo){
 
-    const brands =
-        $("#countryBrands");
+        return `
+            <div class="${className}">
+                <img
+                    src="${escapeHtml(logo)}"
+                    alt="${escapeHtml(brand?.name || "Brand")}"
+                    loading="lazy"
+                    onerror="
+                        this.style.display='none';
+                        this.parentElement
+                            .querySelector('.brand-logo-fallback')
+                            .style.display='grid';
+                    "
+                >
 
-    if(!modal){
-        return;
+                <div
+                    class="brand-logo-fallback"
+                    style="display:none"
+                >
+                    ${escapeHtml(
+                        getInitials(brand?.name)
+                    )}
+                </div>
+            </div>
+        `;
+
     }
 
-    modal.classList.add(
-        "active"
-    );
-
-    modal.setAttribute(
-        "aria-hidden",
-        "false"
-    );
-
-    brands.innerHTML =
-        `
-        <div class="loading">
-            Loading brands...
+    return `
+        <div class="${className}">
+            <div class="brand-logo-fallback">
+                ${escapeHtml(
+                    getInitials(brand?.name)
+                )}
+            </div>
         </div>
-        `;
+    `;
+}
+
+/* =========================
+   BRAND CARD
+========================= */
+
+function renderBrandCard(
+    brand
+){
+
+    const website =
+        safeUrl(brand?.website);
+
+    return `
+        <article
+            class="brand-card"
+            data-brand-id="${Number(brand?.id) || 0}"
+        >
+
+            ${renderBrandLogo(brand)}
+
+            <div class="brand-name">
+                ${escapeHtml(brand?.name || "Unnamed Brand")}
+            </div>
+
+            <div class="brand-country">
+                ${escapeHtml(
+                    brand?.country_name ||
+                    brand?.country ||
+                    ""
+                )}
+            </div>
+
+            ${
+                brand?.category
+                    ? `
+                        <div class="brand-category">
+                            ${escapeHtml(
+                                brand.category
+                            )}
+                        </div>
+                      `
+                    : ""
+            }
+
+            ${
+                brand?.description
+                    ? `
+                        <div class="brand-description">
+                            ${escapeHtml(
+                                brand.description
+                            )}
+                        </div>
+                      `
+                    : ""
+            }
+
+            ${
+                website
+                    ? `
+                        <div
+                            style="
+                                margin-top:14px;
+                                color:#42d8ff;
+                                font-size:12px;
+                                font-weight:700;
+                            "
+                        >
+                            Visit brand →
+                        </div>
+                      `
+                    : ""
+            }
+
+        </article>
+    `;
+}
+
+/* =========================
+   LOAD BRANDS
+========================= */
+
+async function loadBrands(){
+
+    brandsGrid.innerHTML =
+        `<div class="loading">
+            Loading brands...
+        </div>`;
+
+    brandsTitle.textContent =
+        "Featured Brands";
+
+    brandsSubtitle.textContent =
+        "Discover brands from around the world";
 
     try{
 
-        const data =
+        const countries =
             await apiFetch(
-                `/api/countries/${encodeURIComponent(countryId)}/brands`
+                "/api/countries"
             );
 
-        title.textContent =
-            data?.country?.name ||
-            "Country";
+        const countryList =
+            Array.isArray(countries)
+                ? countries
+                : countries?.countries || [];
 
-        renderBrandCards(
-            data?.brands || []
+        const brands = [];
+
+        for(
+            const country
+            of countryList
+        ){
+
+            try{
+
+                const result =
+                    await apiFetch(
+                        `/api/countries/${encodeURIComponent(
+                            country.id
+                        )}/brands`
+                    );
+
+                const list =
+                    Array.isArray(result)
+                        ? result
+                        : result?.brands || [];
+
+                for(
+                    const brand
+                    of list
+                ){
+
+                    brands.push({
+                        ...brand,
+                        country_name:
+                            brand.country_name ||
+                            country.name
+                    });
+
+                }
+
+            }catch(error){
+
+                console.warn(
+                    "Country brands error:",
+                    country.name,
+                    error
+                );
+
+            }
+
+            if(brands.length >= 20){
+                break;
+            }
+        }
+
+        if(!brands.length){
+
+            brandsGrid.innerHTML =
+                `<div class="empty">
+                    No brands available yet.
+                </div>`;
+
+            brandCounter.textContent =
+                "0 brands";
+
+            return;
+        }
+
+        const visible =
+            brands.slice(0,20);
+
+        brandsGrid.innerHTML =
+            visible
+                .map(renderBrandCard)
+                .join("");
+
+        brandCounter.textContent =
+            `${brands.length} brands`;
+
+        bindBrandCards(
+            brandsGrid
         );
 
     }catch(error){
 
-        console.error(
-            "Country brands error:",
-            error
-        );
+        console.error(error);
 
-        brands.innerHTML =
-            `
-            <div class="empty">
+        brandsGrid.innerHTML =
+            `<div class="empty">
                 Failed to load brands.
-            </div>
-            `;
+            </div>`;
 
     }
-
 }
 
+/* =========================
+   COUNTRY BRANDS
+========================= */
 
-/* =====================================================
-   OPEN BRAND
-===================================================== */
+async function loadCountryBrands(
+    countryId,
+    countryName
+){
+
+    brandsGrid.innerHTML =
+        `<div class="loading">
+            Loading brands...
+        </div>`;
+
+    brandsTitle.textContent =
+        countryName || "Country Brands";
+
+    brandsSubtitle.textContent =
+        "Brands registered in this country";
+
+    document
+        .getElementById("brands")
+        .scrollIntoView({
+            behavior:"smooth",
+            block:"start"
+        });
+
+    try{
+
+        const result =
+            await apiFetch(
+                `/api/countries/${encodeURIComponent(
+                    countryId
+                )}/brands`
+            );
+
+        const brands =
+            Array.isArray(result)
+                ? result
+                : result?.brands || [];
+
+        brandsGrid.innerHTML =
+            "";
+
+        if(!brands.length){
+
+            brandsGrid.innerHTML =
+                `<div class="empty">
+                    No brands found for this country.
+                </div>`;
+
+            brandCounter.textContent =
+                "0 brands";
+
+            return;
+        }
+
+        brandsGrid.innerHTML =
+            brands
+                .map(brand => ({
+                    ...brand,
+                    country_name:
+                        brand.country_name ||
+                        countryName
+                }))
+                .map(renderBrandCard)
+                .join("");
+
+        brandCounter.textContent =
+            `${brands.length} brands`;
+
+        bindBrandCards(
+            brandsGrid
+        );
+
+    }catch(error){
+
+        console.error(error);
+
+        brandsGrid.innerHTML =
+            `<div class="empty">
+                Failed to load country brands.
+            </div>`;
+
+    }
+}
+
+/* =========================
+   BRAND CLICK
+========================= */
+
+function bindBrandCards(
+    container
+){
+
+    container
+        .querySelectorAll(".brand-card")
+        .forEach(card => {
+
+            card.addEventListener(
+                "click",
+                async () => {
+
+                    const id =
+                        Number(
+                            card.dataset.brandId
+                        );
+
+                    if(id){
+                        await openBrand(
+                            id
+                        );
+                    }
+
+                }
+            );
+
+        });
+}
+
+/* =========================
+   BRAND DETAILS
+========================= */
 
 async function openBrand(
     brandId
@@ -2905,173 +2055,133 @@ async function openBrand(
 
     try{
 
-        const data =
+        const result =
             await apiFetch(
-                `/api/brands/${encodeURIComponent(brandId)}`
+                `/api/brands/${encodeURIComponent(
+                    brandId
+                )}`
             );
 
         const brand =
-            data?.brand || data;
+            result?.brand ||
+            result;
 
-        if(!brand){
-            throw new Error(
-                "Brand not found"
-            );
-        }
+        const factories =
+            result?.factories ||
+            brand?.factories ||
+            [];
 
-        const modal =
-            $("#countryModal");
+        modalTitle.textContent =
+            brand?.name ||
+            "Brand";
 
-        const title =
-            $("#countryModalTitle");
-
-        const brands =
-            $("#countryBrands");
-
-        title.textContent =
-            brand.name || "Brand";
-
-        let html = "";
-
-
-        const countryName =
-            brand.country_name ||
-            brand.country ||
+        modalCountry.textContent =
+            brand?.country_name ||
+            brand?.country ||
             "";
 
+        modalDescription.textContent =
+            brand?.description ||
+            "No description available.";
 
-        html += `
-            <div class="brand-card">
+        const logo =
+            safeUrl(
+                brand?.logo
+            );
 
-                <h3>
-                    ${escapeHtml(brand.name)}
-                </h3>
+        if(logo){
 
-                ${
-                    countryName
-                    ?
-                    `
-                    <p>
-                        Country:
-                        ${escapeHtml(countryName)}
-                    </p>
-                    `
-                    :
-                    ""
-                }
-
-                ${
-                    brand.category
-                    ?
-                    `
-                    <p style="margin-top:6px;">
-                        ${escapeHtml(brand.category)}
-                    </p>
-                    `
-                    :
-                    ""
-                }
-
-                ${
-                    brand.description
-                    ?
-                    `
-                    <p style="margin-top:8px;">
-                        ${escapeHtml(brand.description)}
-                    </p>
-                    `
-                    :
-                    ""
-                }
-
-                ${
-                    brand.website &&
-                    isSafeUrl(brand.website)
-                    ?
-                    `
-                    <a
-                        href="${escapeHtml(brand.website)}"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Visit website
-                    </a>
-                    `
-                    :
-                    ""
-                }
-
-            </div>
-        `;
-
-
-        if(
-            Array.isArray(brand.factories) &&
-            brand.factories.length
-        ){
-
-            html += `
-                <div
-                    style="
-                        margin-top:12px;
-                        color:rgba(255,255,255,.55);
-                        font-size:13px;
+            modalLogo.innerHTML =
+                `
+                <img
+                    src="${escapeHtml(logo)}"
+                    alt="${escapeHtml(
+                        brand?.name || "Brand"
+                    )}"
+                    onerror="
+                        this.style.display='none';
+                        this.parentElement
+                            .innerHTML='<strong>${escapeHtml(
+                                getInitials(brand?.name)
+                            )}</strong>';
                     "
                 >
-                    Factories
-                </div>
-            `;
+                `;
 
+        }else{
 
-            brand.factories.forEach(
-                factory => {
-
-                    html += `
-                        <div class="brand-card">
-
-                            <h3>
-                                ${escapeHtml(factory.name || "Factory")}
-                            </h3>
-
-                            ${
-                                factory.city
-                                ?
-                                `
-                                <p>
-                                    ${escapeHtml(factory.city)}
-                                </p>
-                                `
-                                :
-                                ""
-                            }
-
-                            ${
-                                factory.address
-                                ?
-                                `
-                                <p style="margin-top:5px;">
-                                    ${escapeHtml(factory.address)}
-                                </p>
-                                `
-                                :
-                                ""
-                            }
-
-                        </div>
-                    `;
-
-                }
-            );
+            modalLogo.innerHTML =
+                `<strong>
+                    ${escapeHtml(
+                        getInitials(brand?.name)
+                    )}
+                </strong>`;
 
         }
 
+        const website =
+            safeUrl(
+                brand?.website
+            );
 
-        brands.innerHTML =
-            html;
+        if(website){
 
-        modal.classList.add(
-            "active"
-        );
+            modalWebsite.href =
+                website;
+
+            modalWebsite.style.display =
+                "inline-flex";
+
+        }else{
+
+            modalWebsite.href =
+                "#";
+
+            modalWebsite.style.display =
+                "none";
+        }
+
+        if(
+            Array.isArray(factories) &&
+            factories.length
+        ){
+
+            factoryList.style.display =
+                "block";
+
+            factoryItems.innerHTML =
+                factories
+                    .map(factory => {
+
+                        const parts = [
+                            factory?.name,
+                            factory?.city,
+                            factory?.address,
+                            factory?.phone
+                        ]
+                            .filter(Boolean);
+
+                        return `
+                            <div class="factory-item">
+                                ${escapeHtml(
+                                    parts.join(" — ")
+                                )}
+                            </div>
+                        `;
+
+                    })
+                    .join("");
+
+        }else{
+
+            factoryList.style.display =
+                "none";
+
+            factoryItems.innerHTML =
+                "";
+        }
+
+        modal.classList.add("show");
 
         modal.setAttribute(
             "aria-hidden",
@@ -3080,705 +2190,364 @@ async function openBrand(
 
     }catch(error){
 
-        console.error(
-            "Brand error:",
-            error
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   RENDER BRANDS
-===================================================== */
-
-function renderBrandCards(
-    brands
-){
-
-    const container =
-        $("#countryBrands");
-
-    if(!brands.length){
-
-        container.innerHTML =
-            `
-            <div class="empty">
-                No brands have been added
-                for this country yet.
-            </div>
-            `;
-
-        return;
-
-    }
-
-    container.innerHTML =
-        brands
-            .map(
-                brand => {
-
-                    const name =
-                        escapeHtml(
-                            brand.name
-                        );
-
-                    const category =
-                        escapeHtml(
-                            brand.category || ""
-                        );
-
-                    const description =
-                        escapeHtml(
-                            brand.description || ""
-                        );
-
-                    const website =
-                        String(
-                            brand.website || ""
-                        ).trim();
-
-                    let websiteHtml =
-                        "";
-
-                    if(
-                        website &&
-                        isSafeUrl(website)
-                    ){
-
-                        websiteHtml =
-                            `
-                            <a
-                                href="${escapeHtml(website)}"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                Visit website
-                            </a>
-                            `;
-
-                    }
-
-                    return `
-                        <div class="brand-card">
-
-                            <h3>
-                                ${name}
-                            </h3>
-
-                            ${
-                                category
-                                ?
-                                `
-                                <p>
-                                    ${category}
-                                </p>
-                                `
-                                :
-                                ""
-                            }
-
-                            ${
-                                description
-                                ?
-                                `
-                                <p style="margin-top:6px;">
-                                    ${description}
-                                </p>
-                                `
-                                :
-                                ""
-                            }
-
-                            ${websiteHtml}
-
-                        </div>
-                    `;
-
-                }
-            )
-            .join("");
-
-}
-
-
-/* =====================================================
-   ADD BRAND
-===================================================== */
-
-function openAddBrand(){
-
-    const modal =
-        $("#addBrandModal");
-
-    if(!modal){
-        return;
-    }
-
-    modal.classList.add(
-        "active"
-    );
-
-    modal.setAttribute(
-        "aria-hidden",
-        "false"
-    );
-
-}
-
-
-function resetBrandForm(){
-
-    const form =
-        $("#brandForm");
-
-    if(form){
-        form.reset();
-    }
-
-}
-
-
-function closeModal(
-    id
-){
-
-    const modal =
-        document.getElementById(id);
-
-    if(modal){
-
-        modal.classList.remove(
-            "active"
-        );
-
-        modal.setAttribute(
-            "aria-hidden",
-            "true"
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   BRAND FORM
-===================================================== */
-
-const brandForm =
-    $("#brandForm");
-
-if(brandForm){
-
-    brandForm.addEventListener(
-        "submit",
-        async function(event){
-
-            event.preventDefault();
-
-            const brandName =
-                $("#brandName")
-                    .value
-                    .trim();
-
-            const countrySelect =
-                $("#brandCountry");
-
-            const selectedOption =
-                countrySelect.options[
-                    countrySelect.selectedIndex
-                ];
-
-            const countryId =
-                selectedOption
-                    ?.dataset
-                    ?.id || "";
-
-            const country =
-                countrySelect.value
-                    .trim();
-
-            const ownerName =
-                $("#ownerName")
-                    .value
-                    .trim();
-
-            const email =
-                $("#brandEmail")
-                    .value
-                    .trim();
-
-            const phone =
-                $("#brandPhone")
-                    .value
-                    .trim();
-
-            const website =
-                $("#brandWebsite")
-                    .value
-                    .trim();
-
-            const logo =
-                $("#brandLogo")
-                    .value
-                    .trim();
-
-            const description =
-                $("#brandDescription")
-                    .value
-                    .trim();
-
-
-            if(!brandName){
-
-                alert(
-                    "Please enter the brand name."
-                );
-
-                return;
-
-            }
-
-
-            if(!country){
-
-                alert(
-                    "Please select a country."
-                );
-
-                return;
-
-            }
-
-
-            if(!email){
-
-                alert(
-                    "Please enter your email."
-                );
-
-                return;
-
-            }
-
-
-            if(
-                website &&
-                !isSafeUrl(website)
-            ){
-
-                alert(
-                    "Invalid website URL."
-                );
-
-                return;
-
-            }
-
-
-            if(
-                logo &&
-                !isSafeUrl(logo)
-            ){
-
-                alert(
-                    "Invalid logo URL."
-                );
-
-                return;
-
-            }
-
-
-            currentApplication = {
-
-                brand_name:
-                    brandName,
-
-                country:
-                    country,
-
-                country_id:
-                    countryId,
-
-                owner_name:
-                    ownerName,
-
-                email:
-                    email,
-
-                phone:
-                    phone,
-
-                website:
-                    website,
-
-                logo:
-                    logo,
-
-                description:
-                    description
-
-            };
-
-
-            closeModal(
-                "addBrandModal"
-            );
-
-            openCheckout();
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   OPEN CHECKOUT
-===================================================== */
-
-function openCheckout(){
-
-    const modal =
-        $("#checkoutModal");
-
-    const message =
-        $("#checkoutMessage");
-
-    const status =
-        $("#paymentStatus");
-
-    if(!modal){
-        return;
-    }
-
-    if(message){
-
-        message.textContent =
-            "Your application will be created and then you will be redirected to the secure OCTO payment page.";
-
-    }
-
-    if(status){
-
-        status.textContent =
-            "Payment amount: $1.00. Secure payment is handled by the payment provider.";
-
-    }
-
-    modal.classList.add(
-        "active"
-    );
-
-    modal.setAttribute(
-        "aria-hidden",
-        "false"
-    );
-
-}
-
-
-/* =====================================================
-   CREATE APPLICATION + OCTO PAYMENT
-===================================================== */
-
-async function startPayment(){
-
-    if(!currentApplication){
-
-        alert(
-            "Application data is missing."
-        );
-
-        return;
-
-    }
-
-
-    const button =
-        $("#payButton");
-
-    const message =
-        $("#checkoutMessage");
-
-    const status =
-        $("#paymentStatus");
-
-
-    if(button){
-
-        button.disabled =
-            true;
-
-        button.textContent =
-            "Processing...";
-
-    }
-
-
-    if(message){
-
-        message.textContent =
-            "Creating your application...";
-
-    }
-
-
-    try{
-
-        /*
-            IMPORTANT:
-
-            Frontend DOES NOT send:
-
-            payment_status = paid
-            amount = 1
-
-            The server decides the real
-            payment amount and payment status.
-        */
-
-        const applicationResponse =
-            await apiFetch(
-                "/api/applications",
-                {
-                    method:"POST",
-
-                    headers:{
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify(
-                            currentApplication
-                        )
-                }
-            );
-
-
-        const applicationId =
-            Number(
-                applicationResponse?.application_id ||
-                applicationResponse?.id ||
-                applicationResponse?.application?.id
-            );
-
-
-        if(
-            !Number.isInteger(applicationId) ||
-            applicationId <= 0
-        ){
-
-            throw new Error(
-                "Application ID was not returned by the server."
-            );
-
-        }
-
-
-        if(message){
-
-            message.textContent =
-                "Opening secure payment page...";
-
-        }
-
-
-        /*
-            Create the real OCTO payment
-            on the SERVER.
-        */
-
-        const paymentResponse =
-            await apiFetch(
-                "/api/payments/octo/create",
-                {
-                    method:"POST",
-
-                    headers:{
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify({
-                            application_id:
-                                applicationId
-                        })
-                }
-            );
-
-
-        const paymentUrl =
-            String(
-                paymentResponse?.payment_url ||
-                paymentResponse?.data?.octo_pay_url ||
-                ""
-            ).trim();
-
-
-        if(!paymentUrl){
-
-            throw new Error(
-                "Payment URL was not returned by the payment server."
-            );
-
-        }
-
-
-        if(
-            !isSafeUrl(paymentUrl)
-        ){
-
-            throw new Error(
-                "Invalid payment URL."
-            );
-
-        }
-
-
-        /*
-            Save ID locally so that after
-            returning from OCTO we can check
-            the payment status.
-        */
-
-        try{
-
-            sessionStorage.setItem(
-                "awb_application_id",
-                String(applicationId)
-            );
-
-        }catch{
-
-            /* ignore storage errors */
-
-        }
-
-
-        /*
-            Redirect to OCTO.
-        */
-
-        window.location.href =
-            paymentUrl;
-
-
-    }catch(error){
-
-        console.error(
-            "Payment error:",
-            error
-        );
-
-
-        if(message){
-
-            message.textContent =
-                "Payment could not be started.";
-
-        }
-
-
-        if(status){
-
-            status.textContent =
-                error.message ||
-                "Could not start payment. Please try again.";
-
-        }
-
+        console.error(error);
 
         alert(
             error.message ||
-            "Could not start payment."
+            "Failed to load brand details."
         );
 
+    }
+}
 
-    }finally{
+function closeModal(){
 
-        if(button){
+    modal.classList.remove("show");
 
-            button.disabled =
-                false;
+    modal.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+}
 
-            button.textContent =
-                "Pay $1";
+modalClose.addEventListener(
+    "click",
+    closeModal
+);
 
+modal.addEventListener(
+    "click",
+    event => {
+
+        if(event.target === modal){
+            closeModal();
         }
 
     }
+);
 
-}
+document.addEventListener(
+    "keydown",
+    event => {
 
-
-/*
-    Keep the old function name too,
-    so nothing breaks if another element
-    still calls startGooglePay().
-*/
-
-async function startGooglePay(){
-
-    return startPayment();
-
-}
-
-
-/* =====================================================
-   CHECK PAYMENT STATUS
-===================================================== */
-
-async function checkPaymentStatus(
-    applicationId
-){
-
-    if(
-        !applicationId ||
-        !Number.isInteger(
-            Number(applicationId)
-        )
-    ){
-
-        return null;
+        if(event.key === "Escape"){
+            closeModal();
+        }
 
     }
+);
 
+/* =========================
+   SEARCH
+========================= */
+
+let searchTimer = null;
+
+searchInput.addEventListener(
+    "input",
+    () => {
+
+        clearTimeout(
+            searchTimer
+        );
+
+        const query =
+            searchInput.value.trim();
+
+        if(query.length < 2){
+
+            searchResultsSection.style.display =
+                "none";
+
+            return;
+        }
+
+        searchTimer =
+            setTimeout(
+                () => searchBrands(query),
+                350
+            );
+
+    }
+);
+
+async function searchBrands(
+    query
+){
+
+    searchResultsSection.style.display =
+        "block";
+
+    searchResults.innerHTML =
+        `<div class="loading">
+            Searching...
+        </div>`;
+
+    searchCounter.textContent =
+        "";
 
     try{
 
-        const data =
+        const result =
             await apiFetch(
-                `/api/payments/octo/status/${encodeURIComponent(applicationId)}`
+                `/api/search?q=${encodeURIComponent(
+                    query
+                )}`
             );
 
-        return data;
+        const brands =
+            Array.isArray(result)
+                ? result
+                : result?.brands ||
+                  result?.results ||
+                  [];
+
+        searchCounter.textContent =
+            `${brands.length} results`;
+
+        if(!brands.length){
+
+            searchResults.innerHTML =
+                `<div class="empty">
+                    No brands found.
+                </div>`;
+
+            return;
+        }
+
+        searchResults.innerHTML =
+            brands
+                .map(renderBrandCard)
+                .join("");
+
+        bindBrandCards(
+            searchResults
+        );
 
     }catch(error){
 
-        console.error(
-            "Payment status error:",
-            error
-        );
+        console.error(error);
 
-        return null;
+        searchResults.innerHTML =
+            `<div class="empty">
+                Search failed.
+            </div>`;
 
     }
-
 }
 
+/* =========================
+   ADD BRAND
+========================= */
 
-/* =====================================================
-   HANDLE OCTO RETURN
-===================================================== */
+applicationForm.addEventListener(
+    "submit",
+    async event => {
 
-async function handlePaymentReturn(){
+        event.preventDefault();
+
+        hideFormMessage();
+
+        const payload = {
+
+            brand_name:
+                document
+                    .getElementById("brandName")
+                    .value
+                    .trim(),
+
+            country:
+                document
+                    .getElementById("country")
+                    .value
+                    .trim(),
+
+            owner_name:
+                document
+                    .getElementById("ownerName")
+                    .value
+                    .trim(),
+
+            email:
+                document
+                    .getElementById("email")
+                    .value
+                    .trim(),
+
+            phone:
+                document
+                    .getElementById("phone")
+                    .value
+                    .trim(),
+
+            website:
+                document
+                    .getElementById("website")
+                    .value
+                    .trim(),
+
+            description:
+                document
+                    .getElementById("description")
+                    .value
+                    .trim()
+
+        };
+
+        if(
+            !payload.brand_name ||
+            !payload.country ||
+            !payload.owner_name ||
+            !payload.email
+        ){
+
+            showFormMessage(
+                "Please fill in all required fields.",
+                "error"
+            );
+
+            return;
+        }
+
+        submitBrandBtn.disabled =
+            true;
+
+        submitBrandBtn.textContent =
+            "PROCESSING...";
+
+        try{
+
+            /*
+             * STEP 1
+             * Create application.
+             */
+
+            const result =
+                await apiFetch(
+                    "/api/applications",
+                    {
+                        method:"POST",
+                        body:JSON.stringify(
+                            payload
+                        )
+                    }
+                );
+
+            /*
+             * Some server versions may
+             * return payment URL directly.
+             */
+
+            const directPaymentUrl =
+                safeUrl(
+                    result?.payment_url ||
+                    result?.octo_pay_url ||
+                    result?.data?.octo_pay_url ||
+                    result?.data?.payment_url
+                );
+
+            if(directPaymentUrl){
+
+                showFormMessage(
+                    "Application created. Redirecting to secure payment...",
+                    "success"
+                );
+
+                window.location.href =
+                    directPaymentUrl;
+
+                return;
+            }
+
+            /*
+             * Get application ID.
+             */
+
+            const applicationId =
+                result?.application_id ||
+                result?.id ||
+                result?.data?.application_id ||
+                result?.data?.id;
+
+            if(!applicationId){
+
+                throw new Error(
+                    "Application was created, but payment information was not returned."
+                );
+            }
+
+            /*
+             * STEP 2
+             * Create OCTO payment exactly once.
+             */
+
+            const payment =
+                await apiFetch(
+                    "/api/payments/octo/create",
+                    {
+                        method:"POST",
+                        body:JSON.stringify({
+                            application_id:
+                                Number(
+                                    applicationId
+                                )
+                        })
+                    }
+                );
+
+            const paymentUrl =
+                safeUrl(
+                    payment?.payment_url ||
+                    payment?.octo_pay_url ||
+                    payment?.data?.octo_pay_url ||
+                    payment?.data?.payment_url
+                );
+
+            if(!paymentUrl){
+
+                throw new Error(
+                    payment?.message ||
+                    payment?.error ||
+                    "OCTO payment URL was not returned."
+                );
+            }
+
+            showFormMessage(
+                "Application created. Redirecting to secure OCTO payment...",
+                "success"
+            );
+
+            window.location.href =
+                paymentUrl;
+
+        }catch(error){
+
+            console.error(
+                "Application/payment error:",
+                error
+            );
+
+            showFormMessage(
+                error.message ||
+                "Something went wrong. Please try again.",
+                "error"
+            );
+
+            submitBrandBtn.disabled =
+                false;
+
+            submitBrandBtn.textContent =
+                "SUBMIT BRAND";
+        }
+
+    }
+);
+
+/* =========================
+   OCTO RETURN
+========================= */
+
+async function checkOctoReturn(){
 
     const params =
         new URLSearchParams(
@@ -3786,32 +2555,93 @@ async function handlePaymentReturn(){
         );
 
     const payment =
-        params.get(
-            "payment"
-        );
+        params.get("payment");
 
     const applicationId =
-        Number(
-            params.get(
-                "application_id"
-            )
-        );
-
+        params.get("application_id");
 
     if(
         payment !== "octo" ||
-        !Number.isInteger(applicationId) ||
-        applicationId <= 0
+        !applicationId
     ){
-
         return;
-
     }
 
+    try{
+
+        showFormMessage(
+            "Checking payment status...",
+            "success"
+        );
+
+        const result =
+            await apiFetch(
+                `/api/payments/octo/status/${encodeURIComponent(
+                    applicationId
+                )}`
+            );
+
+        const status = String(
+            result?.payment_status ||
+            result?.status ||
+            result?.octo_status ||
+            ""
+        ).toLowerCase();
+
+        if(
+            [
+                "paid",
+                "success",
+                "succeeded",
+                "completed"
+            ].includes(status)
+        ){
+
+            showFormMessage(
+                "Payment successful. Your brand application has been received.",
+                "success"
+            );
+
+            applicationForm.reset();
+
+        }else if(
+            [
+                "failed",
+                "cancelled",
+                "canceled",
+                "rejected"
+            ].includes(status)
+        ){
+
+            showFormMessage(
+                "Payment was not completed.",
+                "error"
+            );
+
+        }else{
+
+            showFormMessage(
+                "Payment is still being processed. Please check again shortly.",
+                "success"
+            );
+        }
+
+    }catch(error){
+
+        console.error(
+            "OCTO status error:",
+            error
+        );
+
+        showFormMessage(
+            "We could not confirm the payment status yet.",
+            "error"
+        );
+    }
 
     /*
-        Clean the URL immediately.
-    */
+     * Clean URL without reloading.
+     */
 
     try{
 
@@ -3824,257 +2654,52 @@ async function handlePaymentReturn(){
             cleanUrl
         );
 
-    }catch{
-
-        /* ignore */
-
-    }
-
-
-    /*
-        Ask the server for the actual
-        payment status.
-
-        We DO NOT trust the URL
-        or frontend payment status.
-    */
-
-    const result =
-        await checkPaymentStatus(
-            applicationId
-        );
-
-
-    const status =
-        String(
-            result?.payment_status ||
-            result?.status ||
-            "pending"
-        ).toLowerCase();
-
-
-    if(
-        status === "paid" ||
-        status === "success" ||
-        status === "succeeded"
-    ){
-
-        openSuccess();
-
-        return;
-
-    }
-
-
-    if(
-        status === "cancelled" ||
-        status === "canceled" ||
-        status === "failed"
-    ){
-
-        alert(
-            "Payment was not completed."
-        );
-
-        return;
-
-    }
-
-
-    /*
-        pending / unknown
-    */
-
-    const pendingModal =
-        $("#pendingModal");
-
-    if(pendingModal){
-
-        pendingModal.classList.add(
-            "active"
-        );
-
-        pendingModal.setAttribute(
-            "aria-hidden",
-            "false"
-        );
-
-    }
-
+    }catch{}
 }
 
+/* =========================
+   HEALTH CHECK
+========================= */
 
-/* =====================================================
-   CLOSE MODALS ON BACKGROUND
-===================================================== */
+async function checkServer(){
 
-document
-    .querySelectorAll(".modal")
-    .forEach(
-        modal => {
+    try{
 
-            modal.addEventListener(
-                "click",
-                function(event){
-
-                    if(
-                        event.target === modal
-                    ){
-
-                        modal.classList.remove(
-                            "active"
-                        );
-
-                        modal.setAttribute(
-                            "aria-hidden",
-                            "true"
-                        );
-
-                    }
-
-                }
-            );
-
-        }
-    );
-
-
-/* =====================================================
-   ESC KEY
-===================================================== */
-
-document.addEventListener(
-    "keydown",
-    function(event){
-
-        if(
-            event.key === "Escape"
-        ){
-
-            document
-                .querySelectorAll(
-                    ".modal.active"
-                )
-                .forEach(
-                    modal => {
-
-                        modal.classList.remove(
-                            "active"
-                        );
-
-                        modal.setAttribute(
-                            "aria-hidden",
-                            "true"
-                        );
-
-                    }
-                );
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   RAIN EFFECT
-===================================================== */
-
-function createRain(){
-
-    const rain =
-        $("#rainFX");
-
-    if(!rain){
-        return;
-    }
-
-    const amount =
-        window.innerWidth < 800
-        ? 35
-        : 80;
-
-    rain.innerHTML = "";
-
-    for(
-        let i = 0;
-        i < amount;
-        i++
-    ){
-
-        const line =
-            document.createElement(
-                "span"
-            );
-
-        line.className =
-            "rain-line";
-
-        line.style.left =
-            Math.random() * 100 + "%";
-
-        line.style.animationDuration =
-            (
-                1.8 +
-                Math.random() * 3.5
-            ) + "s";
-
-        line.style.animationDelay =
-            (
-                Math.random() * 4
-            ) + "s";
-
-        line.style.opacity =
-            (
-                .15 +
-                Math.random() * .35
-            );
-
-        rain.appendChild(
-            line
+        await apiFetch(
+            "/api/health"
         );
 
-    }
+        return true;
 
+    }catch(error){
+
+        console.warn(
+            "Server health check failed:",
+            error
+        );
+
+        return false;
+    }
 }
 
+/* =========================
+   INIT
+========================= */
 
-/* =====================================================
-   START
-===================================================== */
+async function init(){
 
-document.addEventListener(
-    "DOMContentLoaded",
-    async function(){
+    createRain();
 
-        createRain();
+    await checkServer();
 
-        await loadCountries();
+    await loadCountries();
 
-        /*
-            If the user has returned from
-            OCTO payment, verify the real
-            server-side payment status.
-        */
+    await loadBrands();
 
-        await handlePaymentReturn();
+    await checkOctoReturn();
+}
 
-    }
-);
-
-
-/* =====================================================
-   RESIZE RAIN
-===================================================== */
-
-window.addEventListener(
-    "resize",
-    function(){
-
-        createRain();
-
-    }
-);
+init();
 
 </script>
 
