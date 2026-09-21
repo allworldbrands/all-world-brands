@@ -14,12 +14,16 @@ const PUBLIC_BASE_URL = (
     "https://allworldbrands.net"
 ).replace(/\/+$/, "");
 
+/* =========================================================
+   DATABASE
+========================================================= */
+
 const DB_FILE =
     process.env.DB_FILE ||
     path.join(__dirname, "allworldbrands.db");
 
 /* =========================================================
-   OCTO PAYMENT
+   OCTO
 ========================================================= */
 
 const OCTO_SHOP_ID =
@@ -39,7 +43,9 @@ const OCTO_LANGUAGE =
     process.env.OCTO_LANGUAGE || "en";
 
 const BRAND_APPLICATION_AMOUNT =
-    Number(process.env.BRAND_APPLICATION_AMOUNT || 1);
+    Number(
+        process.env.BRAND_APPLICATION_AMOUNT || 1
+    );
 
 const BRAND_APPLICATION_CURRENCY =
     String(
@@ -77,7 +83,7 @@ const CONTACT_TELEGRAM =
     "@allworldbrandsnet";
 
 /* =========================================================
-   DATABASE
+   DATABASE CONNECTION
 ========================================================= */
 
 const appDb = new sqlite3.Database(DB_FILE);
@@ -105,51 +111,61 @@ app.use(
     })
 );
 
-appDb.run("PRAGMA foreign_keys = ON");
-
 /* =========================================================
    DATABASE HELPERS
 ========================================================= */
 
 function dbRun(sql, params = []) {
     return new Promise((resolve, reject) => {
-        appDb.run(sql, params, function (err) {
-            if (err) {
-                reject(err);
-                return;
-            }
+        appDb.run(
+            sql,
+            params,
+            function (err) {
+                if (err) {
+                    reject(err);
+                    return;
+                }
 
-            resolve({
-                lastID: this.lastID,
-                changes: this.changes
-            });
-        });
+                resolve({
+                    lastID: this.lastID,
+                    changes: this.changes
+                });
+            }
+        );
     });
 }
 
 function dbGet(sql, params = []) {
     return new Promise((resolve, reject) => {
-        appDb.get(sql, params, (err, row) => {
-            if (err) {
-                reject(err);
-                return;
-            }
+        appDb.get(
+            sql,
+            params,
+            (err, row) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
 
-            resolve(row);
-        });
+                resolve(row);
+            }
+        );
     });
 }
 
 function dbAll(sql, params = []) {
     return new Promise((resolve, reject) => {
-        appDb.all(sql, params, (err, rows) => {
-            if (err) {
-                reject(err);
-                return;
-            }
+        appDb.all(
+            sql,
+            params,
+            (err, rows) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
 
-            resolve(rows || []);
-        });
+                resolve(rows || []);
+            }
+        );
     });
 }
 
@@ -178,7 +194,10 @@ async function addColumnIfMissing(
    GENERAL HELPERS
 ========================================================= */
 
-function normalizeText(value, max = 1000) {
+function normalizeText(
+    value,
+    max = 1000
+) {
     return String(value || "")
         .trim()
         .slice(0, max);
@@ -192,11 +211,14 @@ function normalizeEmail(value) {
 }
 
 function isValidEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+        email
+    );
 }
 
 function isSafeUrl(value) {
-    const url = String(value || "").trim();
+    const url =
+        String(value || "").trim();
 
     if (!url) {
         return true;
@@ -224,7 +246,8 @@ function isSafeUrl(value) {
     }
 
     try {
-        const parsed = new URL(url);
+        const parsed =
+            new URL(url);
 
         return (
             parsed.protocol === "http:" ||
@@ -236,7 +259,7 @@ function isSafeUrl(value) {
 }
 
 /* =========================================================
-   CONTENT MODERATION
+   MODERATION
 ========================================================= */
 
 function normalizeForModeration(value) {
@@ -265,8 +288,9 @@ function containsAdultContent(value) {
     const normalized =
         normalizeForModeration(value);
 
-    return ADULT_CONTENT_WORDS.some(word =>
-        normalized.includes(word)
+    return ADULT_CONTENT_WORDS.some(
+        word =>
+            normalized.includes(word)
     );
 }
 
@@ -307,14 +331,20 @@ function formatPaymentDisplay(
 }
 
 function timingSafeEqualStrings(a, b) {
-    const aa = Buffer.from(String(a || ""));
-    const bb = Buffer.from(String(b || ""));
+    const aa =
+        Buffer.from(String(a || ""));
+
+    const bb =
+        Buffer.from(String(b || ""));
 
     if (aa.length !== bb.length) {
         return false;
     }
 
-    return crypto.timingSafeEqual(aa, bb);
+    return crypto.timingSafeEqual(
+        aa,
+        bb
+    );
 }
 
 function moneyEquals(a, b) {
@@ -334,11 +364,15 @@ function octoConfigured() {
 }
 
 function octoInitUrl() {
-    return "https://secure.octo.uz/prepare_payment";
+    return (
+        "https://secure.octo.uz/prepare_payment"
+    );
 }
 
 function octoStatusUrl() {
-    return "https://secure.octo.uz/prepare_payment";
+    return (
+        "https://secure.octo.uz/prepare_payment"
+    );
 }
 
 function makeOctoSignature(
@@ -358,7 +392,8 @@ function parseOctoResponse(body) {
     if (!body) {
         return {
             error: 1,
-            message: "Empty OCTO response"
+            message:
+                "Empty OCTO response"
         };
     }
 
@@ -389,17 +424,21 @@ function parseOctoResponse(body) {
 }
 
 async function octoRequest(payload) {
-    const response = await fetch(
-        octoInitUrl(),
-        {
-            method: "POST",
-            headers: {
-                "Content-Type":
-                    "application/json"
-            },
-            body: JSON.stringify(payload)
-        }
-    );
+    const response =
+        await fetch(
+            octoInitUrl(),
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body:
+                    JSON.stringify(payload)
+            }
+        );
 
     const text =
         await response.text();
@@ -407,7 +446,8 @@ async function octoRequest(payload) {
     let json;
 
     try {
-        json = JSON.parse(text);
+        json =
+            JSON.parse(text);
     } catch {
         throw new Error(
             `OCTO returned invalid JSON (${response.status})`
@@ -445,17 +485,21 @@ async function getOctoPaymentStatus(
             String(transactionId)
     };
 
-    const response = await fetch(
-        octoStatusUrl(),
-        {
-            method: "POST",
-            headers: {
-                "Content-Type":
-                    "application/json"
-            },
-            body: JSON.stringify(payload)
-        }
-    );
+    const response =
+        await fetch(
+            octoStatusUrl(),
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body:
+                    JSON.stringify(payload)
+            }
+        );
 
     const text =
         await response.text();
@@ -463,7 +507,8 @@ async function getOctoPaymentStatus(
     let json;
 
     try {
-        json = JSON.parse(text);
+        json =
+            JSON.parse(text);
     } catch {
         throw new Error(
             "Invalid OCTO status response"
@@ -482,7 +527,9 @@ function extractOctoStatus(result) {
         result.data?.payment_status
     ];
 
-    for (const value of candidates) {
+    for (
+        const value of candidates
+    ) {
         if (
             value !== undefined &&
             value !== null &&
@@ -505,7 +552,9 @@ function extractOctoAmount(result) {
         result.data?.amount
     ];
 
-    for (const value of candidates) {
+    for (
+        const value of candidates
+    ) {
         if (
             value !== undefined &&
             value !== null &&
@@ -524,7 +573,9 @@ function extractOctoCurrency(result) {
         result.data?.currency
     ];
 
-    for (const value of candidates) {
+    for (
+        const value of candidates
+    ) {
         if (
             value !== undefined &&
             value !== null &&
@@ -548,7 +599,8 @@ function isOctoPaidStatus(status) {
         "completed",
         "payment_success"
     ].includes(
-        String(status || "").toLowerCase()
+        String(status || "")
+            .toLowerCase()
     );
 }
 
@@ -560,7 +612,8 @@ function isOctoFailedStatus(status) {
         "expired",
         "rejected"
     ].includes(
-        String(status || "").toLowerCase()
+        String(status || "")
+            .toLowerCase()
     );
 }
 
@@ -642,7 +695,7 @@ const COUNTRY_LANGUAGE_MAP = {
 };
 
 /* =========================================================
-   COUNTRIES + TERRITORIES
+   COUNTRIES
 ========================================================= */
 
 const COUNTRIES = [
@@ -1029,7 +1082,10 @@ async function initializeDatabase() {
         "DATETIME"
     );
 
-    for (const [name, code] of COUNTRIES) {
+    for (
+        const [name, code]
+        of COUNTRIES
+    ) {
 
         await dbRun(
             `
@@ -1155,7 +1211,10 @@ async function initializeDatabase() {
         ]
     ];
 
-    for (const brand of starterBrands) {
+    for (
+        const brand
+        of starterBrands
+    ) {
 
         const [
             name,
@@ -1250,16 +1309,17 @@ function adminAuth(
 
         return res
             .status(503)
-            .json({
-                error:
-                    "Admin credentials are not configured."
-            });
+            .send(
+                "Admin credentials are not configured."
+            );
     }
 
     const header =
         req.headers.authorization || "";
 
-    if (!header.startsWith("Basic ")) {
+    if (
+        !header.startsWith("Basic ")
+    ) {
 
         res.setHeader(
             "WWW-Authenticate",
@@ -1748,7 +1808,7 @@ app.get(
 );
 
 /* =========================================================
-   BRAND APPLICATION
+   CREATE APPLICATION
 ========================================================= */
 
 app.post(
@@ -1965,7 +2025,10 @@ app.post(
 
         } catch (error) {
 
-            console.error(error);
+            console.error(
+                "APPLICATION ERROR:",
+                error
+            );
 
             res.status(500).json({
                 error:
@@ -2527,7 +2590,7 @@ app.post(
 );
 
 /* =========================================================
-   OCTO PAYMENT STATUS
+   PAYMENT STATUS
 ========================================================= */
 
 app.get(
@@ -2688,10 +2751,7 @@ app.get(
 
         } catch (error) {
 
-            console.error(
-                "ADMIN APPLICATIONS ERROR:",
-                error
-            );
+            console.error(error);
 
             res.status(500).json({
                 error:
@@ -2713,44 +2773,26 @@ app.patch(
         try {
 
             const id =
-                Number(req.params.id);
-
-            if (!Number.isInteger(id)) {
-
-                return res.status(400).json({
-                    error:
-                        "Invalid application ID."
-                });
-            }
-
-            const status =
-                normalizeText(
-                    req.body.status,
-                    30
-                ).toLowerCase();
-
-            const allowedStatuses = [
-                "new",
-                "approved",
-                "rejected"
-            ];
+                Number(
+                    req.params.id
+                );
 
             if (
-                !allowedStatuses.includes(
-                    status
-                )
+                !Number.isInteger(id)
             ) {
 
-                return res.status(400).json({
-                    error:
-                        "Invalid status."
-                });
+                return res
+                    .status(400)
+                    .json({
+                        error:
+                            "Invalid application ID."
+                    });
             }
 
             const application =
                 await dbGet(
                     `
-                    SELECT id
+                    SELECT *
                     FROM applications
                     WHERE id = ?
                     LIMIT 1
@@ -2760,11 +2802,48 @@ app.patch(
 
             if (!application) {
 
-                return res.status(404).json({
-                    error:
-                        "Application not found."
-                });
+                return res
+                    .status(404)
+                    .json({
+                        error:
+                            "Application not found."
+                    });
             }
+
+            const allowedStatuses = [
+                "new",
+                "approved",
+                "rejected",
+                "paid"
+            ];
+
+            const requestedStatus =
+                normalizeText(
+                    req.body.status,
+                    30
+                ).toLowerCase();
+
+            if (
+                !allowedStatuses.includes(
+                    requestedStatus
+                )
+            ) {
+
+                return res
+                    .status(400)
+                    .json({
+                        error:
+                            "Invalid status."
+                    });
+            }
+
+            /*
+             * Payment status is NOT controlled
+             * by this admin endpoint.
+             *
+             * OCTO verification remains the
+             * only authority for payment_status.
+             */
 
             await dbRun(
                 `
@@ -2777,21 +2856,31 @@ app.patch(
                 WHERE id = ?
                 `,
                 [
-                    status,
+                    requestedStatus,
                     id
                 ]
             );
 
+            const updated =
+                await dbGet(
+                    `
+                    SELECT *
+                    FROM applications
+                    WHERE id = ?
+                    LIMIT 1
+                    `,
+                    [id]
+                );
+
             res.json({
                 ok: true,
-                id,
-                status
+                application: updated
             });
 
         } catch (error) {
 
             console.error(
-                "ADMIN UPDATE APPLICATION ERROR:",
+                "ADMIN APPLICATION UPDATE ERROR:",
                 error
             );
 
@@ -2815,14 +2904,20 @@ app.delete(
         try {
 
             const id =
-                Number(req.params.id);
+                Number(
+                    req.params.id
+                );
 
-            if (!Number.isInteger(id)) {
+            if (
+                !Number.isInteger(id)
+            ) {
 
-                return res.status(400).json({
-                    error:
-                        "Invalid application ID."
-                });
+                return res
+                    .status(400)
+                    .json({
+                        error:
+                            "Invalid application ID."
+                    });
             }
 
             const result =
@@ -2838,10 +2933,12 @@ app.delete(
                 result.changes === 0
             ) {
 
-                return res.status(404).json({
-                    error:
-                        "Application not found."
-                });
+                return res
+                    .status(404)
+                    .json({
+                        error:
+                            "Application not found."
+                    });
             }
 
             res.json({
@@ -2851,7 +2948,7 @@ app.delete(
         } catch (error) {
 
             console.error(
-                "ADMIN DELETE APPLICATION ERROR:",
+                "ADMIN APPLICATION DELETE ERROR:",
                 error
             );
 
@@ -2864,7 +2961,7 @@ app.delete(
 );
 
 /* =========================================================
-   ADMIN BRANDS LIST
+   ADMIN BRANDS
 ========================================================= */
 
 app.get(
@@ -2887,13 +2984,20 @@ app.get(
                         b.verification,
                         b.created_at,
 
-                        c.name AS country_name,
-                        c.code AS country_code
+                        c.id
+                            AS country_id,
+
+                        c.name
+                            AS country_name,
+
+                        c.code
+                            AS country_code
 
                     FROM brands b
 
-                    LEFT JOIN countries c
-                        ON c.id = b.country_id
+                    JOIN countries c
+                        ON c.id =
+                           b.country_id
 
                     ORDER BY
                         b.id DESC
@@ -3043,6 +3147,34 @@ app.post(
                     });
             }
 
+            const duplicate =
+                await dbGet(
+                    `
+                    SELECT id
+                    FROM brands
+
+                    WHERE
+                        name = ?
+                        AND country_id = ?
+
+                    LIMIT 1
+                    `,
+                    [
+                        name,
+                        countryId
+                    ]
+                );
+
+            if (duplicate) {
+
+                return res
+                    .status(409)
+                    .json({
+                        error:
+                            "This brand already exists in this country."
+                    });
+            }
+
             const result =
                 await dbRun(
                     `
@@ -3071,17 +3203,48 @@ app.post(
                     ]
                 );
 
+            const created =
+                await dbGet(
+                    `
+                    SELECT
+                        b.*,
+
+                        c.name
+                            AS country_name,
+
+                        c.code
+                            AS country_code
+
+                    FROM brands b
+
+                    JOIN countries c
+                        ON c.id =
+                           b.country_id
+
+                    WHERE b.id = ?
+
+                    LIMIT 1
+                    `,
+                    [result.lastID]
+                );
+
             res.status(201).json({
 
                 ok: true,
 
                 id:
-                    result.lastID
+                    result.lastID,
+
+                brand:
+                    created
             });
 
         } catch (error) {
 
-            console.error(error);
+            console.error(
+                "ADMIN CREATE BRAND ERROR:",
+                error
+            );
 
             res.status(500).json({
                 error:
@@ -3132,10 +3295,12 @@ app.delete(
                 result.changes === 0
             ) {
 
-                return res.status(404).json({
-                    error:
-                        "Brand not found."
-                });
+                return res
+                    .status(404)
+                    .json({
+                        error:
+                            "Brand not found."
+                    });
             }
 
             res.json({
@@ -3144,7 +3309,10 @@ app.delete(
 
         } catch (error) {
 
-            console.error(error);
+            console.error(
+                "ADMIN DELETE BRAND ERROR:",
+                error
+            );
 
             res.status(500).json({
                 error:
@@ -3163,21 +3331,6 @@ app.get(
     adminAuth,
     (req, res) => {
 
-        res.setHeader(
-            "Cache-Control",
-            "no-store, no-cache, must-revalidate, proxy-revalidate"
-        );
-
-        res.setHeader(
-            "Pragma",
-            "no-cache"
-        );
-
-        res.setHeader(
-            "Expires",
-            "0"
-        );
-
         res.send(`
 <!DOCTYPE html>
 <html lang="en">
@@ -3191,11 +3344,6 @@ app.get(
     content="width=device-width,initial-scale=1"
 >
 
-<meta
-    http-equiv="Cache-Control"
-    content="no-cache,no-store,must-revalidate"
->
-
 <title>ALL WORLD BRANDS ADMIN</title>
 
 <style>
@@ -3204,106 +3352,124 @@ app.get(
     box-sizing:border-box;
 }
 
+html,
 body{
     margin:0;
-    font-family:Arial,sans-serif;
+    padding:0;
+    min-height:100%;
+}
+
+body{
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
     color:#fff;
 
     background:
         linear-gradient(
             135deg,
-            #020b24,
-            #07183d,
-            #2a0610
+            #020b24 0%,
+            #07183d 48%,
+            #260611 100%
         );
 
-    min-height:100vh;
+    padding:18px;
 }
 
 .container{
     width:100%;
     max-width:1400px;
-    margin:auto;
-    padding:24px;
+    margin:0 auto;
 }
 
 h1{
-    margin:0;
-    font-size:38px;
+    font-size:34px;
+    margin:10px 0 6px;
 }
 
 .subtitle{
-    margin-top:8px;
-    color:#b9c2d9;
-    font-size:17px;
+    color:#bfc8dc;
+    margin-bottom:20px;
 }
 
 .stats{
     display:grid;
     grid-template-columns:
         repeat(4,minmax(0,1fr));
-    gap:15px;
-    margin:25px 0;
+
+    gap:12px;
+
+    margin-bottom:20px;
 }
 
 .stat{
-    padding:20px;
-    border-radius:15px;
-
     background:
         rgba(255,255,255,.07);
 
     border:
         1px solid
         rgba(255,255,255,.12);
+
+    border-radius:14px;
+
+    padding:18px;
 }
 
-.stat-title{
-    color:#aeb8d0;
-    font-size:14px;
+.stat-number{
+    font-size:28px;
+    font-weight:700;
 }
 
-.stat-value{
-    margin-top:8px;
-    font-size:30px;
-    font-weight:bold;
+.stat-label{
+    color:#b8c2d8;
+    margin-top:5px;
 }
 
 .tabs{
     display:flex;
-    gap:10px;
+    gap:8px;
+    margin-bottom:16px;
     flex-wrap:wrap;
-    margin-bottom:20px;
 }
 
 .tab{
-    border:0;
-    border-radius:10px;
-    padding:12px 18px;
-    cursor:pointer;
+    border:1px solid
+        rgba(255,255,255,.15);
 
-    background:#17284f;
+    background:
+        rgba(255,255,255,.06);
+
     color:#fff;
-    font-weight:bold;
+
+    padding:10px 16px;
+
+    border-radius:10px;
+
+    cursor:pointer;
 }
 
 .tab.active{
-    background:#315bb5;
+    background:#fff;
+    color:#07183d;
 }
 
 .panel{
     display:none;
-
-    padding:20px;
-
-    border-radius:16px;
 
     background:
         rgba(0,0,0,.28);
 
     border:
         1px solid
-        rgba(255,255,255,.1);
+        rgba(255,255,255,.12);
+
+    border-radius:14px;
+
+    padding:16px;
+
+    margin-bottom:20px;
 }
 
 .panel.active{
@@ -3314,7 +3480,7 @@ h1{
     display:flex;
     gap:10px;
     flex-wrap:wrap;
-    margin-bottom:18px;
+    margin-bottom:15px;
 }
 
 input,
@@ -3322,7 +3488,7 @@ select,
 textarea{
     width:100%;
 
-    padding:12px;
+    padding:11px 12px;
 
     border-radius:9px;
 
@@ -3330,40 +3496,44 @@ textarea{
         1px solid
         rgba(255,255,255,.18);
 
-    background:#07152f;
+    background:
+        rgba(0,0,0,.35);
+
     color:#fff;
+
+    outline:none;
 }
 
-.search{
-    max-width:400px;
+.toolbar input{
+    max-width:420px;
 }
 
 button{
     border:0;
-    border-radius:8px;
-
+    border-radius:9px;
     padding:10px 14px;
-
     cursor:pointer;
+    font-weight:600;
+}
 
+.btn{
+    background:#fff;
+    color:#07183d;
+}
+
+.btn-danger{
+    background:#a91d32;
     color:#fff;
-    background:#315bb5;
 }
 
-button:hover{
-    opacity:.85;
+.btn-green{
+    background:#16794b;
+    color:#fff;
 }
 
-button.danger{
-    background:#9b2435;
-}
-
-button.success{
-    background:#207a4a;
-}
-
-button.gray{
-    background:#46516a;
+.btn-blue{
+    background:#245ec7;
+    color:#fff;
 }
 
 .table-wrap{
@@ -3373,17 +3543,13 @@ button.gray{
 
 table{
     width:100%;
-    min-width:900px;
+    min-width:800px;
     border-collapse:collapse;
-
-    background:
-        rgba(0,0,0,.22);
 }
 
 th,
 td{
     padding:11px;
-
     border:
         1px solid
         rgba(255,255,255,.12);
@@ -3398,38 +3564,37 @@ th{
 
 .badge{
     display:inline-block;
-
     padding:5px 9px;
-
-    border-radius:20px;
-
+    border-radius:999px;
     font-size:12px;
-    font-weight:bold;
 }
 
 .paid{
-    background:#145d3a;
-}
-
-.unpaid{
-    background:#704d13;
+    background:#145c3c;
 }
 
 .pending{
-    background:#314c7b;
+    background:#76591a;
 }
 
-.failed,
-.rejected{
-    background:#752238;
+.unpaid{
+    background:#59303a;
+}
+
+.failed{
+    background:#8b1d2b;
 }
 
 .new{
-    background:#46516a;
+    background:#245ec7;
 }
 
 .approved{
-    background:#17603b;
+    background:#16794b;
+}
+
+.rejected{
+    background:#8b1d2b;
 }
 
 .form-grid{
@@ -3438,98 +3603,30 @@ th{
     grid-template-columns:
         repeat(2,minmax(0,1fr));
 
-    gap:15px;
+    gap:12px;
 }
 
-.field{
-    margin-bottom:5px;
+.form-full{
+    grid-column:
+        1 / -1;
 }
 
-.field label{
-    display:block;
-    margin-bottom:6px;
-    color:#bfc8db;
-    font-size:14px;
-}
-
-.full{
-    grid-column:1/-1;
+.actions{
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
 }
 
 .empty{
     padding:30px;
     text-align:center;
-    color:#aeb8d0;
-}
-
-.modal{
-    position:fixed;
-
-    inset:0;
-
-    display:none;
-
-    align-items:center;
-    justify-content:center;
-
-    padding:20px;
-
-    background:
-        rgba(0,0,0,.75);
-
-    z-index:1000;
-}
-
-.modal.show{
-    display:flex;
-}
-
-.modal-box{
-    width:100%;
-    max-width:650px;
-
-    max-height:90vh;
-    overflow:auto;
-
-    padding:25px;
-
-    border-radius:16px;
-
-    background:#07152f;
-
-    border:
-        1px solid
-        rgba(255,255,255,.15);
-}
-
-.modal-box h2{
-    margin-top:0;
-}
-
-.detail{
-    padding:10px 0;
-
-    border-bottom:
-        1px solid
-        rgba(255,255,255,.1);
-}
-
-.detail strong{
-    display:block;
-    color:#aeb8d0;
-    font-size:13px;
-    margin-bottom:4px;
-}
-
-.close{
-    float:right;
-    background:#752238;
+    color:#aeb8cd;
 }
 
 .message{
-    margin:15px 0;
-    padding:12px;
+    padding:10px 12px;
     border-radius:8px;
+    margin-bottom:12px;
     display:none;
 }
 
@@ -3538,21 +3635,97 @@ th{
 }
 
 .message.error{
-    background:#752238;
+    background:#6f1d2a;
 }
 
 .message.success{
-    background:#17603b;
+    background:#145c3c;
+}
+
+.modal{
+    display:none;
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+        rgba(0,0,0,.75);
+
+    align-items:center;
+    justify-content:center;
+
+    padding:15px;
+
+    z-index:999;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-box{
+    width:100%;
+    max-width:700px;
+
+    max-height:90vh;
+
+    overflow:auto;
+
+    background:
+        #07152f;
+
+    border:
+        1px solid
+        rgba(255,255,255,.16);
+
+    border-radius:15px;
+
+    padding:20px;
+}
+
+.modal-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-bottom:15px;
+}
+
+.close{
+    background:
+        rgba(255,255,255,.1);
+
+    color:#fff;
+}
+
+.detail{
+    display:grid;
+    gap:10px;
+}
+
+.detail-row{
+    padding:10px;
+    background:
+        rgba(255,255,255,.05);
+
+    border-radius:8px;
+}
+
+.detail-label{
+    color:#9eabc5;
+    font-size:12px;
+    margin-bottom:4px;
 }
 
 @media(max-width:800px){
 
-    .container{
-        padding:14px;
+    body{
+        padding:10px;
     }
 
     h1{
-        font-size:29px;
+        font-size:27px;
     }
 
     .stats{
@@ -3564,7 +3737,7 @@ th{
         grid-template-columns:1fr;
     }
 
-    .full{
+    .form-full{
         grid-column:auto;
     }
 }
@@ -3575,13 +3748,10 @@ th{
         grid-template-columns:1fr;
     }
 
-    .stat-value{
-        font-size:25px;
+    .stat-number{
+        font-size:24px;
     }
 
-    .toolbar button{
-        width:auto;
-    }
 }
 
 </style>
@@ -3600,116 +3770,97 @@ ALL WORLD BRANDS ADMIN
 Applications, payments and brands
 </div>
 
+<div id="message"
+     class="message">
+</div>
 
 <div class="stats">
 
 <div class="stat">
-<div class="stat-title">
+<div
+    id="statApplications"
+    class="stat-number">
+0
+</div>
+<div class="stat-label">
 Applications
 </div>
-
-<div
-    class="stat-value"
-    id="statApplications"
->
-0
 </div>
-</div>
-
 
 <div class="stat">
-<div class="stat-title">
+<div
+    id="statPaid"
+    class="stat-number">
+0
+</div>
+<div class="stat-label">
 Paid
 </div>
-
-<div
-    class="stat-value"
-    id="statPaid"
->
-0
 </div>
-</div>
-
 
 <div class="stat">
-<div class="stat-title">
-Unpaid
-</div>
-
 <div
-    class="stat-value"
     id="statUnpaid"
->
+    class="stat-number">
 0
 </div>
+<div class="stat-label">
+Unpaid / Pending
+</div>
 </div>
 
-
 <div class="stat">
-<div class="stat-title">
+<div
+    id="statBrands"
+    class="stat-number">
+0
+</div>
+<div class="stat-label">
 Brands
 </div>
-
-<div
-    class="stat-value"
-    id="statBrands"
->
-0
-</div>
 </div>
 
 </div>
-
 
 <div class="tabs">
 
 <button
     class="tab active"
-    onclick="showTab('applications',this)"
->
+    onclick="showTab('applications',this)">
 Applications
 </button>
 
 <button
     class="tab"
-    onclick="showTab('brands',this)"
->
+    onclick="showTab('brands',this)">
 Brands
 </button>
 
 <button
     class="tab"
-    onclick="showTab('add-brand',this)"
->
+    onclick="showTab('addbrand',this)">
 Add Brand
 </button>
 
 </div>
 
+<!-- APPLICATIONS -->
 
-<!-- =====================================================
-     APPLICATIONS
-===================================================== -->
-
-<div
+<section
     id="applications"
-    class="panel active"
->
+    class="panel active">
 
 <div class="toolbar">
 
 <input
     id="applicationSearch"
-    class="search"
-    placeholder="Search brand, country, email..."
+    placeholder="Search applications..."
     oninput="renderApplications()"
 >
 
 <select
     id="paymentFilter"
-    onchange="renderApplications()"
-    style="max-width:180px"
->
+    onchange="renderApplications()">
 
 <option value="">
 All payments
@@ -3719,12 +3870,12 @@ All payments
 Paid
 </option>
 
-<option value="unpaid">
-Unpaid
-</option>
-
 <option value="pending">
 Pending
+</option>
+
+<option value="unpaid">
+Unpaid
 </option>
 
 <option value="failed">
@@ -3733,12 +3884,9 @@ Failed
 
 </select>
 
-
 <select
     id="statusFilter"
-    onchange="renderApplications()"
-    style="max-width:180px"
->
+    onchange="renderApplications()">
 
 <option value="">
 All statuses
@@ -3746,6 +3894,10 @@ All statuses
 
 <option value="new">
 New
+</option>
+
+<option value="paid">
+Paid
 </option>
 
 <option value="approved">
@@ -3756,27 +3908,15 @@ Approved
 Rejected
 </option>
 
-<option value="paid">
-Paid
-</option>
-
 </select>
 
-
 <button
-    onclick="refreshAll()"
->
+    class="btn"
+    onclick="refreshAll()">
 Refresh
 </button>
 
 </div>
-
-
-<div
-    id="applicationMessage"
-    class="message"
-></div>
-
 
 <div class="table-wrap">
 
@@ -3789,7 +3929,6 @@ Refresh
 <th>ID</th>
 <th>Brand</th>
 <th>Country</th>
-<th>Owner</th>
 <th>Email</th>
 <th>Payment</th>
 <th>Status</th>
@@ -3799,15 +3938,11 @@ Refresh
 
 </thead>
 
-<tbody
-    id="applicationsBody"
->
+<tbody id="applicationsBody">
 
 <tr>
-<td
-    colspan="8"
-    class="empty"
->
+<td colspan="7"
+    class="empty">
 Loading...
 </td>
 </tr>
@@ -3818,35 +3953,29 @@ Loading...
 
 </div>
 
-</div>
+</section>
 
+<!-- BRANDS -->
 
-<!-- =====================================================
-     BRANDS
-===================================================== -->
-
-<div
+<section
     id="brands"
-    class="panel"
->
+    class="panel">
 
 <div class="toolbar">
 
 <input
     id="brandSearch"
-    class="search"
     placeholder="Search brands..."
     oninput="renderBrands()"
 >
 
 <button
-    onclick="refreshAll()"
->
+    class="btn"
+    onclick="refreshAll()">
 Refresh
 </button>
 
 </div>
-
 
 <div class="table-wrap">
 
@@ -3861,26 +3990,19 @@ Refresh
 <th>Country</th>
 <th>Category</th>
 <th>Verification</th>
-<th>Website</th>
 <th>Actions</th>
 
 </tr>
 
 </thead>
 
-<tbody
-    id="brandsBody"
->
+<tbody id="brandsBody">
 
 <tr>
-
-<td
-    colspan="7"
-    class="empty"
->
+<td colspan="6"
+    class="empty">
 Loading...
 </td>
-
 </tr>
 
 </tbody>
@@ -3889,40 +4011,28 @@ Loading...
 
 </div>
 
-</div>
+</section>
 
+<!-- ADD BRAND -->
 
-<!-- =====================================================
-     ADD BRAND
-===================================================== -->
-
-<div
-    id="add-brand"
-    class="panel"
->
+<section
+    id="addbrand"
+    class="panel">
 
 <h2>
 Add Brand
 </h2>
 
-
-<div
-    id="brandMessage"
-    class="message"
-></div>
-
-
 <form
     id="brandForm"
->
+    onsubmit="addBrand(event)">
 
 <div class="form-grid">
 
-
-<div class="field">
+<div>
 
 <label>
-Brand name *
+Brand name
 </label>
 
 <input
@@ -3933,17 +4043,15 @@ Brand name *
 
 </div>
 
-
-<div class="field">
+<div>
 
 <label>
-Country *
+Country
 </label>
 
 <select
     id="brandCountry"
-    required
->
+    required>
 
 <option value="">
 Select country
@@ -3953,8 +4061,7 @@ Select country
 
 </div>
 
-
-<div class="field">
+<div>
 
 <label>
 Category
@@ -3967,16 +4074,14 @@ Category
 
 </div>
 
-
-<div class="field">
+<div>
 
 <label>
 Verification
 </label>
 
 <select
-    id="brandVerification"
->
+    id="brandVerification">
 
 <option value="Verified">
 Verified
@@ -3990,8 +4095,7 @@ Unverified
 
 </div>
 
-
-<div class="field">
+<div>
 
 <label>
 Website
@@ -4000,12 +4104,12 @@ Website
 <input
     id="brandWebsite"
     type="url"
+    placeholder="https://..."
 >
 
 </div>
 
-
-<div class="field">
+<div>
 
 <label>
 Logo URL
@@ -4014,12 +4118,12 @@ Logo URL
 <input
     id="brandLogo"
     type="url"
+    placeholder="https://..."
 >
 
 </div>
 
-
-<div class="field full">
+<div class="form-full">
 
 <label>
 Description
@@ -4028,59 +4132,61 @@ Description
 <textarea
     id="brandDescription"
     rows="5"
-    maxlength="3000"
-></textarea>
+    maxlength="3000">
+</textarea>
 
 </div>
 
-
-</div>
-
-<br>
+<div class="form-full">
 
 <button
-    type="submit"
->
-Add Brand
+    class="btn-green"
+    type="submit">
+
+Create Brand
+
 </button>
+
+</div>
+
+</div>
 
 </form>
 
-</div>
+</section>
 
 </div>
 
-
-<!-- =====================================================
-     MODAL
-===================================================== -->
+<!-- MODAL -->
 
 <div
     id="modal"
-    class="modal"
-    onclick="closeModal(event)"
->
+    class="modal">
 
-<div
-    class="modal-box"
-    onclick="event.stopPropagation()"
->
+<div class="modal-box">
+
+<div class="modal-head">
+
+<h2 id="modalTitle">
+Details
+</h2>
 
 <button
     class="close"
-    onclick="closeModal()"
->
+    onclick="closeModal()">
 Close
 </button>
 
+</div>
+
 <div
     id="modalContent"
-></div>
-
+    class="detail">
 </div>
 
 </div>
 
+</div>
 
 <script>
 
@@ -4088,15 +4194,14 @@ let applications = [];
 let brands = [];
 let countries = [];
 
-
-/* =========================================================
+/* =====================================================
    API
-========================================================= */
+===================================================== */
 
 async function api(
     url,
     options = {}
-){
+) {
 
     const response =
         await fetch(
@@ -4109,44 +4214,82 @@ async function api(
 
     let data = null;
 
-    try{
-
+    try {
         data =
             await response.json();
-
-    }catch{
-
+    } catch {
         data = null;
-
     }
 
-    if(!response.ok){
+    if (!response.ok) {
 
         throw new Error(
             data?.error ||
             "Request failed."
         );
-
     }
 
     return data;
 }
 
+/* =====================================================
+   MESSAGE
+===================================================== */
 
-/* =========================================================
+function showMessage(
+    text,
+    type = "success"
+) {
+
+    const el =
+        document.getElementById(
+            "message"
+        );
+
+    el.textContent = text;
+
+    el.className =
+        "message show " + type;
+
+    setTimeout(
+        () => {
+            el.className =
+                "message";
+        },
+        3500
+    );
+}
+
+/* =====================================================
+   ESCAPE
+===================================================== */
+
+function escapeHtml(value) {
+
+    return String(
+        value ?? ""
+    )
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+/* =====================================================
    TABS
-========================================================= */
+===================================================== */
 
 function showTab(
     id,
     button
-){
+) {
 
     document
         .querySelectorAll(".panel")
         .forEach(
-            x =>
-                x.classList.remove(
+            el =>
+                el.classList.remove(
                     "active"
                 )
         );
@@ -4154,8 +4297,8 @@ function showTab(
     document
         .querySelectorAll(".tab")
         .forEach(
-            x =>
-                x.classList.remove(
+            el =>
+                el.classList.remove(
                     "active"
                 )
         );
@@ -4167,12 +4310,11 @@ function showTab(
     button.classList.add("active");
 }
 
+/* =====================================================
+   COUNTRIES
+===================================================== */
 
-/* =========================================================
-   LOAD COUNTRIES
-========================================================= */
-
-async function loadCountries(){
+async function loadCountries() {
 
     countries =
         await api(
@@ -4188,7 +4330,7 @@ async function loadCountries(){
         '<option value="">Select country</option>';
 
     countries.forEach(
-        c => {
+        country => {
 
             const option =
                 document.createElement(
@@ -4196,138 +4338,34 @@ async function loadCountries(){
                 );
 
             option.value =
-                c.id;
+                country.id;
 
             option.textContent =
-                c.name;
+                country.name;
 
             select.appendChild(
                 option
             );
-
         }
     );
 }
 
+/* =====================================================
+   APPLICATIONS
+===================================================== */
 
-/* =========================================================
-   LOAD APPLICATIONS
-========================================================= */
-
-async function loadApplications(){
+async function loadApplications() {
 
     applications =
         await api(
             "/api/admin/applications"
         );
 
-    updateStats();
-
     renderApplications();
-}
-
-
-/* =========================================================
-   LOAD BRANDS
-========================================================= */
-
-async function loadBrands(){
-
-    brands =
-        await api(
-            "/api/admin/brands"
-        );
-
     updateStats();
-
-    renderBrands();
 }
 
-
-/* =========================================================
-   REFRESH ALL
-========================================================= */
-
-async function refreshAll(){
-
-    try{
-
-        await Promise.all([
-            loadCountries(),
-            loadApplications(),
-            loadBrands()
-        ]);
-
-    }catch(error){
-
-        console.error(
-            "ADMIN REFRESH ERROR:",
-            error
-        );
-
-        showMessage(
-            "applicationMessage",
-            error.message,
-            "error"
-        );
-
-    }
-}
-
-
-/* =========================================================
-   STATS
-========================================================= */
-
-function updateStats(){
-
-    document.getElementById(
-        "statApplications"
-    ).textContent =
-        applications.length;
-
-
-    document.getElementById(
-        "statPaid"
-    ).textContent =
-        applications.filter(
-            x =>
-                String(
-                    x.payment_status || ""
-                )
-                .toLowerCase()
-                === "paid"
-        ).length;
-
-
-    document.getElementById(
-        "statUnpaid"
-    ).textContent =
-        applications.filter(
-            x =>
-                [
-                    "unpaid",
-                    "failed"
-                ].includes(
-                    String(
-                        x.payment_status || ""
-                    ).toLowerCase()
-                )
-        ).length;
-
-
-    document.getElementById(
-        "statBrands"
-    ).textContent =
-        brands.length;
-}
-
-
-/* =========================================================
-   APPLICATIONS
-========================================================= */
-
-function renderApplications(){
+function renderApplications() {
 
     const body =
         document.getElementById(
@@ -4335,138 +4373,120 @@ function renderApplications(){
         );
 
     const search =
-        String(
-            document.getElementById(
-                "applicationSearch"
-            ).value || ""
-        ).toLowerCase();
-
+        document.getElementById(
+            "applicationSearch"
+        ).value
+         .trim()
+         .toLowerCase();
 
     const payment =
         document.getElementById(
             "paymentFilter"
         ).value;
 
-
     const status =
         document.getElementById(
             "statusFilter"
         ).value;
 
-
-    const filtered =
+    const rows =
         applications.filter(
-            x => {
+            item => {
 
                 const text =
                     [
-                        x.id,
-                        x.brand_name,
-                        x.country,
-                        x.owner_name,
-                        x.email,
-                        x.phone
+                        item.id,
+                        item.brand_name,
+                        item.country,
+                        item.owner_name,
+                        item.email,
+                        item.phone
                     ]
                     .join(" ")
                     .toLowerCase();
 
+                if (
+                    search &&
+                    !text.includes(search)
+                ) {
+                    return false;
+                }
 
-                const paymentOk =
-                    !payment ||
+                if (
+                    payment &&
                     String(
-                        x.payment_status || ""
-                    )
-                    .toLowerCase()
-                    === payment;
+                        item.payment_status ||
+                        ""
+                    ).toLowerCase()
+                    !== payment
+                ) {
+                    return false;
+                }
 
-
-                const statusOk =
-                    !status ||
+                if (
+                    status &&
                     String(
-                        x.status || ""
-                    )
-                    .toLowerCase()
-                    === status;
+                        item.status ||
+                        ""
+                    ).toLowerCase()
+                    !== status
+                ) {
+                    return false;
+                }
 
-
-                return (
-                    text.includes(search) &&
-                    paymentOk &&
-                    statusOk
-                );
-
+                return true;
             }
         );
 
-
-    if(!filtered.length){
+    if (!rows.length) {
 
         body.innerHTML =
-            `
-            <tr>
-                <td
-                    colspan="8"
-                    class="empty"
-                >
-                    No applications found.
-                </td>
-            </tr>
-            `;
+            '<tr><td colspan="7" class="empty">No applications found.</td></tr>';
 
         return;
     }
 
-
     body.innerHTML =
-        filtered
-        .map(
-            x => {
+        rows.map(
+            item => {
 
                 const paymentStatus =
                     String(
-                        x.payment_status ||
+                        item.payment_status ||
                         "unpaid"
                     ).toLowerCase();
 
-
-                const status =
+                const appStatus =
                     String(
-                        x.status ||
+                        item.status ||
                         "new"
                     ).toLowerCase();
-
 
                 return `
 
 <tr>
 
 <td>
-${escapeHtml(x.id)}
+${escapeHtml(item.id)}
 </td>
 
 <td>
 <strong>
-${escapeHtml(x.brand_name)}
+${escapeHtml(item.brand_name)}
 </strong>
 </td>
 
 <td>
-${escapeHtml(x.country)}
+${escapeHtml(item.country)}
 </td>
 
 <td>
-${escapeHtml(x.owner_name)}
-</td>
-
-<td>
-${escapeHtml(x.email)}
+${escapeHtml(item.email)}
 </td>
 
 <td>
 
-<span
-    class="badge ${escapeHtml(paymentStatus)}"
->
+<span class="badge ${escapeHtml(paymentStatus)}">
 ${escapeHtml(paymentStatus)}
 </span>
 
@@ -4474,42 +4494,41 @@ ${escapeHtml(paymentStatus)}
 
 <td>
 
-<span
-    class="badge ${escapeHtml(status)}"
->
-${escapeHtml(status)}
+<span class="badge ${escapeHtml(appStatus)}">
+${escapeHtml(appStatus)}
 </span>
 
 </td>
 
 <td>
 
+<div class="actions">
+
 <button
-    onclick="viewApplication(${Number(x.id)})"
->
+    class="btn"
+    onclick="viewApplication(${Number(item.id)})">
 View
 </button>
 
 <button
-    class="success"
-    onclick="changeStatus(${Number(x.id)},'approved')"
->
+    class="btn-blue"
+    onclick="changeStatus(${Number(item.id)},'approved')">
 Approve
 </button>
 
 <button
-    class="danger"
-    onclick="changeStatus(${Number(x.id)},'rejected')"
->
+    class="btn-danger"
+    onclick="changeStatus(${Number(item.id)},'rejected')">
 Reject
 </button>
 
 <button
-    class="danger"
-    onclick="deleteApplication(${Number(x.id)})"
->
+    class="btn-danger"
+    onclick="deleteApplication(${Number(item.id)})">
 Delete
 </button>
+
+</div>
 
 </td>
 
@@ -4522,221 +4541,129 @@ Delete
         .join("");
 }
 
-
-/* =========================================================
+/* =====================================================
    VIEW APPLICATION
-========================================================= */
+===================================================== */
 
-function viewApplication(id){
+function viewApplication(id) {
 
-    const x =
+    const item =
         applications.find(
-            item =>
-                Number(item.id) ===
+            x =>
+                Number(x.id) ===
                 Number(id)
         );
 
-
-    if(!x){
+    if (!item) {
         return;
     }
 
+    document.getElementById(
+        "modalTitle"
+    ).textContent =
+        "Application #" + item.id;
 
     document.getElementById(
         "modalContent"
     ).innerHTML = `
 
-<h2>
-Application #${escapeHtml(x.id)}
-</h2>
-
-<div class="detail">
-
-<strong>
-Brand
-</strong>
-
-${escapeHtml(x.brand_name)}
-
+<div class="detail-row">
+<div class="detail-label">Brand</div>
+${escapeHtml(item.brand_name)}
 </div>
 
-
-<div class="detail">
-
-<strong>
-Country
-</strong>
-
-${escapeHtml(x.country)}
-
+<div class="detail-row">
+<div class="detail-label">Country</div>
+${escapeHtml(item.country)}
 </div>
 
-
-<div class="detail">
-
-<strong>
-Owner
-</strong>
-
-${escapeHtml(x.owner_name)}
-
+<div class="detail-row">
+<div class="detail-label">Owner</div>
+${escapeHtml(item.owner_name)}
 </div>
 
-
-<div class="detail">
-
-<strong>
-Email
-</strong>
-
-${escapeHtml(x.email)}
-
+<div class="detail-row">
+<div class="detail-label">Email</div>
+${escapeHtml(item.email)}
 </div>
 
-
-<div class="detail">
-
-<strong>
-Phone
-</strong>
-
-${escapeHtml(x.phone)}
-
+<div class="detail-row">
+<div class="detail-label">Phone</div>
+${escapeHtml(item.phone)}
 </div>
 
-
-<div class="detail">
-
-<strong>
-Website
-</strong>
-
-${escapeHtml(x.website)}
-
+<div class="detail-row">
+<div class="detail-label">Website</div>
+${escapeHtml(item.website)}
 </div>
 
-
-<div class="detail">
-
-<strong>
-Payment
-</strong>
-
-${escapeHtml(x.payment_status)}
-
+<div class="detail-row">
+<div class="detail-label">Payment</div>
+${escapeHtml(item.payment_status)}
 </div>
 
-
-<div class="detail">
-
-<strong>
-Amount
-</strong>
-
-${escapeHtml(x.payment_amount)}
-${escapeHtml(x.payment_currency)}
-
+<div class="detail-row">
+<div class="detail-label">Amount</div>
+${escapeHtml(item.payment_amount)}
+${escapeHtml(item.payment_currency)}
 </div>
 
-
-<div class="detail">
-
-<strong>
-OCTO Transaction
-</strong>
-
-${escapeHtml(x.octo_transaction_id)}
-
+<div class="detail-row">
+<div class="detail-label">Status</div>
+${escapeHtml(item.status)}
 </div>
 
-
-<div class="detail">
-
-<strong>
-Status
-</strong>
-
-${escapeHtml(x.status)}
-
+<div class="detail-row">
+<div class="detail-label">Description</div>
+${escapeHtml(item.description)}
 </div>
 
-
-<div class="detail">
-
-<strong>
-Created
-</strong>
-
-${escapeHtml(x.created_at)}
-
-</div>
-
-
-<div class="detail">
-
-<strong>
-Updated
-</strong>
-
-${escapeHtml(x.updated_at)}
-
-</div>
-
-
-<div class="detail">
-
-<strong>
-Description
-</strong>
-
-${escapeHtml(x.description)}
-
+<div class="detail-row">
+<div class="detail-label">Created</div>
+${escapeHtml(item.created_at)}
 </div>
 
 `;
 
-
     document
-        .getElementById(
-            "modal"
-        )
-        .classList.add(
-            "show"
-        );
+        .getElementById("modal")
+        .classList.add("show");
 }
 
+function closeModal() {
 
-/* =========================================================
+    document
+        .getElementById("modal")
+        .classList.remove("show");
+}
+
+/* =====================================================
    CHANGE STATUS
-========================================================= */
+===================================================== */
 
 async function changeStatus(
     id,
     status
-){
+) {
 
-    if(
+    if (
         !confirm(
             "Change application status to " +
             status +
             "?"
         )
-    ){
-
+    ) {
         return;
-
     }
 
-
-    try{
+    try {
 
         await api(
             "/api/admin/applications/" +
             encodeURIComponent(id),
-            {
 
-                method:
-                    "PATCH",
+            {
+                method:"PATCH",
 
                 headers:{
                     "Content-Type":
@@ -4747,179 +4674,169 @@ async function changeStatus(
                     JSON.stringify({
                         status
                     })
-
             }
         );
 
+        showMessage(
+            "Application status updated."
+        );
 
         await loadApplications();
 
-    }catch(error){
+    } catch(error) {
 
         showMessage(
-            "applicationMessage",
             error.message,
             "error"
         );
-
     }
 }
 
-
-/* =========================================================
+/* =====================================================
    DELETE APPLICATION
-========================================================= */
+===================================================== */
 
-async function deleteApplication(id){
+async function deleteApplication(
+    id
+) {
 
-    if(
+    if (
         !confirm(
-            "Delete this application permanently?"
+            "Delete this application?"
         )
-    ){
-
+    ) {
         return;
-
     }
 
-
-    try{
+    try {
 
         await api(
             "/api/admin/applications/" +
             encodeURIComponent(id),
+
             {
-                method:
-                    "DELETE"
+                method:"DELETE"
             }
         );
 
+        showMessage(
+            "Application deleted."
+        );
 
         await loadApplications();
 
-    }catch(error){
+    } catch(error) {
 
         showMessage(
-            "applicationMessage",
             error.message,
             "error"
         );
-
     }
 }
 
-
-/* =========================================================
+/* =====================================================
    BRANDS
-========================================================= */
+===================================================== */
 
-function renderBrands(){
+async function loadBrands() {
+
+    brands =
+        await api(
+            "/api/admin/brands"
+        );
+
+    renderBrands();
+    updateStats();
+}
+
+function renderBrands() {
 
     const body =
         document.getElementById(
             "brandsBody"
         );
 
-
     const search =
-        String(
-            document.getElementById(
-                "brandSearch"
-            ).value || ""
-        ).toLowerCase();
+        document.getElementById(
+            "brandSearch"
+        ).value
+         .trim()
+         .toLowerCase();
 
-
-    const filtered =
+    const rows =
         brands.filter(
-            x => {
+            item => {
 
                 const text =
                     [
-                        x.id,
-                        x.name,
-                        x.country_name,
-                        x.category,
-                        x.verification
+                        item.id,
+                        item.name,
+                        item.country_name,
+                        item.category
                     ]
                     .join(" ")
                     .toLowerCase();
 
-
-                return text.includes(
-                    search
+                return (
+                    !search ||
+                    text.includes(search)
                 );
-
             }
         );
 
-
-    if(!filtered.length){
+    if (!rows.length) {
 
         body.innerHTML =
-            `
-            <tr>
-                <td
-                    colspan="7"
-                    class="empty"
-                >
-                    No brands found.
-                </td>
-            </tr>
-            `;
+            '<tr><td colspan="6" class="empty">No brands found.</td></tr>';
 
         return;
     }
 
-
     body.innerHTML =
-        filtered
-        .map(
-            x => `
+        rows.map(
+            item => `
 
 <tr>
 
 <td>
-${escapeHtml(x.id)}
+${escapeHtml(item.id)}
 </td>
 
 <td>
-
 <strong>
-${escapeHtml(x.name)}
+${escapeHtml(item.name)}
 </strong>
-
 </td>
 
 <td>
-${escapeHtml(x.country_name)}
+${escapeHtml(item.country_name)}
 </td>
 
 <td>
-${escapeHtml(x.category)}
+${escapeHtml(item.category)}
 </td>
 
 <td>
-${escapeHtml(x.verification)}
+${escapeHtml(item.verification)}
 </td>
 
 <td>
-${escapeHtml(x.website)}
-</td>
 
-<td>
+<div class="actions">
 
 <button
-    onclick="viewBrand(${Number(x.id)})"
->
+    class="btn"
+    onclick="viewBrand(${Number(item.id)})">
 View
 </button>
 
 <button
-    class="danger"
-    onclick="deleteBrand(${Number(x.id)})"
->
+    class="btn-danger"
+    onclick="deleteBrand(${Number(item.id)})">
 Delete
 </button>
+
+</div>
 
 </td>
 
@@ -4930,397 +4847,289 @@ Delete
         .join("");
 }
 
-
-/* =========================================================
+/* =====================================================
    VIEW BRAND
-========================================================= */
+===================================================== */
 
-function viewBrand(id){
+function viewBrand(id) {
 
-    const x =
+    const item =
         brands.find(
-            item =>
-                Number(item.id) ===
+            x =>
+                Number(x.id) ===
                 Number(id)
         );
 
-
-    if(!x){
+    if (!item) {
         return;
     }
 
+    document.getElementById(
+        "modalTitle"
+    ).textContent =
+        "Brand #" + item.id;
 
     document.getElementById(
         "modalContent"
     ).innerHTML = `
 
-<h2>
-${escapeHtml(x.name)}
-</h2>
-
-
-<div class="detail">
-
-<strong>
-Country
-</strong>
-
-${escapeHtml(x.country_name)}
-
+<div class="detail-row">
+<div class="detail-label">Brand</div>
+${escapeHtml(item.name)}
 </div>
 
-
-<div class="detail">
-
-<strong>
-Category
-</strong>
-
-${escapeHtml(x.category)}
-
+<div class="detail-row">
+<div class="detail-label">Country</div>
+${escapeHtml(item.country_name)}
 </div>
 
-
-<div class="detail">
-
-<strong>
-Verification
-</strong>
-
-${escapeHtml(x.verification)}
-
+<div class="detail-row">
+<div class="detail-label">Category</div>
+${escapeHtml(item.category)}
 </div>
 
-
-<div class="detail">
-
-<strong>
-Website
-</strong>
-
-${escapeHtml(x.website)}
-
+<div class="detail-row">
+<div class="detail-label">Verification</div>
+${escapeHtml(item.verification)}
 </div>
 
-
-<div class="detail">
-
-<strong>
-Logo
-</strong>
-
-${escapeHtml(x.logo)}
-
+<div class="detail-row">
+<div class="detail-label">Website</div>
+${escapeHtml(item.website)}
 </div>
 
+<div class="detail-row">
+<div class="detail-label">Logo</div>
+${escapeHtml(item.logo)}
+</div>
 
-<div class="detail">
-
-<strong>
-Description
-</strong>
-
-${escapeHtml(x.description)}
-
+<div class="detail-row">
+<div class="detail-label">Description</div>
+${escapeHtml(item.description)}
 </div>
 
 `;
 
-
     document
-        .getElementById(
-            "modal"
-        )
-        .classList.add(
-            "show"
-        );
+        .getElementById("modal")
+        .classList.add("show");
 }
 
-
-/* =========================================================
+/* =====================================================
    DELETE BRAND
-========================================================= */
+===================================================== */
 
-async function deleteBrand(id){
+async function deleteBrand(
+    id
+) {
 
-    if(
+    if (
         !confirm(
-            "Delete this brand permanently?"
+            "Delete this brand?"
         )
-    ){
-
+    ) {
         return;
-
     }
 
-
-    try{
+    try {
 
         await api(
             "/api/admin/brands/" +
             encodeURIComponent(id),
+
             {
-                method:
-                    "DELETE"
+                method:"DELETE"
             }
         );
 
+        showMessage(
+            "Brand deleted."
+        );
 
         await loadBrands();
 
-    }catch(error){
+    } catch(error) {
 
         showMessage(
-            "applicationMessage",
             error.message,
             "error"
         );
-
     }
 }
 
-
-/* =========================================================
+/* =====================================================
    ADD BRAND
-========================================================= */
+===================================================== */
 
-document
-    .getElementById(
-        "brandForm"
-    )
-    .addEventListener(
-        "submit",
-        async function(event){
+async function addBrand(
+    event
+) {
 
-            event.preventDefault();
+    event.preventDefault();
 
+    const data = {
 
-            try{
+        name:
+            document.getElementById(
+                "brandName"
+            ).value.trim(),
 
-                const data = {
+        country_id:
+            Number(
+                document.getElementById(
+                    "brandCountry"
+                ).value
+            ),
 
-                    name:
-                        document
-                        .getElementById(
-                            "brandName"
-                        )
-                        .value
-                        .trim(),
+        category:
+            document.getElementById(
+                "brandCategory"
+            ).value.trim(),
 
+        verification:
+            document.getElementById(
+                "brandVerification"
+            ).value,
 
-                    country_id:
-                        Number(
-                            document
-                            .getElementById(
-                                "brandCountry"
-                            )
-                            .value
-                        ),
+        website:
+            document.getElementById(
+                "brandWebsite"
+            ).value.trim(),
 
+        logo:
+            document.getElementById(
+                "brandLogo"
+            ).value.trim(),
 
-                    category:
-                        document
-                        .getElementById(
-                            "brandCategory"
-                        )
-                        .value
-                        .trim(),
+        description:
+            document.getElementById(
+                "brandDescription"
+            ).value.trim()
+    };
 
+    try {
 
-                    verification:
-                        document
-                        .getElementById(
-                            "brandVerification"
-                        )
-                        .value,
+        await api(
+            "/api/admin/brands",
 
+            {
+                method:"POST",
 
-                    website:
-                        document
-                        .getElementById(
-                            "brandWebsite"
-                        )
-                        .value
-                        .trim(),
+                headers:{
+                    "Content-Type":
+                        "application/json"
+                },
 
-
-                    logo:
-                        document
-                        .getElementById(
-                            "brandLogo"
-                        )
-                        .value
-                        .trim(),
-
-
-                    description:
-                        document
-                        .getElementById(
-                            "brandDescription"
-                        )
-                        .value
-                        .trim()
-
-                };
-
-
-                await api(
-                    "/api/admin/brands",
-                    {
-
-                        method:
-                            "POST",
-
-                        headers:{
-                            "Content-Type":
-                                "application/json"
-                        },
-
-                        body:
-                            JSON.stringify(
-                                data
-                            )
-
-                    }
-                );
-
-
-                document
-                    .getElementById(
-                        "brandForm"
-                    )
-                    .reset();
-
-
-                showMessage(
-                    "brandMessage",
-                    "Brand added successfully.",
-                    "success"
-                );
-
-
-                await loadBrands();
-
-
-            }catch(error){
-
-                showMessage(
-                    "brandMessage",
-                    error.message,
-                    "error"
-                );
-
+                body:
+                    JSON.stringify(data)
             }
-
-        }
-    );
-
-
-/* =========================================================
-   MODAL
-========================================================= */
-
-function closeModal(){
-
-    document
-        .getElementById(
-            "modal"
-        )
-        .classList.remove(
-            "show"
-        );
-}
-
-
-/* =========================================================
-   MESSAGE
-========================================================= */
-
-function showMessage(
-    id,
-    text,
-    type
-){
-
-    const element =
-        document.getElementById(
-            id
         );
 
+        document
+            .getElementById(
+                "brandForm"
+            )
+            .reset();
 
-    if(!element){
-        return;
+        showMessage(
+            "Brand created successfully."
+        );
+
+        await loadBrands();
+
+    } catch(error) {
+
+        showMessage(
+            error.message,
+            "error"
+        );
     }
-
-
-    element.textContent =
-        text;
-
-
-    element.className =
-        "message show " +
-        type;
-
-
-    setTimeout(
-        () => {
-
-            element.className =
-                "message";
-
-        },
-        5000
-    );
 }
 
+/* =====================================================
+   STATS
+===================================================== */
 
-/* =========================================================
-   ESCAPE HTML
-========================================================= */
+function updateStats() {
 
-function escapeHtml(value){
+    const total =
+        applications.length;
 
-    return String(
-        value ?? ""
-    )
+    const paid =
+        applications.filter(
+            x =>
+                String(
+                    x.payment_status ||
+                    ""
+                ).toLowerCase() ===
+                "paid"
+        ).length;
 
-    .replace(
-        /&/g,
-        "&amp;"
-    )
+    const unpaid =
+        applications.filter(
+            x =>
+                String(
+                    x.payment_status ||
+                    ""
+                ).toLowerCase() !==
+                "paid"
+        ).length;
 
-    .replace(
-        /</g,
-        "&lt;"
-    )
+    document.getElementById(
+        "statApplications"
+    ).textContent =
+        total;
 
-    .replace(
-        />/g,
-        "&gt;"
-    )
+    document.getElementById(
+        "statPaid"
+    ).textContent =
+        paid;
 
-    .replace(
-        /"/g,
-        "&quot;"
-    )
+    document.getElementById(
+        "statUnpaid"
+    ).textContent =
+        unpaid;
 
-    .replace(
-        /'/g,
-        "&#039;"
-    );
+    document.getElementById(
+        "statBrands"
+    ).textContent =
+        brands.length;
 }
 
+/* =====================================================
+   REFRESH
+===================================================== */
 
-/* =========================================================
-   START ADMIN
-========================================================= */
+async function refreshAll() {
+
+    try {
+
+        await Promise.all([
+            loadCountries(),
+            loadApplications(),
+            loadBrands()
+        ]);
+
+    } catch(error) {
+
+        console.error(error);
+
+        showMessage(
+            error.message,
+            "error"
+        );
+    }
+}
+
+/* =====================================================
+   START
+===================================================== */
 
 refreshAll();
 
 </script>
 
 </body>
-
 </html>
         `);
     }
@@ -5391,6 +5200,31 @@ app.use(
 );
 
 /* =========================================================
+   ERROR HANDLER
+========================================================= */
+
+app.use(
+    (error, req, res, next) => {
+
+        console.error(
+            "EXPRESS ERROR:",
+            error
+        );
+
+        if (
+            res.headersSent
+        ) {
+            return next(error);
+        }
+
+        res.status(500).json({
+            error:
+                "Internal server error."
+        });
+    }
+);
+
+/* =========================================================
    START SERVER
 ========================================================= */
 
@@ -5400,10 +5234,23 @@ initializeDatabase()
 
         app.listen(
             PORT,
+            "0.0.0.0",
             () => {
 
                 console.log(
-                    `ALL WORLD BRANDS running on port ${PORT}`
+                    "===================================="
+                );
+
+                console.log(
+                    "ALL WORLD BRANDS"
+                );
+
+                console.log(
+                    `Server running on port ${PORT}`
+                );
+
+                console.log(
+                    `Database: ${DB_FILE}`
                 );
 
                 console.log(
@@ -5417,6 +5264,10 @@ initializeDatabase()
                 console.log(
                     `Payment: ${BRAND_APPLICATION_AMOUNT} ${BRAND_APPLICATION_CURRENCY}`
                 );
+
+                console.log(
+                    "===================================="
+                );
             }
         );
 
@@ -5425,9 +5276,10 @@ initializeDatabase()
     .catch(error => {
 
         console.error(
-            "Database initialization failed:",
-            error
+            "DATABASE INITIALIZATION FAILED:"
         );
+
+        console.error(error);
 
         process.exit(1);
     });
@@ -5436,24 +5288,35 @@ initializeDatabase()
    SHUTDOWN
 ========================================================= */
 
+function shutdown() {
+
+    console.log(
+        "Shutting down server..."
+    );
+
+    appDb.close(
+        error => {
+
+            if (error) {
+                console.error(
+                    "Database close error:",
+                    error
+                );
+            }
+
+            process.exit(
+                error ? 1 : 0
+            );
+        }
+    );
+}
+
 process.on(
     "SIGINT",
-    () => {
-
-        appDb.close(() => {
-            process.exit(0);
-        });
-
-    }
+    shutdown
 );
 
 process.on(
     "SIGTERM",
-    () => {
-
-        appDb.close(() => {
-            process.exit(0);
-        });
-
-    }
+    shutdown
 );
