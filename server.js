@@ -2180,3 +2180,589 @@ app.listen(
     );
   }
 );
+/* =========================================================
+   OCTO CALLBACK
+   ========================================================= */
+
+app.post("/api/octo/notify", async (req, res) => {
+  try {
+    const payload = req.body || {};
+
+    const applicationId =
+      Number(
+        payload.application_id ||
+        payload.applicationId ||
+        payload.reference ||
+        payload.reference_id ||
+        0
+      ) || 0;
+
+    const transactionId =
+      payload.transaction_id ||
+      payload.transactionId ||
+      payload.octo_transaction_id ||
+      "";
+
+    const paymentUuid =
+      payload.payment_uuid ||
+      payload.paymentUuid ||
+      payload.octo_payment_uuid ||
+      "";
+
+    const status = String(
+      payload.status ||
+      payload.payment_status ||
+      payload.state ||
+      ""
+    ).toLowerCase();
+
+    if (!applicationId) {
+      return res.status(400).json({
+        ok: false,
+        error: "application_id is required"
+      });
+    }
+
+    const application = db
+      .prepare("SELECT * FROM applications WHERE id = ?")
+      .get(applicationId);
+
+    if (!application) {
+      return res.status(404).json({
+        ok: false,
+        error: "Application not found"
+      });
+    }
+
+    /*
+      MUHIM:
+      Client yuborgan "paid" qiymatiga ishonilmaydi.
+      To'lov faqat OCTO server orqali tekshirilgandan
+      keyin paid qilinadi.
+    */
+
+    let verified = false;
+
+    if (OCTO_SECRET) {
+      try {
+        verified = await verifyOctoApplication(
+          applicationId,
+          transactionId,
+          paymentUuid
+        );
+      } catch (verifyError) {
+        console.error(
+          "OCTO callback verification error:",
+          verifyError.message
+        );
+      }
+    }
+
+    if (verified) {
+      db.prepare(`
+        UPDATE applications
+        SET
+          payment_status = 'paid',
+          octo_transaction_id = COALESCE(NULLIF(?, ''), octo_transaction_id),
+          octo_payment_uuid = COALESCE(NULLIF(?, ''), octo_payment_uuid),
+          paid_at = CURRENT_TIMESTAMP
+        WHERE id = ?
+      `).run(
+        transactionId,
+        paymentUuid,
+        applicationId
+      );
+
+      return res.json({
+        ok: true,
+        payment_status: "paid"
+      });
+    }
+
+    /*
+      Agar OCTO hali tasdiqlamagan bo'lsa,
+      arizani paid qilmaymiz.
+    */
+
+    if (
+      status === "failed" ||
+      status === "cancelled" ||
+      status === "canceled"
+    ) {
+      db.prepare(`
+        UPDATE applications
+        SET payment_status = 'failed'
+        WHERE id = ?
+      `).run(applicationId);
+
+      return res.json({
+        ok: true,
+        payment_status: "failed"
+      });
+    }
+
+    return res.json({
+      ok: true,
+      payment_status: application.payment_status || "unpaid"
+    });
+
+  } catch (error) {
+    console.error("OCTO notify error:", error);
+
+    return res.status(500).json({
+      ok: false,
+      error: "Callback processing failed"
+    });
+  }
+});
+
+
+/* =========================================================
+   ADMIN — BRANDS
+   ========================================================= */
+
+app.get("/api/admin/brands", adminAuth, (req, res) => {
+  try {
+    const brands = db.prepare(`
+      SELECT
+        brands.*,
+        countries.name AS country_name
+      FROM brands
+      LEFT JOIN countries
+        ON countries.id = brands.country_id
+      ORDER BY brands.id DESC
+    `).all();
+
+    res.json({
+      ok: true,
+      brands
+    });
+
+  } catch (error) {
+    console.error("Admin brands error:", error);
+
+    res.status(500).json({
+      ok: false,
+      error: "Failed to load brands"
+    });
+  }
+});
+
+
+/* =========================================================
+   ADMIN — ADD BRAND
+   ========================================================= */
+
+app.post("/api/admin/brands", adminAuth, (req, res) => {
+  try {
+    const {
+      name,
+      country_id,
+      category,
+      verification,
+      description,
+      website,
+      logo
+    } = req.body || {};
+
+    const brandName = String(name || "").trim();
+
+    if (!brandName) {
+      return res.status(400).json({
+        ok: false,
+        error: "Brand name is required"
+      });
+    }
+
+    const countryId = Number(country_id);
+
+    if (!countryId) {
+      return res.status(400).json({
+        ok: false,
+        error: "Country is required"
+      });
+    }
+
+    const country = db
+      .prepare("SELECT id, name FROM countries WHERE id = ?")
+      .get(countryId);
+
+    if (!country) {
+      return res.status(400).json({
+        ok: false,
+        error: "Country not found"
+      });
+    }
+
+    const cleanCategory = String(category || "").trim();
+    const cleanVerification =
+      String(verification || "Unverified").trim();
+
+    const cleanDescription =
+      String(description || "").trim();
+
+    const cleanWebsite =
+      String(website || "").trim();
+
+    const cleanLogo =
+      String(logo || "").trim();
+
+    if (cleanWebsite && !isSafeUrl(cleanWebsite)) {
+      return res.status(400).json({
+        ok: false,
+        error: "Invalid website URL"
+      });
+    }
+
+    if (cleanLogo && !isSafeUrl(cleanLogo)) {
+      return res.status(400).json({
+        ok: false,
+        error: "Invalid logo URL"
+      });
+    }
+
+    if (
+      isBlockedContent(
+        `${brandName} ${cleanCategory} ${cleanDescription}`
+      )
+    ) {
+      return res.status(400).json({
+        ok: false,
+        error: "Content is not allowed"
+      });
+    }
+
+    const result = db.prepare(`
+      INSERT INTO brands (
+        name,
+        country_id,
+        category,
+        verification,
+        description,
+        website,
+        logo
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      brandName,
+      countryId,
+      cleanCategory,
+      cleanVerification,
+      cleanDescription,
+      cleanWebsite,
+      cleanLogo
+    );
+
+    const brand = db
+      .prepare(`
+        SELECT
+          brands.*,
+          countries.name AS country_name
+        FROM brands
+        LEFT JOIN countries
+          ON countries.id = brands.country_id
+        WHERE brands.id = ?
+      `)
+      .get(result.lastInsertRowid);
+
+    res.status(201).json({
+      ok: true,
+      brand
+    });
+
+  } catch (error) {
+    console.error("Add brand error:", error);
+
+    if (
+      String(error.message || "")
+        .toLowerCase()
+        .includes("unique")
+    ) {
+      return res.status(409).json({
+        ok: false,
+        error: "Brand already exists"
+      });
+    }
+
+    res.status(500).json({
+      ok: false,
+      error: "Failed to create brand"
+    });
+  }
+});
+
+
+/* =========================================================
+   ADMIN — DELETE BRAND
+   ========================================================= */
+
+app.delete("/api/admin/brands/:id", adminAuth, (req, res) => {
+  try {
+    const id = Number(req.params.id);
+
+    if (!id) {
+      return res.status(400).json({
+        ok: false,
+        error: "Invalid brand ID"
+      });
+    }
+
+    const brand = db
+      .prepare("SELECT id FROM brands WHERE id = ?")
+      .get(id);
+
+    if (!brand) {
+      return res.status(404).json({
+        ok: false,
+        error: "Brand not found"
+      });
+    }
+
+    db.prepare("DELETE FROM brands WHERE id = ?").run(id);
+
+    res.json({
+      ok: true,
+      message: "Brand deleted"
+    });
+
+  } catch (error) {
+    console.error("Delete brand error:", error);
+
+    res.status(500).json({
+      ok: false,
+      error: "Failed to delete brand"
+    });
+  }
+});
+
+
+/* =========================================================
+   ADMIN — APPLICATIONS
+   ========================================================= */
+
+app.get("/api/admin/applications", adminAuth, (req, res) => {
+  try {
+    const applications = db.prepare(`
+      SELECT *
+      FROM applications
+      ORDER BY id DESC
+    `).all();
+
+    res.json({
+      ok: true,
+      applications
+    });
+
+  } catch (error) {
+    console.error("Admin applications error:", error);
+
+    res.status(500).json({
+      ok: false,
+      error: "Failed to load applications"
+    });
+  }
+});
+
+
+/* =========================================================
+   ADMIN — UPDATE APPLICATION STATUS
+   ========================================================= */
+
+app.patch("/api/admin/applications/:id", adminAuth, (req, res) => {
+  try {
+    const id = Number(req.params.id);
+
+    if (!id) {
+      return res.status(400).json({
+        ok: false,
+        error: "Invalid application ID"
+      });
+    }
+
+    const status = String(
+      req.body?.status || ""
+    ).trim().toLowerCase();
+
+    const allowedStatuses = [
+      "new",
+      "approved",
+      "rejected"
+    ];
+
+    if (!allowedStatuses.includes(status)) {
+      return res.status(400).json({
+        ok: false,
+        error: "Invalid status"
+      });
+    }
+
+    const application = db
+      .prepare("SELECT id FROM applications WHERE id = ?")
+      .get(id);
+
+    if (!application) {
+      return res.status(404).json({
+        ok: false,
+        error: "Application not found"
+      });
+    }
+
+    db.prepare(`
+      UPDATE applications
+      SET status = ?
+      WHERE id = ?
+    `).run(
+      status,
+      id
+    );
+
+    const updated = db
+      .prepare(`
+        SELECT *
+        FROM applications
+        WHERE id = ?
+      `)
+      .get(id);
+
+    res.json({
+      ok: true,
+      application: updated
+    });
+
+  } catch (error) {
+    console.error(
+      "Update application status error:",
+      error
+    );
+
+    res.status(500).json({
+      ok: false,
+      error: "Failed to update application"
+    });
+  }
+});
+
+
+/* =========================================================
+   ADMIN — DELETE APPLICATION
+   ========================================================= */
+
+app.delete("/api/admin/applications/:id", adminAuth, (req, res) => {
+  try {
+    const id = Number(req.params.id);
+
+    if (!id) {
+      return res.status(400).json({
+        ok: false,
+        error: "Invalid application ID"
+      });
+    }
+
+    const application = db
+      .prepare("SELECT id FROM applications WHERE id = ?")
+      .get(id);
+
+    if (!application) {
+      return res.status(404).json({
+        ok: false,
+        error: "Application not found"
+      });
+    }
+
+    db.prepare(`
+      DELETE FROM applications
+      WHERE id = ?
+    `).run(id);
+
+    res.json({
+      ok: true,
+      message: "Application deleted"
+    });
+
+  } catch (error) {
+    console.error(
+      "Delete application error:",
+      error
+    );
+
+    res.status(500).json({
+      ok: false,
+      error: "Failed to delete application"
+    });
+  }
+});
+
+
+/* =========================================================
+   PUBLIC FALLBACK
+   ========================================================= */
+
+app.get(/.*/, (req, res) => {
+  res.sendFile(
+    path.join(
+      PUBLIC_DIR,
+      "index.html"
+    )
+  );
+});
+
+
+/* =========================================================
+   404 HANDLER
+   ========================================================= */
+
+app.use((req, res) => {
+  res.status(404).json({
+    ok: false,
+    error: "Not found"
+  });
+});
+
+
+/* =========================================================
+   ERROR HANDLER
+   ========================================================= */
+
+app.use((err, req, res, next) => {
+  console.error("Unhandled server error:", err);
+
+  if (res.headersSent) {
+    return next(err);
+  }
+
+  res.status(500).json({
+    ok: false,
+    error: "Internal server error"
+  });
+});
+
+
+/* =========================================================
+   START SERVER
+   ========================================================= */
+
+app.listen(
+  PORT,
+  "0.0.0.0",
+  () => {
+    console.log(
+      `ALL WORLD BRANDS server running on port ${PORT}`
+    );
+
+    console.log(
+      `Database: ${DB_FILE}`
+    );
+
+    console.log(
+      `Site: ${SITE_URL}`
+    );
+
+    console.log(
+      `OCTO shop ID: ${OCTO_SHOP_ID}`
+    );
+
+    console.log(
+      `OCTO configured: ${OCTO_SECRET ? "YES" : "NO"}`
+    );
+  }
+);
