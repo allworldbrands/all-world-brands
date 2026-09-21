@@ -643,7 +643,6 @@ const COUNTRY_LANGUAGE_MAP = {
 
 /* =========================================================
    COUNTRIES + TERRITORIES
-   Project target: 261
 ========================================================= */
 
 const COUNTRIES = [
@@ -868,7 +867,6 @@ const COUNTRIES = [
     ["Zambia", "ZM"],
     ["Zimbabwe", "ZW"],
 
-    /* Territories / special regions */
     ["Åland Islands", "AX"],
     ["American Samoa", "AS"],
     ["Anguilla", "AI"],
@@ -905,11 +903,6 @@ const COUNTRIES = [
     ["Wallis and Futuna", "WF"],
     ["Western Sahara", "EH"]
 ];
-
-/*
-   The project uses an expanded country/territory directory.
-   Keep the database synchronized with this array.
-*/
 
 /* =========================================================
    DATABASE INITIALIZATION
@@ -1036,10 +1029,6 @@ async function initializeDatabase() {
         "DATETIME"
     );
 
-    /* =====================================================
-       INSERT COUNTRIES
-    ===================================================== */
-
     for (const [name, code] of COUNTRIES) {
 
         await dbRun(
@@ -1054,10 +1043,6 @@ async function initializeDatabase() {
             [name, code]
         );
     }
-
-    /* =====================================================
-       STARTER BRANDS
-    ===================================================== */
 
     const starterBrands = [
 
@@ -1697,8 +1682,6 @@ app.get(
 
 /* =========================================================
    SEARCH
-   IMPORTANT:
-   ONLY BRAND NAME
 ========================================================= */
 
 app.get(
@@ -2325,14 +2308,6 @@ async function verifyAndUpdatePayment(
                 application.payment_currency
             ).toUpperCase();
 
-    /*
-       IMPORTANT:
-       We do NOT trust the frontend.
-       Payment becomes paid only after
-       OCTO status + amount + currency
-       have been verified by server.
-    */
-
     if (
         isOctoPaidStatus(status) &&
         amountMatches &&
@@ -2704,15 +2679,246 @@ app.get(
                     `
                 );
 
+            res.setHeader(
+                "Cache-Control",
+                "no-store"
+            );
+
             res.json(rows);
 
         } catch (error) {
 
-            console.error(error);
+            console.error(
+                "ADMIN APPLICATIONS ERROR:",
+                error
+            );
 
             res.status(500).json({
                 error:
                     "Unable to load applications."
+            });
+        }
+    }
+);
+
+/* =========================================================
+   ADMIN UPDATE APPLICATION
+========================================================= */
+
+app.patch(
+    "/api/admin/applications/:id",
+    adminAuth,
+    async (req, res) => {
+
+        try {
+
+            const id =
+                Number(req.params.id);
+
+            if (!Number.isInteger(id)) {
+
+                return res.status(400).json({
+                    error:
+                        "Invalid application ID."
+                });
+            }
+
+            const status =
+                normalizeText(
+                    req.body.status,
+                    30
+                ).toLowerCase();
+
+            const allowedStatuses = [
+                "new",
+                "approved",
+                "rejected"
+            ];
+
+            if (
+                !allowedStatuses.includes(
+                    status
+                )
+            ) {
+
+                return res.status(400).json({
+                    error:
+                        "Invalid status."
+                });
+            }
+
+            const application =
+                await dbGet(
+                    `
+                    SELECT id
+                    FROM applications
+                    WHERE id = ?
+                    LIMIT 1
+                    `,
+                    [id]
+                );
+
+            if (!application) {
+
+                return res.status(404).json({
+                    error:
+                        "Application not found."
+                });
+            }
+
+            await dbRun(
+                `
+                UPDATE applications
+
+                SET
+                    status = ?,
+                    updated_at = CURRENT_TIMESTAMP
+
+                WHERE id = ?
+                `,
+                [
+                    status,
+                    id
+                ]
+            );
+
+            res.json({
+                ok: true,
+                id,
+                status
+            });
+
+        } catch (error) {
+
+            console.error(
+                "ADMIN UPDATE APPLICATION ERROR:",
+                error
+            );
+
+            res.status(500).json({
+                error:
+                    "Unable to update application."
+            });
+        }
+    }
+);
+
+/* =========================================================
+   ADMIN DELETE APPLICATION
+========================================================= */
+
+app.delete(
+    "/api/admin/applications/:id",
+    adminAuth,
+    async (req, res) => {
+
+        try {
+
+            const id =
+                Number(req.params.id);
+
+            if (!Number.isInteger(id)) {
+
+                return res.status(400).json({
+                    error:
+                        "Invalid application ID."
+                });
+            }
+
+            const result =
+                await dbRun(
+                    `
+                    DELETE FROM applications
+                    WHERE id = ?
+                    `,
+                    [id]
+                );
+
+            if (
+                result.changes === 0
+            ) {
+
+                return res.status(404).json({
+                    error:
+                        "Application not found."
+                });
+            }
+
+            res.json({
+                ok: true
+            });
+
+        } catch (error) {
+
+            console.error(
+                "ADMIN DELETE APPLICATION ERROR:",
+                error
+            );
+
+            res.status(500).json({
+                error:
+                    "Unable to delete application."
+            });
+        }
+    }
+);
+
+/* =========================================================
+   ADMIN BRANDS LIST
+========================================================= */
+
+app.get(
+    "/api/admin/brands",
+    adminAuth,
+    async (req, res) => {
+
+        try {
+
+            const rows =
+                await dbAll(
+                    `
+                    SELECT
+                        b.id,
+                        b.name,
+                        b.logo,
+                        b.category,
+                        b.description,
+                        b.website,
+                        b.verification,
+                        b.created_at,
+
+                        c.name AS country_name,
+                        c.code AS country_code
+
+                    FROM brands b
+
+                    LEFT JOIN countries c
+                        ON c.id = b.country_id
+
+                    ORDER BY
+                        b.id DESC
+
+                    LIMIT 1000
+                    `
+                );
+
+            res.setHeader(
+                "Cache-Control",
+                "no-store"
+            );
+
+            res.json(rows);
+
+        } catch (error) {
+
+            console.error(
+                "ADMIN BRANDS ERROR:",
+                error
+            );
+
+            res.status(500).json({
+                error:
+                    "Unable to load brands."
             });
         }
     }
@@ -2913,13 +3119,24 @@ app.delete(
                     });
             }
 
-            await dbRun(
-                `
-                DELETE FROM brands
-                WHERE id = ?
-                `,
-                [id]
-            );
+            const result =
+                await dbRun(
+                    `
+                    DELETE FROM brands
+                    WHERE id = ?
+                    `,
+                    [id]
+                );
+
+            if (
+                result.changes === 0
+            ) {
+
+                return res.status(404).json({
+                    error:
+                        "Brand not found."
+                });
+            }
 
             res.json({
                 ok: true
@@ -2946,6 +3163,21 @@ app.get(
     adminAuth,
     (req, res) => {
 
+        res.setHeader(
+            "Cache-Control",
+            "no-store, no-cache, must-revalidate, proxy-revalidate"
+        );
+
+        res.setHeader(
+            "Pragma",
+            "no-cache"
+        );
+
+        res.setHeader(
+            "Expires",
+            "0"
+        );
+
         res.send(`
 <!DOCTYPE html>
 <html lang="en">
@@ -2959,9 +3191,12 @@ app.get(
     content="width=device-width,initial-scale=1"
 >
 
-<title>
-ALL WORLD BRANDS ADMIN
-</title>
+<meta
+    http-equiv="Cache-Control"
+    content="no-cache,no-store,must-revalidate"
+>
+
+<title>ALL WORLD BRANDS ADMIN</title>
 
 <style>
 
@@ -2971,8 +3206,9 @@ ALL WORLD BRANDS ADMIN
 
 body{
     margin:0;
-    padding:25px;
     font-family:Arial,sans-serif;
+    color:#fff;
+
     background:
         linear-gradient(
             135deg,
@@ -2980,48 +3216,371 @@ body{
             #07183d,
             #2a0610
         );
-    color:#fff;
+
+    min-height:100vh;
+}
+
+.container{
+    width:100%;
+    max-width:1400px;
+    margin:auto;
+    padding:24px;
 }
 
 h1{
-    margin-bottom:10px;
+    margin:0;
+    font-size:38px;
 }
 
-.info{
-    opacity:.8;
-    margin-bottom:25px;
+.subtitle{
+    margin-top:8px;
+    color:#b9c2d9;
+    font-size:17px;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:
+        repeat(4,minmax(0,1fr));
+    gap:15px;
+    margin:25px 0;
+}
+
+.stat{
+    padding:20px;
+    border-radius:15px;
+
+    background:
+        rgba(255,255,255,.07);
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+}
+
+.stat-title{
+    color:#aeb8d0;
+    font-size:14px;
+}
+
+.stat-value{
+    margin-top:8px;
+    font-size:30px;
+    font-weight:bold;
+}
+
+.tabs{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:20px;
+}
+
+.tab{
+    border:0;
+    border-radius:10px;
+    padding:12px 18px;
+    cursor:pointer;
+
+    background:#17284f;
+    color:#fff;
+    font-weight:bold;
+}
+
+.tab.active{
+    background:#315bb5;
+}
+
+.panel{
+    display:none;
+
+    padding:20px;
+
+    border-radius:16px;
+
+    background:
+        rgba(0,0,0,.28);
+
+    border:
+        1px solid
+        rgba(255,255,255,.1);
+}
+
+.panel.active{
+    display:block;
+}
+
+.toolbar{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:18px;
+}
+
+input,
+select,
+textarea{
+    width:100%;
+
+    padding:12px;
+
+    border-radius:9px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.18);
+
+    background:#07152f;
+    color:#fff;
+}
+
+.search{
+    max-width:400px;
+}
+
+button{
+    border:0;
+    border-radius:8px;
+
+    padding:10px 14px;
+
+    cursor:pointer;
+
+    color:#fff;
+    background:#315bb5;
+}
+
+button:hover{
+    opacity:.85;
+}
+
+button.danger{
+    background:#9b2435;
+}
+
+button.success{
+    background:#207a4a;
+}
+
+button.gray{
+    background:#46516a;
+}
+
+.table-wrap{
+    width:100%;
+    overflow-x:auto;
 }
 
 table{
     width:100%;
+    min-width:900px;
     border-collapse:collapse;
-    background:rgba(0,0,0,.35);
+
+    background:
+        rgba(0,0,0,.22);
 }
 
 th,
 td{
-    padding:10px;
-    border:1px solid rgba(255,255,255,.15);
+    padding:11px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
     text-align:left;
 }
 
 th{
-    background:rgba(255,255,255,.08);
+    background:
+        rgba(255,255,255,.08);
 }
 
-@media(max-width:700px){
+.badge{
+    display:inline-block;
 
-    body{
-        padding:12px;
+    padding:5px 9px;
+
+    border-radius:20px;
+
+    font-size:12px;
+    font-weight:bold;
+}
+
+.paid{
+    background:#145d3a;
+}
+
+.unpaid{
+    background:#704d13;
+}
+
+.pending{
+    background:#314c7b;
+}
+
+.failed,
+.rejected{
+    background:#752238;
+}
+
+.new{
+    background:#46516a;
+}
+
+.approved{
+    background:#17603b;
+}
+
+.form-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,minmax(0,1fr));
+
+    gap:15px;
+}
+
+.field{
+    margin-bottom:5px;
+}
+
+.field label{
+    display:block;
+    margin-bottom:6px;
+    color:#bfc8db;
+    font-size:14px;
+}
+
+.full{
+    grid-column:1/-1;
+}
+
+.empty{
+    padding:30px;
+    text-align:center;
+    color:#aeb8d0;
+}
+
+.modal{
+    position:fixed;
+
+    inset:0;
+
+    display:none;
+
+    align-items:center;
+    justify-content:center;
+
+    padding:20px;
+
+    background:
+        rgba(0,0,0,.75);
+
+    z-index:1000;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-box{
+    width:100%;
+    max-width:650px;
+
+    max-height:90vh;
+    overflow:auto;
+
+    padding:25px;
+
+    border-radius:16px;
+
+    background:#07152f;
+
+    border:
+        1px solid
+        rgba(255,255,255,.15);
+}
+
+.modal-box h2{
+    margin-top:0;
+}
+
+.detail{
+    padding:10px 0;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.1);
+}
+
+.detail strong{
+    display:block;
+    color:#aeb8d0;
+    font-size:13px;
+    margin-bottom:4px;
+}
+
+.close{
+    float:right;
+    background:#752238;
+}
+
+.message{
+    margin:15px 0;
+    padding:12px;
+    border-radius:8px;
+    display:none;
+}
+
+.message.show{
+    display:block;
+}
+
+.message.error{
+    background:#752238;
+}
+
+.message.success{
+    background:#17603b;
+}
+
+@media(max-width:800px){
+
+    .container{
+        padding:14px;
     }
 
-    table{
-        font-size:12px;
+    h1{
+        font-size:29px;
     }
 
-    th,
-    td{
-        padding:7px;
+    .stats{
+        grid-template-columns:
+            repeat(2,minmax(0,1fr));
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .full{
+        grid-column:auto;
+    }
+}
+
+@media(max-width:480px){
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .stat-value{
+        font-size:25px;
+    }
+
+    .toolbar button{
+        width:auto;
     }
 }
 
@@ -3031,103 +3590,1732 @@ th{
 
 <body>
 
+<div class="container">
+
 <h1>
 ALL WORLD BRANDS ADMIN
 </h1>
 
-<div class="info">
-Applications and payment statuses
+<div class="subtitle">
+Applications, payments and brands
 </div>
 
-<div id="data">
-Loading...
+
+<div class="stats">
+
+<div class="stat">
+<div class="stat-title">
+Applications
 </div>
+
+<div
+    class="stat-value"
+    id="statApplications"
+>
+0
+</div>
+</div>
+
+
+<div class="stat">
+<div class="stat-title">
+Paid
+</div>
+
+<div
+    class="stat-value"
+    id="statPaid"
+>
+0
+</div>
+</div>
+
+
+<div class="stat">
+<div class="stat-title">
+Unpaid
+</div>
+
+<div
+    class="stat-value"
+    id="statUnpaid"
+>
+0
+</div>
+</div>
+
+
+<div class="stat">
+<div class="stat-title">
+Brands
+</div>
+
+<div
+    class="stat-value"
+    id="statBrands"
+>
+0
+</div>
+</div>
+
+</div>
+
+
+<div class="tabs">
+
+<button
+    class="tab active"
+    onclick="showTab('applications',this)"
+>
+Applications
+</button>
+
+<button
+    class="tab"
+    onclick="showTab('brands',this)"
+>
+Brands
+</button>
+
+<button
+    class="tab"
+    onclick="showTab('add-brand',this)"
+>
+Add Brand
+</button>
+
+</div>
+
+
+<!-- =====================================================
+     APPLICATIONS
+===================================================== -->
+
+<div
+    id="applications"
+    class="panel active"
+>
+
+<div class="toolbar">
+
+<input
+    id="applicationSearch"
+    class="search"
+    placeholder="Search brand, country, email..."
+    oninput="renderApplications()"
+>
+
+<select
+    id="paymentFilter"
+    onchange="renderApplications()"
+    style="max-width:180px"
+>
+
+<option value="">
+All payments
+</option>
+
+<option value="paid">
+Paid
+</option>
+
+<option value="unpaid">
+Unpaid
+</option>
+
+<option value="pending">
+Pending
+</option>
+
+<option value="failed">
+Failed
+</option>
+
+</select>
+
+
+<select
+    id="statusFilter"
+    onchange="renderApplications()"
+    style="max-width:180px"
+>
+
+<option value="">
+All statuses
+</option>
+
+<option value="new">
+New
+</option>
+
+<option value="approved">
+Approved
+</option>
+
+<option value="rejected">
+Rejected
+</option>
+
+<option value="paid">
+Paid
+</option>
+
+</select>
+
+
+<button
+    onclick="refreshAll()"
+>
+Refresh
+</button>
+
+</div>
+
+
+<div
+    id="applicationMessage"
+    class="message"
+></div>
+
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>ID</th>
+<th>Brand</th>
+<th>Country</th>
+<th>Owner</th>
+<th>Email</th>
+<th>Payment</th>
+<th>Status</th>
+<th>Actions</th>
+
+</tr>
+
+</thead>
+
+<tbody
+    id="applicationsBody"
+>
+
+<tr>
+<td
+    colspan="8"
+    class="empty"
+>
+Loading...
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     BRANDS
+===================================================== -->
+
+<div
+    id="brands"
+    class="panel"
+>
+
+<div class="toolbar">
+
+<input
+    id="brandSearch"
+    class="search"
+    placeholder="Search brands..."
+    oninput="renderBrands()"
+>
+
+<button
+    onclick="refreshAll()"
+>
+Refresh
+</button>
+
+</div>
+
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>ID</th>
+<th>Brand</th>
+<th>Country</th>
+<th>Category</th>
+<th>Verification</th>
+<th>Website</th>
+<th>Actions</th>
+
+</tr>
+
+</thead>
+
+<tbody
+    id="brandsBody"
+>
+
+<tr>
+
+<td
+    colspan="7"
+    class="empty"
+>
+Loading...
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     ADD BRAND
+===================================================== -->
+
+<div
+    id="add-brand"
+    class="panel"
+>
+
+<h2>
+Add Brand
+</h2>
+
+
+<div
+    id="brandMessage"
+    class="message"
+></div>
+
+
+<form
+    id="brandForm"
+>
+
+<div class="form-grid">
+
+
+<div class="field">
+
+<label>
+Brand name *
+</label>
+
+<input
+    id="brandName"
+    required
+    maxlength="150"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Country *
+</label>
+
+<select
+    id="brandCountry"
+    required
+>
+
+<option value="">
+Select country
+</option>
+
+</select>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Category
+</label>
+
+<input
+    id="brandCategory"
+    maxlength="150"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Verification
+</label>
+
+<select
+    id="brandVerification"
+>
+
+<option value="Verified">
+Verified
+</option>
+
+<option value="Unverified">
+Unverified
+</option>
+
+</select>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Website
+</label>
+
+<input
+    id="brandWebsite"
+    type="url"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Logo URL
+</label>
+
+<input
+    id="brandLogo"
+    type="url"
+>
+
+</div>
+
+
+<div class="field full">
+
+<label>
+Description
+</label>
+
+<textarea
+    id="brandDescription"
+    rows="5"
+    maxlength="3000"
+></textarea>
+
+</div>
+
+
+</div>
+
+<br>
+
+<button
+    type="submit"
+>
+Add Brand
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     MODAL
+===================================================== -->
+
+<div
+    id="modal"
+    class="modal"
+    onclick="closeModal(event)"
+>
+
+<div
+    class="modal-box"
+    onclick="event.stopPropagation()"
+>
+
+<button
+    class="close"
+    onclick="closeModal()"
+>
+Close
+</button>
+
+<div
+    id="modalContent"
+></div>
+
+</div>
+
+</div>
+
 
 <script>
 
-fetch("/api/admin/applications")
+let applications = [];
+let brands = [];
+let countries = [];
 
-.then(r => r.json())
 
-.then(rows => {
+/* =========================================================
+   API
+========================================================= */
 
-    if(!Array.isArray(rows)){
+async function api(
+    url,
+    options = {}
+){
 
-        document.getElementById("data")
-            .textContent =
-            "Unable to load.";
+    const response =
+        await fetch(
+            url,
+            {
+                cache:"no-store",
+                ...options
+            }
+        );
+
+    let data = null;
+
+    try{
+
+        data =
+            await response.json();
+
+    }catch{
+
+        data = null;
+
+    }
+
+    if(!response.ok){
+
+        throw new Error(
+            data?.error ||
+            "Request failed."
+        );
+
+    }
+
+    return data;
+}
+
+
+/* =========================================================
+   TABS
+========================================================= */
+
+function showTab(
+    id,
+    button
+){
+
+    document
+        .querySelectorAll(".panel")
+        .forEach(
+            x =>
+                x.classList.remove(
+                    "active"
+                )
+        );
+
+    document
+        .querySelectorAll(".tab")
+        .forEach(
+            x =>
+                x.classList.remove(
+                    "active"
+                )
+        );
+
+    document
+        .getElementById(id)
+        .classList.add("active");
+
+    button.classList.add("active");
+}
+
+
+/* =========================================================
+   LOAD COUNTRIES
+========================================================= */
+
+async function loadCountries(){
+
+    countries =
+        await api(
+            "/api/countries"
+        );
+
+    const select =
+        document.getElementById(
+            "brandCountry"
+        );
+
+    select.innerHTML =
+        '<option value="">Select country</option>';
+
+    countries.forEach(
+        c => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value =
+                c.id;
+
+            option.textContent =
+                c.name;
+
+            select.appendChild(
+                option
+            );
+
+        }
+    );
+}
+
+
+/* =========================================================
+   LOAD APPLICATIONS
+========================================================= */
+
+async function loadApplications(){
+
+    applications =
+        await api(
+            "/api/admin/applications"
+        );
+
+    updateStats();
+
+    renderApplications();
+}
+
+
+/* =========================================================
+   LOAD BRANDS
+========================================================= */
+
+async function loadBrands(){
+
+    brands =
+        await api(
+            "/api/admin/brands"
+        );
+
+    updateStats();
+
+    renderBrands();
+}
+
+
+/* =========================================================
+   REFRESH ALL
+========================================================= */
+
+async function refreshAll(){
+
+    try{
+
+        await Promise.all([
+            loadCountries(),
+            loadApplications(),
+            loadBrands()
+        ]);
+
+    }catch(error){
+
+        console.error(
+            "ADMIN REFRESH ERROR:",
+            error
+        );
+
+        showMessage(
+            "applicationMessage",
+            error.message,
+            "error"
+        );
+
+    }
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+function updateStats(){
+
+    document.getElementById(
+        "statApplications"
+    ).textContent =
+        applications.length;
+
+
+    document.getElementById(
+        "statPaid"
+    ).textContent =
+        applications.filter(
+            x =>
+                String(
+                    x.payment_status || ""
+                )
+                .toLowerCase()
+                === "paid"
+        ).length;
+
+
+    document.getElementById(
+        "statUnpaid"
+    ).textContent =
+        applications.filter(
+            x =>
+                [
+                    "unpaid",
+                    "failed"
+                ].includes(
+                    String(
+                        x.payment_status || ""
+                    ).toLowerCase()
+                )
+        ).length;
+
+
+    document.getElementById(
+        "statBrands"
+    ).textContent =
+        brands.length;
+}
+
+
+/* =========================================================
+   APPLICATIONS
+========================================================= */
+
+function renderApplications(){
+
+    const body =
+        document.getElementById(
+            "applicationsBody"
+        );
+
+    const search =
+        String(
+            document.getElementById(
+                "applicationSearch"
+            ).value || ""
+        ).toLowerCase();
+
+
+    const payment =
+        document.getElementById(
+            "paymentFilter"
+        ).value;
+
+
+    const status =
+        document.getElementById(
+            "statusFilter"
+        ).value;
+
+
+    const filtered =
+        applications.filter(
+            x => {
+
+                const text =
+                    [
+                        x.id,
+                        x.brand_name,
+                        x.country,
+                        x.owner_name,
+                        x.email,
+                        x.phone
+                    ]
+                    .join(" ")
+                    .toLowerCase();
+
+
+                const paymentOk =
+                    !payment ||
+                    String(
+                        x.payment_status || ""
+                    )
+                    .toLowerCase()
+                    === payment;
+
+
+                const statusOk =
+                    !status ||
+                    String(
+                        x.status || ""
+                    )
+                    .toLowerCase()
+                    === status;
+
+
+                return (
+                    text.includes(search) &&
+                    paymentOk &&
+                    statusOk
+                );
+
+            }
+        );
+
+
+    if(!filtered.length){
+
+        body.innerHTML =
+            `
+            <tr>
+                <td
+                    colspan="8"
+                    class="empty"
+                >
+                    No applications found.
+                </td>
+            </tr>
+            `;
 
         return;
     }
 
-    let html =
-        "<table>" +
-        "<tr>" +
-        "<th>ID</th>" +
-        "<th>Brand</th>" +
-        "<th>Country</th>" +
-        "<th>Email</th>" +
-        "<th>Payment</th>" +
-        "<th>Status</th>" +
-        "</tr>";
 
-    rows.forEach(x => {
+    body.innerHTML =
+        filtered
+        .map(
+            x => {
 
-        html +=
-            "<tr>" +
+                const paymentStatus =
+                    String(
+                        x.payment_status ||
+                        "unpaid"
+                    ).toLowerCase();
 
-            "<td>" +
-            escapeHtml(x.id) +
-            "</td>" +
 
-            "<td>" +
-            escapeHtml(x.brand_name) +
-            "</td>" +
+                const status =
+                    String(
+                        x.status ||
+                        "new"
+                    ).toLowerCase();
 
-            "<td>" +
-            escapeHtml(x.country) +
-            "</td>" +
 
-            "<td>" +
-            escapeHtml(x.email) +
-            "</td>" +
+                return `
 
-            "<td>" +
-            escapeHtml(x.payment_status) +
-            "</td>" +
+<tr>
 
-            "<td>" +
-            escapeHtml(x.status) +
-            "</td>" +
+<td>
+${escapeHtml(x.id)}
+</td>
 
-            "</tr>";
-    });
+<td>
+<strong>
+${escapeHtml(x.brand_name)}
+</strong>
+</td>
 
-    html +=
-        "</table>";
+<td>
+${escapeHtml(x.country)}
+</td>
 
-    document.getElementById("data")
-        .innerHTML = html;
-})
+<td>
+${escapeHtml(x.owner_name)}
+</td>
 
-.catch(() => {
+<td>
+${escapeHtml(x.email)}
+</td>
 
-    document.getElementById("data")
-        .textContent =
-        "Error.";
+<td>
 
-});
+<span
+    class="badge ${escapeHtml(paymentStatus)}"
+>
+${escapeHtml(paymentStatus)}
+</span>
+
+</td>
+
+<td>
+
+<span
+    class="badge ${escapeHtml(status)}"
+>
+${escapeHtml(status)}
+</span>
+
+</td>
+
+<td>
+
+<button
+    onclick="viewApplication(${Number(x.id)})"
+>
+View
+</button>
+
+<button
+    class="success"
+    onclick="changeStatus(${Number(x.id)},'approved')"
+>
+Approve
+</button>
+
+<button
+    class="danger"
+    onclick="changeStatus(${Number(x.id)},'rejected')"
+>
+Reject
+</button>
+
+<button
+    class="danger"
+    onclick="deleteApplication(${Number(x.id)})"
+>
+Delete
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+            }
+        )
+        .join("");
+}
+
+
+/* =========================================================
+   VIEW APPLICATION
+========================================================= */
+
+function viewApplication(id){
+
+    const x =
+        applications.find(
+            item =>
+                Number(item.id) ===
+                Number(id)
+        );
+
+
+    if(!x){
+        return;
+    }
+
+
+    document.getElementById(
+        "modalContent"
+    ).innerHTML = `
+
+<h2>
+Application #${escapeHtml(x.id)}
+</h2>
+
+<div class="detail">
+
+<strong>
+Brand
+</strong>
+
+${escapeHtml(x.brand_name)}
+
+</div>
+
+
+<div class="detail">
+
+<strong>
+Country
+</strong>
+
+${escapeHtml(x.country)}
+
+</div>
+
+
+<div class="detail">
+
+<strong>
+Owner
+</strong>
+
+${escapeHtml(x.owner_name)}
+
+</div>
+
+
+<div class="detail">
+
+<strong>
+Email
+</strong>
+
+${escapeHtml(x.email)}
+
+</div>
+
+
+<div class="detail">
+
+<strong>
+Phone
+</strong>
+
+${escapeHtml(x.phone)}
+
+</div>
+
+
+<div class="detail">
+
+<strong>
+Website
+</strong>
+
+${escapeHtml(x.website)}
+
+</div>
+
+
+<div class="detail">
+
+<strong>
+Payment
+</strong>
+
+${escapeHtml(x.payment_status)}
+
+</div>
+
+
+<div class="detail">
+
+<strong>
+Amount
+</strong>
+
+${escapeHtml(x.payment_amount)}
+${escapeHtml(x.payment_currency)}
+
+</div>
+
+
+<div class="detail">
+
+<strong>
+OCTO Transaction
+</strong>
+
+${escapeHtml(x.octo_transaction_id)}
+
+</div>
+
+
+<div class="detail">
+
+<strong>
+Status
+</strong>
+
+${escapeHtml(x.status)}
+
+</div>
+
+
+<div class="detail">
+
+<strong>
+Created
+</strong>
+
+${escapeHtml(x.created_at)}
+
+</div>
+
+
+<div class="detail">
+
+<strong>
+Updated
+</strong>
+
+${escapeHtml(x.updated_at)}
+
+</div>
+
+
+<div class="detail">
+
+<strong>
+Description
+</strong>
+
+${escapeHtml(x.description)}
+
+</div>
+
+`;
+
+
+    document
+        .getElementById(
+            "modal"
+        )
+        .classList.add(
+            "show"
+        );
+}
+
+
+/* =========================================================
+   CHANGE STATUS
+========================================================= */
+
+async function changeStatus(
+    id,
+    status
+){
+
+    if(
+        !confirm(
+            "Change application status to " +
+            status +
+            "?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    try{
+
+        await api(
+            "/api/admin/applications/" +
+            encodeURIComponent(id),
+            {
+
+                method:
+                    "PATCH",
+
+                headers:{
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body:
+                    JSON.stringify({
+                        status
+                    })
+
+            }
+        );
+
+
+        await loadApplications();
+
+    }catch(error){
+
+        showMessage(
+            "applicationMessage",
+            error.message,
+            "error"
+        );
+
+    }
+}
+
+
+/* =========================================================
+   DELETE APPLICATION
+========================================================= */
+
+async function deleteApplication(id){
+
+    if(
+        !confirm(
+            "Delete this application permanently?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    try{
+
+        await api(
+            "/api/admin/applications/" +
+            encodeURIComponent(id),
+            {
+                method:
+                    "DELETE"
+            }
+        );
+
+
+        await loadApplications();
+
+    }catch(error){
+
+        showMessage(
+            "applicationMessage",
+            error.message,
+            "error"
+        );
+
+    }
+}
+
+
+/* =========================================================
+   BRANDS
+========================================================= */
+
+function renderBrands(){
+
+    const body =
+        document.getElementById(
+            "brandsBody"
+        );
+
+
+    const search =
+        String(
+            document.getElementById(
+                "brandSearch"
+            ).value || ""
+        ).toLowerCase();
+
+
+    const filtered =
+        brands.filter(
+            x => {
+
+                const text =
+                    [
+                        x.id,
+                        x.name,
+                        x.country_name,
+                        x.category,
+                        x.verification
+                    ]
+                    .join(" ")
+                    .toLowerCase();
+
+
+                return text.includes(
+                    search
+                );
+
+            }
+        );
+
+
+    if(!filtered.length){
+
+        body.innerHTML =
+            `
+            <tr>
+                <td
+                    colspan="7"
+                    class="empty"
+                >
+                    No brands found.
+                </td>
+            </tr>
+            `;
+
+        return;
+    }
+
+
+    body.innerHTML =
+        filtered
+        .map(
+            x => `
+
+<tr>
+
+<td>
+${escapeHtml(x.id)}
+</td>
+
+<td>
+
+<strong>
+${escapeHtml(x.name)}
+</strong>
+
+</td>
+
+<td>
+${escapeHtml(x.country_name)}
+</td>
+
+<td>
+${escapeHtml(x.category)}
+</td>
+
+<td>
+${escapeHtml(x.verification)}
+</td>
+
+<td>
+${escapeHtml(x.website)}
+</td>
+
+<td>
+
+<button
+    onclick="viewBrand(${Number(x.id)})"
+>
+View
+</button>
+
+<button
+    class="danger"
+    onclick="deleteBrand(${Number(x.id)})"
+>
+Delete
+</button>
+
+</td>
+
+</tr>
+
+`
+        )
+        .join("");
+}
+
+
+/* =========================================================
+   VIEW BRAND
+========================================================= */
+
+function viewBrand(id){
+
+    const x =
+        brands.find(
+            item =>
+                Number(item.id) ===
+                Number(id)
+        );
+
+
+    if(!x){
+        return;
+    }
+
+
+    document.getElementById(
+        "modalContent"
+    ).innerHTML = `
+
+<h2>
+${escapeHtml(x.name)}
+</h2>
+
+
+<div class="detail">
+
+<strong>
+Country
+</strong>
+
+${escapeHtml(x.country_name)}
+
+</div>
+
+
+<div class="detail">
+
+<strong>
+Category
+</strong>
+
+${escapeHtml(x.category)}
+
+</div>
+
+
+<div class="detail">
+
+<strong>
+Verification
+</strong>
+
+${escapeHtml(x.verification)}
+
+</div>
+
+
+<div class="detail">
+
+<strong>
+Website
+</strong>
+
+${escapeHtml(x.website)}
+
+</div>
+
+
+<div class="detail">
+
+<strong>
+Logo
+</strong>
+
+${escapeHtml(x.logo)}
+
+</div>
+
+
+<div class="detail">
+
+<strong>
+Description
+</strong>
+
+${escapeHtml(x.description)}
+
+</div>
+
+`;
+
+
+    document
+        .getElementById(
+            "modal"
+        )
+        .classList.add(
+            "show"
+        );
+}
+
+
+/* =========================================================
+   DELETE BRAND
+========================================================= */
+
+async function deleteBrand(id){
+
+    if(
+        !confirm(
+            "Delete this brand permanently?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    try{
+
+        await api(
+            "/api/admin/brands/" +
+            encodeURIComponent(id),
+            {
+                method:
+                    "DELETE"
+            }
+        );
+
+
+        await loadBrands();
+
+    }catch(error){
+
+        showMessage(
+            "applicationMessage",
+            error.message,
+            "error"
+        );
+
+    }
+}
+
+
+/* =========================================================
+   ADD BRAND
+========================================================= */
+
+document
+    .getElementById(
+        "brandForm"
+    )
+    .addEventListener(
+        "submit",
+        async function(event){
+
+            event.preventDefault();
+
+
+            try{
+
+                const data = {
+
+                    name:
+                        document
+                        .getElementById(
+                            "brandName"
+                        )
+                        .value
+                        .trim(),
+
+
+                    country_id:
+                        Number(
+                            document
+                            .getElementById(
+                                "brandCountry"
+                            )
+                            .value
+                        ),
+
+
+                    category:
+                        document
+                        .getElementById(
+                            "brandCategory"
+                        )
+                        .value
+                        .trim(),
+
+
+                    verification:
+                        document
+                        .getElementById(
+                            "brandVerification"
+                        )
+                        .value,
+
+
+                    website:
+                        document
+                        .getElementById(
+                            "brandWebsite"
+                        )
+                        .value
+                        .trim(),
+
+
+                    logo:
+                        document
+                        .getElementById(
+                            "brandLogo"
+                        )
+                        .value
+                        .trim(),
+
+
+                    description:
+                        document
+                        .getElementById(
+                            "brandDescription"
+                        )
+                        .value
+                        .trim()
+
+                };
+
+
+                await api(
+                    "/api/admin/brands",
+                    {
+
+                        method:
+                            "POST",
+
+                        headers:{
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify(
+                                data
+                            )
+
+                    }
+                );
+
+
+                document
+                    .getElementById(
+                        "brandForm"
+                    )
+                    .reset();
+
+
+                showMessage(
+                    "brandMessage",
+                    "Brand added successfully.",
+                    "success"
+                );
+
+
+                await loadBrands();
+
+
+            }catch(error){
+
+                showMessage(
+                    "brandMessage",
+                    error.message,
+                    "error"
+                );
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+function closeModal(){
+
+    document
+        .getElementById(
+            "modal"
+        )
+        .classList.remove(
+            "show"
+        );
+}
+
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+function showMessage(
+    id,
+    text,
+    type
+){
+
+    const element =
+        document.getElementById(
+            id
+        );
+
+
+    if(!element){
+        return;
+    }
+
+
+    element.textContent =
+        text;
+
+
+    element.className =
+        "message show " +
+        type;
+
+
+    setTimeout(
+        () => {
+
+            element.className =
+                "message";
+
+        },
+        5000
+    );
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
 
 function escapeHtml(value){
 
-    return String(value ?? "")
+    return String(
+        value ?? ""
+    )
 
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+
+    .replace(
+        /</g,
+        "&lt;"
+    )
+
+    .replace(
+        />/g,
+        "&gt;"
+    )
+
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+
+    .replace(
+        /'/g,
+        "&#039;"
+    );
 }
+
+
+/* =========================================================
+   START ADMIN
+========================================================= */
+
+refreshAll();
 
 </script>
 
@@ -3255,6 +5443,7 @@ process.on(
         appDb.close(() => {
             process.exit(0);
         });
+
     }
 );
 
@@ -3265,5 +5454,6 @@ process.on(
         appDb.close(() => {
             process.exit(0);
         });
+
     }
 );
