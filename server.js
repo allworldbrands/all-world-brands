@@ -7,7 +7,11 @@ const Database = require("better-sqlite3");
 const app = express();
 
 const PORT = process.env.PORT || 3000;
-const SITE_URL = "https://allworldbrands.net";
+
+const SITE_URL = String(
+  process.env.PUBLIC_BASE_URL ||
+  "https://allworldbrands.net"
+).replace(/\/+$/, "");
 
 app.disable("x-powered-by");
 
@@ -114,7 +118,11 @@ const brandColumns = [
 ];
 
 for (const [column, definition] of brandColumns) {
-  addColumnIfMissing("brands", column, definition);
+  addColumnIfMissing(
+    "brands",
+    column,
+    definition
+  );
 }
 
 const applicationColumns = [
@@ -467,7 +475,9 @@ for (const [brandName, countryName] of starterBrands) {
   if (!country) continue;
 
   const exists = db
-    .prepare(`SELECT id FROM brands WHERE name = ?`)
+    .prepare(
+      `SELECT id FROM brands WHERE name = ?`
+    )
     .get(brandName);
 
   if (!exists) {
@@ -564,7 +574,8 @@ function normalizeForModeration(value) {
 }
 
 function containsAdultContent(value) {
-  const text = normalizeForModeration(value);
+  const text =
+    normalizeForModeration(value);
 
   return ADULT_CONTENT_WORDS.some(word =>
     text.includes(
@@ -2049,14 +2060,32 @@ function extractOctoStatus(data) {
   ).toLowerCase();
 }
 
+/*
+  OCTO may return the amount under different fields.
+  If the status response does not contain an amount,
+  return null instead of 0.
+*/
 function extractOctoAmount(data) {
-  return Number(
+  const value =
     data?.total_sum ??
     data?.transfer_sum ??
     data?.amount ??
-    data?.paid_amount ??
-    0
-  );
+    data?.paid_amount;
+
+  if (
+    value === undefined ||
+    value === null ||
+    value === ""
+  ) {
+    return null;
+  }
+
+  const number =
+    Number(value);
+
+  return Number.isFinite(number)
+    ? number
+    : null;
 }
 
 function extractOctoCurrency(data) {
@@ -2179,11 +2208,19 @@ async function verifyOctoApplication(
   const successful =
     isOctoPaid(status);
 
+  /*
+    If OCTO returns an amount, compare it.
+    If OCTO does not return an amount in the
+    status response, do not convert it to 0
+    and falsely reject a successful payment.
+  */
   const amountMatches =
-    moneyEquals(
-      total,
-      expected
-    );
+    total === null
+      ? true
+      : moneyEquals(
+          total,
+          expected
+        );
 
   const currencyMatches =
     !returnedCurrency ||
@@ -3114,6 +3151,10 @@ app.listen(
           ? "YES"
           : "NO"
       }`
+    );
+
+    console.log(
+      `Site URL: ${SITE_URL}`
     );
   }
 );
