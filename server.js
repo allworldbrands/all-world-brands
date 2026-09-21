@@ -8,8 +8,12 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 
-const OCTO_SHOP_ID = Number(process.env.OCTO_SHOP_ID || 43051);
-const OCTO_SECRET = process.env.OCTO_SECRET || "";
+const OCTO_SHOP_ID = Number(
+    process.env.OCTO_SHOP_ID || 43051
+);
+
+const OCTO_SECRET =
+    process.env.OCTO_SECRET || "";
 
 const OCTO_API_URL =
     "https://secure.octo.uz/prepare_payment";
@@ -19,7 +23,10 @@ const PUBLIC_BASE_URL =
     "https://allworldbrands.net";
 
 const OCTO_TEST =
-    String(process.env.OCTO_TEST || "true").toLowerCase() === "true";
+    String(
+        process.env.OCTO_TEST || "true"
+    ).toLowerCase() === "true";
+
 
 app.use(
     helmet({
@@ -30,9 +37,18 @@ app.use(
 app.use(morgan("combined"));
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
-app.use(express.static(path.join(__dirname, "public")));
+app.use(
+    express.urlencoded({
+        extended: true
+    })
+);
+
+app.use(
+    express.static(
+        path.join(__dirname, "public")
+    )
+);
 
 
 /* =========================
@@ -40,189 +56,236 @@ app.use(express.static(path.join(__dirname, "public")));
 ========================= */
 
 app.get("/api/health", (req, res) => {
+
     res.json({
         ok: true,
         service: "ALL WORLD BRANDS",
         payment: "OCTO"
     });
+
 });
 
 
 /* =========================
-   OCTO CREATE PAYMENT
+   CREATE OCTO PAYMENT
 ========================= */
 
-app.post("/api/payments/octo/create", async (req, res) => {
+app.post(
+    "/api/payments/octo/create",
+    async (req, res) => {
 
-    try {
+        try {
 
-        if (!OCTO_SECRET) {
-            return res.status(500).json({
-                error: "OCTO_SECRET is not configured"
-            });
-        }
+            if (!OCTO_SECRET) {
 
-        const transactionId =
-            crypto.randomUUID();
+                return res.status(500).json({
+                    error:
+                        "OCTO_SECRET is not configured"
+                });
 
-        const initTime =
-            new Date()
-                .toISOString()
-                .replace("T", " ")
-                .replace(/\.\d{3}Z$/, "");
-
-        const payload = {
-
-            octo_shop_id: OCTO_SHOP_ID,
-
-            octo_secret: OCTO_SECRET,
-
-            shop_transaction_id: transactionId,
-
-            auto_capture: true,
-
-            test: OCTO_TEST,
-
-            init_time: initTime,
-
-            total_sum: 1,
-
-            currency: "USD",
-
-            description:
-                "ALL WORLD BRANDS PAYMENT",
-
-            basket: [
-                {
-                    position_desc:
-                        "ALL WORLD BRANDS",
-
-                    count: 1,
-
-                    price: 1
-                }
-            ],
-
-            payment_methods: [
-                {
-                    method: "bank_card"
-                }
-            ],
-
-            return_url:
-                `${PUBLIC_BASE_URL}/payment-success.html?transaction=${encodeURIComponent(transactionId)}`,
-
-            notify_url:
-                `${PUBLIC_BASE_URL}/api/octo/notify`,
-
-            language: "uz",
-
-            ttl: 15
-        };
-
-
-        const response = await fetch(
-            OCTO_API_URL,
-            {
-                method: "POST",
-
-                headers: {
-                    "Content-Type":
-                        "application/json"
-                },
-
-                body: JSON.stringify(payload)
             }
-        );
 
 
-        const data =
-            await response.json();
+            const transactionId =
+                crypto.randomUUID();
 
 
-        if (!response.ok) {
+            const initTime =
+                new Date()
+                    .toISOString()
+                    .replace("T", " ")
+                    .replace(/\.\d{3}Z$/, "");
 
-            console.error(
-                "OCTO HTTP ERROR:",
-                data
+
+            const payload = {
+
+                octo_shop_id:
+                    OCTO_SHOP_ID,
+
+                octo_secret:
+                    OCTO_SECRET,
+
+                shop_transaction_id:
+                    transactionId,
+
+                auto_capture: true,
+
+                test:
+                    OCTO_TEST,
+
+                init_time:
+                    initTime,
+
+                total_sum:
+                    1000,
+
+                currency:
+                    "UZS",
+
+                description:
+                    "ALL WORLD BRANDS PAYMENT",
+
+                basket: [
+                    {
+                        position_desc:
+                            "ALL WORLD BRANDS",
+
+                        count: 1,
+
+                        price: 1000
+                    }
+                ],
+
+                payment_methods: [
+                    {
+                        method:
+                            "bank_card"
+                    },
+                    {
+                        method:
+                            "uzcard"
+                    },
+                    {
+                        method:
+                            "humo"
+                    }
+                ],
+
+                return_url:
+                    `${PUBLIC_BASE_URL}/payment-success.html?transaction=${encodeURIComponent(transactionId)}`,
+
+                notify_url:
+                    `${PUBLIC_BASE_URL}/api/octo/notify`,
+
+                language:
+                    "uz",
+
+                ttl:
+                    15
+            };
+
+
+            const response =
+                await fetch(
+                    OCTO_API_URL,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify(payload)
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            console.log(
+                "OCTO CREATE RESPONSE:",
+                JSON.stringify(
+                    data,
+                    null,
+                    2
+                )
             );
 
-            return res.status(502).json({
-                error:
-                    "OCTO server error"
+
+            if (!response.ok) {
+
+                return res.status(502).json({
+                    error:
+                        "OCTO server error"
+                });
+
+            }
+
+
+            if (
+                data.error !== undefined &&
+                Number(data.error) !== 0
+            ) {
+
+                return res.status(400).json({
+
+                    error:
+                        data.errMessage ||
+                        data.errorMessage ||
+                        "OCTO payment creation failed"
+
+                });
+
+            }
+
+
+            const paymentUrl =
+                data?.data?.octo_pay_url ||
+                data?.octo_pay_url ||
+                data?.data?.payment_url ||
+                data?.payment_url;
+
+
+            if (!paymentUrl) {
+
+                return res.status(502).json({
+
+                    error:
+                        "OCTO payment URL was not returned",
+
+                    octo_response:
+                        data
+
+                });
+
+            }
+
+
+            res.json({
+
+                ok: true,
+
+                transaction_id:
+                    transactionId,
+
+                amount:
+                    1000,
+
+                currency:
+                    "UZS",
+
+                payment_url:
+                    paymentUrl
+
             });
-        }
 
 
-        if (
-            data.error !== undefined &&
-            Number(data.error) !== 0
-        ) {
+        } catch (error) {
 
             console.error(
-                "OCTO API ERROR:",
-                data
+                "OCTO CREATE ERROR:",
+                error
             );
 
-            return res.status(400).json({
+            res.status(500).json({
+
                 error:
-                    data.errMessage ||
-                    data.errorMessage ||
-                    "OCTO payment creation failed"
+                    "Unable to create OCTO payment"
+
             });
+
         }
 
-
-        const paymentUrl =
-            data?.data?.octo_pay_url ||
-            data?.octo_pay_url ||
-            data?.data?.payment_url ||
-            data?.payment_url;
-
-
-        if (!paymentUrl) {
-
-            console.error(
-                "OCTO RESPONSE:",
-                data
-            );
-
-            return res.status(502).json({
-                error:
-                    "OCTO payment URL was not returned"
-            });
-        }
-
-
-        res.json({
-
-            ok: true,
-
-            transaction_id:
-                transactionId,
-
-            payment_url:
-                paymentUrl
-
-        });
-
-    } catch (error) {
-
-        console.error(
-            "OCTO CREATE ERROR:",
-            error
-        );
-
-        res.status(500).json({
-            error:
-                "Unable to create OCTO payment"
-        });
     }
-});
+);
 
 
 /* =========================
-   OCTO STATUS CHECK
+   CHECK PAYMENT STATUS
 ========================= */
 
 app.get(
@@ -232,11 +295,14 @@ app.get(
         try {
 
             if (!OCTO_SECRET) {
+
                 return res.status(500).json({
                     error:
                         "OCTO_SECRET is not configured"
                 });
+
             }
+
 
             const transactionId =
                 req.params.transactionId;
@@ -253,18 +319,19 @@ app.get(
                                 "application/json"
                         },
 
-                        body: JSON.stringify({
+                        body:
+                            JSON.stringify({
 
-                            octo_shop_id:
-                                OCTO_SHOP_ID,
+                                octo_shop_id:
+                                    OCTO_SHOP_ID,
 
-                            octo_secret:
-                                OCTO_SECRET,
+                                octo_secret:
+                                    OCTO_SECRET,
 
-                            shop_transaction_id:
-                                transactionId
+                                shop_transaction_id:
+                                    transactionId
 
-                        })
+                            })
                     }
                 );
 
@@ -273,16 +340,8 @@ app.get(
                 await response.json();
 
 
-            if (!response.ok) {
-
-                return res.status(502).json({
-                    error:
-                        "OCTO status request failed"
-                });
-            }
-
-
             res.json(data);
+
 
         } catch (error) {
 
@@ -292,10 +351,14 @@ app.get(
             );
 
             res.status(500).json({
+
                 error:
                     "Unable to check payment status"
+
             });
+
         }
+
     }
 );
 
@@ -320,6 +383,11 @@ app.post(
             );
 
 
+            /*
+             * OCTO yuborgan
+             * tranzaksiya ma'lumotlari.
+             */
+
             const transactionId =
                 req.body?.shop_transaction_id;
 
@@ -330,21 +398,13 @@ app.post(
                     error:
                         "shop_transaction_id is required"
                 });
-            }
 
-
-            if (!OCTO_SECRET) {
-
-                return res.status(500).json({
-                    error:
-                        "OCTO_SECRET is not configured"
-                });
             }
 
 
             /*
-             * OCTO statusini
-             * server tomonda tekshiramiz.
+             * Server tomonda
+             * OCTO statusini tekshiramiz.
              */
 
             const response =
@@ -358,18 +418,19 @@ app.post(
                                 "application/json"
                         },
 
-                        body: JSON.stringify({
+                        body:
+                            JSON.stringify({
 
-                            octo_shop_id:
-                                OCTO_SHOP_ID,
+                                octo_shop_id:
+                                    OCTO_SHOP_ID,
 
-                            octo_secret:
-                                OCTO_SECRET,
+                                octo_secret:
+                                    OCTO_SECRET,
 
-                            shop_transaction_id:
-                                transactionId
+                                shop_transaction_id:
+                                    transactionId
 
-                        })
+                            })
                     }
                 );
 
@@ -392,6 +453,7 @@ app.post(
                 error: 0
             });
 
+
         } catch (error) {
 
             console.error(
@@ -400,10 +462,14 @@ app.post(
             );
 
             res.status(500).json({
+
                 error:
                     "Notification processing failed"
+
             });
+
         }
+
     }
 );
 
