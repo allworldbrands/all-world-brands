@@ -1,726 +1,2883 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uz">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 
-  <title>ALL WORLD BRANDS — Admin Panel</title>
+<title>ALL WORLD BRANDS — ADMIN</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f6f8;
-      color: #222;
-    }
+:root{
+  --bg:#050914;
+  --panel:rgba(10,18,38,.88);
+  --line:rgba(255,255,255,.10);
+  --text:#f7f9ff;
+  --muted:#9ca9c4;
+  --accent:#4f8cff;
+  --green:#25c98a;
+  --yellow:#f4c95d;
+  --red:#ff667a;
+}
 
-    header {
-      background: #111827;
-      color: white;
-      padding: 20px;
-    }
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(
+      circle at 15% 0%,
+      rgba(45,100,220,.25),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 90% 15%,
+      rgba(150,55,190,.18),
+      transparent 30%
+    ),
+    var(--bg);
 
-    header h1 {
-      margin: 0 0 6px;
-      font-size: 24px;
-    }
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+}
 
-    header p {
-      margin: 0;
-      opacity: 0.75;
-    }
+button,
+input,
+select,
+textarea{
+  font:inherit;
+}
 
-    .container {
-      max-width: 1100px;
-      margin: auto;
-      padding: 20px;
-    }
+button{
+  cursor:pointer;
+}
 
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
-      margin-bottom: 25px;
-    }
+/* =========================
+   TOP
+========================= */
 
-    .card {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    }
+.top{
+  position:sticky;
+  top:0;
+  z-index:20;
 
-    .card strong {
-      display: block;
-      font-size: 30px;
-      margin-top: 8px;
-    }
+  padding:16px 18px;
 
-    section {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    }
+  background:rgba(3,8,20,.88);
 
-    h2 {
-      margin-top: 0;
-    }
+  backdrop-filter:blur(16px);
 
-    input,
-    select,
-    textarea {
-      width: 100%;
-      padding: 12px;
-      margin: 7px 0;
-      border: 1px solid #d1d5db;
-      border-radius: 8px;
-      font-size: 15px;
-    }
+  border-bottom:1px solid var(--line);
+}
 
-    textarea {
-      min-height: 90px;
-      resize: vertical;
-    }
+.top-inner{
+  max-width:1500px;
+  margin:auto;
 
-    button {
-      border: 0;
-      border-radius: 8px;
-      padding: 11px 16px;
-      cursor: pointer;
-      font-size: 15px;
-      margin-top: 8px;
-    }
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 
-    .primary {
-      background: #2563eb;
-      color: white;
-    }
+  gap:15px;
+}
 
-    .danger {
-      background: #dc2626;
-      color: white;
-    }
+.logo{
+  font-size:22px;
+  font-weight:900;
+  letter-spacing:.4px;
+}
 
-    .refresh {
-      background: #374151;
-      color: white;
-    }
+.logo span{
+  display:block;
 
-    .brand {
-      border: 1px solid #e5e7eb;
-      border-radius: 10px;
-      padding: 15px;
-      margin-top: 10px;
-    }
+  color:#7ea7ff;
 
-    .brand h3 {
-      margin: 0 0 5px;
-    }
+  font-size:12px;
 
-    .brand p {
-      margin: 5px 0;
-      color: #555;
-    }
+  margin-top:3px;
 
-    .message {
-      padding: 12px;
-      border-radius: 8px;
-      margin-bottom: 15px;
-      display: none;
-    }
+  letter-spacing:2px;
+}
 
-    .success {
-      background: #dcfce7;
-      color: #166534;
-    }
+.actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
 
-    .error {
-      background: #fee2e2;
-      color: #991b1b;
-    }
+/* =========================
+   BUTTONS
+========================= */
 
-    @media (max-width: 700px) {
-      .cards {
-        grid-template-columns: 1fr;
-      }
+.btn{
+  border:1px solid var(--line);
 
-      .container {
-        padding: 12px;
-      }
+  border-radius:10px;
 
-      section {
-        padding: 15px;
-      }
-    }
-  </style>
+  padding:10px 14px;
+
+  background:#111d38;
+
+  color:#fff;
+
+  font-weight:700;
+}
+
+.btn.primary{
+  background:var(--accent);
+  border-color:var(--accent);
+}
+
+.btn.danger{
+  background:rgba(255,70,90,.12);
+
+  border-color:rgba(255,70,90,.35);
+
+  color:#ff9aaa;
+}
+
+.btn.small{
+  padding:7px 10px;
+  font-size:12px;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.wrap{
+  max-width:1500px;
+
+  margin:auto;
+
+  padding:22px 18px 60px;
+}
+
+.hero h1{
+  font-size:clamp(30px,5vw,52px);
+
+  line-height:1.05;
+}
+
+.hero p{
+  color:var(--muted);
+
+  margin-top:8px;
+}
+
+/* =========================
+   STATISTICS
+========================= */
+
+.stats{
+  display:grid;
+
+  grid-template-columns:
+    repeat(4,minmax(0,1fr));
+
+  gap:12px;
+
+  margin:22px 0;
+}
+
+.stat{
+  background:var(--panel);
+
+  border:1px solid var(--line);
+
+  border-radius:16px;
+
+  padding:18px;
+}
+
+.stat .label{
+  color:var(--muted);
+
+  font-size:12px;
+
+  text-transform:uppercase;
+
+  letter-spacing:1px;
+}
+
+.stat .value{
+  font-size:32px;
+
+  font-weight:900;
+
+  margin-top:7px;
+}
+
+/* =========================
+   TABS
+========================= */
+
+.navtabs{
+  display:flex;
+
+  gap:8px;
+
+  overflow:auto;
+
+  margin:18px 0;
+
+  padding-bottom:2px;
+}
+
+.tab{
+  white-space:nowrap;
+
+  border:1px solid var(--line);
+
+  background:#0b1429;
+
+  color:#b9c4da;
+
+  padding:11px 15px;
+
+  border-radius:11px;
+
+  font-weight:800;
+}
+
+.tab.active{
+  background:var(--accent);
+
+  color:#fff;
+
+  border-color:var(--accent);
+}
+
+/* =========================
+   SECTIONS
+========================= */
+
+.section{
+  display:none;
+}
+
+.section.active{
+  display:block;
+}
+
+/* =========================
+   PANEL
+========================= */
+
+.panel{
+  background:var(--panel);
+
+  border:1px solid var(--line);
+
+  border-radius:16px;
+
+  padding:16px;
+
+  margin-bottom:16px;
+}
+
+.panel-head{
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:12px;
+
+  margin-bottom:14px;
+
+  flex-wrap:wrap;
+}
+
+.panel-head h2{
+  font-size:20px;
+}
+
+.tools{
+  display:flex;
+
+  gap:8px;
+
+  flex-wrap:wrap;
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+input,
+select,
+textarea{
+  width:100%;
+
+  background:#081126;
+
+  color:#fff;
+
+  border:1px solid var(--line);
+
+  border-radius:10px;
+
+  padding:11px 12px;
+
+  outline:none;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+  border-color:var(--accent);
+}
+
+.search{
+  max-width:420px;
+}
+
+/* =========================
+   FILTERS
+========================= */
+
+.filters{
+  display:grid;
+
+  grid-template-columns:
+    1.5fr 1fr 1fr;
+
+  gap:10px;
+
+  margin-bottom:14px;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.table-wrap{
+  overflow:auto;
+
+  border:1px solid var(--line);
+
+  border-radius:12px;
+}
+
+table{
+  width:100%;
+
+  border-collapse:collapse;
+
+  min-width:900px;
+}
+
+th,
+td{
+  padding:11px 12px;
+
+  border-bottom:1px solid var(--line);
+
+  text-align:left;
+
+  vertical-align:middle;
+}
+
+th{
+  font-size:12px;
+
+  color:#aebbd4;
+
+  background:#0c1730;
+
+  position:sticky;
+
+  top:0;
+}
+
+td{
+  font-size:13px;
+}
+
+tr:last-child td{
+  border-bottom:0;
+}
+
+.muted{
+  color:var(--muted);
+}
+
+/* =========================
+   BADGES
+========================= */
+
+.badge{
+  display:inline-flex;
+
+  align-items:center;
+
+  gap:5px;
+
+  padding:5px 8px;
+
+  border-radius:999px;
+
+  font-size:11px;
+
+  font-weight:900;
+
+  text-transform:uppercase;
+}
+
+.badge.paid,
+.badge.approved{
+  background:rgba(37,201,138,.12);
+
+  color:#5ce2ae;
+}
+
+.badge.unpaid,
+.badge.new{
+  background:rgba(244,201,93,.12);
+
+  color:#f7d77b;
+}
+
+.badge.rejected{
+  background:rgba(255,102,122,.12);
+
+  color:#ff91a0;
+}
+
+.badge.other{
+  background:rgba(79,140,255,.12);
+
+  color:#8fb5ff;
+}
+
+.actions-cell{
+  display:flex;
+
+  gap:6px;
+
+  flex-wrap:wrap;
+}
+
+.empty{
+  text-align:center;
+
+  padding:35px;
+
+  color:var(--muted);
+}
+
+/* =========================
+   FORM
+========================= */
+
+.form-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+
+  gap:12px;
+}
+
+.field label{
+  display:block;
+
+  color:#b8c4da;
+
+  font-size:12px;
+
+  font-weight:700;
+
+  margin-bottom:6px;
+}
+
+.field.full{
+  grid-column:1/-1;
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal{
+  display:none;
+
+  position:fixed;
+
+  inset:0;
+
+  z-index:50;
+
+  background:rgba(0,0,0,.72);
+
+  padding:20px;
+
+  overflow:auto;
+}
+
+.modal.open{
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+}
+
+.modal-box{
+  width:min(760px,100%);
+
+  background:#091328;
+
+  border:1px solid var(--line);
+
+  border-radius:18px;
+
+  padding:20px;
+
+  box-shadow:
+    0 20px 70px rgba(0,0,0,.45);
+}
+
+.modal-head{
+  display:flex;
+
+  justify-content:space-between;
+
+  gap:10px;
+
+  margin-bottom:16px;
+}
+
+.close{
+  background:transparent;
+
+  border:0;
+
+  color:#fff;
+
+  font-size:25px;
+}
+
+.detail-grid{
+  display:grid;
+
+  grid-template-columns:1fr 1fr;
+
+  gap:12px;
+}
+
+.detail{
+  background:#0d1932;
+
+  border:1px solid var(--line);
+
+  border-radius:12px;
+
+  padding:12px;
+}
+
+.detail b{
+  display:block;
+
+  color:#8fa0bf;
+
+  font-size:11px;
+
+  text-transform:uppercase;
+
+  margin-bottom:5px;
+}
+
+.detail.full{
+  grid-column:1/-1;
+}
+
+/* =========================
+   TOAST
+========================= */
+
+.toast{
+  position:fixed;
+
+  right:16px;
+
+  bottom:16px;
+
+  z-index:100;
+
+  display:none;
+
+  background:#10203e;
+
+  border:1px solid var(--line);
+
+  padding:13px 16px;
+
+  border-radius:12px;
+
+  box-shadow:
+    0 10px 35px rgba(0,0,0,.35);
+}
+
+.toast.show{
+  display:block;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:900px){
+
+  .stats{
+    grid-template-columns:
+      repeat(2,1fr);
+  }
+
+  .filters{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:620px){
+
+  .wrap{
+    padding:16px 10px 45px;
+  }
+
+  .top{
+    padding:12px 10px;
+  }
+
+  .stats{
+    grid-template-columns:
+      1fr 1fr;
+
+    gap:8px;
+  }
+
+  .stat{
+    padding:14px;
+  }
+
+  .stat .value{
+    font-size:26px;
+  }
+
+  .form-grid,
+  .detail-grid{
+    grid-template-columns:1fr;
+  }
+
+  .field.full,
+  .detail.full{
+    grid-column:auto;
+  }
+}
+</style>
 </head>
 
 <body>
 
-<header>
-  <h1>🌍 ALL WORLD BRANDS</h1>
-  <p>Admin Control Panel</p>
-</header>
+<header class="top">
 
-<div class="container">
+  <div class="top-inner">
 
-  <div id="message" class="message"></div>
+    <div class="logo">
+      ALL WORLD BRANDS
 
-  <!-- DASHBOARD -->
-
-  <div class="cards">
-
-    <div class="card">
-      🌍 Countries
-      <strong id="countryCount">0</strong>
+      <span>
+        ADMIN CONTROL PANEL
+      </span>
     </div>
 
-    <div class="card">
-      🏷️ Brands
-      <strong id="brandCount">0</strong>
-    </div>
+    <div class="actions">
 
-    <div class="card">
-      📩 Applications
-      <strong id="applicationCount">0</strong>
+      <button
+        class="btn"
+        onclick="refreshAll()"
+      >
+        ↻ Refresh
+      </button>
+
+      <button
+        class="btn"
+        onclick="window.location.href='/'"
+      >
+        ← Site
+      </button>
+
     </div>
 
   </div>
 
-  <!-- ADD BRAND -->
+</header>
 
-  <section>
 
-    <h2>➕ Add New Brand</h2>
+<main class="wrap">
 
-    <input
-      id="brandName"
-      type="text"
-      placeholder="Brand name"
-    >
+  <div class="hero">
 
-    <input
-      id="countryCode"
-      type="text"
-      placeholder="Country code e.g. UZ, US, GB"
-      maxlength="2"
-    >
+    <h1>
+      Admin Dashboard
+    </h1>
 
-    <input
-      id="category"
-      type="text"
-      placeholder="Category"
-    >
+    <p>
+      Applications, payments, brands and site management.
+    </p>
 
-    <textarea
-      id="description"
-      placeholder="Brand description"
-    ></textarea>
+  </div>
 
-    <input
-      id="website"
-      type="url"
-      placeholder="Website"
-    >
 
-    <select id="verification">
-      <option value="Unverified">Unverified</option>
-      <option value="Official source">Official source</option>
-      <option value="Verified">Verified</option>
-    </select>
+  <!-- =========================
+       STATISTICS
+  ========================== -->
+
+  <div class="stats">
+
+    <div class="stat">
+
+      <div class="label">
+        Applications
+      </div>
+
+      <div
+        class="value"
+        id="statApplications"
+      >
+        —
+      </div>
+
+    </div>
+
+
+    <div class="stat">
+
+      <div class="label">
+        Paid
+      </div>
+
+      <div
+        class="value"
+        id="statPaid"
+      >
+        —
+      </div>
+
+    </div>
+
+
+    <div class="stat">
+
+      <div class="label">
+        Unpaid
+      </div>
+
+      <div
+        class="value"
+        id="statUnpaid"
+      >
+        —
+      </div>
+
+    </div>
+
+
+    <div class="stat">
+
+      <div class="label">
+        Brands
+      </div>
+
+      <div
+        class="value"
+        id="statBrands"
+      >
+        —
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       NAVIGATION
+  ========================== -->
+
+  <div class="navtabs">
 
     <button
-      class="primary"
-      onclick="addBrand()"
+      class="tab active"
+      data-tab="dashboard"
+      onclick="showTab('dashboard')"
     >
-      Add Brand
+      Dashboard
     </button>
-
-  </section>
-
-  <!-- BRANDS -->
-
-  <section>
-
-    <h2>🏷️ Brands</h2>
 
     <button
-      class="refresh"
-      onclick="loadBrands()"
+      class="tab"
+      data-tab="applications"
+      onclick="showTab('applications')"
     >
-      🔄 Refresh Brands
+      Applications
     </button>
 
-    <input
-      id="search"
-      type="search"
-      placeholder="Search brands..."
-      oninput="filterBrands()"
+    <button
+      class="tab"
+      data-tab="brands"
+      onclick="showTab('brands')"
     >
+      Brands
+    </button>
 
-    <div id="brands">
-      Loading...
+    <button
+      class="tab"
+      data-tab="addbrand"
+      onclick="showTab('addbrand')"
+    >
+      + Add Brand
+    </button>
+
+  </div>
+
+
+  <!-- =========================
+       DASHBOARD
+  ========================== -->
+
+  <section
+    id="dashboard"
+    class="section active"
+  >
+
+    <div class="panel">
+
+      <div class="panel-head">
+
+        <h2>
+          System overview
+        </h2>
+
+        <span
+          class="muted"
+          id="lastRefresh"
+        >
+          Not loaded
+        </span>
+
+      </div>
+
+      <p class="muted">
+
+        Payment status is displayed from the
+        server/database.
+
+        The admin page does not create a
+        paid status by itself.
+
+      </p>
+
     </div>
 
   </section>
 
-  <!-- APPLICATIONS -->
 
-  <section>
+  <!-- =========================
+       APPLICATIONS
+  ========================== -->
 
-    <h2>📩 Applications</h2>
+  <section
+    id="applications"
+    class="section"
+  >
 
-    <button
-      class="refresh"
-      onclick="loadApplications()"
-    >
-      🔄 Refresh Applications
-    </button>
+    <div class="panel">
 
-    <div id="applications">
-      Loading...
+      <div class="panel-head">
+
+        <h2>
+          Applications & payments
+        </h2>
+
+        <div class="tools">
+
+          <input
+            class="search"
+            id="appSearch"
+            placeholder="Search brand, country, email..."
+            oninput="renderApplications()"
+          >
+
+        </div>
+
+      </div>
+
+
+      <div class="filters">
+
+        <select
+          id="paymentFilter"
+          onchange="renderApplications()"
+        >
+
+          <option value="">
+            All payments
+          </option>
+
+          <option value="paid">
+            Paid
+          </option>
+
+          <option value="unpaid">
+            Unpaid
+          </option>
+
+        </select>
+
+
+        <select
+          id="statusFilter"
+          onchange="renderApplications()"
+        >
+
+          <option value="">
+            All statuses
+          </option>
+
+          <option value="new">
+            New
+          </option>
+
+          <option value="approved">
+            Approved
+          </option>
+
+          <option value="rejected">
+            Rejected
+          </option>
+
+        </select>
+
+
+        <button
+          class="btn"
+          onclick="loadApplications()"
+        >
+          Reload applications
+        </button>
+
+      </div>
+
+
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>ID</th>
+
+              <th>Brand</th>
+
+              <th>Country</th>
+
+              <th>Email</th>
+
+              <th>Payment</th>
+
+              <th>Status</th>
+
+              <th>Date</th>
+
+              <th>Actions</th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody
+            id="applicationsBody"
+          ></tbody>
+
+        </table>
+
+      </div>
+
     </div>
 
   </section>
+
+
+  <!-- =========================
+       BRANDS
+  ========================== -->
+
+  <section
+    id="brands"
+    class="section"
+  >
+
+    <div class="panel">
+
+      <div class="panel-head">
+
+        <h2>
+          Brands
+        </h2>
+
+        <div class="tools">
+
+          <input
+            class="search"
+            id="brandSearch"
+            placeholder="Search brands..."
+            oninput="renderBrands()"
+          >
+
+          <button
+            class="btn primary"
+            onclick="showTab('addbrand')"
+          >
+            + Add Brand
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>ID</th>
+
+              <th>Brand</th>
+
+              <th>Country</th>
+
+              <th>Category</th>
+
+              <th>Verification</th>
+
+              <th>Website</th>
+
+              <th>Actions</th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody
+            id="brandsBody"
+          ></tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       ADD BRAND
+  ========================== -->
+
+  <section
+    id="addbrand"
+    class="section"
+  >
+
+    <div class="panel">
+
+      <div class="panel-head">
+
+        <h2>
+          Add brand
+        </h2>
+
+        <span class="muted">
+          The brand will be added directly
+          to the directory.
+        </span>
+
+      </div>
+
+
+      <form
+        onsubmit="addBrand(event)"
+      >
+
+        <div class="form-grid">
+
+
+          <div class="field">
+
+            <label>
+              Brand name *
+            </label>
+
+            <input
+              id="brandName"
+              required
+              maxlength="200"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              Country *
+            </label>
+
+            <select
+              id="brandCountry"
+              required
+            >
+
+              <option value="">
+                Loading...
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              Category
+            </label>
+
+            <input
+              id="brandCategory"
+              maxlength="200"
+              placeholder="Technology, Fashion, Automotive..."
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              Verification
+            </label>
+
+            <select
+              id="brandVerification"
+            >
+
+              <option value="Unverified">
+                Unverified
+              </option>
+
+              <option value="Official source">
+                Official source
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="field full">
+
+            <label>
+              Website
+            </label>
+
+            <input
+              id="brandWebsite"
+              type="url"
+              maxlength="500"
+              placeholder="https://example.com"
+            >
+
+          </div>
+
+
+          <div class="field full">
+
+            <label>
+              Logo URL
+            </label>
+
+            <input
+              id="brandLogo"
+              type="url"
+              maxlength="500"
+              placeholder="https://..."
+            >
+
+          </div>
+
+
+          <div class="field full">
+
+            <label>
+              Description
+            </label>
+
+            <textarea
+              id="brandDescription"
+              rows="5"
+              maxlength="3000"
+            ></textarea>
+
+          </div>
+
+        </div>
+
+
+        <div
+          class="actions"
+          style="margin-top:14px"
+        >
+
+          <button
+            class="btn primary"
+            type="submit"
+          >
+            Save brand
+          </button>
+
+
+          <button
+            class="btn"
+            type="reset"
+          >
+            Clear
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </section>
+
+</main>
+
+
+<!-- =========================
+     DETAIL MODAL
+========================== -->
+
+<div
+  class="modal"
+  id="detailModal"
+  onclick="if(event.target===this)closeDetail()"
+>
+
+  <div class="modal-box">
+
+    <div class="modal-head">
+
+      <h2>
+        Application details
+      </h2>
+
+      <button
+        class="close"
+        onclick="closeDetail()"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div
+      class="detail-grid"
+      id="detailContent"
+    ></div>
+
+  </div>
 
 </div>
 
+
+<div
+  class="toast"
+  id="toast"
+></div>
+
+
 <script>
 
-let allBrands = [];
+let applications = [];
 
-// ================= MESSAGE =================
+let brands = [];
 
-function showMessage(text, type) {
+let countries = [];
 
-  const box = document.getElementById("message");
 
-  box.textContent = text;
+/* =========================
+   ESCAPE HTML
+========================= */
 
-  box.className = "message " + type;
+function esc(value){
 
-  box.style.display = "block";
+  return String(value ?? "")
 
-  setTimeout(() => {
-    box.style.display = "none";
-  }, 4000);
+    .replace(
+      /[&<>"']/g,
+
+      function(m){
+
+        return {
+
+          "&":"&amp;",
+          "<":"&lt;",
+          ">":"&gt;",
+          '"':"&quot;",
+          "'":"&#039;"
+
+        }[m];
+
+      }
+    );
+
 }
 
-// ================= COUNTRIES =================
 
-async function loadCountries() {
+/* =========================
+   SAFE URL
+========================= */
 
-  try {
+function safeUrl(value){
 
-    const response = await fetch("/api/countries");
+  const s =
+    String(value || "").trim();
 
-    const countries = await response.json();
+  return /^https?:\/\//i.test(s)
+    ? s
+    : "";
 
-    document.getElementById("countryCount").textContent =
-      countries.length;
-
-  } catch (error) {
-
-    console.error(error);
-
-  }
 }
 
-// ================= BRANDS =================
 
-async function loadBrands() {
+/* =========================
+   BADGE
+========================= */
 
-  const container =
-    document.getElementById("brands");
+function badge(value){
 
-  container.innerHTML = "Loading...";
+  const v =
+    String(value || "")
+      .toLowerCase();
 
-  try {
+  let cls = "other";
 
-    const response =
-      await fetch("/api/admin/brands");
+  if(
+    v === "paid" ||
+    v === "approved"
+  ){
 
-    if (!response.ok) {
-      throw new Error("Failed to load brands");
-    }
-
-    allBrands = await response.json();
-
-    document.getElementById("brandCount").textContent =
-      allBrands.length;
-
-    displayBrands(allBrands);
-
-  } catch (error) {
-
-    container.innerHTML =
-      "<p>❌ Could not load brands.</p>";
-
-    console.error(error);
+    cls = v;
 
   }
+
+  else if(
+    v === "unpaid" ||
+    v === "new"
+  ){
+
+    cls = v;
+
+  }
+
+  else if(
+    v === "rejected"
+  ){
+
+    cls = "rejected";
+
+  }
+
+  return `
+    <span class="badge ${cls}">
+      ${esc(value || "—")}
+    </span>
+  `;
+
 }
 
-// ================= DISPLAY BRANDS =================
 
-function displayBrands(brands) {
+/* =========================
+   TOAST
+========================= */
 
-  const container =
-    document.getElementById("brands");
+function toast(message){
 
-  if (!brands.length) {
+  const el =
+    document.getElementById("toast");
 
-    container.innerHTML =
-      "<p>No brands found.</p>";
+  el.textContent = message;
 
-    return;
+  el.classList.add("show");
+
+  setTimeout(
+    () => el.classList.remove("show"),
+    2200
+  );
+
+}
+
+
+/* =========================
+   API
+========================= */
+
+async function api(
+  url,
+  options = {}
+){
+
+  const response =
+    await fetch(
+      url,
+      {
+        cache:"no-store",
+        ...options
+      }
+    );
+
+  let data = {};
+
+  try{
+
+    data = await response.json();
+
+  }catch{}
+
+  if(!response.ok){
+
+    throw new Error(
+      data.error ||
+      `HTTP ${response.status}`
+    );
+
   }
 
-  container.innerHTML = "";
+  return data;
 
-  brands.forEach(brand => {
+}
 
-    const div =
-      document.createElement("div");
 
-    div.className = "brand";
+/* =========================
+   TABS
+========================= */
 
-    div.innerHTML = `
-      <h3>${escapeHtml(brand.name)}</h3>
+function showTab(name){
 
-      <p>
-        🌍 ${escapeHtml(brand.country)}
-        (${escapeHtml(brand.country_code)})
-      </p>
+  document
+    .querySelectorAll(".section")
+    .forEach(
+      x => x.classList.remove("active")
+    );
 
-      <p>
-        📂 ${escapeHtml(brand.category || "No category")}
-      </p>
+  document
+    .querySelectorAll(".tab")
+    .forEach(
+      x => x.classList.remove("active")
+    );
 
-      <p>
-        ${escapeHtml(brand.description || "")}
-      </p>
 
-      <p>
-        🔗 ${escapeHtml(brand.website || "No website")}
-      </p>
+  document
+    .getElementById(name)
+    .classList.add("active");
 
-      <p>
-        ✅ ${escapeHtml(brand.verification || "Unverified")}
-      </p>
 
-      <button
-        class="danger"
-        onclick="deleteBrand(${brand.id})"
-      >
-        🗑️ Delete
-      </button>
+  const tab =
+    document.querySelector(
+      `.tab[data-tab="${name}"]`
+    );
+
+  if(tab){
+
+    tab.classList.add("active");
+
+  }
+
+}
+
+
+/* =========================
+   COUNTRIES
+========================= */
+
+async function loadCountries(){
+
+  countries =
+    await api("/api/countries");
+
+
+  const select =
+    document.getElementById(
+      "brandCountry"
+    );
+
+
+  select.innerHTML =
+
+    `<option value="">
+      Select country
+    </option>` +
+
+    countries
+      .map(
+        country => `
+
+          <option
+            value="${esc(country.id)}"
+          >
+
+            ${esc(country.name)}
+
+          </option>
+
+        `
+      )
+      .join("");
+
+}
+
+
+/* =========================
+   APPLICATIONS
+========================= */
+
+async function loadApplications(){
+
+  applications =
+    await api(
+      "/api/admin/applications"
+    );
+
+  renderApplications();
+
+  updateStats();
+
+}
+
+
+/* =========================
+   BRANDS
+========================= */
+
+async function loadBrands(){
+
+  brands =
+    await api(
+      "/api/admin/brands"
+    );
+
+  renderBrands();
+
+  updateStats();
+
+}
+
+
+/* =========================
+   STATISTICS
+========================= */
+
+function updateStats(){
+
+  const paid =
+
+    applications.filter(
+
+      application =>
+
+        String(
+          application.payment_status ||
+          application.payment ||
+          ""
+        ).toLowerCase() === "paid"
+
+    ).length;
+
+
+  const unpaid =
+    applications.length - paid;
+
+
+  document.getElementById(
+    "statApplications"
+  ).textContent =
+    applications.length;
+
+
+  document.getElementById(
+    "statPaid"
+  ).textContent =
+    paid;
+
+
+  document.getElementById(
+    "statUnpaid"
+  ).textContent =
+    unpaid;
+
+
+  document.getElementById(
+    "statBrands"
+  ).textContent =
+    brands.length;
+
+}
+
+
+/* =========================
+   RENDER APPLICATIONS
+========================= */
+
+function renderApplications(){
+
+  const search =
+    (
+      document.getElementById(
+        "appSearch"
+      ).value || ""
+    )
+    .toLowerCase()
+    .trim();
+
+
+  const paymentFilter =
+    document.getElementById(
+      "paymentFilter"
+    ).value;
+
+
+  const statusFilter =
+    document.getElementById(
+      "statusFilter"
+    ).value;
+
+
+  const rows =
+    applications.filter(
+
+      application => {
+
+        const payment =
+
+          String(
+            application.payment_status ||
+            application.payment ||
+            "unpaid"
+          ).toLowerCase();
+
+
+        const status =
+
+          String(
+            application.status ||
+            "new"
+          ).toLowerCase();
+
+
+        const haystack = [
+
+          application.id,
+          application.brand_name,
+          application.country,
+          application.owner_name,
+          application.email,
+          application.phone
+
+        ]
+        .join(" ")
+        .toLowerCase();
+
+
+        return (
+
+          (!search ||
+            haystack.includes(search))
+
+          &&
+
+          (!paymentFilter ||
+            payment === paymentFilter)
+
+          &&
+
+          (!statusFilter ||
+            status === statusFilter)
+
+        );
+
+      }
+
+    );
+
+
+  const body =
+    document.getElementById(
+      "applicationsBody"
+    );
+
+
+  if(!rows.length){
+
+    body.innerHTML = `
+
+      <tr>
+
+        <td
+          colspan="8"
+          class="empty"
+        >
+
+          No applications found.
+
+        </td>
+
+      </tr>
+
     `;
 
-    container.appendChild(div);
+    return;
 
-  });
+  }
+
+
+  body.innerHTML =
+
+    rows.map(
+
+      application => {
+
+        const payment =
+
+          application.payment_status ||
+          application.payment ||
+          "unpaid";
+
+
+        const status =
+          application.status ||
+          "new";
+
+
+        return `
+
+          <tr>
+
+            <td>
+              #${esc(application.id)}
+            </td>
+
+
+            <td>
+              <b>
+                ${esc(
+                  application.brand_name ||
+                  "—"
+                )}
+              </b>
+            </td>
+
+
+            <td>
+              ${esc(
+                application.country ||
+                "—"
+              )}
+            </td>
+
+
+            <td>
+              ${esc(
+                application.email ||
+                "—"
+              )}
+            </td>
+
+
+            <td>
+              ${badge(payment)}
+            </td>
+
+
+            <td>
+
+              <select
+                onchange="
+                  changeStatus(
+                    ${Number(application.id)},
+                    this.value
+                  )
+                "
+              >
+
+                ${
+                  [
+                    "new",
+                    "approved",
+                    "rejected"
+                  ]
+
+                  .map(
+
+                    statusOption => `
+
+                      <option
+                        value="${statusOption}"
+                        ${
+                          String(status)
+                            .toLowerCase() ===
+                          statusOption
+                            ? "selected"
+                            : ""
+                        }
+                      >
+
+                        ${statusOption}
+
+                      </option>
+
+                    `
+
+                  )
+
+                  .join("")
+                }
+
+              </select>
+
+            </td>
+
+
+            <td>
+              ${esc(
+                application.created_at ||
+                "—"
+              )}
+            </td>
+
+
+            <td class="actions-cell">
+
+              <button
+                class="btn small"
+                onclick="
+                  viewApplication(
+                    ${Number(application.id)}
+                  )
+                "
+              >
+                View
+              </button>
+
+
+              <button
+                class="btn small danger"
+                onclick="
+                  deleteApplication(
+                    ${Number(application.id)}
+                  )
+                "
+              >
+                Delete
+              </button>
+
+            </td>
+
+          </tr>
+
+        `;
+
+      }
+
+    ).join("");
+
 }
 
-// ================= SEARCH =================
 
-function filterBrands() {
+/* =========================
+   RENDER BRANDS
+========================= */
 
-  const query =
-    document
-      .getElementById("search")
-      .value
-      .toLowerCase()
-      .trim();
+function renderBrands(){
 
-  const filtered =
-    allBrands.filter(brand => {
+  const search =
 
-      return (
-        brand.name.toLowerCase().includes(query) ||
-        (brand.country || "")
-          .toLowerCase()
-          .includes(query) ||
-        (brand.category || "")
-          .toLowerCase()
-          .includes(query)
+    (
+      document.getElementById(
+        "brandSearch"
+      ).value || ""
+    )
+    .toLowerCase()
+    .trim();
+
+
+  const rows =
+
+    brands.filter(
+
+      brand =>
+
+        [
+
+          brand.id,
+          brand.name,
+          brand.country_name,
+          brand.category,
+          brand.verification
+
+        ]
+
+        .join(" ")
+
+        .toLowerCase()
+
+        .includes(search)
+
+    );
+
+
+  const body =
+    document.getElementById(
+      "brandsBody"
+    );
+
+
+  if(!rows.length){
+
+    body.innerHTML = `
+
+      <tr>
+
+        <td
+          colspan="7"
+          class="empty"
+        >
+
+          No brands found.
+
+        </td>
+
+      </tr>
+
+    `;
+
+    return;
+
+  }
+
+
+  body.innerHTML =
+
+    rows.map(
+
+      brand => {
+
+        const url =
+          safeUrl(
+            brand.website
+          );
+
+
+        return `
+
+          <tr>
+
+            <td>
+              #${esc(brand.id)}
+            </td>
+
+
+            <td>
+
+              <b>
+                ${esc(
+                  brand.name ||
+                  "—"
+                )}
+              </b>
+
+            </td>
+
+
+            <td>
+              ${esc(
+                brand.country_name ||
+                "—"
+              )}
+            </td>
+
+
+            <td>
+              ${esc(
+                brand.category ||
+                "—"
+              )}
+            </td>
+
+
+            <td>
+              ${badge(
+                brand.verification ||
+                "Unverified"
+              )}
+            </td>
+
+
+            <td>
+
+              ${
+                url
+
+                ?
+
+                `
+                  <a
+                    href="${esc(url)}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style="
+                      color:#8fb5ff
+                    "
+                  >
+                    Open
+                  </a>
+                `
+
+                :
+
+                "—"
+              }
+
+            </td>
+
+
+            <td class="actions-cell">
+
+              <button
+                class="btn small"
+                onclick="
+                  viewBrand(
+                    ${Number(brand.id)}
+                  )
+                "
+              >
+                View
+              </button>
+
+
+              <button
+                class="btn small danger"
+                onclick="
+                  deleteBrand(
+                    ${Number(brand.id)}
+                  )
+                "
+              >
+                Delete
+              </button>
+
+            </td>
+
+          </tr>
+
+        `;
+
+      }
+
+    ).join("");
+
+}
+
+
+/* =========================
+   VIEW APPLICATION
+========================= */
+
+function viewApplication(id){
+
+  const application =
+
+    applications.find(
+
+      item =>
+        Number(item.id) ===
+        Number(id)
+
+    );
+
+
+  if(!application)
+    return;
+
+
+  const payment =
+
+    application.payment_status ||
+    application.payment ||
+    "unpaid";
+
+
+  const content =
+
+    document.getElementById(
+      "detailContent"
+    );
+
+
+  content.innerHTML = `
+
+    <div class="detail">
+
+      <b>
+        ID
+      </b>
+
+      #${esc(application.id)}
+
+    </div>
+
+
+    <div class="detail">
+
+      <b>
+        Status
+      </b>
+
+      ${badge(
+        application.status ||
+        "new"
+      )}
+
+    </div>
+
+
+    <div class="detail">
+
+      <b>
+        Payment
+      </b>
+
+      ${badge(payment)}
+
+    </div>
+
+
+    <div class="detail">
+
+      <b>
+        Brand
+      </b>
+
+      ${esc(
+        application.brand_name ||
+        "—"
+      )}
+
+    </div>
+
+
+    <div class="detail">
+
+      <b>
+        Country
+      </b>
+
+      ${esc(
+        application.country ||
+        "—"
+      )}
+
+    </div>
+
+
+    <div class="detail">
+
+      <b>
+        Owner
+      </b>
+
+      ${esc(
+        application.owner_name ||
+        "—"
+      )}
+
+    </div>
+
+
+    <div class="detail">
+
+      <b>
+        Email
+      </b>
+
+      ${esc(
+        application.email ||
+        "—"
+      )}
+
+    </div>
+
+
+    <div class="detail">
+
+      <b>
+        Phone
+      </b>
+
+      ${esc(
+        application.phone ||
+        "—"
+      )}
+
+    </div>
+
+
+    <div class="detail">
+
+      <b>
+        Website
+      </b>
+
+      ${
+        safeUrl(application.website)
+
+        ?
+
+        `
+          <a
+            href="${esc(application.website)}"
+            target="_blank"
+            rel="noopener"
+            style="
+              color:#8fb5ff
+            "
+          >
+            Open website
+          </a>
+        `
+
+        :
+
+        "—"
+      }
+
+    </div>
+
+
+    <div class="detail">
+
+      <b>
+        Created
+      </b>
+
+      ${esc(
+        application.created_at ||
+        "—"
+      )}
+
+    </div>
+
+
+    <div class="detail full">
+
+      <b>
+        Description
+      </b>
+
+      ${esc(
+        application.description ||
+        "—"
+      )}
+
+    </div>
+
+  `;
+
+
+  document
+    .getElementById(
+      "detailModal"
+    )
+    .classList.add("open");
+
+}
+
+
+/* =========================
+   VIEW BRAND
+========================= */
+
+function viewBrand(id){
+
+  const brand =
+
+    brands.find(
+
+      item =>
+        Number(item.id) ===
+        Number(id)
+
+    );
+
+
+  if(!brand)
+    return;
+
+
+  document.getElementById(
+    "detailContent"
+  ).innerHTML = `
+
+    <div class="detail">
+
+      <b>
+        ID
+      </b>
+
+      #${esc(brand.id)}
+
+    </div>
+
+
+    <div class="detail">
+
+      <b>
+        Brand
+      </b>
+
+      ${esc(
+        brand.name ||
+        "—"
+      )}
+
+    </div>
+
+
+    <div class="detail">
+
+      <b>
+        Country
+      </b>
+
+      ${esc(
+        brand.country_name ||
+        "—"
+      )}
+
+    </div>
+
+
+    <div class="detail">
+
+      <b>
+        Category
+      </b>
+
+      ${esc(
+        brand.category ||
+        "—"
+      )}
+
+    </div>
+
+
+    <div class="detail">
+
+      <b>
+        Verification
+      </b>
+
+      ${badge(
+        brand.verification ||
+        "Unverified"
+      )}
+
+    </div>
+
+
+    <div class="detail">
+
+      <b>
+        Website
+      </b>
+
+      ${
+        safeUrl(brand.website)
+
+        ?
+
+        `
+          <a
+            href="${esc(brand.website)}"
+            target="_blank"
+            rel="noopener"
+            style="
+              color:#8fb5ff
+            "
+          >
+            Open website
+          </a>
+        `
+
+        :
+
+        "—"
+      }
+
+    </div>
+
+
+    <div class="detail full">
+
+      <b>
+        Description
+      </b>
+
+      ${esc(
+        brand.description ||
+        "—"
+      )}
+
+    </div>
+
+  `;
+
+
+  document
+    .getElementById(
+      "detailModal"
+    )
+    .classList.add("open");
+
+}
+
+
+/* =========================
+   CLOSE MODAL
+========================= */
+
+function closeDetail(){
+
+  document
+    .getElementById(
+      "detailModal"
+    )
+    .classList.remove("open");
+
+}
+
+
+/* =========================
+   CHANGE APPLICATION STATUS
+========================= */
+
+async function changeStatus(
+  id,
+  status
+){
+
+  try{
+
+    await api(
+      `/api/admin/applications/${id}`,
+      {
+        method:"PATCH",
+
+        headers:{
+          "Content-Type":
+            "application/json"
+        },
+
+        body:
+          JSON.stringify({
+            status
+          })
+      }
+    );
+
+
+    const application =
+
+      applications.find(
+
+        item =>
+          Number(item.id) ===
+          Number(id)
+
       );
 
-    });
 
-  displayBrands(filtered);
+    if(application){
+
+      application.status =
+        status;
+
+    }
+
+
+    renderApplications();
+
+
+    toast(
+      "Application status updated."
+    );
+
+
+  }
+
+  catch(error){
+
+    alert(
+      "Could not update status: " +
+      error.message
+    );
+
+
+    await loadApplications();
+
+  }
+
 }
 
-// ================= ADD BRAND =================
 
-async function addBrand() {
+/* =========================
+   DELETE APPLICATION
+========================= */
 
-  const data = {
+async function deleteApplication(id){
+
+  if(
+    !confirm(
+      `Delete application #${id}?`
+    )
+  ){
+
+    return;
+
+  }
+
+
+  try{
+
+    await api(
+      `/api/admin/applications/${id}`,
+      {
+        method:"DELETE"
+      }
+    );
+
+
+    applications =
+      applications.filter(
+
+        application =>
+          Number(application.id) !==
+          Number(id)
+
+      );
+
+
+    renderApplications();
+
+    updateStats();
+
+
+    toast(
+      "Application deleted."
+    );
+
+
+  }
+
+  catch(error){
+
+    alert(
+      "Could not delete application: " +
+      error.message
+    );
+
+  }
+
+}
+
+
+/* =========================
+   DELETE BRAND
+========================= */
+
+async function deleteBrand(id){
+
+  const brand =
+
+    brands.find(
+
+      item =>
+        Number(item.id) ===
+        Number(id)
+
+    );
+
+
+  if(
+    !confirm(
+      `Delete brand "${brand?.name || id}"?`
+    )
+  ){
+
+    return;
+
+  }
+
+
+  try{
+
+    await api(
+      `/api/admin/brands/${id}`,
+      {
+        method:"DELETE"
+      }
+    );
+
+
+    brands =
+      brands.filter(
+
+        item =>
+          Number(item.id) !==
+          Number(id)
+
+      );
+
+
+    renderBrands();
+
+    updateStats();
+
+
+    toast(
+      "Brand deleted."
+    );
+
+
+  }
+
+  catch(error){
+
+    alert(
+      "Could not delete brand: " +
+      error.message
+    );
+
+  }
+
+}
+
+
+/* =========================
+   ADD BRAND
+========================= */
+
+async function addBrand(event){
+
+  event.preventDefault();
+
+
+  const payload = {
 
     name:
       document
-        .getElementById("brandName")
+        .getElementById(
+          "brandName"
+        )
         .value
         .trim(),
 
-    country_code:
+
+    country_id:
       document
-        .getElementById("countryCode")
-        .value
-        .trim()
-        .toUpperCase(),
+        .getElementById(
+          "brandCountry"
+        )
+        .value,
+
 
     category:
       document
-        .getElementById("category")
+        .getElementById(
+          "brandCategory"
+        )
         .value
         .trim(),
 
-    description:
-      document
-        .getElementById("description")
-        .value
-        .trim(),
-
-    website:
-      document
-        .getElementById("website")
-        .value
-        .trim(),
 
     verification:
       document
-        .getElementById("verification")
+        .getElementById(
+          "brandVerification"
+        )
+        .value,
+
+
+    website:
+      document
+        .getElementById(
+          "brandWebsite"
+        )
         .value
+        .trim(),
+
+
+    logo:
+      document
+        .getElementById(
+          "brandLogo"
+        )
+        .value
+        .trim(),
+
+
+    description:
+      document
+        .getElementById(
+          "brandDescription"
+        )
+        .value
+        .trim()
 
   };
 
-  if (!data.name) {
 
-    showMessage(
-      "Brand name is required.",
-      "error"
+  try{
+
+    await api(
+      "/api/admin/brands",
+      {
+
+        method:"POST",
+
+        headers:{
+          "Content-Type":
+            "application/json"
+        },
+
+        body:
+          JSON.stringify(payload)
+
+      }
     );
 
-    return;
+
+    event.target.reset();
+
+
+    await loadBrands();
+
+
+    toast(
+      "Brand added successfully."
+    );
+
+
+    showTab(
+      "brands"
+    );
+
+
   }
 
-  if (!data.country_code) {
+  catch(error){
 
-    showMessage(
-      "Country code is required.",
-      "error"
-    );
-
-    return;
-  }
-
-  try {
-
-    const response =
-      await fetch(
-        "/api/admin/brands",
-        {
-          method: "POST",
-
-          headers: {
-            "Content-Type":
-              "application/json"
-          },
-
-          body:
-            JSON.stringify(data)
-        }
-      );
-
-    const result =
-      await response.json();
-
-    if (!response.ok) {
-
-      throw new Error(
-        result.error ||
-        "Failed to add brand"
-      );
-
-    }
-
-    showMessage(
-      "✅ Brand added successfully!",
-      "success"
-    );
-
-    document.getElementById("brandName").value = "";
-    document.getElementById("countryCode").value = "";
-    document.getElementById("category").value = "";
-    document.getElementById("description").value = "";
-    document.getElementById("website").value = "";
-
-    loadBrands();
-
-  } catch (error) {
-
-    showMessage(
-      "❌ " + error.message,
-      "error"
+    alert(
+      "Could not add brand: " +
+      error.message
     );
 
   }
+
 }
 
-// ================= DELETE BRAND =================
 
-async function deleteBrand(id) {
+/* =========================
+   REFRESH EVERYTHING
+========================= */
 
-  const confirmed =
-    confirm(
-      "Are you sure you want to delete this brand?"
-    );
+async function refreshAll(){
 
-  if (!confirmed) {
-    return;
-  }
+  try{
 
-  try {
+    await Promise.all([
 
-    const response =
-      await fetch(
-        "/api/admin/brands/" + id,
-        {
-          method: "DELETE"
-        }
-      );
+      loadCountries(),
 
-    const result =
-      await response.json();
+      loadApplications(),
 
-    if (!response.ok) {
+      loadBrands()
 
-      throw new Error(
-        result.error ||
-        "Delete failed"
-      );
+    ]);
 
-    }
-
-    showMessage(
-      "✅ Brand deleted.",
-      "success"
-    );
-
-    loadBrands();
-
-  } catch (error) {
-
-    showMessage(
-      "❌ " + error.message,
-      "error"
-    );
-
-  }
-}
-
-// ================= APPLICATIONS =================
-
-async function loadApplications() {
-
-  const container =
-    document.getElementById("applications");
-
-  container.innerHTML = "Loading...";
-
-  try {
-
-    const response =
-      await fetch(
-        "/api/admin/applications"
-      );
-
-    if (!response.ok) {
-      throw new Error(
-        "Failed to load applications"
-      );
-    }
-
-    const applications =
-      await response.json();
 
     document.getElementById(
-      "applicationCount"
+      "lastRefresh"
     ).textContent =
-      applications.length;
 
-    if (!applications.length) {
+      "Updated: " +
+      new Date()
+        .toLocaleString();
 
-      container.innerHTML =
-        "<p>No applications yet.</p>";
 
-      return;
-    }
+    toast(
+      "Dashboard refreshed."
+    );
 
-    container.innerHTML = "";
+  }
 
-    applications.forEach(app => {
-
-      const div =
-        document.createElement("div");
-
-      div.className = "brand";
-
-      div.innerHTML = `
-        <h3>${escapeHtml(app.brand_name)}</h3>
-
-        <p>🌍 ${escapeHtml(app.country)}</p>
-
-        <p>📧 ${escapeHtml(app.owner_email)}</p>
-
-        <p>🔗 ${escapeHtml(app.website || "No website")}</p>
-
-        <p>📦 ${escapeHtml(app.package || "Basic")}</p>
-
-        <p>📌 Status: ${escapeHtml(app.status || "pending")}</p>
-
-        <p>🕒 ${escapeHtml(app.created_at || "")}</p>
-      `;
-
-      container.appendChild(div);
-
-    });
-
-  } catch (error) {
-
-    container.innerHTML =
-      "<p>❌ Could not load applications.</p>";
+  catch(error){
 
     console.error(error);
 
+
+    alert(
+      "Could not load admin data: " +
+      error.message
+    );
+
   }
-}
-
-// ================= SECURITY =================
-
-function escapeHtml(value) {
-
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
 
 }
 
-// ================= START =================
 
-loadCountries();
-loadBrands();
-loadApplications();
+/* =========================
+   START
+========================= */
+
+refreshAll();
 
 </script>
 
