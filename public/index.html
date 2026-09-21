@@ -1,130 +1,1575 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>ALL WORLD BRANDS — Payment</title>
+<meta
+    name="description"
+    content="ALL WORLD BRANDS — Discover brands and countries from around the world."
+>
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+<meta name="theme-color" content="#050914">
 
-        body {
-            margin: 0;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: Arial, sans-serif;
-            background: #f3f7fb;
-            color: #102a43;
-        }
+<title>ALL WORLD BRANDS — Discover Global Brands</title>
 
-        .card {
-            width: 100%;
-            max-width: 430px;
-            margin: 20px;
-            padding: 35px;
-            background: #ffffff;
-            border-radius: 20px;
-            box-shadow: 0 15px 45px rgba(0, 60, 120, 0.12);
-            text-align: center;
-        }
+<style>
+/* =========================================================
+   RESET
+========================================================= */
 
-        h1 {
-            margin: 0 0 10px;
-            font-size: 28px;
-        }
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-        .subtitle {
-            margin-bottom: 30px;
-            color: #718096;
-        }
+html {
+    scroll-behavior: smooth;
+}
 
-        .price {
-            margin: 25px 0;
-            font-size: 42px;
-            font-weight: 800;
-            color: #087ff0;
-        }
+body {
+    min-height: 100vh;
+    font-family:
+        Inter,
+        Arial,
+        Helvetica,
+        sans-serif;
 
-        .pay-button {
-            width: 100%;
-            padding: 16px;
-            border: 0;
-            border-radius: 12px;
-            background: #087ff0;
-            color: white;
-            font-size: 17px;
-            font-weight: 700;
-            cursor: pointer;
-        }
+    background:
+        radial-gradient(
+            circle at 50% -10%,
+            #17345f 0%,
+            #091426 35%,
+            #050914 75%
+        );
 
-        .pay-button:hover {
-            background: #066dcc;
-        }
+    color: #ffffff;
+    overflow-x: hidden;
+}
 
-        #message {
-            margin-top: 20px;
-            font-size: 14px;
-            color: #64748b;
-        }
-    </style>
+
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            rgba(5, 9, 20, 0.72),
+            rgba(5, 9, 20, 0.94)
+        ),
+        url("/brand-rain-background.png")
+        center / cover no-repeat;
+
+    opacity: 0.28;
+    pointer-events: none;
+    z-index: -2;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle at 50% 35%,
+            rgba(0, 153, 255, 0.10),
+            transparent 42%
+        );
+
+    pointer-events: none;
+    z-index: -1;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    width: 100%;
+
+    background:
+        rgba(5, 9, 20, 0.82);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border-bottom:
+        1px solid rgba(255,255,255,0.08);
+}
+
+.header-inner {
+    width: min(1500px, calc(100% - 28px));
+    min-height: 66px;
+
+    margin: auto;
+
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    color: #ffffff;
+    text-decoration: none;
+
+    white-space: nowrap;
+}
+
+.logo-mark {
+    width: 38px;
+    height: 38px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #00a8ff,
+            #0066ff
+        );
+
+    box-shadow:
+        0 0 25px rgba(0, 145, 255, 0.30);
+
+    font-size: 20px;
+}
+
+.logo-text {
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+}
+
+.nav {
+    margin-left: auto;
+
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.nav a {
+    color: #b9c8dd;
+    text-decoration: none;
+
+    padding: 9px 12px;
+
+    border-radius: 9px;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    transition: 0.2s;
+}
+
+.nav a:hover {
+    color: #ffffff;
+    background: rgba(255,255,255,0.07);
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main {
+    width: min(1500px, calc(100% - 28px));
+    margin: auto;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+    padding:
+        42px
+        0
+        28px;
+
+    text-align: center;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 7px 12px;
+
+    border-radius: 999px;
+
+    background:
+        rgba(0, 145, 255, 0.10);
+
+    border:
+        1px solid rgba(0, 168, 255, 0.25);
+
+    color: #78caff;
+
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+
+    margin-bottom: 16px;
+}
+
+.badge-dot {
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: #00b7ff;
+
+    box-shadow:
+        0 0 12px #00b7ff;
+}
+
+.hero h1 {
+    font-size:
+        clamp(34px, 6vw, 72px);
+
+    line-height: 0.98;
+
+    font-weight: 950;
+    letter-spacing: -2px;
+
+    margin-bottom: 14px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #ffffff,
+            #8ed8ff,
+            #ffffff
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.hero p {
+    max-width: 680px;
+    margin: auto;
+
+    color: #91a4be;
+
+    font-size:
+        clamp(14px, 2vw, 17px);
+
+    line-height: 1.55;
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.search-area {
+    width: min(850px, 100%);
+    margin: 0 auto 32px;
+}
+
+.search-box {
+    position: relative;
+}
+
+.search-icon {
+    position: absolute;
+
+    left: 18px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    font-size: 20px;
+
+    color: #6f86a4;
+
+    pointer-events: none;
+}
+
+#searchInput {
+    width: 100%;
+
+    height: 58px;
+
+    padding:
+        0
+        52px
+        0
+        50px;
+
+    border:
+        1px solid rgba(255,255,255,0.12);
+
+    border-radius: 16px;
+
+    outline: none;
+
+    background:
+        rgba(10, 22, 42, 0.88);
+
+    color: #ffffff;
+
+    font-size: 16px;
+
+    box-shadow:
+        0 12px 40px rgba(0,0,0,0.20);
+
+    transition: 0.2s;
+}
+
+#searchInput:focus {
+    border-color:
+        rgba(0, 168, 255, 0.55);
+
+    box-shadow:
+        0 0 0 4px rgba(0,168,255,0.08),
+        0 15px 45px rgba(0,0,0,0.25);
+}
+
+#searchInput::placeholder {
+    color: #70849f;
+}
+
+.clear-search {
+    position: absolute;
+
+    right: 12px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 34px;
+    height: 34px;
+
+    border: 0;
+    border-radius: 9px;
+
+    background: rgba(255,255,255,0.06);
+
+    color: #9aabc0;
+
+    cursor: pointer;
+
+    display: none;
+}
+
+
+/* =========================================================
+   SECTION HEADER
+========================================================= */
+
+.section-head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 14px;
+}
+
+.section-title {
+    font-size: 23px;
+    font-weight: 900;
+}
+
+.section-subtitle {
+    color: #71859f;
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+.result-count {
+    color: #71859f;
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   COUNTRIES
+========================================================= */
+
+.countries-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(6, minmax(0, 1fr));
+
+    gap: 12px;
+}
+
+.country-card {
+    position: relative;
+
+    min-width: 0;
+
+    aspect-ratio: 16 / 9;
+
+    overflow: hidden;
+
+    border-radius: 13px;
+
+    border:
+        1px solid rgba(255,255,255,0.08);
+
+    background:
+        linear-gradient(
+            135deg,
+            #10213a,
+            #07101f
+        );
+
+    cursor: pointer;
+
+    transition:
+        transform 0.22s ease,
+        border-color 0.22s ease,
+        box-shadow 0.22s ease;
+}
+
+.country-card:hover {
+    transform: translateY(-4px);
+
+    border-color:
+        rgba(0, 168, 255, 0.45);
+
+    box-shadow:
+        0 14px 35px rgba(0,0,0,0.30),
+        0 0 25px rgba(0,145,255,0.08);
+}
+
+.country-bg {
+    position: absolute;
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle at 80% 20%,
+            rgba(0,168,255,0.18),
+            transparent 42%
+        );
+}
+
+.country-content {
+    position: absolute;
+    inset: 0;
+
+    padding: 13px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    background:
+        linear-gradient(
+            transparent 15%,
+            rgba(2,7,17,0.90) 100%
+        );
+}
+
+.country-flag {
+    font-size: clamp(24px, 3vw, 35px);
+
+    line-height: 1;
+
+    margin-bottom: 7px;
+}
+
+.country-name {
+    font-size: 14px;
+    font-weight: 850;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.country-code {
+    margin-top: 3px;
+
+    font-size: 10px;
+
+    color: #7890ac;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   SEARCH EMPTY
+========================================================= */
+
+.empty {
+    display: none;
+
+    text-align: center;
+
+    padding: 45px 15px;
+
+    color: #8193aa;
+}
+
+.empty strong {
+    display: block;
+
+    color: #ffffff;
+
+    font-size: 18px;
+
+    margin-bottom: 7px;
+}
+
+
+/* =========================================================
+   PAYMENT
+========================================================= */
+
+.payment-section {
+    margin:
+        42px
+        0
+        28px;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        minmax(280px, 420px);
+
+    gap: 25px;
+
+    align-items: center;
+
+    padding: 28px;
+
+    border:
+        1px solid rgba(255,255,255,0.09);
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(10,27,51,0.90),
+            rgba(6,14,28,0.88)
+        );
+
+    box-shadow:
+        0 18px 50px rgba(0,0,0,0.20);
+}
+
+.payment-info h2 {
+    font-size: 27px;
+    margin-bottom: 9px;
+}
+
+.payment-info p {
+    max-width: 650px;
+
+    color: #8296b1;
+
+    line-height: 1.6;
+
+    font-size: 14px;
+}
+
+.payment-card {
+    padding: 21px;
+
+    border-radius: 16px;
+
+    background:
+        rgba(255,255,255,0.045);
+
+    border:
+        1px solid rgba(255,255,255,0.08);
+
+    text-align: center;
+}
+
+.payment-label {
+    color: #7e93ae;
+
+    font-size: 12px;
+
+    margin-bottom: 5px;
+}
+
+.price {
+    font-size: 38px;
+
+    font-weight: 950;
+
+    color: #ffffff;
+
+    margin-bottom: 4px;
+}
+
+.price-note {
+    color: #71859f;
+
+    font-size: 11px;
+
+    margin-bottom: 15px;
+}
+
+.pay-button {
+    width: 100%;
+
+    min-height: 48px;
+
+    border: 0;
+
+    border-radius: 11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #009cff,
+            #0068ff
+        );
+
+    color: #ffffff;
+
+    font-size: 15px;
+    font-weight: 850;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 25px rgba(0,126,255,0.25);
+
+    transition: 0.2s;
+}
+
+.pay-button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 30px rgba(0,126,255,0.35);
+}
+
+.pay-button:disabled {
+    opacity: 0.65;
+    cursor: wait;
+    transform: none;
+}
+
+#message {
+    min-height: 18px;
+
+    margin-top: 11px;
+
+    color: #7e93ae;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer {
+    margin-top: 22px;
+
+    padding:
+        25px
+        0
+        30px;
+
+    border-top:
+        1px solid rgba(255,255,255,0.07);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    color: #60748f;
+
+    font-size: 12px;
+}
+
+.footer strong {
+    color: #a9b9ce;
+}
+
+.footer-links {
+    display: flex;
+    gap: 16px;
+}
+
+.footer-links a {
+    color: #71859f;
+    text-decoration: none;
+}
+
+.footer-links a:hover {
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1200px) {
+
+    .countries-grid {
+        grid-template-columns:
+            repeat(5, minmax(0, 1fr));
+    }
+
+}
+
+@media (max-width: 900px) {
+
+    .countries-grid {
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr));
+    }
+
+    .payment-section {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 700px) {
+
+    .header-inner {
+        min-height: 58px;
+    }
+
+    .logo-text {
+        font-size: 15px;
+    }
+
+    .logo-mark {
+        width: 34px;
+        height: 34px;
+        font-size: 17px;
+    }
+
+    .nav a {
+        display: none;
+    }
+
+    .hero {
+        padding-top: 30px;
+    }
+
+    .hero h1 {
+        letter-spacing: -1.5px;
+    }
+
+    .countries-grid {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+
+        gap: 9px;
+    }
+
+    .country-content {
+        padding: 9px;
+    }
+
+    .country-name {
+        font-size: 12px;
+    }
+
+    .country-code {
+        font-size: 9px;
+    }
+
+    .payment-section {
+        margin-top: 30px;
+        padding: 19px;
+    }
+
+    .footer {
+        flex-direction: column;
+        text-align: center;
+    }
+
+}
+
+@media (max-width: 480px) {
+
+    .main,
+    .header-inner {
+        width:
+            min(
+                100% - 18px,
+                1500px
+            );
+    }
+
+    .hero {
+        padding-top: 24px;
+    }
+
+    .hero p {
+        font-size: 13px;
+    }
+
+    #searchInput {
+        height: 52px;
+        font-size: 14px;
+        border-radius: 13px;
+    }
+
+    .countries-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 8px;
+    }
+
+    .section-title {
+        font-size: 20px;
+    }
+
+    .payment-info h2 {
+        font-size: 23px;
+    }
+
+    .price {
+        font-size: 34px;
+    }
+
+}
+
+@media (max-width: 350px) {
+
+    .logo-text {
+        font-size: 13px;
+    }
+
+    .countries-grid {
+        gap: 6px;
+    }
+
+}
+</style>
 </head>
 
 <body>
 
-<div class="card">
+<!-- ======================================================
+     HEADER
+====================================================== -->
 
-    <h1>ALL WORLD BRANDS</h1>
+<header class="header">
 
-    <div class="subtitle">
-        Secure online payment
+    <div class="header-inner">
+
+        <a
+            href="/"
+            class="logo"
+            aria-label="ALL WORLD BRANDS"
+        >
+
+            <span class="logo-mark">🌐</span>
+
+            <span class="logo-text">
+                ALL WORLD BRANDS
+            </span>
+
+        </a>
+
+        <nav class="nav">
+
+            <a href="#countries">
+                Countries
+            </a>
+
+            <a href="#payment">
+                Payment
+            </a>
+
+        </nav>
+
     </div>
 
-    <div class="price">
-        $1.00
+</header>
+
+
+<!-- ======================================================
+     MAIN
+====================================================== -->
+
+<main class="main">
+
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div class="badge">
+
+            <span class="badge-dot"></span>
+
+            GLOBAL BRAND DIRECTORY
+
+        </div>
+
+        <h1>
+            ALL WORLD BRANDS
+        </h1>
+
+        <p>
+            Discover countries, brands and companies
+            from around the world in one place.
+        </p>
+
+    </section>
+
+
+    <!-- SEARCH -->
+
+    <div class="search-area">
+
+        <div class="search-box">
+
+            <span class="search-icon">
+                🔎
+            </span>
+
+            <input
+                id="searchInput"
+                type="search"
+                placeholder="Search country or brand..."
+                autocomplete="off"
+                aria-label="Search country or brand"
+            >
+
+            <button
+                id="clearSearch"
+                class="clear-search"
+                type="button"
+                aria-label="Clear search"
+            >
+                ×
+            </button>
+
+        </div>
+
     </div>
 
-    <button
-        class="pay-button"
-        onclick="startPayment()"
+
+    <!-- COUNTRIES -->
+
+    <section id="countries">
+
+        <div class="section-head">
+
+            <div>
+
+                <div class="section-title">
+                    🌍 Countries
+                </div>
+
+                <div class="section-subtitle">
+                    Explore countries and discover their brands
+                </div>
+
+            </div>
+
+            <div
+                id="resultCount"
+                class="result-count"
+            >
+                0 countries
+            </div>
+
+        </div>
+
+
+        <div
+            id="countriesGrid"
+            class="countries-grid"
+        ></div>
+
+
+        <div
+            id="emptyState"
+            class="empty"
+        >
+
+            <strong>
+                Nothing found
+            </strong>
+
+            Search for another country or brand.
+
+        </div>
+
+    </section>
+
+
+    <!-- PAYMENT -->
+
+    <section
+        id="payment"
+        class="payment-section"
     >
-        To‘lash
-    </button>
 
-    <div id="message"></div>
+        <div class="payment-info">
 
-</div>
+            <h2>
+                Support ALL WORLD BRANDS
+            </h2>
+
+            <p>
+                Help us develop the global brand
+                directory. Secure online payment is
+                processed through OCTO.
+            </p>
+
+        </div>
+
+
+        <div class="payment-card">
+
+            <div class="payment-label">
+                TEST PAYMENT
+            </div>
+
+            <div class="price">
+                1 000 UZS
+            </div>
+
+            <div class="price-note">
+                Secure OCTO payment
+            </div>
+
+            <button
+                id="payButton"
+                class="pay-button"
+                type="button"
+            >
+                To‘lash
+            </button>
+
+            <div id="message"></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        <div>
+            © 2026
+            <strong>ALL WORLD BRANDS</strong>
+        </div>
+
+        <div class="footer-links">
+
+            <a href="/robots.txt">
+                Robots
+            </a>
+
+            <a href="/sitemap.xml">
+                Sitemap
+            </a>
+
+        </div>
+
+    </footer>
+
+</main>
+
 
 <script>
 
+/* =========================================================
+   COUNTRY DATA
+========================================================= */
+
+const countries = [
+
+    ["🇦🇫", "Afghanistan", "AF"],
+    ["🇦🇱", "Albania", "AL"],
+    ["🇩🇿", "Algeria", "DZ"],
+    ["🇦🇩", "Andorra", "AD"],
+    ["🇦🇴", "Angola", "AO"],
+    ["🇦🇬", "Antigua and Barbuda", "AG"],
+    ["🇦🇷", "Argentina", "AR"],
+    ["🇦🇲", "Armenia", "AM"],
+    ["🇦🇺", "Australia", "AU"],
+    ["🇦🇹", "Austria", "AT"],
+    ["🇦🇿", "Azerbaijan", "AZ"],
+
+    ["🇧🇸", "Bahamas", "BS"],
+    ["🇧🇭", "Bahrain", "BH"],
+    ["🇧🇩", "Bangladesh", "BD"],
+    ["🇧🇧", "Barbados", "BB"],
+    ["🇧🇾", "Belarus", "BY"],
+    ["🇧🇪", "Belgium", "BE"],
+    ["🇧🇿", "Belize", "BZ"],
+    ["🇧🇯", "Benin", "BJ"],
+    ["🇧🇹", "Bhutan", "BT"],
+    ["🇧🇴", "Bolivia", "BO"],
+    ["🇧🇦", "Bosnia and Herzegovina", "BA"],
+    ["🇧🇼", "Botswana", "BW"],
+    ["🇧🇷", "Brazil", "BR"],
+    ["🇧🇳", "Brunei", "BN"],
+    ["🇧🇬", "Bulgaria", "BG"],
+    ["🇧🇫", "Burkina Faso", "BF"],
+    ["🇧🇮", "Burundi", "BI"],
+
+    ["🇰🇭", "Cambodia", "KH"],
+    ["🇨🇲", "Cameroon", "CM"],
+    ["🇨🇦", "Canada", "CA"],
+    ["🇨🇻", "Cape Verde", "CV"],
+    ["🇨🇫", "Central African Republic", "CF"],
+    ["🇹🇩", "Chad", "TD"],
+    ["🇨🇱", "Chile", "CL"],
+    ["🇨🇳", "China", "CN"],
+    ["🇨🇴", "Colombia", "CO"],
+    ["🇰🇲", "Comoros", "KM"],
+    ["🇨🇬", "Congo", "CG"],
+    ["🇨🇷", "Costa Rica", "CR"],
+    ["🇨🇮", "Côte d'Ivoire", "CI"],
+    ["🇭🇷", "Croatia", "HR"],
+    ["🇨🇺", "Cuba", "CU"],
+    ["🇨🇾", "Cyprus", "CY"],
+    ["🇨🇿", "Czechia", "CZ"],
+
+    ["🇩🇰", "Denmark", "DK"],
+    ["🇩🇯", "Djibouti", "DJ"],
+    ["🇩🇲", "Dominica", "DM"],
+    ["🇩🇴", "Dominican Republic", "DO"],
+
+    ["🇪🇨", "Ecuador", "EC"],
+    ["🇪🇬", "Egypt", "EG"],
+    ["🇸🇻", "El Salvador", "SV"],
+    ["🇬🇶", "Equatorial Guinea", "GQ"],
+    ["🇪🇷", "Eritrea", "ER"],
+    ["🇪🇪", "Estonia", "EE"],
+    ["🇸🇿", "Eswatini", "SZ"],
+    ["🇪🇹", "Ethiopia", "ET"],
+
+    ["🇫🇯", "Fiji", "FJ"],
+    ["🇫🇮", "Finland", "FI"],
+    ["🇫🇷", "France", "FR"],
+
+    ["🇬🇦", "Gabon", "GA"],
+    ["🇬🇲", "Gambia", "GM"],
+    ["🇬🇪", "Georgia", "GE"],
+    ["🇩🇪", "Germany", "DE"],
+    ["🇬🇭", "Ghana", "GH"],
+    ["🇬🇷", "Greece", "GR"],
+    ["🇬🇩", "Grenada", "GD"],
+    ["🇬🇹", "Guatemala", "GT"],
+    ["🇬🇳", "Guinea", "GN"],
+    ["🇬🇼", "Guinea-Bissau", "GW"],
+    ["🇬🇾", "Guyana", "GY"],
+
+    ["🇭🇹", "Haiti", "HT"],
+    ["🇭🇳", "Honduras", "HN"],
+    ["🇭🇺", "Hungary", "HU"],
+
+    ["🇮🇸", "Iceland", "IS"],
+    ["🇮🇳", "India", "IN"],
+    ["🇮🇩", "Indonesia", "ID"],
+    ["🇮🇷", "Iran", "IR"],
+    ["🇮🇶", "Iraq", "IQ"],
+    ["🇮🇪", "Ireland", "IE"],
+    ["🇮🇱", "Israel", "IL"],
+    ["🇮🇹", "Italy", "IT"],
+
+    ["🇯🇲", "Jamaica", "JM"],
+    ["🇯🇵", "Japan", "JP"],
+    ["🇯🇴", "Jordan", "JO"],
+
+    ["🇰🇿", "Kazakhstan", "KZ"],
+    ["🇰🇪", "Kenya", "KE"],
+    ["🇰🇮", "Kiribati", "KI"],
+    ["🇰🇼", "Kuwait", "KW"],
+    ["🇰🇬", "Kyrgyzstan", "KG"],
+
+    ["🇱🇦", "Laos", "LA"],
+    ["🇱🇻", "Latvia", "LV"],
+    ["🇱🇧", "Lebanon", "LB"],
+    ["🇱🇸", "Lesotho", "LS"],
+    ["🇱🇷", "Liberia", "LR"],
+    ["🇱🇾", "Libya", "LY"],
+    ["🇱🇮", "Liechtenstein", "LI"],
+    ["🇱🇹", "Lithuania", "LT"],
+    ["🇱🇺", "Luxembourg", "LU"],
+
+    ["🇲🇬", "Madagascar", "MG"],
+    ["🇲🇼", "Malawi", "MW"],
+    ["🇲🇾", "Malaysia", "MY"],
+    ["🇲🇻", "Maldives", "MV"],
+    ["🇲🇱", "Mali", "ML"],
+    ["🇲🇹", "Malta", "MT"],
+    ["🇲🇷", "Mauritania", "MR"],
+    ["🇲🇺", "Mauritius", "MU"],
+    ["🇲🇽", "Mexico", "MX"],
+    ["🇲🇩", "Moldova", "MD"],
+    ["🇲🇨", "Monaco", "MC"],
+    ["🇲🇳", "Mongolia", "MN"],
+    ["🇲🇪", "Montenegro", "ME"],
+    ["🇲🇦", "Morocco", "MA"],
+    ["🇲🇿", "Mozambique", "MZ"],
+
+    ["🇳🇦", "Namibia", "NA"],
+    ["🇳🇵", "Nepal", "NP"],
+    ["🇳🇱", "Netherlands", "NL"],
+    ["🇳🇿", "New Zealand", "NZ"],
+    ["🇳🇮", "Nicaragua", "NI"],
+    ["🇳🇪", "Niger", "NE"],
+    ["🇳🇬", "Nigeria", "NG"],
+    ["🇰🇵", "North Korea", "KP"],
+    ["🇲🇰", "North Macedonia", "MK"],
+    ["🇳🇴", "Norway", "NO"],
+
+    ["🇴🇲", "Oman", "OM"],
+
+    ["🇵🇰", "Pakistan", "PK"],
+    ["🇵🇦", "Panama", "PA"],
+    ["🇵🇬", "Papua New Guinea", "PG"],
+    ["🇵🇾", "Paraguay", "PY"],
+    ["🇵🇪", "Peru", "PE"],
+    ["🇵🇭", "Philippines", "PH"],
+    ["🇵🇱", "Poland", "PL"],
+    ["🇵🇹", "Portugal", "PT"],
+
+    ["🇶🇦", "Qatar", "QA"],
+
+    ["🇷🇴", "Romania", "RO"],
+    ["🇷🇺", "Russia", "RU"],
+    ["🇷🇼", "Rwanda", "RW"],
+
+    ["🇸🇦", "Saudi Arabia", "SA"],
+    ["🇸🇳", "Senegal", "SN"],
+    ["🇷🇸", "Serbia", "RS"],
+    ["🇸🇨", "Seychelles", "SC"],
+    ["🇸🇱", "Sierra Leone", "SL"],
+    ["🇸🇬", "Singapore", "SG"],
+    ["🇸🇰", "Slovakia", "SK"],
+    ["🇸🇮", "Slovenia", "SI"],
+    ["🇸🇴", "Somalia", "SO"],
+    ["🇿🇦", "South Africa", "ZA"],
+    ["🇰🇷", "South Korea", "KR"],
+    ["🇪🇸", "Spain", "ES"],
+    ["🇱🇰", "Sri Lanka", "LK"],
+    ["🇸🇩", "Sudan", "SD"],
+    ["🇸🇷", "Suriname", "SR"],
+    ["🇸🇪", "Sweden", "SE"],
+    ["🇨🇭", "Switzerland", "CH"],
+    ["🇸🇾", "Syria", "SY"],
+
+    ["🇹🇯", "Tajikistan", "TJ"],
+    ["🇹🇿", "Tanzania", "TZ"],
+    ["🇹🇭", "Thailand", "TH"],
+    ["🇹🇱", "Timor-Leste", "TL"],
+    ["🇹🇬", "Togo", "TG"],
+    ["🇹🇹", "Trinidad and Tobago", "TT"],
+    ["🇹🇳", "Tunisia", "TN"],
+    ["🇹🇷", "Türkiye", "TR"],
+    ["🇹🇲", "Turkmenistan", "TM"],
+
+    ["🇺🇬", "Uganda", "UG"],
+    ["🇺🇦", "Ukraine", "UA"],
+    ["🇦🇪", "United Arab Emirates", "AE"],
+    ["🇬🇧", "United Kingdom", "GB"],
+    ["🇺🇸", "United States", "US"],
+    ["🇺🇾", "Uruguay", "UY"],
+    ["🇺🇿", "Uzbekistan", "UZ"],
+
+    ["🇻🇪", "Venezuela", "VE"],
+    ["🇻🇳", "Vietnam", "VN"],
+
+    ["🇾🇪", "Yemen", "YE"],
+
+    ["🇿🇲", "Zambia", "ZM"],
+    ["🇿🇼", "Zimbabwe", "ZW"]
+
+];
+
+
+/* =========================================================
+   DOM
+========================================================= */
+
+const grid =
+    document.getElementById("countriesGrid");
+
+const searchInput =
+    document.getElementById("searchInput");
+
+const clearSearch =
+    document.getElementById("clearSearch");
+
+const emptyState =
+    document.getElementById("emptyState");
+
+const resultCount =
+    document.getElementById("resultCount");
+
+
+/* =========================================================
+   RENDER COUNTRIES
+========================================================= */
+
+function renderCountries(list) {
+
+    grid.innerHTML = "";
+
+    resultCount.textContent =
+        `${list.length} countries`;
+
+    if (!list.length) {
+
+        emptyState.style.display =
+            "block";
+
+        return;
+
+    }
+
+    emptyState.style.display =
+        "none";
+
+
+    const fragment =
+        document.createDocumentFragment();
+
+
+    list.forEach(
+        ([flag, name, code]) => {
+
+            const card =
+                document.createElement("article");
+
+            card.className =
+                "country-card";
+
+            card.dataset.name =
+                name.toLowerCase();
+
+            card.dataset.code =
+                code.toLowerCase();
+
+
+            card.innerHTML = `
+
+                <div class="country-bg"></div>
+
+                <div class="country-content">
+
+                    <div class="country-flag">
+                        ${flag}
+                    </div>
+
+                    <div class="country-name">
+                        ${name}
+                    </div>
+
+                    <div class="country-code">
+                        ${code}
+                    </div>
+
+                </div>
+
+            `;
+
+
+            card.addEventListener(
+                "click",
+                () => {
+
+                    searchInput.value =
+                        name;
+
+                    filterCountries(name);
+
+                    document
+                        .getElementById("countries")
+                        .scrollIntoView({
+                            behavior: "smooth",
+                            block: "start"
+                        });
+
+                }
+            );
+
+
+            fragment.appendChild(card);
+
+        }
+    );
+
+
+    grid.appendChild(fragment);
+
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+function filterCountries(value) {
+
+    const query =
+        value
+            .trim()
+            .toLowerCase();
+
+
+    clearSearch.style.display =
+        query
+            ? "block"
+            : "none";
+
+
+    if (!query) {
+
+        renderCountries(countries);
+
+        return;
+
+    }
+
+
+    const filtered =
+        countries.filter(
+            ([flag, name, code]) => {
+
+                return (
+                    name
+                        .toLowerCase()
+                        .includes(query)
+                    ||
+                    code
+                        .toLowerCase()
+                        .includes(query)
+                    ||
+                    flag.includes(query)
+                );
+
+            }
+        );
+
+
+    renderCountries(filtered);
+
+}
+
+
+searchInput.addEventListener(
+    "input",
+    event => {
+
+        filterCountries(
+            event.target.value
+        );
+
+    }
+);
+
+
+clearSearch.addEventListener(
+    "click",
+    () => {
+
+        searchInput.value = "";
+
+        filterCountries("");
+
+        searchInput.focus();
+
+    }
+);
+
+
+/* =========================================================
+   OCTO PAYMENT
+   DO NOT CHANGE API ENDPOINT
+========================================================= */
+
+const payButton =
+    document.getElementById("payButton");
+
+const message =
+    document.getElementById("message");
+
+
 async function startPayment() {
 
-    const message =
-        document.getElementById("message");
+    payButton.disabled =
+        true;
+
+    payButton.textContent =
+        "Tayyorlanmoqda...";
 
     message.textContent =
-        "To‘lov sahifasi tayyorlanmoqda...";
+        "OCTO to‘lov sahifasi tayyorlanmoqda...";
+
 
     try {
 
         const response =
-            await fetch("/api/payments/octo/create", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    amount: 1,
-                    currency: "USD"
-                })
-            });
+            await fetch(
+                "/api/payments/octo/create",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            amount: 1,
+                            currency: "USD"
+                        })
+                }
+            );
+
 
         const data =
             await response.json();
+
 
         if (!response.ok) {
 
@@ -136,6 +1581,7 @@ async function startPayment() {
 
         }
 
+
         if (!data.payment_url) {
 
             throw new Error(
@@ -144,20 +1590,50 @@ async function startPayment() {
 
         }
 
+
+        message.textContent =
+            "OCTO sahifasiga yo‘naltirilmoqda...";
+
+
         window.location.href =
             data.payment_url;
 
+
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "OCTO PAYMENT ERROR:",
+            error
+        );
+
 
         message.textContent =
             error.message ||
             "To‘lovni boshlashda xatolik yuz berdi.";
 
+
+        payButton.disabled =
+            false;
+
+        payButton.textContent =
+            "To‘lash";
+
     }
 
 }
+
+
+payButton.addEventListener(
+    "click",
+    startPayment
+);
+
+
+/* =========================================================
+   INITIAL LOAD
+========================================================= */
+
+renderCountries(countries);
 
 </script>
 
