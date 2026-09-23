@@ -3,19 +3,20 @@ const path = require("path");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const crypto = require("crypto");
-const fs = require("fs");
 const sqlite3 = require("sqlite3").verbose();
+const fs = require("fs");
 
 const app = express();
 
-const PORT = process.env.PORT || 3000;
+const PORT = Number(process.env.PORT || 3000);
 
-const PUBLIC_BASE_URL =
+const PUBLIC_BASE_URL = String(
     process.env.PUBLIC_BASE_URL ||
-    "https://allworldbrands.net";
+    "https://allworldbrands.net"
+).replace(/\/+$/, "");
 
 const OCTO_SHOP_ID = Number(
-    process.env.OCTO_SHOP_ID || 0
+    process.env.OCTO_SHOP_ID || 43051
 );
 
 const OCTO_SECRET =
@@ -43,6 +44,8 @@ const DB_FILE =
 /* =========================================================
    APP
 ========================================================= */
+
+app.disable("x-powered-by");
 
 app.use(
     helmet({
@@ -238,72 +241,12 @@ function dbRun(sql, params = []) {
 
 
 /* =========================================================
-   HTML ESCAPE
-========================================================= */
-
-function escapeHtml(value) {
-
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-
-}
-
-
-/* =========================================================
-   XML ESCAPE
-========================================================= */
-
-function escapeXml(value) {
-
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&apos;");
-
-}
-
-
-/* =========================================================
-   COUNTRY SLUG
-========================================================= */
-
-function countrySlug(name) {
-
-    return String(name)
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .replace(/đ/g, "d")
-        .replace(/Đ/g, "D")
-        .replace(/ß/g, "ss")
-        .replace(/æ/g, "ae")
-        .replace(/Æ/g, "Ae")
-        .replace(/œ/g, "oe")
-        .replace(/Œ/g, "Oe")
-        .replace(/ø/g, "o")
-        .replace(/Ø/g, "O")
-        .replace(/ł/g, "l")
-        .replace(/Ł/g, "L")
-        .replace(/[^a-zA-Z0-9]+/g, "-")
-        .replace(/^-+|-+$/g, "")
-        .toLowerCase();
-
-}
-
-
-/* =========================================================
-   250+ COUNTRIES AND TERRITORIES
+   249 ISO COUNTRY / TERRITORY LIST
 ========================================================= */
 
 const starterCountries = [
 
     ["Afghanistan", "AF"],
-    ["Åland Islands", "AX"],
     ["Albania", "AL"],
     ["Algeria", "DZ"],
     ["American Samoa", "AS"],
@@ -355,16 +298,16 @@ const starterCountries = [
     ["Colombia", "CO"],
     ["Comoros", "KM"],
     ["Congo", "CG"],
-    ["Congo, Democratic Republic of the", "CD"],
     ["Cook Islands", "CK"],
     ["Costa Rica", "CR"],
-    ["Côte d'Ivoire", "CI"],
     ["Croatia", "HR"],
     ["Cuba", "CU"],
     ["Curaçao", "CW"],
     ["Cyprus", "CY"],
     ["Czechia", "CZ"],
+    ["Côte d'Ivoire", "CI"],
 
+    ["Democratic Republic of the Congo", "CD"],
     ["Denmark", "DK"],
     ["Djibouti", "DJ"],
     ["Dominica", "DM"],
@@ -407,7 +350,6 @@ const starterCountries = [
 
     ["Haiti", "HT"],
     ["Heard Island and McDonald Islands", "HM"],
-    ["Holy See", "VA"],
     ["Honduras", "HN"],
     ["Hong Kong", "HK"],
     ["Hungary", "HU"],
@@ -499,28 +441,27 @@ const starterCountries = [
 
     ["Qatar", "QA"],
 
-    ["Réunion", "RE"],
     ["Romania", "RO"],
     ["Russia", "RU"],
     ["Rwanda", "RW"],
+    ["Réunion", "RE"],
 
     ["Saint Barthélemy", "BL"],
-    ["Saint Helena", "SH"],
+    ["Saint Helena, Ascension and Tristan da Cunha", "SH"],
     ["Saint Kitts and Nevis", "KN"],
     ["Saint Lucia", "LC"],
-    ["Saint Martin", "MF"],
+    ["Saint Martin (French part)", "MF"],
     ["Saint Pierre and Miquelon", "PM"],
     ["Saint Vincent and the Grenadines", "VC"],
     ["Samoa", "WS"],
     ["San Marino", "SM"],
-    ["Sao Tome and Principe", "ST"],
     ["Saudi Arabia", "SA"],
     ["Senegal", "SN"],
     ["Serbia", "RS"],
     ["Seychelles", "SC"],
     ["Sierra Leone", "SL"],
     ["Singapore", "SG"],
-    ["Sint Maarten", "SX"],
+    ["Sint Maarten (Dutch part)", "SX"],
     ["Slovakia", "SK"],
     ["Slovenia", "SI"],
     ["Solomon Islands", "SB"],
@@ -537,6 +478,7 @@ const starterCountries = [
     ["Sweden", "SE"],
     ["Switzerland", "CH"],
     ["Syria", "SY"],
+    ["São Tomé and Príncipe", "ST"],
 
     ["Taiwan", "TW"],
     ["Tajikistan", "TJ"],
@@ -548,44 +490,118 @@ const starterCountries = [
     ["Tonga", "TO"],
     ["Trinidad and Tobago", "TT"],
     ["Tunisia", "TN"],
-    ["Türkiye", "TR"],
     ["Turkmenistan", "TM"],
     ["Turks and Caicos Islands", "TC"],
     ["Tuvalu", "TV"],
+    ["Türkiye", "TR"],
 
+    ["U.S. Minor Outlying Islands", "UM"],
     ["Uganda", "UG"],
     ["Ukraine", "UA"],
     ["United Arab Emirates", "AE"],
     ["United Kingdom", "GB"],
     ["United States", "US"],
-    ["United States Minor Outlying Islands", "UM"],
     ["Uruguay", "UY"],
     ["Uzbekistan", "UZ"],
 
     ["Vanuatu", "VU"],
+    ["Vatican City", "VA"],
     ["Venezuela", "VE"],
     ["Vietnam", "VN"],
     ["Virgin Islands, British", "VG"],
     ["Virgin Islands, U.S.", "VI"],
 
     ["Wallis and Futuna", "WF"],
-
     ["Western Sahara", "EH"],
-
     ["Yemen", "YE"],
-
     ["Zambia", "ZM"],
     ["Zimbabwe", "ZW"],
-
-    /*
-     * Additional commonly used geographic entries
-     * to bring the project above 250 entries.
-     */
-
-    ["Kosovo", "XK"],
-    ["Western Sahara", "EH"]
+    ["Åland Islands", "AX"]
 
 ];
+
+
+/* =========================================================
+   SLUG
+========================================================= */
+
+function slugify(value) {
+
+    return String(value || "")
+        .normalize("NFKD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/đ/g, "d")
+        .replace(/Đ/g, "D")
+        .toLowerCase()
+        .replace(/&/g, "and")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+
+}
+
+
+/* =========================================================
+   HTML HELPERS
+========================================================= */
+
+function htmlEscape(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+
+}
+
+
+function escapeXml(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&apos;");
+
+}
+
+
+function safeWebsite(value) {
+
+    const text =
+        String(value || "").trim();
+
+    if (!text) {
+        return "";
+    }
+
+    try {
+
+        const url =
+            new URL(
+                /^https?:\/\//i.test(text)
+                    ? text
+                    : `https://${text}`
+            );
+
+        if (
+            url.protocol !== "http:" &&
+            url.protocol !== "https:"
+        ) {
+            return "";
+        }
+
+        return url.href;
+
+    } catch {
+
+        return "";
+
+    }
+
+}
 
 
 /* =========================================================
@@ -605,7 +621,10 @@ async function seedCountries() {
             (name, code)
             VALUES (?, ?)
             `,
-            [name, code]
+            [
+                name,
+                code
+            ]
         );
 
     }
@@ -614,7 +633,7 @@ async function seedCountries() {
 
 
 /* =========================================================
-   STARTER BRANDS
+   SEED BRANDS
 ========================================================= */
 
 async function seedBrands() {
@@ -707,7 +726,6 @@ async function seedBrands() {
 
     ];
 
-
     for (
         const [
             brandName,
@@ -725,7 +743,9 @@ async function seedBrands() {
                 FROM countries
                 WHERE name = ?
                 `,
-                [countryName]
+                [
+                    countryName
+                ]
             );
 
         if (!country) {
@@ -788,7 +808,9 @@ app.get(
             ok: true,
             service: "ALL WORLD BRANDS",
             payment: "OCTO",
-            octo_test: OCTO_TEST
+            octo_test: OCTO_TEST,
+            countries_target:
+                starterCountries.length
         });
 
     }
@@ -838,7 +860,7 @@ app.get(
 
 
 /* =========================================================
-   COUNTRY BRANDS
+   COUNTRY BRANDS API
 ========================================================= */
 
 app.get(
@@ -875,7 +897,9 @@ app.get(
                     WHERE country_id = ?
                     ORDER BY name COLLATE NOCASE
                     `,
-                    [countryId]
+                    [
+                        countryId
+                    ]
                 );
 
             res.json(brands);
@@ -899,7 +923,7 @@ app.get(
 
 
 /* =========================================================
-   BRAND DETAILS
+   BRAND DETAILS API
 ========================================================= */
 
 app.get(
@@ -933,7 +957,9 @@ app.get(
                        brands.country_id
                     WHERE brands.id = ?
                     `,
-                    [brandId]
+                    [
+                        brandId
+                    ]
                 );
 
             if (!brand) {
@@ -953,7 +979,9 @@ app.get(
                     WHERE brand_id = ?
                     ORDER BY name
                     `,
-                    [brandId]
+                    [
+                        brandId
+                    ]
                 );
 
             res.json({
@@ -980,7 +1008,7 @@ app.get(
 
 
 /* =========================================================
-   SEARCH
+   SEARCH API
 ========================================================= */
 
 app.get(
@@ -995,9 +1023,7 @@ app.get(
                 ).trim();
 
             if (!q) {
-
                 return res.json([]);
-
             }
 
             const like =
@@ -1073,14 +1099,6 @@ app.get(
                     req.params.slug || ""
                 ).trim();
 
-            if (!slug) {
-
-                return res.status(404).send(
-                    "Country not found"
-                );
-
-            }
-
             const countries =
                 await dbAll(
                     `
@@ -1089,16 +1107,15 @@ app.get(
                         name,
                         code
                     FROM countries
-                    ORDER BY id
+                    ORDER BY name COLLATE NOCASE
                     `
                 );
 
             const country =
                 countries.find(
                     item =>
-                        countrySlug(item.name)
-                            .toLowerCase() ===
-                        slug.toLowerCase()
+                        slugify(item.name) ===
+                        slug
                 );
 
             if (!country) {
@@ -1118,116 +1135,260 @@ app.get(
                         category,
                         description,
                         website,
-                        logo,
                         verification
                     FROM brands
                     WHERE country_id = ?
                     ORDER BY name COLLATE NOCASE
                     `,
-                    [country.id]
+                    [
+                        country.id
+                    ]
                 );
 
-            const title =
-                `${country.name} Brands | ALL WORLD BRANDS`;
-
-            const description =
-                `Discover brands from ${country.name}. Explore companies, brands, categories and manufacturers on ALL WORLD BRANDS.`;
-
             const canonical =
-                `${PUBLIC_BASE_URL}/country/${countrySlug(country.name)}`;
+                `${PUBLIC_BASE_URL}/country/${slugify(country.name)}`;
 
-            const brandList =
+            const brandHtml =
                 brands.length
                     ? brands.map(
-                        brand => `
-                        <li>
-                            <a
-                                href="/?brand=${encodeURIComponent(brand.id)}"
-                            >
-                                ${escapeHtml(brand.name)}
-                            </a>
-                            ${
-                                brand.category
-                                    ? ` — ${escapeHtml(brand.category)}`
-                                    : ""
-                            }
-                        </li>
-                        `
+                        brand => {
+
+                            const brandUrl =
+                                `${PUBLIC_BASE_URL}/brand/${brand.id}`;
+
+                            return `
+<article class="brand">
+    <h2>
+        <a href="${htmlEscape(brandUrl)}">
+            ${htmlEscape(brand.name)}
+        </a>
+    </h2>
+
+    ${
+        brand.category
+            ? `
+                <p>
+                    <strong>Category:</strong>
+                    ${htmlEscape(brand.category)}
+                </p>
+            `
+            : ""
+    }
+
+    ${
+        brand.description
+            ? `
+                <p>
+                    ${htmlEscape(brand.description)}
+                </p>
+            `
+            : ""
+    }
+</article>
+`;
+
+                        }
                     ).join("")
-                    :
-                    `
-                    <li>
-                        No brands have been added yet.
-                    </li>
-                    `;
+                    : `
+<p>
+    No brands have been added for
+    ${htmlEscape(country.name)} yet.
+</p>
+`;
 
-            res.type("html").send(
+            const otherCountries =
+                countries
+                    .filter(
+                        item =>
+                            item.id !== country.id
+                    )
+                    .slice(0, 24)
+                    .map(
+                        item => `
+<li>
+    <a href="/country/${htmlEscape(
+        slugify(item.name)
+    )}">
+        ${htmlEscape(item.name)}
+    </a>
+</li>
 `
-<!DOCTYPE html>
-<html lang="en">
+                    )
+                    .join("");
 
+            const jsonLd =
+                JSON.stringify({
+                    "@context":
+                        "https://schema.org",
+                    "@type":
+                        "WebPage",
+                    "name":
+                        `${country.name} Brands | ALL WORLD BRANDS`,
+                    "url":
+                        canonical,
+                    "description":
+                        `Discover brands from ${country.name} on ALL WORLD BRANDS.`,
+                    "breadcrumb": {
+                        "@type":
+                            "BreadcrumbList",
+                        "itemListElement": [
+                            {
+                                "@type":
+                                    "ListItem",
+                                "position": 1,
+                                "name":
+                                    "ALL WORLD BRANDS",
+                                "item":
+                                    PUBLIC_BASE_URL
+                            },
+                            {
+                                "@type":
+                                    "ListItem",
+                                "position": 2,
+                                "name":
+                                    country.name,
+                                "item":
+                                    canonical
+                            }
+                        ]
+                    }
+                });
+
+            res
+                .type("html")
+                .send(
+`<!DOCTYPE html>
+<html lang="en">
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <title>
-        ${escapeHtml(title)}
-    </title>
+<title>
+${htmlEscape(country.name)}
+Brands | ALL WORLD BRANDS
+</title>
 
-    <meta
-        name="description"
-        content="${escapeHtml(description)}"
-    >
+<meta
+    name="description"
+    content="Discover brands from ${htmlEscape(country.name)} on ALL WORLD BRANDS."
+>
 
-    <link
-        rel="canonical"
-        href="${escapeHtml(canonical)}"
-    >
+<link
+    rel="canonical"
+    href="${htmlEscape(canonical)}"
+>
+
+<script type="application/ld+json">
+${jsonLd}
+</script>
+
+<style>
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#050914;
+    color:#fff;
+    line-height:1.6;
+}
+
+main{
+    max-width:1000px;
+    margin:0 auto;
+    padding:40px 20px;
+}
+
+a{
+    color:#70d7ff;
+}
+
+.card{
+    background:#101827;
+    border:1px solid #26344a;
+    border-radius:18px;
+    padding:22px;
+    margin:15px 0;
+}
+
+.brand{
+    background:#0c1422;
+    border:1px solid #223047;
+    border-radius:14px;
+    padding:18px;
+    margin:14px 0;
+}
+
+ul{
+    padding-left:22px;
+}
+
+.small{
+    color:#aab6c7;
+}
+
+</style>
 
 </head>
 
 <body>
 
-    <header>
+<main>
 
-        <a href="/">
-            ALL WORLD BRANDS
-        </a>
+<header>
 
-    </header>
+<p>
+<a href="/">
+← ALL WORLD BRANDS
+</a>
+</p>
 
-    <main>
+<h1>
+${htmlEscape(country.name)}
+</h1>
 
-        <h1>
-            Brands from
-            ${escapeHtml(country.name)}
-        </h1>
+<p class="small">
+Country code:
+${htmlEscape(country.code)}
+·
+Brands listed:
+${brands.length}
+</p>
 
-        <p>
-            Discover brands and companies from
-            ${escapeHtml(country.name)}.
-        </p>
+</header>
 
-        <h2>
-            Brands
-        </h2>
+<section class="card">
 
-        <ul>
-            ${brandList}
-        </ul>
+<h2>
+Brands from
+${htmlEscape(country.name)}
+</h2>
 
-    </main>
+${brandHtml}
+
+</section>
+
+<section class="card">
+
+<h2>
+Explore other countries
+</h2>
+
+<ul>
+${otherCountries}
+</ul>
+
+</section>
+
+</main>
 
 </body>
-
-</html>
-`
-            );
+</html>`
+                );
 
         } catch (error) {
 
@@ -1247,6 +1408,303 @@ app.get(
 
 
 /* =========================================================
+   SEO BRAND PAGE
+========================================================= */
+
+app.get(
+    "/brand/:id",
+    async (req, res) => {
+
+        try {
+
+            const brandId =
+                Number(req.params.id);
+
+            if (!Number.isInteger(brandId)) {
+
+                return res.status(404).send(
+                    "Brand not found"
+                );
+
+            }
+
+            const brand =
+                await dbGet(
+                    `
+                    SELECT
+                        brands.*,
+                        countries.name AS country,
+                        countries.code AS country_code
+                    FROM brands
+                    JOIN countries
+                    ON countries.id =
+                       brands.country_id
+                    WHERE brands.id = ?
+                    `,
+                    [
+                        brandId
+                    ]
+                );
+
+            if (!brand) {
+
+                return res.status(404).send(
+                    "Brand not found"
+                );
+
+            }
+
+            const factories =
+                await dbAll(
+                    `
+                    SELECT *
+                    FROM factories
+                    WHERE brand_id = ?
+                    ORDER BY name COLLATE NOCASE
+                    `,
+                    [
+                        brandId
+                    ]
+                );
+
+            const canonical =
+                `${PUBLIC_BASE_URL}/brand/${brand.id}`;
+
+            const website =
+                safeWebsite(
+                    brand.website
+                );
+
+            const jsonLd =
+                JSON.stringify({
+                    "@context":
+                        "https://schema.org",
+                    "@type":
+                        "Organization",
+                    "name":
+                        brand.name,
+                    "description":
+                        brand.description || "",
+                    "url":
+                        canonical
+                });
+
+            const factoryHtml =
+                factories.length
+                    ? `
+<h2>Factories</h2>
+
+${factories.map(
+    factory => `
+<div class="factory">
+
+<h3>
+${htmlEscape(
+    factory.name ||
+    "Factory"
+)}
+</h3>
+
+${
+    factory.city
+        ? `
+<p>
+${htmlEscape(factory.city)}
+</p>
+`
+        : ""
+}
+
+${
+    factory.address
+        ? `
+<p>
+${htmlEscape(factory.address)}
+</p>
+`
+        : ""
+}
+
+</div>
+`
+).join("")}
+`
+                    : "";
+
+            res
+                .type("html")
+                .send(
+`<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+${htmlEscape(brand.name)}
+|
+ALL WORLD BRANDS
+</title>
+
+<meta
+    name="description"
+    content="${htmlEscape(
+        brand.description ||
+        `${brand.name} brand from ${brand.country}`
+    )}"
+>
+
+<link
+    rel="canonical"
+    href="${htmlEscape(canonical)}"
+>
+
+<script type="application/ld+json">
+${jsonLd}
+</script>
+
+<style>
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#050914;
+    color:#fff;
+    line-height:1.6;
+}
+
+main{
+    max-width:900px;
+    margin:0 auto;
+    padding:40px 20px;
+}
+
+a{
+    color:#70d7ff;
+}
+
+.card{
+    background:#101827;
+    border:1px solid #26344a;
+    border-radius:18px;
+    padding:25px;
+}
+
+.factory{
+    border-top:1px solid #26344a;
+    padding:12px 0;
+}
+
+.small{
+    color:#aab6c7;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<main>
+
+<p>
+<a href="/">
+← ALL WORLD BRANDS
+</a>
+</p>
+
+<div class="card">
+
+<h1>
+${htmlEscape(brand.name)}
+</h1>
+
+<p class="small">
+
+Country:
+
+<a href="/country/${htmlEscape(
+    slugify(brand.country)
+)}">
+
+${htmlEscape(brand.country)}
+
+</a>
+
+</p>
+
+${
+    brand.category
+        ? `
+<p>
+<strong>Category:</strong>
+${htmlEscape(brand.category)}
+</p>
+`
+        : ""
+}
+
+${
+    brand.description
+        ? `
+<p>
+${htmlEscape(brand.description)}
+</p>
+`
+        : ""
+}
+
+${
+    website
+        ? `
+<p>
+<a
+    href="${htmlEscape(website)}"
+    rel="noopener noreferrer"
+>
+Official website
+</a>
+</p>
+`
+        : ""
+}
+
+${factoryHtml}
+
+</div>
+
+</main>
+
+</body>
+
+</html>`
+                );
+
+        } catch (error) {
+
+            console.error(
+                "BRAND PAGE ERROR:",
+                error
+            );
+
+            res.status(500).send(
+                "Unable to load brand page"
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
    OCTO CREATE PAYMENT
 ========================================================= */
 
@@ -1255,15 +1713,6 @@ app.post(
     async (req, res) => {
 
         try {
-
-            if (!OCTO_SHOP_ID) {
-
-                return res.status(500).json({
-                    error:
-                        "OCTO_SHOP_ID is not configured"
-                });
-
-            }
 
             if (!OCTO_SECRET) {
 
@@ -1313,34 +1762,43 @@ app.post(
                     "ALL WORLD BRANDS PAYMENT",
 
                 basket: [
+
                     {
                         position_desc:
                             "ALL WORLD BRANDS",
 
-                        count: 1,
+                        count:
+                            1,
 
                         price:
                             PAYMENT_AMOUNT
                     }
+
                 ],
 
                 payment_methods: [
+
                     {
                         method:
                             "bank_card"
                     },
+
                     {
                         method:
                             "uzcard"
                     },
+
                     {
                         method:
                             "humo"
                     }
+
                 ],
 
                 return_url:
-                    `${PUBLIC_BASE_URL}/payment-success.html?transaction=${encodeURIComponent(transactionId)}`,
+                    `${PUBLIC_BASE_URL}/payment-success.html?transaction=${encodeURIComponent(
+                        transactionId
+                    )}`,
 
                 notify_url:
                     `${PUBLIC_BASE_URL}/api/octo/notify`,
@@ -1379,7 +1837,9 @@ app.post(
                         },
 
                         body:
-                            JSON.stringify(payload)
+                            JSON.stringify(
+                                payload
+                            )
                     }
                 );
 
@@ -1439,7 +1899,8 @@ app.post(
 
             res.json({
 
-                ok: true,
+                ok:
+                    true,
 
                 transaction_id:
                     transactionId,
@@ -1484,15 +1945,6 @@ app.get(
     async (req, res) => {
 
         try {
-
-            if (!OCTO_SHOP_ID) {
-
-                return res.status(500).json({
-                    error:
-                        "OCTO_SHOP_ID is not configured"
-                });
-
-            }
 
             if (!OCTO_SECRET) {
 
@@ -1589,26 +2041,6 @@ app.post(
                 )
             );
 
-            if (!OCTO_SHOP_ID) {
-
-                return res.status(500).json({
-                    error: 1,
-                    errMessage:
-                        "OCTO_SHOP_ID is not configured"
-                });
-
-            }
-
-            if (!OCTO_SECRET) {
-
-                return res.status(500).json({
-                    error: 1,
-                    errMessage:
-                        "OCTO_SECRET is not configured"
-                });
-
-            }
-
             const transactionId =
                 String(
                     req.body?.shop_transaction_id ||
@@ -1626,9 +2058,20 @@ app.post(
 
             }
 
+            if (!OCTO_SECRET) {
+
+                return res.status(500).json({
+                    error:
+                        1,
+                    errMessage:
+                        "OCTO_SECRET is not configured"
+                });
+
+            }
+
             /*
-             * Never trust only the callback.
-             * Ask OCTO directly for the real status.
+             * Do not trust only the callback.
+             * Verify transaction directly with OCTO.
              */
 
             const response =
@@ -1687,11 +2130,6 @@ app.post(
             const status =
                 data?.data?.status;
 
-            /*
-             * Payment is accepted only when
-             * OCTO confirms "succeeded".
-             */
-
             if (
                 status !== "succeeded"
             ) {
@@ -1702,7 +2140,9 @@ app.post(
                         1,
 
                     errMessage:
-                        `Payment status is ${status || "unknown"}`
+                        `Payment status is ${
+                            status || "unknown"
+                        }`
 
                 });
 
@@ -1761,7 +2201,7 @@ app.get(
 
 
 /* =========================================================
-   ROBOTS
+   ROBOTS.TXT
 ========================================================= */
 
 app.get(
@@ -1783,7 +2223,7 @@ Sitemap: ${PUBLIC_BASE_URL}/sitemap.xml
 
 
 /* =========================================================
-   SITEMAP
+   SITEMAP.XML
 ========================================================= */
 
 app.get(
@@ -1796,6 +2236,7 @@ app.get(
                 await dbAll(
                     `
                     SELECT
+                        id,
                         name
                     FROM countries
                     ORDER BY name COLLATE NOCASE
@@ -1818,67 +2259,61 @@ app.get(
 
             ];
 
-
             /*
-             * COUNTRY SEO PAGES
+             * Add every country SEO page.
              */
 
             for (
-                const country
-                of countries
+                const country of countries
             ) {
 
                 urls.push(
-                    `${PUBLIC_BASE_URL}/country/${countrySlug(country.name)}`
+                    `${PUBLIC_BASE_URL}/country/${slugify(
+                        country.name
+                    )}`
                 );
 
             }
 
-
             /*
-             * BRAND LINKS
+             * Add every brand SEO page.
              */
 
             for (
-                const brand
-                of brands
+                const brand of brands
             ) {
 
                 urls.push(
-                    `${PUBLIC_BASE_URL}/?brand=${brand.id}`
+                    `${PUBLIC_BASE_URL}/brand/${brand.id}`
                 );
 
             }
-
 
             const uniqueUrls =
                 [
                     ...new Set(urls)
                 ];
 
-
             const xml =
 `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+<urlset
+    xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+>
+
 ${uniqueUrls.map(
     url => `
     <url>
         <loc>${escapeXml(url)}</loc>
-        <changefreq>daily</changefreq>
-        <priority>${
-            url === `${PUBLIC_BASE_URL}/`
-                ? "1.0"
-                : "0.8"
-        }</priority>
-    </url>`
+    </url>
+`
 ).join("")}
-</urlset>`;
 
+</urlset>`;
 
             res
                 .type("application/xml")
                 .send(xml);
-
 
         } catch (error) {
 
@@ -1943,7 +2378,7 @@ app.use(
 
 
 /* =========================================================
-   START
+   START SERVER
 ========================================================= */
 
 async function startServer() {
@@ -1953,22 +2388,6 @@ async function startServer() {
         await seedCountries();
 
         await seedBrands();
-
-        console.log(
-            `Countries in seed list: ${starterCountries.length}`
-        );
-
-        const countryCount =
-            await dbGet(
-                `
-                SELECT COUNT(*) AS count
-                FROM countries
-                `
-            );
-
-        console.log(
-            `Countries in database: ${countryCount.count}`
-        );
 
         app.listen(
             PORT,
@@ -1981,6 +2400,12 @@ async function startServer() {
 
                 console.log(
                     `Database: ${DB_FILE}`
+                );
+
+                console.log(
+                    `Countries in seed: ${
+                        starterCountries.length
+                    }`
                 );
 
                 console.log(
@@ -2002,6 +2427,5 @@ async function startServer() {
     }
 
 }
-
 
 startServer();
