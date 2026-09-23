@@ -41,7 +41,7 @@ body {
 }
 
 /* =========================================================
-   EARTH 4K BACKGROUND
+   EARTH BACKGROUND
 ========================================================= */
 
 body::before {
@@ -442,7 +442,8 @@ body::after {
 }
 
 /* =========================================================
-   COUNTRIES
+   COUNTRIES GRID
+   DESKTOP = 20 COLUMNS
 ========================================================= */
 
 .countries-grid {
@@ -450,23 +451,27 @@ body::after {
 
     grid-template-columns:
         repeat(
-            6,
-            minmax(0,1fr)
+            20,
+            minmax(0, 1fr)
         );
 
-    gap: 13px;
+    gap: 8px;
 }
+
+/* =========================================================
+   COUNTRY CARD
+========================================================= */
 
 .country-card {
     position: relative;
 
     min-width: 0;
 
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 1 / 1;
 
     overflow: hidden;
 
-    border-radius: 14px;
+    border-radius: 10px;
 
     border:
         1px solid
@@ -482,25 +487,25 @@ body::after {
     cursor: pointer;
 
     transition:
-        transform .22s ease,
-        border-color .22s ease,
-        box-shadow .22s ease;
+        transform .20s ease,
+        border-color .20s ease,
+        box-shadow .20s ease;
 
     backdrop-filter: blur(5px);
 }
 
 .country-card:hover {
     transform:
-        translateY(-5px);
+        translateY(-3px);
 
     border-color:
         rgba(0,181,255,.55);
 
     box-shadow:
-        0 18px 40px
+        0 12px 28px
         rgba(0,0,0,.38),
 
-        0 0 30px
+        0 0 22px
         rgba(0,145,255,.12);
 }
 
@@ -520,7 +525,7 @@ body::after {
     position: absolute;
     inset: 0;
 
-    padding: 14px;
+    padding: 7px;
 
     display: flex;
     flex-direction: column;
@@ -528,32 +533,27 @@ body::after {
 
     background:
         linear-gradient(
-            transparent 10%,
-            rgba(1,5,14,.94) 100%
+            transparent 5%,
+            rgba(1,5,14,.95) 100%
         );
 }
 
 .country-flag {
-    font-size:
-        clamp(
-            25px,
-            3vw,
-            37px
-        );
+    font-size: 20px;
 
     line-height: 1;
 
-    margin-bottom: 7px;
+    margin-bottom: 4px;
 
     filter:
         drop-shadow(
-            0 3px 7px
+            0 2px 5px
             rgba(0,0,0,.35)
         );
 }
 
 .country-name {
-    font-size: 14px;
+    font-size: 9px;
 
     font-weight: 850;
 
@@ -562,18 +562,81 @@ body::after {
     overflow: hidden;
 
     text-overflow: ellipsis;
+
+    padding-right: 24px;
 }
 
 .country-code {
-    margin-top: 3px;
+    margin-top: 2px;
 
-    font-size: 10px;
+    font-size: 7px;
 
     color: #8298b2;
 
     text-transform: uppercase;
 
-    letter-spacing: .8px;
+    letter-spacing: .5px;
+
+    padding-right: 24px;
+}
+
+/* =========================================================
+   GREEN BRAND COUNT SQUARE
+========================================================= */
+
+.brand-count {
+    position: absolute;
+
+    top: 6px;
+    right: 6px;
+
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 7px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #20d66b,
+            #07963f
+        );
+
+    border:
+        1px solid
+        rgba(103,255,160,.65);
+
+    box-shadow:
+        0 0 13px
+        rgba(24,220,100,.32);
+
+    color: #fff;
+
+    font-weight: 950;
+
+    line-height: 1;
+
+    z-index: 5;
+}
+
+.brand-count-number {
+    font-size: 10px;
+}
+
+.brand-count-label {
+    font-size: 5px;
+
+    margin-top: 2px;
+
+    letter-spacing: .2px;
+
+    opacity: .95;
 }
 
 /* =========================================================
@@ -847,7 +910,7 @@ body::after {
 }
 
 /* =========================================================
-   RESPONSIVE
+   TABLET
 ========================================================= */
 
 @media (max-width:1200px) {
@@ -855,7 +918,7 @@ body::after {
     .countries-grid {
         grid-template-columns:
             repeat(
-                5,
+                12,
                 minmax(0,1fr)
             );
     }
@@ -866,7 +929,7 @@ body::after {
     .countries-grid {
         grid-template-columns:
             repeat(
-                4,
+                8,
                 minmax(0,1fr)
             );
     }
@@ -874,7 +937,16 @@ body::after {
     .payment-section {
         grid-template-columns: 1fr;
     }
+
+    .country-name {
+        font-size: 10px;
+    }
 }
+
+/* =========================================================
+   MOBILE
+   4 COLUMNS
+========================================================= */
 
 @media (max-width:700px) {
 
@@ -907,23 +979,49 @@ body::after {
     .countries-grid {
         grid-template-columns:
             repeat(
-                3,
+                4,
                 minmax(0,1fr)
             );
 
-        gap: 9px;
+        gap: 7px;
+    }
+
+    .country-card {
+        border-radius: 9px;
     }
 
     .country-content {
-        padding: 9px;
+        padding: 6px;
+    }
+
+    .country-flag {
+        font-size: 18px;
     }
 
     .country-name {
-        font-size: 12px;
+        font-size: 9px;
     }
 
     .country-code {
+        font-size: 7px;
+    }
+
+    .brand-count {
+        top: 5px;
+        right: 5px;
+
+        width: 27px;
+        height: 27px;
+
+        border-radius: 7px;
+    }
+
+    .brand-count-number {
         font-size: 9px;
+    }
+
+    .brand-count-label {
+        font-size: 5px;
     }
 
     .payment-section {
@@ -936,6 +1034,11 @@ body::after {
         text-align: center;
     }
 }
+
+/* =========================================================
+   SMALL PHONES
+   STILL 4 COLUMNS
+========================================================= */
 
 @media (max-width:480px) {
 
@@ -964,11 +1067,11 @@ body::after {
     .countries-grid {
         grid-template-columns:
             repeat(
-                2,
+                4,
                 minmax(0,1fr)
             );
 
-        gap: 8px;
+        gap: 6px;
     }
 
     .section-title {
@@ -982,6 +1085,45 @@ body::after {
     .price {
         font-size: 34px;
     }
+
+    .country-card {
+        border-radius: 8px;
+    }
+
+    .country-content {
+        padding: 5px;
+    }
+
+    .country-flag {
+        font-size: 15px;
+        margin-bottom: 3px;
+    }
+
+    .country-name {
+        font-size: 8px;
+    }
+
+    .country-code {
+        font-size: 6px;
+    }
+
+    .brand-count {
+        width: 23px;
+        height: 23px;
+
+        top: 4px;
+        right: 4px;
+
+        border-radius: 6px;
+    }
+
+    .brand-count-number {
+        font-size: 8px;
+    }
+
+    .brand-count-label {
+        font-size: 4px;
+    }
 }
 
 @media (max-width:350px) {
@@ -991,7 +1133,12 @@ body::after {
     }
 
     .countries-grid {
-        gap: 6px;
+        gap: 5px;
+    }
+
+    .brand-count {
+        width: 21px;
+        height: 21px;
     }
 }
 </style>
@@ -1280,9 +1427,11 @@ const message =
 
 let countries = [];
 
+const brandCounts = new Map();
+
 
 /* =========================================================
-   FLAG FROM COUNTRY CODE
+   FLAG
 ========================================================= */
 
 function countryFlag(code) {
@@ -1329,6 +1478,26 @@ function escapeHtml(value) {
 
 
 /* =========================================================
+   BRAND COUNT
+========================================================= */
+
+function getBrandCount(countryId) {
+
+    if (
+        countryId === null ||
+        countryId === undefined ||
+        countryId === ""
+    ) {
+        return 0;
+    }
+
+    return brandCounts.get(
+        String(countryId)
+    ) ?? 0;
+}
+
+
+/* =========================================================
    RENDER
 ========================================================= */
 
@@ -1369,6 +1538,9 @@ function renderCountries(list) {
             country.emoji ||
             countryFlag(code);
 
+        const count =
+            getBrandCount(id);
+
         const card =
             document.createElement(
                 "article"
@@ -1389,6 +1561,18 @@ function renderCountries(list) {
         card.innerHTML = `
 
             <div class="country-bg"></div>
+
+            <div class="brand-count">
+
+                <div class="brand-count-number">
+                    ${escapeHtml(count)}
+                </div>
+
+                <div class="brand-count-label">
+                    BRANDS
+                </div>
+
+            </div>
 
             <div class="country-content">
 
@@ -1434,6 +1618,160 @@ function renderCountries(list) {
     });
 
     grid.appendChild(fragment);
+}
+
+
+/* =========================================================
+   LOAD ONE COUNTRY BRAND COUNT
+========================================================= */
+
+async function loadBrandCount(country) {
+
+    if (
+        country.id === null ||
+        country.id === undefined ||
+        country.id === ""
+    ) {
+        return;
+    }
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/countries/${encodeURIComponent(country.id)}/brands`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Accept":
+                            "application/json"
+                    },
+                    cache: "no-store"
+                }
+            );
+
+        if (!response.ok) {
+            return;
+        }
+
+        const data =
+            await response.json();
+
+        let count = 0;
+
+        if (Array.isArray(data)) {
+
+            count = data.length;
+
+        } else if (
+            data &&
+            Array.isArray(data.brands)
+        ) {
+
+            count =
+                data.brands.length;
+
+        } else if (
+            data &&
+            typeof data.count === "number"
+        ) {
+
+            count =
+                data.count;
+
+        }
+
+        brandCounts.set(
+            String(country.id),
+            count
+        );
+
+    } catch (error) {
+
+        console.warn(
+            "Brand count error:",
+            country.name,
+            error
+        );
+
+    }
+}
+
+
+/* =========================================================
+   LOAD BRAND COUNTS
+   Limited concurrency so server is not overloaded.
+========================================================= */
+
+async function loadAllBrandCounts() {
+
+    const queue =
+        [...countries];
+
+    const workers = 8;
+
+    async function worker() {
+
+        while (queue.length) {
+
+            const country =
+                queue.shift();
+
+            if (!country) {
+                break;
+            }
+
+            await loadBrandCount(
+                country
+            );
+
+            updateCountryBrandCount(
+                country.id
+            );
+        }
+    }
+
+    await Promise.all(
+        Array.from(
+            {
+                length:
+                    Math.min(
+                        workers,
+                        countries.length
+                    )
+            },
+            () => worker()
+        )
+    );
+}
+
+
+/* =========================================================
+   UPDATE BRAND COUNT WITHOUT REBUILDING CARD
+========================================================= */
+
+function updateCountryBrandCount(id) {
+
+    const card =
+        grid.querySelector(
+            `.country-card[data-id="${CSS.escape(String(id))}"]`
+        );
+
+    if (!card) {
+        return;
+    }
+
+    const number =
+        card.querySelector(
+            ".brand-count-number"
+        );
+
+    if (!number) {
+        return;
+    }
+
+    number.textContent =
+        getBrandCount(id);
 }
 
 
@@ -1505,6 +1843,14 @@ async function loadCountries() {
         renderCountries(
             countries
         );
+
+        /*
+         * Сначала показываем страны,
+         * затем постепенно загружаем
+         * количество брендов.
+         */
+
+        loadAllBrandCounts();
 
     } catch (error) {
 
@@ -1654,14 +2000,6 @@ async function startPayment() {
 
     try {
 
-        /*
-         * Server o‘zi 1000 UZS summani
-         * belgilaydi.
-         *
-         * Frontend payment amount/status
-         * ga ishonmaydi.
-         */
-
         const response =
             await fetch(
                 "/api/payments/octo/create",
@@ -1723,11 +2061,6 @@ async function startPayment() {
         message.textContent =
             "OCTO sahifasiga yo‘naltirilmoqda...";
 
-
-        /*
-         * Faqat server qaytargan
-         * haqiqiy OCTO URL'iga o'tamiz.
-         */
 
         window.location.assign(
             data.payment_url
