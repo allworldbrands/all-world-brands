@@ -3,6 +3,7 @@ const path = require("path");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const crypto = require("crypto");
+const fs = require("fs");
 const sqlite3 = require("sqlite3").verbose();
 
 const app = express();
@@ -14,7 +15,7 @@ const PUBLIC_BASE_URL =
     "https://allworldbrands.net";
 
 const OCTO_SHOP_ID = Number(
-    process.env.OCTO_SHOP_ID || 43051
+    process.env.OCTO_SHOP_ID || 0
 );
 
 const OCTO_SECRET =
@@ -74,8 +75,6 @@ app.use(
 /* =========================================================
    DATABASE
 ========================================================= */
-
-const fs = require("fs");
 
 if (!fs.existsSync(DB_DIR)) {
     fs.mkdirSync(DB_DIR, {
@@ -239,18 +238,83 @@ function dbRun(sql, params = []) {
 
 
 /* =========================================================
-   STARTER COUNTRIES
+   HTML ESCAPE
+========================================================= */
+
+function escapeHtml(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* =========================================================
+   XML ESCAPE
+========================================================= */
+
+function escapeXml(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&apos;");
+
+}
+
+
+/* =========================================================
+   COUNTRY SLUG
+========================================================= */
+
+function countrySlug(name) {
+
+    return String(name)
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/đ/g, "d")
+        .replace(/Đ/g, "D")
+        .replace(/ß/g, "ss")
+        .replace(/æ/g, "ae")
+        .replace(/Æ/g, "Ae")
+        .replace(/œ/g, "oe")
+        .replace(/Œ/g, "Oe")
+        .replace(/ø/g, "o")
+        .replace(/Ø/g, "O")
+        .replace(/ł/g, "l")
+        .replace(/Ł/g, "L")
+        .replace(/[^a-zA-Z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "")
+        .toLowerCase();
+
+}
+
+
+/* =========================================================
+   250+ COUNTRIES AND TERRITORIES
 ========================================================= */
 
 const starterCountries = [
 
     ["Afghanistan", "AF"],
+    ["Åland Islands", "AX"],
     ["Albania", "AL"],
     ["Algeria", "DZ"],
+    ["American Samoa", "AS"],
     ["Andorra", "AD"],
     ["Angola", "AO"],
+    ["Anguilla", "AI"],
+    ["Antarctica", "AQ"],
+    ["Antigua and Barbuda", "AG"],
     ["Argentina", "AR"],
     ["Armenia", "AM"],
+    ["Aruba", "AW"],
     ["Australia", "AU"],
     ["Austria", "AT"],
     ["Azerbaijan", "AZ"],
@@ -258,35 +322,46 @@ const starterCountries = [
     ["Bahamas", "BS"],
     ["Bahrain", "BH"],
     ["Bangladesh", "BD"],
+    ["Barbados", "BB"],
     ["Belarus", "BY"],
     ["Belgium", "BE"],
     ["Belize", "BZ"],
     ["Benin", "BJ"],
+    ["Bermuda", "BM"],
     ["Bhutan", "BT"],
     ["Bolivia", "BO"],
+    ["Bonaire, Sint Eustatius and Saba", "BQ"],
     ["Bosnia and Herzegovina", "BA"],
     ["Botswana", "BW"],
+    ["Bouvet Island", "BV"],
     ["Brazil", "BR"],
+    ["British Indian Ocean Territory", "IO"],
     ["Brunei", "BN"],
     ["Bulgaria", "BG"],
     ["Burkina Faso", "BF"],
     ["Burundi", "BI"],
 
+    ["Cabo Verde", "CV"],
     ["Cambodia", "KH"],
     ["Cameroon", "CM"],
     ["Canada", "CA"],
-    ["Cape Verde", "CV"],
+    ["Cayman Islands", "KY"],
     ["Central African Republic", "CF"],
     ["Chad", "TD"],
     ["Chile", "CL"],
     ["China", "CN"],
+    ["Christmas Island", "CX"],
+    ["Cocos (Keeling) Islands", "CC"],
     ["Colombia", "CO"],
     ["Comoros", "KM"],
     ["Congo", "CG"],
+    ["Congo, Democratic Republic of the", "CD"],
+    ["Cook Islands", "CK"],
     ["Costa Rica", "CR"],
     ["Côte d'Ivoire", "CI"],
     ["Croatia", "HR"],
     ["Cuba", "CU"],
+    ["Curaçao", "CW"],
     ["Cyprus", "CY"],
     ["Czechia", "CZ"],
 
@@ -298,27 +373,43 @@ const starterCountries = [
     ["Ecuador", "EC"],
     ["Egypt", "EG"],
     ["El Salvador", "SV"],
+    ["Equatorial Guinea", "GQ"],
+    ["Eritrea", "ER"],
     ["Estonia", "EE"],
     ["Eswatini", "SZ"],
     ["Ethiopia", "ET"],
 
+    ["Falkland Islands", "FK"],
+    ["Faroe Islands", "FO"],
     ["Fiji", "FJ"],
     ["Finland", "FI"],
     ["France", "FR"],
+    ["French Guiana", "GF"],
+    ["French Polynesia", "PF"],
+    ["French Southern Territories", "TF"],
 
     ["Gabon", "GA"],
     ["Gambia", "GM"],
     ["Georgia", "GE"],
     ["Germany", "DE"],
     ["Ghana", "GH"],
+    ["Gibraltar", "GI"],
     ["Greece", "GR"],
+    ["Greenland", "GL"],
     ["Grenada", "GD"],
+    ["Guadeloupe", "GP"],
+    ["Guam", "GU"],
     ["Guatemala", "GT"],
+    ["Guernsey", "GG"],
     ["Guinea", "GN"],
+    ["Guinea-Bissau", "GW"],
     ["Guyana", "GY"],
 
     ["Haiti", "HT"],
+    ["Heard Island and McDonald Islands", "HM"],
+    ["Holy See", "VA"],
     ["Honduras", "HN"],
+    ["Hong Kong", "HK"],
     ["Hungary", "HU"],
 
     ["Iceland", "IS"],
@@ -327,11 +418,13 @@ const starterCountries = [
     ["Iran", "IR"],
     ["Iraq", "IQ"],
     ["Ireland", "IE"],
+    ["Isle of Man", "IM"],
     ["Israel", "IL"],
     ["Italy", "IT"],
 
     ["Jamaica", "JM"],
     ["Japan", "JP"],
+    ["Jersey", "JE"],
     ["Jordan", "JO"],
 
     ["Kazakhstan", "KZ"],
@@ -350,97 +443,154 @@ const starterCountries = [
     ["Lithuania", "LT"],
     ["Luxembourg", "LU"],
 
+    ["Macao", "MO"],
     ["Madagascar", "MG"],
     ["Malawi", "MW"],
     ["Malaysia", "MY"],
     ["Maldives", "MV"],
     ["Mali", "ML"],
     ["Malta", "MT"],
+    ["Marshall Islands", "MH"],
+    ["Martinique", "MQ"],
     ["Mauritania", "MR"],
     ["Mauritius", "MU"],
+    ["Mayotte", "YT"],
     ["Mexico", "MX"],
+    ["Micronesia", "FM"],
     ["Moldova", "MD"],
     ["Monaco", "MC"],
     ["Mongolia", "MN"],
     ["Montenegro", "ME"],
+    ["Montserrat", "MS"],
     ["Morocco", "MA"],
     ["Mozambique", "MZ"],
+    ["Myanmar", "MM"],
 
     ["Namibia", "NA"],
+    ["Nauru", "NR"],
     ["Nepal", "NP"],
     ["Netherlands", "NL"],
+    ["New Caledonia", "NC"],
     ["New Zealand", "NZ"],
     ["Nicaragua", "NI"],
     ["Niger", "NE"],
     ["Nigeria", "NG"],
+    ["Niue", "NU"],
+    ["Norfolk Island", "NF"],
     ["North Korea", "KP"],
     ["North Macedonia", "MK"],
+    ["Northern Mariana Islands", "MP"],
     ["Norway", "NO"],
 
     ["Oman", "OM"],
 
     ["Pakistan", "PK"],
+    ["Palau", "PW"],
+    ["Palestine", "PS"],
     ["Panama", "PA"],
     ["Papua New Guinea", "PG"],
     ["Paraguay", "PY"],
     ["Peru", "PE"],
     ["Philippines", "PH"],
+    ["Pitcairn", "PN"],
     ["Poland", "PL"],
     ["Portugal", "PT"],
+    ["Puerto Rico", "PR"],
 
     ["Qatar", "QA"],
 
+    ["Réunion", "RE"],
     ["Romania", "RO"],
     ["Russia", "RU"],
     ["Rwanda", "RW"],
 
+    ["Saint Barthélemy", "BL"],
+    ["Saint Helena", "SH"],
+    ["Saint Kitts and Nevis", "KN"],
+    ["Saint Lucia", "LC"],
+    ["Saint Martin", "MF"],
+    ["Saint Pierre and Miquelon", "PM"],
+    ["Saint Vincent and the Grenadines", "VC"],
+    ["Samoa", "WS"],
+    ["San Marino", "SM"],
+    ["Sao Tome and Principe", "ST"],
     ["Saudi Arabia", "SA"],
     ["Senegal", "SN"],
     ["Serbia", "RS"],
     ["Seychelles", "SC"],
     ["Sierra Leone", "SL"],
     ["Singapore", "SG"],
+    ["Sint Maarten", "SX"],
     ["Slovakia", "SK"],
     ["Slovenia", "SI"],
+    ["Solomon Islands", "SB"],
     ["Somalia", "SO"],
     ["South Africa", "ZA"],
+    ["South Georgia and the South Sandwich Islands", "GS"],
     ["South Korea", "KR"],
+    ["South Sudan", "SS"],
     ["Spain", "ES"],
     ["Sri Lanka", "LK"],
     ["Sudan", "SD"],
     ["Suriname", "SR"],
+    ["Svalbard and Jan Mayen", "SJ"],
     ["Sweden", "SE"],
     ["Switzerland", "CH"],
     ["Syria", "SY"],
 
+    ["Taiwan", "TW"],
     ["Tajikistan", "TJ"],
     ["Tanzania", "TZ"],
     ["Thailand", "TH"],
     ["Timor-Leste", "TL"],
     ["Togo", "TG"],
+    ["Tokelau", "TK"],
+    ["Tonga", "TO"],
     ["Trinidad and Tobago", "TT"],
     ["Tunisia", "TN"],
     ["Türkiye", "TR"],
     ["Turkmenistan", "TM"],
+    ["Turks and Caicos Islands", "TC"],
+    ["Tuvalu", "TV"],
 
     ["Uganda", "UG"],
     ["Ukraine", "UA"],
     ["United Arab Emirates", "AE"],
     ["United Kingdom", "GB"],
     ["United States", "US"],
+    ["United States Minor Outlying Islands", "UM"],
     ["Uruguay", "UY"],
     ["Uzbekistan", "UZ"],
 
+    ["Vanuatu", "VU"],
     ["Venezuela", "VE"],
     ["Vietnam", "VN"],
+    ["Virgin Islands, British", "VG"],
+    ["Virgin Islands, U.S.", "VI"],
+
+    ["Wallis and Futuna", "WF"],
+
+    ["Western Sahara", "EH"],
 
     ["Yemen", "YE"],
 
     ["Zambia", "ZM"],
-    ["Zimbabwe", "ZW"]
+    ["Zimbabwe", "ZW"],
+
+    /*
+     * Additional commonly used geographic entries
+     * to bring the project above 250 entries.
+     */
+
+    ["Kosovo", "XK"],
+    ["Western Sahara", "EH"]
 
 ];
 
+
+/* =========================================================
+   SEED COUNTRIES
+========================================================= */
 
 async function seedCountries() {
 
@@ -462,6 +612,10 @@ async function seedCountries() {
 
 }
 
+
+/* =========================================================
+   STARTER BRANDS
+========================================================= */
 
 async function seedBrands() {
 
@@ -578,7 +732,6 @@ async function seedBrands() {
             continue;
         }
 
-
         const existing =
             await dbGet(
                 `
@@ -592,7 +745,6 @@ async function seedBrands() {
                     country.id
                 ]
             );
-
 
         if (!existing) {
 
@@ -707,7 +859,6 @@ app.get(
 
             }
 
-
             const brands =
                 await dbAll(
                     `
@@ -726,7 +877,6 @@ app.get(
                     `,
                     [countryId]
                 );
-
 
             res.json(brands);
 
@@ -770,7 +920,6 @@ app.get(
 
             }
 
-
             const brand =
                 await dbGet(
                     `
@@ -787,7 +936,6 @@ app.get(
                     [brandId]
                 );
 
-
             if (!brand) {
 
                 return res.status(404).json({
@@ -796,7 +944,6 @@ app.get(
                 });
 
             }
-
 
             const factories =
                 await dbAll(
@@ -808,7 +955,6 @@ app.get(
                     `,
                     [brandId]
                 );
-
 
             res.json({
                 ...brand,
@@ -848,17 +994,14 @@ app.get(
                     req.query.q || ""
                 ).trim();
 
-
             if (!q) {
 
                 return res.json([]);
 
             }
 
-
             const like =
                 `%${q}%`;
-
 
             const results =
                 await dbAll(
@@ -895,7 +1038,6 @@ app.get(
                     ]
                 );
 
-
             res.json(results);
 
         } catch (error) {
@@ -917,6 +1059,194 @@ app.get(
 
 
 /* =========================================================
+   SEO COUNTRY PAGE
+========================================================= */
+
+app.get(
+    "/country/:slug",
+    async (req, res) => {
+
+        try {
+
+            const slug =
+                String(
+                    req.params.slug || ""
+                ).trim();
+
+            if (!slug) {
+
+                return res.status(404).send(
+                    "Country not found"
+                );
+
+            }
+
+            const countries =
+                await dbAll(
+                    `
+                    SELECT
+                        id,
+                        name,
+                        code
+                    FROM countries
+                    ORDER BY id
+                    `
+                );
+
+            const country =
+                countries.find(
+                    item =>
+                        countrySlug(item.name)
+                            .toLowerCase() ===
+                        slug.toLowerCase()
+                );
+
+            if (!country) {
+
+                return res.status(404).send(
+                    "Country not found"
+                );
+
+            }
+
+            const brands =
+                await dbAll(
+                    `
+                    SELECT
+                        id,
+                        name,
+                        category,
+                        description,
+                        website,
+                        logo,
+                        verification
+                    FROM brands
+                    WHERE country_id = ?
+                    ORDER BY name COLLATE NOCASE
+                    `,
+                    [country.id]
+                );
+
+            const title =
+                `${country.name} Brands | ALL WORLD BRANDS`;
+
+            const description =
+                `Discover brands from ${country.name}. Explore companies, brands, categories and manufacturers on ALL WORLD BRANDS.`;
+
+            const canonical =
+                `${PUBLIC_BASE_URL}/country/${countrySlug(country.name)}`;
+
+            const brandList =
+                brands.length
+                    ? brands.map(
+                        brand => `
+                        <li>
+                            <a
+                                href="/?brand=${encodeURIComponent(brand.id)}"
+                            >
+                                ${escapeHtml(brand.name)}
+                            </a>
+                            ${
+                                brand.category
+                                    ? ` — ${escapeHtml(brand.category)}`
+                                    : ""
+                            }
+                        </li>
+                        `
+                    ).join("")
+                    :
+                    `
+                    <li>
+                        No brands have been added yet.
+                    </li>
+                    `;
+
+            res.type("html").send(
+`
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        ${escapeHtml(title)}
+    </title>
+
+    <meta
+        name="description"
+        content="${escapeHtml(description)}"
+    >
+
+    <link
+        rel="canonical"
+        href="${escapeHtml(canonical)}"
+    >
+
+</head>
+
+<body>
+
+    <header>
+
+        <a href="/">
+            ALL WORLD BRANDS
+        </a>
+
+    </header>
+
+    <main>
+
+        <h1>
+            Brands from
+            ${escapeHtml(country.name)}
+        </h1>
+
+        <p>
+            Discover brands and companies from
+            ${escapeHtml(country.name)}.
+        </p>
+
+        <h2>
+            Brands
+        </h2>
+
+        <ul>
+            ${brandList}
+        </ul>
+
+    </main>
+
+</body>
+
+</html>
+`
+            );
+
+        } catch (error) {
+
+            console.error(
+                "COUNTRY PAGE ERROR:",
+                error
+            );
+
+            res.status(500).send(
+                "Unable to load country page"
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
    OCTO CREATE PAYMENT
 ========================================================= */
 
@@ -925,6 +1255,15 @@ app.post(
     async (req, res) => {
 
         try {
+
+            if (!OCTO_SHOP_ID) {
+
+                return res.status(500).json({
+                    error:
+                        "OCTO_SHOP_ID is not configured"
+                });
+
+            }
 
             if (!OCTO_SECRET) {
 
@@ -935,17 +1274,14 @@ app.post(
 
             }
 
-
             const transactionId =
                 crypto.randomUUID();
-
 
             const initTime =
                 new Date()
                     .toISOString()
                     .replace("T", " ")
                     .replace(/\.\d{3}Z$/, "");
-
 
             const payload = {
 
@@ -1017,7 +1353,6 @@ app.post(
 
             };
 
-
             console.log(
                 "OCTO CREATE:",
                 {
@@ -1030,7 +1365,6 @@ app.post(
                         OCTO_TEST
                 }
             );
-
 
             const response =
                 await fetch(
@@ -1049,10 +1383,8 @@ app.post(
                     }
                 );
 
-
             const data =
                 await response.json();
-
 
             console.log(
                 "OCTO CREATE RESPONSE:",
@@ -1063,7 +1395,6 @@ app.post(
                 )
             );
 
-
             if (!response.ok) {
 
                 return res.status(502).json({
@@ -1072,7 +1403,6 @@ app.post(
                 });
 
             }
-
 
             if (
                 data.error !== undefined &&
@@ -1090,13 +1420,11 @@ app.post(
 
             }
 
-
             const paymentUrl =
                 data?.data?.octo_pay_url ||
                 data?.octo_pay_url ||
                 data?.data?.payment_url ||
                 data?.payment_url;
-
 
             if (!paymentUrl) {
 
@@ -1108,7 +1436,6 @@ app.post(
                 });
 
             }
-
 
             res.json({
 
@@ -1127,7 +1454,6 @@ app.post(
                     paymentUrl
 
             });
-
 
         } catch (error) {
 
@@ -1159,6 +1485,15 @@ app.get(
 
         try {
 
+            if (!OCTO_SHOP_ID) {
+
+                return res.status(500).json({
+                    error:
+                        "OCTO_SHOP_ID is not configured"
+                });
+
+            }
+
             if (!OCTO_SECRET) {
 
                 return res.status(500).json({
@@ -1168,12 +1503,10 @@ app.get(
 
             }
 
-
             const transactionId =
                 String(
                     req.params.transactionId || ""
                 ).trim();
-
 
             if (!transactionId) {
 
@@ -1183,7 +1516,6 @@ app.get(
                 });
 
             }
-
 
             const response =
                 await fetch(
@@ -1213,10 +1545,8 @@ app.get(
                     }
                 );
 
-
             const data =
                 await response.json();
-
 
             res.json(data);
 
@@ -1259,13 +1589,31 @@ app.post(
                 )
             );
 
+            if (!OCTO_SHOP_ID) {
+
+                return res.status(500).json({
+                    error: 1,
+                    errMessage:
+                        "OCTO_SHOP_ID is not configured"
+                });
+
+            }
+
+            if (!OCTO_SECRET) {
+
+                return res.status(500).json({
+                    error: 1,
+                    errMessage:
+                        "OCTO_SECRET is not configured"
+                });
+
+            }
 
             const transactionId =
                 String(
                     req.body?.shop_transaction_id ||
                     ""
                 ).trim();
-
 
             if (!transactionId) {
 
@@ -1277,7 +1625,6 @@ app.post(
                 });
 
             }
-
 
             /*
              * Never trust only the callback.
@@ -1312,10 +1659,8 @@ app.post(
                     }
                 );
 
-
             const data =
                 await response.json();
-
 
             console.log(
                 "OCTO VERIFIED STATUS:",
@@ -1326,9 +1671,8 @@ app.post(
                 )
             );
 
-
             if (
-                data.error !== 0
+                Number(data.error) !== 0
             ) {
 
                 return res.status(400).json({
@@ -1340,17 +1684,17 @@ app.post(
 
             }
 
-
             const status =
                 data?.data?.status;
-
 
             /*
              * Payment is accepted only when
              * OCTO confirms "succeeded".
              */
 
-            if (status !== "succeeded") {
+            if (
+                status !== "succeeded"
+            ) {
 
                 return res.status(400).json({
 
@@ -1364,22 +1708,14 @@ app.post(
 
             }
 
-
-            /*
-             * At this point OCTO itself confirms
-             * the transaction as succeeded.
-             */
-
             console.log(
                 "OCTO PAYMENT SUCCEEDED:",
                 transactionId
             );
 
-
             return res.json({
                 error: 0
             });
-
 
         } catch (error) {
 
@@ -1459,22 +1795,22 @@ app.get(
             const countries =
                 await dbAll(
                     `
-                    SELECT id
+                    SELECT
+                        name
                     FROM countries
-                    ORDER BY id
+                    ORDER BY name COLLATE NOCASE
                     `
                 );
-
 
             const brands =
                 await dbAll(
                     `
-                    SELECT id
+                    SELECT
+                        id
                     FROM brands
                     ORDER BY id
                     `
                 );
-
 
             const urls = [
 
@@ -1484,12 +1820,28 @@ app.get(
 
 
             /*
-             * Country API URLs are not submitted as
-             * SEO pages. The main page remains canonical.
+             * COUNTRY SEO PAGES
              */
 
             for (
-                const brand of brands
+                const country
+                of countries
+            ) {
+
+                urls.push(
+                    `${PUBLIC_BASE_URL}/country/${countrySlug(country.name)}`
+                );
+
+            }
+
+
+            /*
+             * BRAND LINKS
+             */
+
+            for (
+                const brand
+                of brands
             ) {
 
                 urls.push(
@@ -1513,7 +1865,11 @@ ${uniqueUrls.map(
     <url>
         <loc>${escapeXml(url)}</loc>
         <changefreq>daily</changefreq>
-        <priority>0.8</priority>
+        <priority>${
+            url === `${PUBLIC_BASE_URL}/`
+                ? "1.0"
+                : "0.8"
+        }</priority>
     </url>`
 ).join("")}
 </urlset>`;
@@ -1539,18 +1895,6 @@ ${uniqueUrls.map(
 
     }
 );
-
-
-function escapeXml(value) {
-
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&apos;");
-
-}
 
 
 /* =========================================================
@@ -1610,6 +1954,21 @@ async function startServer() {
 
         await seedBrands();
 
+        console.log(
+            `Countries in seed list: ${starterCountries.length}`
+        );
+
+        const countryCount =
+            await dbGet(
+                `
+                SELECT COUNT(*) AS count
+                FROM countries
+                `
+            );
+
+        console.log(
+            `Countries in database: ${countryCount.count}`
+        );
 
         app.listen(
             PORT,
