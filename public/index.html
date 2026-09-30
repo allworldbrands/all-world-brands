@@ -29,9 +29,7 @@
     href="https://allworldbrands.net/"
 >
 
-<title>
-    ALL WORLD BRANDS — Discover Global Brands
-</title>
+<title>ALL WORLD BRANDS — Discover Global Brands</title>
 
 <style>
 
@@ -46,32 +44,20 @@ html {
 }
 
 body {
-
     min-height: 100vh;
-
-    font-family:
-        Inter,
-        Arial,
-        Helvetica,
-        sans-serif;
-
+    font-family: Inter, Arial, Helvetica, sans-serif;
     color: #fff;
-
     background: #02050c;
-
     overflow-x: hidden;
 }
 
 /* =========================================================
-   EARTH
+   EARTH BACKGROUND
 ========================================================= */
 
 body::before {
-
     content: "";
-
     position: fixed;
-
     inset: 0;
 
     background:
@@ -83,18 +69,13 @@ body::before {
         center center / cover no-repeat;
 
     opacity: .92;
-
     pointer-events: none;
-
     z-index: -3;
 }
 
 body::after {
-
     content: "";
-
     position: fixed;
-
     inset: 0;
 
     background:
@@ -110,7 +91,6 @@ body::after {
         );
 
     pointer-events: none;
-
     z-index: -2;
 }
 
@@ -119,20 +99,14 @@ body::after {
 ========================================================= */
 
 .header {
-
     position: sticky;
-
     top: 0;
-
     z-index: 1000;
-
     width: 100%;
 
-    background:
-        rgba(2,7,17,.72);
+    background: rgba(2,7,17,.72);
 
-    backdrop-filter:
-        blur(18px);
+    backdrop-filter: blur(18px);
 
     border-bottom:
         1px solid
@@ -140,7 +114,6 @@ body::after {
 }
 
 .header-inner {
-
     width:
         min(
             1500px,
@@ -152,35 +125,25 @@ body::after {
     margin: auto;
 
     display: flex;
-
     align-items: center;
-
     gap: 15px;
 }
 
 .logo {
-
     display: flex;
-
     align-items: center;
-
     gap: 10px;
 
     color: #fff;
-
     text-decoration: none;
-
     white-space: nowrap;
 }
 
 .logo-mark {
-
     width: 40px;
-
     height: 40px;
 
     display: grid;
-
     place-items: center;
 
     border-radius: 12px;
@@ -200,25 +163,21 @@ body::after {
 }
 
 .logo-text {
-
     font-size: 18px;
-
     font-weight: 950;
-
     letter-spacing: .5px;
 }
 
 .nav {
-
     margin-left: auto;
 
     display: flex;
-
+    align-items: center;
     gap: 6px;
 }
 
-.nav a {
-
+.nav a,
+.back-button {
     color: #c3d1e4;
 
     text-decoration: none;
@@ -228,16 +187,20 @@ body::after {
     border-radius: 9px;
 
     font-size: 13px;
-
     font-weight: 750;
+
+    background: transparent;
+    border: 0;
+
+    cursor: pointer;
+
+    font-family: inherit;
 }
 
-.nav a:hover {
-
+.nav a:hover,
+.back-button:hover {
     color: #fff;
-
-    background:
-        rgba(255,255,255,.08);
+    background: rgba(255,255,255,.08);
 }
 
 /* =========================================================
@@ -245,7 +208,6 @@ body::after {
 ========================================================= */
 
 .main {
-
     width:
         min(
             1500px,
@@ -260,28 +222,20 @@ body::after {
 ========================================================= */
 
 .hero {
-
-    padding:
-        70px 0 30px;
-
+    padding: 70px 0 30px;
     text-align: center;
 }
 
 .badge {
-
     display: inline-flex;
-
     align-items: center;
-
     gap: 8px;
 
-    padding:
-        8px 14px;
+    padding: 8px 14px;
 
     border-radius: 999px;
 
-    background:
-        rgba(0,145,255,.12);
+    background: rgba(0,145,255,.12);
 
     border:
         1px solid
@@ -290,7 +244,6 @@ body::after {
     color: #7bd1ff;
 
     font-size: 12px;
-
     font-weight: 850;
 
     letter-spacing: .6px;
@@ -299,9 +252,7 @@ body::after {
 }
 
 .badge-dot {
-
     width: 8px;
-
     height: 8px;
 
     border-radius: 50%;
@@ -314,7 +265,6 @@ body::after {
 }
 
 .hero h1 {
-
     font-size:
         clamp(
             38px,
@@ -335,18 +285,38 @@ body::after {
             90deg,
             #fff,
             #8edcff,
+            #fff,
+            #69f0ff,
             #fff
         );
 
-    -webkit-background-clip: text;
+    background-size: 300% auto;
 
+    animation:
+        titleShine 7s linear infinite;
+
+    -webkit-background-clip: text;
     background-clip: text;
 
     color: transparent;
 }
 
-.hero p {
+@keyframes titleShine {
 
+    0% {
+        background-position: 0% center;
+    }
+
+    50% {
+        background-position: 100% center;
+    }
+
+    100% {
+        background-position: 0% center;
+    }
+}
+
+.hero p {
     max-width: 700px;
 
     margin: auto;
@@ -363,7 +333,6 @@ body::after {
 ========================================================= */
 
 .search-area {
-
     width:
         min(
             850px,
@@ -375,16 +344,13 @@ body::after {
 }
 
 .search-box {
-
     position: relative;
 }
 
 .search-icon {
-
     position: absolute;
 
     left: 18px;
-
     top: 50%;
 
     transform:
@@ -396,9 +362,7 @@ body::after {
 }
 
 #searchInput {
-
     width: 100%;
-
     height: 58px;
 
     padding:
@@ -421,7 +385,6 @@ body::after {
 }
 
 #searchInput:focus {
-
     border-color:
         rgba(0,168,255,.65);
 
@@ -431,27 +394,22 @@ body::after {
 }
 
 #searchInput::placeholder {
-
     color: #7890aa;
 }
 
 .clear-search {
-
     position: absolute;
 
     right: 12px;
-
     top: 50%;
 
     transform:
         translateY(-50%);
 
     width: 34px;
-
     height: 34px;
 
     border: 0;
-
     border-radius: 9px;
 
     background:
@@ -471,7 +429,6 @@ body::after {
 ========================================================= */
 
 .section-head {
-
     display: flex;
 
     align-items: end;
@@ -485,25 +442,18 @@ body::after {
 }
 
 .section-title {
-
     font-size: 24px;
-
     font-weight: 900;
 }
 
 .section-subtitle {
-
     color: #91a4bc;
-
     font-size: 13px;
-
     margin-top: 5px;
 }
 
 .result-count {
-
     color: #9aabc0;
-
     font-size: 12px;
 }
 
@@ -512,7 +462,6 @@ body::after {
 ========================================================= */
 
 .countries-grid {
-
     display: grid;
 
     grid-template-columns:
@@ -525,7 +474,6 @@ body::after {
 }
 
 .country-card {
-
     position: relative;
 
     min-width: 0;
@@ -556,7 +504,6 @@ body::after {
 }
 
 .country-card:hover {
-
     transform:
         translateY(-3px);
 
@@ -569,9 +516,7 @@ body::after {
 }
 
 .country-bg {
-
     position: absolute;
-
     inset: 0;
 
     background:
@@ -583,9 +528,7 @@ body::after {
 }
 
 .country-content {
-
     position: absolute;
-
     inset: 0;
 
     padding: 7px;
@@ -603,16 +546,8 @@ body::after {
         );
 }
 
-/*
-   COUNTRY NAME:
-   To‘liq ko‘rinadi.
-   2-3 qatorga tushishi mumkin.
-*/
-
 .country-name {
-
     font-size: 10px;
-
     font-weight: 850;
 
     line-height: 1.15;
@@ -633,7 +568,6 @@ body::after {
 }
 
 .country-code {
-
     margin-top: 3px;
 
     font-size: 7px;
@@ -644,7 +578,6 @@ body::after {
 }
 
 .country-flag {
-
     font-size: 20px;
 
     line-height: 1;
@@ -653,23 +586,19 @@ body::after {
 }
 
 /* =========================================================
-   GREEN BRAND SQUARE
-   RIGHT CENTER
+   BRAND COUNT
 ========================================================= */
 
 .brand-count {
-
     position: absolute;
 
     right: 6px;
-
     top: 50%;
 
     transform:
         translateY(-50%);
 
     width: 30px;
-
     height: 30px;
 
     display: flex;
@@ -707,12 +636,10 @@ body::after {
 }
 
 .brand-count-number {
-
     font-size: 10px;
 }
 
 .brand-count-label {
-
     font-size: 5px;
 
     margin-top: 2px;
@@ -725,7 +652,6 @@ body::after {
 ========================================================= */
 
 .panel {
-
     margin-top: 45px;
 
     padding: 28px;
@@ -752,14 +678,11 @@ body::after {
 }
 
 .panel h2 {
-
     font-size: 28px;
-
     margin-bottom: 10px;
 }
 
 .panel-description {
-
     color: #93a7bf;
 
     line-height: 1.6;
@@ -772,7 +695,6 @@ body::after {
 ========================================================= */
 
 .form-grid {
-
     display: grid;
 
     grid-template-columns:
@@ -785,33 +707,26 @@ body::after {
 }
 
 .field {
-
     display: flex;
-
     flex-direction: column;
-
     gap: 6px;
 }
 
 .field.full {
-
     grid-column:
         1 / -1;
 }
 
 .field label {
-
     color: #9db0c7;
 
     font-size: 12px;
-
     font-weight: 700;
 }
 
 .field input,
 .field textarea,
 .field select {
-
     width: 100%;
 
     border:
@@ -832,23 +747,24 @@ body::after {
     font: inherit;
 }
 
+.field select option {
+    background: #071326;
+    color: #fff;
+}
+
 .field textarea {
-
     min-height: 100px;
-
     resize: vertical;
 }
 
 .field input:focus,
 .field textarea:focus,
 .field select:focus {
-
     border-color:
         rgba(0,174,255,.65);
 }
 
 .submit-row {
-
     margin-top: 18px;
 
     display: flex;
@@ -861,7 +777,6 @@ body::after {
 }
 
 .price-box {
-
     color: #8dffb5;
 
     font-weight: 900;
@@ -870,7 +785,6 @@ body::after {
 }
 
 .primary-button {
-
     border: 0;
 
     border-radius: 11px;
@@ -890,17 +804,23 @@ body::after {
     font-weight: 850;
 
     cursor: pointer;
+
+    transition:
+        transform .2s,
+        opacity .2s;
+}
+
+.primary-button:hover {
+    transform:
+        translateY(-1px);
 }
 
 .primary-button:disabled {
-
     opacity: .55;
-
     cursor: wait;
 }
 
 .form-message {
-
     margin-top: 12px;
 
     min-height: 20px;
@@ -915,7 +835,6 @@ body::after {
 ========================================================= */
 
 .comments-layout {
-
     display: grid;
 
     grid-template-columns:
@@ -926,7 +845,6 @@ body::after {
 }
 
 .comment-list {
-
     display: flex;
 
     flex-direction: column;
@@ -939,7 +857,6 @@ body::after {
 }
 
 .comment {
-
     padding: 15px;
 
     border-radius: 13px;
@@ -953,14 +870,11 @@ body::after {
 }
 
 .comment-name {
-
     font-weight: 850;
-
     margin-bottom: 5px;
 }
 
 .comment-text {
-
     color: #a4b4c8;
 
     font-size: 13px;
@@ -973,7 +887,6 @@ body::after {
 ========================================================= */
 
 .info-grid {
-
     display: grid;
 
     grid-template-columns:
@@ -986,7 +899,6 @@ body::after {
 }
 
 .info-card {
-
     padding: 18px;
 
     border-radius: 14px;
@@ -1000,7 +912,6 @@ body::after {
 }
 
 .info-card strong {
-
     display: block;
 
     color: #fff;
@@ -1009,7 +920,6 @@ body::after {
 }
 
 .info-card a {
-
     color: #80d5ff;
 
     text-decoration: none;
@@ -1019,11 +929,17 @@ body::after {
 
 /* =========================================================
    PAYMENT LOGOS
+   ONLY LOGOS AT THE VERY BOTTOM
 ========================================================= */
 
 .payment-logos {
+    margin-top: 30px;
 
-    margin-top: 24px;
+    padding-top: 20px;
+
+    border-top:
+        1px solid
+        rgba(255,255,255,.07);
 
     display: flex;
 
@@ -1031,61 +947,35 @@ body::after {
 
     align-items: center;
 
-    gap: 12px;
+    gap: 18px;
 
     flex-wrap: wrap;
 }
 
 .payment-logo {
+    width: 82px;
+    height: 42px;
 
-    min-width: 105px;
+    display: flex;
 
-    height: 48px;
+    align-items: center;
 
-    padding:
-        8px 16px;
+    justify-content: center;
 
-    display: grid;
-
-    place-items: center;
-
-    border-radius: 9px;
+    border-radius: 8px;
 
     background: #fff;
 
-    color: #111;
-
-    font-weight: 950;
-
-    font-size: 18px;
-
     box-shadow:
-        0 8px 25px
+        0 5px 18px
         rgba(0,0,0,.25);
+
+    overflow: hidden;
 }
 
-.mastercard {
-
-    color: #111;
-
-    position: relative;
-}
-
-.mastercard span {
-
-    font-size: 13px;
-}
-
-.visa {
-
-    font-style: italic;
-
-    color: #1434cb;
-}
-
-.paypal {
-
-    color: #003087;
+.payment-logo svg {
+    width: 70px;
+    height: 30px;
 }
 
 /* =========================================================
@@ -1093,7 +983,6 @@ body::after {
 ========================================================= */
 
 .footer {
-
     margin-top: 30px;
 
     padding:
@@ -1114,7 +1003,6 @@ body::after {
 }
 
 .footer strong {
-
     color: #b5c5d8;
 }
 
@@ -1125,7 +1013,6 @@ body::after {
 @media (max-width:1200px) {
 
     .countries-grid {
-
         grid-template-columns:
             repeat(
                 8,
@@ -1137,7 +1024,6 @@ body::after {
 @media (max-width:900px) {
 
     .countries-grid {
-
         grid-template-columns:
             repeat(
                 6,
@@ -1146,12 +1032,10 @@ body::after {
     }
 
     .comments-layout {
-
         grid-template-columns: 1fr;
     }
 
     .info-grid {
-
         grid-template-columns: 1fr;
     }
 }
@@ -1159,27 +1043,26 @@ body::after {
 @media (max-width:700px) {
 
     .header-inner {
-
         min-height: 58px;
     }
 
     .logo-text {
-
         font-size: 15px;
     }
 
     .nav a {
-
         display: none;
     }
 
-    .hero {
+    .back-button {
+        display: block;
+    }
 
+    .hero {
         padding-top: 45px;
     }
 
     .countries-grid {
-
         grid-template-columns:
             repeat(
                 4,
@@ -1190,36 +1073,28 @@ body::after {
     }
 
     .country-name {
-
         font-size: 9px;
     }
 
     .brand-count {
-
         width: 27px;
-
         height: 27px;
-
         right: 4px;
     }
 
     .form-grid {
-
         grid-template-columns: 1fr;
     }
 
     .field.full {
-
         grid-column: auto;
     }
 
     .panel {
-
         padding: 20px;
     }
 
     .footer {
-
         flex-direction: column;
 
         text-align: center;
@@ -1232,18 +1107,15 @@ body::after {
 
     .main,
     .header-inner {
-
         width:
             calc(100% - 18px);
     }
 
     .hero h1 {
-
         letter-spacing: -1.8px;
     }
 
     .countries-grid {
-
         grid-template-columns:
             repeat(
                 4,
@@ -1254,37 +1126,35 @@ body::after {
     }
 
     .country-flag {
-
         font-size: 15px;
     }
 
     .country-name {
-
         font-size: 8px;
 
         -webkit-line-clamp: 3;
     }
 
     .country-code {
-
         font-size: 6px;
     }
 
     .brand-count {
-
         width: 24px;
-
         height: 24px;
     }
 
     .brand-count-number {
-
         font-size: 8px;
     }
 
     .brand-count-label {
-
         font-size: 4px;
+    }
+
+    .payment-logo {
+        width: 72px;
+        height: 38px;
     }
 }
 
@@ -1331,6 +1201,14 @@ Comments
 Info
 </a>
 
+<button
+    type="button"
+    class="back-button"
+    onclick="goBack()"
+>
+← Back
+</button>
+
 </nav>
 
 </div>
@@ -1339,6 +1217,7 @@ Info
 
 
 <main class="main">
+
 
 <!-- =====================================================
      HERO
@@ -1388,6 +1267,7 @@ from around the world in one place.
 <button
     id="clearSearch"
     class="clear-search"
+    type="button"
 >
 ×
 </button>
@@ -1690,9 +1570,7 @@ Send Comment
     id="commentList"
     class="comment-list"
 >
-
 Loading comments...
-
 </div>
 
 </div>
@@ -1728,9 +1606,12 @@ discovering companies, brands and countries.
 📞 Phone
 </strong>
 
-<a href="tel:+998933843112">
+<span style="
+    color:#80d5ff;
+    user-select:text;
+">
 +998933843112
-</a>
+</span>
 
 </div>
 
@@ -1769,21 +1650,103 @@ allworldbrandsnet@gmail.com
 </div>
 
 
+<!-- =====================================================
+     PAYMENT LOGOS
+===================================================== -->
+
 <div class="payment-logos">
 
-<div class="payment-logo visa">
+<!-- VISA -->
+
+<div class="payment-logo" aria-label="Visa">
+
+<svg
+    viewBox="0 0 100 40"
+    xmlns="http://www.w3.org/2000/svg"
+>
+
+<text
+    x="50"
+    y="27"
+    text-anchor="middle"
+    font-family="Arial"
+    font-size="27"
+    font-weight="900"
+    font-style="italic"
+    fill="#1434CB"
+>
 VISA
+</text>
+
+</svg>
+
 </div>
 
-<div class="payment-logo mastercard">
-● ●
-<span>
-Mastercard
-</span>
+
+<!-- MASTERCARD -->
+
+<div
+    class="payment-logo"
+    aria-label="Mastercard"
+>
+
+<svg
+    viewBox="0 0 100 40"
+    xmlns="http://www.w3.org/2000/svg"
+>
+
+<circle
+    cx="42"
+    cy="20"
+    r="13"
+    fill="#EB001B"
+/>
+
+<circle
+    cx="58"
+    cy="20"
+    r="13"
+    fill="#F79E1B"
+/>
+
+<path
+    d="M50 9
+       A13 13 0 0 0 50 31
+       A13 13 0 0 0 50 9"
+    fill="#FF5F00"
+/>
+
+</svg>
+
 </div>
 
-<div class="payment-logo paypal">
+
+<!-- PAYPAL -->
+
+<div
+    class="payment-logo"
+    aria-label="PayPal"
+>
+
+<svg
+    viewBox="0 0 100 40"
+    xmlns="http://www.w3.org/2000/svg"
+>
+
+<text
+    x="50"
+    y="27"
+    text-anchor="middle"
+    font-family="Arial"
+    font-size="21"
+    font-weight="900"
+    fill="#003087"
+>
 PayPal
+</text>
+
+</svg>
+
 </div>
 
 </div>
@@ -1804,9 +1767,7 @@ ALL WORLD BRANDS
 </div>
 
 <div>
-
 250 countries • Global Brand Directory
-
 </div>
 
 </footer>
@@ -1877,6 +1838,35 @@ const commentMessage =
 
 
 let countries = [];
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+function goBack() {
+
+    /*
+     * If there is a previous page in browser history,
+     * go there.
+     *
+     * Otherwise stay on the website home page.
+     */
+
+    if (
+        window.history.length > 1 &&
+        document.referrer
+    ) {
+
+        window.history.back();
+
+    } else {
+
+        window.location.href = "/";
+
+    }
+
+}
 
 
 /* =========================================================
@@ -2059,10 +2049,14 @@ function renderCountries(list) {
             "country-card";
 
         card.dataset.name =
-            country.name.toLowerCase();
+            String(
+                country.name || ""
+            ).toLowerCase();
 
         card.dataset.code =
-            country.code.toLowerCase();
+            String(
+                country.code || ""
+            ).toLowerCase();
 
         const count =
             Number(
@@ -2147,6 +2141,12 @@ async function loadCountryBrands(country) {
                 `/api/countries/${country.id}/brands`
             );
 
+        if (!response.ok) {
+            throw new Error(
+                "Brands could not be loaded"
+            );
+        }
+
         const brands =
             await response.json();
 
@@ -2174,6 +2174,10 @@ async function loadCountryBrands(country) {
     } catch (error) {
 
         console.error(error);
+
+        alert(
+            "Brands could not be loaded."
+        );
 
     }
 
@@ -2210,15 +2214,19 @@ function filterCountries(value) {
             country => {
 
                 return (
-                    country.name
-                        .toLowerCase()
-                        .includes(query)
+                    String(
+                        country.name || ""
+                    )
+                    .toLowerCase()
+                    .includes(query)
 
                     ||
 
-                    country.code
-                        .toLowerCase()
-                        .includes(query)
+                    String(
+                        country.code || ""
+                    )
+                    .toLowerCase()
+                    .includes(query)
                 );
 
             }
@@ -2346,10 +2354,16 @@ brandForm.addEventListener(
 
             }
 
+
             /*
-             * Create payment record.
-             * Server keeps status pending until
-             * a real payment provider confirms it.
+             * Payment creation.
+             *
+             * IMPORTANT:
+             * The frontend does NOT mark the payment
+             * as paid.
+             *
+             * The server/payment provider must
+             * verify the actual transaction.
              */
 
             const paymentResponse =
@@ -2383,20 +2397,32 @@ brandForm.addEventListener(
 
             }
 
+
+            /*
+             * If the server provides a payment URL,
+             * open it.
+             */
+
+            if (
+                payment.payment_url
+            ) {
+
+                window.location.href =
+                    payment.payment_url;
+
+                return;
+            }
+
+
             brandMessage.innerHTML =
                 `
                 Brand submission created.
+                <br>
                 Payment amount:
                 <strong>$1 USD</strong>.
                 <br>
-                Payment ID:
-                ${escapeHtml(
-                    payment.payment_id
-                )}
-                <br>
-                A real payment provider must
-                confirm the payment before the
-                brand is published.
+                Payment is waiting for
+                provider confirmation.
                 `;
 
             brandForm.reset();
@@ -2438,6 +2464,12 @@ async function loadComments() {
                     cache: "no-store"
                 }
             );
+
+        if (!response.ok) {
+            throw new Error(
+                "Comments error"
+            );
+        }
 
         const comments =
             await response.json();
@@ -2561,7 +2593,8 @@ commentForm.addEventListener(
         } catch (error) {
 
             commentMessage.textContent =
-                error.message;
+                error.message ||
+                "Something went wrong.";
 
         }
 
