@@ -1,13 +1,11 @@
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta
-    name="description"
-    content="ALL WORLD BRANDS — Discover brands and countries from around the world."
->
+<meta name="description"
+      content="ALL WORLD BRANDS — Discover brands and countries from around the world.">
 
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#030711">
@@ -17,56 +15,43 @@
 <title>ALL WORLD BRANDS — Discover Global Brands</title>
 
 <style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
-html {
-    scroll-behavior: smooth;
+html{
+    scroll-behavior:smooth;
 }
 
-body {
-    min-height: 100vh;
-    font-family:
-        Inter,
-        Arial,
-        Helvetica,
-        sans-serif;
-
-    color: #fff;
-    background: #02050c;
-    overflow-x: hidden;
+body{
+    min-height:100vh;
+    font-family:Inter,Arial,Helvetica,sans-serif;
+    color:#fff;
+    background:#02050c;
+    overflow-x:hidden;
 }
 
-/* =========================================================
-   EARTH BACKGROUND
-========================================================= */
-
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
     background:
         linear-gradient(
-            rgba(2, 6, 15, .54),
-            rgba(2, 6, 15, .88)
+            rgba(2,6,15,.54),
+            rgba(2,6,15,.88)
         ),
-        url("/earth-4k.png")
-        center center / cover no-repeat;
-
-    opacity: .92;
-    pointer-events: none;
-    z-index: -3;
+        url("/earth-4k.png") center center / cover no-repeat;
+    opacity:.92;
+    pointer-events:none;
+    z-index:-3;
 }
 
-body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
     background:
         radial-gradient(
             circle at 50% 20%,
@@ -78,404 +63,247 @@ body::after {
             rgba(2,6,15,.05),
             rgba(2,6,15,.65)
         );
-
-    pointer-events: none;
-    z-index: -2;
+    pointer-events:none;
+    z-index:-2;
 }
 
-/* =========================================================
-   HEADER
-========================================================= */
+/* ================= HEADER ================= */
 
-.header {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-
-    width: 100%;
-
-    background:
-        rgba(2,7,17,.68);
-
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-
-    border-bottom:
-        1px solid rgba(255,255,255,.10);
+.header{
+    position:sticky;
+    top:0;
+    z-index:1000;
+    width:100%;
+    background:rgba(2,7,17,.72);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    border-bottom:1px solid rgba(255,255,255,.10);
 }
 
-.header-inner {
-    width:
-        min(
-            1500px,
-            calc(100% - 28px)
-        );
-
-    min-height: 68px;
-    margin: auto;
-
-    display: flex;
-    align-items: center;
-    gap: 18px;
+.header-inner{
+    width:min(1500px,calc(100% - 28px));
+    min-height:68px;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    gap:18px;
 }
 
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    color: #fff;
-    text-decoration: none;
-    white-space: nowrap;
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:#fff;
+    text-decoration:none;
+    white-space:nowrap;
 }
 
-.logo-mark {
-    width: 40px;
-    height: 40px;
+.logo-mark{
+    width:40px;
+    height:40px;
+    display:grid;
+    place-items:center;
+    border-radius:12px;
+    background:linear-gradient(135deg,#00b7ff,#005cff);
+    box-shadow:0 0 30px rgba(0,145,255,.42);
+    font-size:21px;
+}
 
-    display: grid;
-    place-items: center;
+.logo-text{
+    font-size:18px;
+    font-weight:950;
+    letter-spacing:.5px;
+}
 
-    border-radius: 12px;
+.nav{
+    margin-left:auto;
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
 
-    background:
-        linear-gradient(
-            135deg,
-            #00b7ff,
-            #005cff
-        );
+.nav a{
+    color:#c3d1e4;
+    text-decoration:none;
+    padding:9px 12px;
+    border-radius:9px;
+    font-size:13px;
+    font-weight:750;
+    transition:.2s;
+}
 
+.nav a:hover{
+    color:#fff;
+    background:rgba(255,255,255,.08);
+}
+
+/* ================= MAIN ================= */
+
+.main{
+    width:min(1500px,calc(100% - 28px));
+    margin:auto;
+}
+
+/* ================= HERO ================= */
+
+.hero{
+    padding:75px 0 32px;
+    text-align:center;
+}
+
+.badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 14px;
+    border-radius:999px;
+    background:rgba(0,145,255,.12);
+    border:1px solid rgba(0,168,255,.30);
+    color:#7bd1ff;
+    font-size:12px;
+    font-weight:850;
+    letter-spacing:.6px;
+    margin-bottom:17px;
+}
+
+.badge-dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#00c3ff;
+    box-shadow:0 0 15px #00b7ff;
+}
+
+.hero h1{
+    font-size:clamp(38px,7vw,82px);
+    line-height:.95;
+    font-weight:950;
+    letter-spacing:-3px;
+    margin-bottom:17px;
+    background:linear-gradient(90deg,#fff,#8edcff,#fff);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+}
+
+.hero p{
+    max-width:700px;
+    margin:auto;
+    color:#a2b3c9;
+    font-size:clamp(14px,2vw,17px);
+    line-height:1.6;
+}
+
+/* ================= SEARCH ================= */
+
+.search-area{
+    width:min(850px,100%);
+    margin:0 auto 38px;
+}
+
+.search-box{
+    position:relative;
+}
+
+.search-icon{
+    position:absolute;
+    left:18px;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:20px;
+    color:#7590ad;
+    pointer-events:none;
+}
+
+#searchInput{
+    width:100%;
+    height:58px;
+    padding:0 55px 0 50px;
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:16px;
+    outline:none;
+    background:rgba(5,15,31,.78);
+    backdrop-filter:blur(18px);
+    color:#fff;
+    font-size:16px;
+    box-shadow:0 15px 50px rgba(0,0,0,.30);
+}
+
+#searchInput:focus{
+    border-color:rgba(0,168,255,.65);
     box-shadow:
-        0 0 30px
-        rgba(0,145,255,.42);
-
-    font-size: 21px;
+        0 0 0 4px rgba(0,168,255,.09),
+        0 18px 55px rgba(0,0,0,.35);
 }
 
-.logo-text {
-    font-size: 18px;
-    font-weight: 950;
-    letter-spacing: .5px;
+#searchInput::placeholder{
+    color:#7890aa;
 }
 
-.nav {
-    margin-left: auto;
-
-    display: flex;
-    align-items: center;
-    gap: 7px;
+.clear-search{
+    position:absolute;
+    right:12px;
+    top:50%;
+    transform:translateY(-50%);
+    width:34px;
+    height:34px;
+    border:0;
+    border-radius:9px;
+    background:rgba(255,255,255,.07);
+    color:#a9b8ca;
+    cursor:pointer;
+    display:none;
+    font-size:20px;
 }
 
-.nav a {
-    color: #c3d1e4;
-    text-decoration: none;
+/* ================= SECTION ================= */
 
-    padding: 9px 13px;
-
-    border-radius: 9px;
-
-    font-size: 14px;
-    font-weight: 750;
-
-    transition: .2s;
+.section-head{
+    display:flex;
+    align-items:end;
+    justify-content:space-between;
+    gap:15px;
+    margin-bottom:16px;
 }
 
-.nav a:hover {
-    color: #fff;
-    background:
-        rgba(255,255,255,.08);
+.section-title{
+    font-size:24px;
+    font-weight:900;
 }
 
-/* =========================================================
-   MAIN
-========================================================= */
-
-.main {
-    width:
-        min(
-            1500px,
-            calc(100% - 28px)
-        );
-
-    margin: auto;
+.section-subtitle{
+    color:#91a4bc;
+    font-size:13px;
+    margin-top:5px;
 }
 
-/* =========================================================
-   HERO
-========================================================= */
-
-.hero {
-    padding: 75px 0 32px;
-    text-align: center;
+.result-count{
+    color:#9aabc0;
+    font-size:12px;
 }
 
-.badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
+/* ================= COUNTRY GRID ================= */
 
-    padding: 8px 14px;
-
-    border-radius: 999px;
-
-    background:
-        rgba(0,145,255,.12);
-
-    border:
-        1px solid
-        rgba(0,168,255,.30);
-
-    color: #7bd1ff;
-
-    font-size: 12px;
-    font-weight: 850;
-
-    letter-spacing: .6px;
-
-    margin-bottom: 17px;
-
-    backdrop-filter: blur(8px);
+.countries-grid{
+    display:grid;
+    grid-template-columns:repeat(20,minmax(0,1fr));
+    gap:8px;
 }
 
-.badge-dot {
-    width: 8px;
-    height: 8px;
-
-    border-radius: 50%;
-
-    background: #00c3ff;
-
-    box-shadow:
-        0 0 15px
-        #00b7ff;
-}
-
-.hero h1 {
-    font-size:
-        clamp(
-            38px,
-            7vw,
-            82px
-        );
-
-    line-height: .95;
-
-    font-weight: 950;
-
-    letter-spacing: -3px;
-
-    margin-bottom: 17px;
-
-    background:
-        linear-gradient(
-            90deg,
-            #ffffff,
-            #8edcff,
-            #ffffff
-        );
-
-    -webkit-background-clip: text;
-    background-clip: text;
-
-    color: transparent;
-
-    text-shadow:
-        0 0 35px
-        rgba(0,160,255,.18);
-}
-
-.hero p {
-    max-width: 700px;
-    margin: auto;
-
-    color: #a2b3c9;
-
-    font-size:
-        clamp(
-            14px,
-            2vw,
-            17px
-        );
-
-    line-height: 1.6;
-}
-
-/* =========================================================
-   SEARCH
-========================================================= */
-
-.search-area {
-    width:
-        min(
-            850px,
-            100%
-        );
-
-    margin:
-        0 auto 38px;
-}
-
-.search-box {
-    position: relative;
-}
-
-.search-icon {
-    position: absolute;
-
-    left: 18px;
-    top: 50%;
-
-    transform:
-        translateY(-50%);
-
-    font-size: 20px;
-
-    color: #7590ad;
-
-    pointer-events: none;
-}
-
-#searchInput {
-    width: 100%;
-    height: 58px;
-
-    padding:
-        0 55px 0 50px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.14);
-
-    border-radius: 16px;
-
-    outline: none;
-
-    background:
-        rgba(5,15,31,.78);
-
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-
-    color: #fff;
-
-    font-size: 16px;
-
-    box-shadow:
-        0 15px 50px
-        rgba(0,0,0,.30);
-
-    transition: .2s;
-}
-
-#searchInput:focus {
-    border-color:
-        rgba(0,168,255,.65);
-
-    box-shadow:
-        0 0 0 4px
-        rgba(0,168,255,.09),
-        0 18px 55px
-        rgba(0,0,0,.35);
-}
-
-#searchInput::placeholder {
-    color: #7890aa;
-}
-
-.clear-search {
-    position: absolute;
-
-    right: 12px;
-    top: 50%;
-
-    transform:
-        translateY(-50%);
-
-    width: 34px;
-    height: 34px;
-
-    border: 0;
-    border-radius: 9px;
-
-    background:
-        rgba(255,255,255,.07);
-
-    color: #a9b8ca;
-
-    cursor: pointer;
-
-    display: none;
-
-    font-size: 20px;
-}
-
-/* =========================================================
-   SECTION
-========================================================= */
-
-.section-head {
-    display: flex;
-    align-items: end;
-    justify-content: space-between;
-
-    gap: 15px;
-
-    margin-bottom: 16px;
-}
-
-.section-title {
-    font-size: 24px;
-    font-weight: 900;
-}
-
-.section-subtitle {
-    color: #91a4bc;
-
-    font-size: 13px;
-
-    margin-top: 5px;
-}
-
-.result-count {
-    color: #9aabc0;
-    font-size: 12px;
-}
-
-/* =========================================================
-   COUNTRIES GRID
-   DESKTOP = 20 COLUMNS
-========================================================= */
-
-.countries-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(
-            20,
-            minmax(0, 1fr)
-        );
-
-    gap: 8px;
-}
-
-/* =========================================================
-   COUNTRY CARD
-========================================================= */
-
-.country-card {
-    position: relative;
-
-    min-width: 0;
-
-    aspect-ratio: 1 / 1;
-
-    overflow: hidden;
-
-    border-radius: 10px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.11);
+/*
+   Kartalar avvalgi kvadratning taxminan
+   yarmicha baland qilindi.
+*/
+
+.country-card{
+    position:relative;
+    min-width:0;
+
+    height:92px;
+
+    overflow:hidden;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,.11);
 
     background:
         linear-gradient(
@@ -484,34 +312,27 @@ body::after {
             rgba(3,10,22,.94)
         );
 
-    cursor: pointer;
+    cursor:pointer;
 
     transition:
         transform .20s ease,
         border-color .20s ease,
         box-shadow .20s ease;
 
-    backdrop-filter: blur(5px);
+    backdrop-filter:blur(5px);
 }
 
-.country-card:hover {
-    transform:
-        translateY(-3px);
-
-    border-color:
-        rgba(0,181,255,.55);
-
+.country-card:hover{
+    transform:translateY(-3px);
+    border-color:rgba(0,181,255,.55);
     box-shadow:
-        0 12px 28px
-        rgba(0,0,0,.38),
-
-        0 0 22px
-        rgba(0,145,255,.12);
+        0 12px 28px rgba(0,0,0,.38),
+        0 0 22px rgba(0,145,255,.12);
 }
 
-.country-bg {
-    position: absolute;
-    inset: 0;
+.country-bg{
+    position:absolute;
+    inset:0;
 
     background:
         radial-gradient(
@@ -521,217 +342,172 @@ body::after {
         );
 }
 
-.country-content {
-    position: absolute;
-    inset: 0;
+.country-content{
+    position:absolute;
+    inset:0;
 
-    padding: 7px;
+    padding:7px;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
 
     background:
         linear-gradient(
-            transparent 5%,
+            transparent 0%,
             rgba(1,5,14,.95) 100%
         );
+
+    padding-right:38px;
 }
 
-.country-flag {
-    font-size: 20px;
+/* ================= FLAG ================= */
 
-    line-height: 1;
-
-    margin-bottom: 4px;
-
-    filter:
-        drop-shadow(
-            0 2px 5px
-            rgba(0,0,0,.35)
-        );
+.country-flag{
+    font-size:20px;
+    line-height:1;
+    margin-bottom:4px;
+    filter:drop-shadow(0 2px 5px rgba(0,0,0,.35));
 }
 
-.country-name {
-    font-size: 9px;
+/*
+   Mamlakat nomi endi kesilmaydi.
+   2-3 qator bo‘lishi mumkin.
+*/
 
-    font-weight: 850;
+.country-name{
+    font-size:9px;
+    font-weight:850;
 
-    white-space: nowrap;
+    white-space:normal;
+    overflow:visible;
+    text-overflow:clip;
 
-    overflow: hidden;
+    line-height:1.15;
 
-    text-overflow: ellipsis;
-
-    padding-right: 24px;
+    overflow-wrap:anywhere;
+    word-break:normal;
 }
 
-.country-code {
-    margin-top: 2px;
-
-    font-size: 7px;
-
-    color: #8298b2;
-
-    text-transform: uppercase;
-
-    letter-spacing: .5px;
-
-    padding-right: 24px;
+.country-code{
+    margin-top:2px;
+    font-size:7px;
+    color:#8298b2;
+    text-transform:uppercase;
+    letter-spacing:.5px;
 }
 
-/* =========================================================
-   GREEN BRAND COUNT SQUARE
-========================================================= */
+/* ================= BRAND COUNT ================= */
 
-.brand-count {
-    position: absolute;
+/*
+   Yashil kvadrat o‘ng o‘rtada.
+   Rang och yashil.
+*/
 
-    top: 6px;
-    right: 6px;
+.brand-count{
+    position:absolute;
 
-    width: 28px;
-    height: 28px;
+    right:6px;
+    top:50%;
 
-    display: flex;
-    flex-direction: column;
+    transform:translateY(-50%);
 
-    align-items: center;
-    justify-content: center;
+    width:28px;
+    height:34px;
 
-    border-radius: 7px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:7px;
 
     background:
         linear-gradient(
             135deg,
-            #20d66b,
-            #07963f
+            #8df5b2,
+            #45d982
         );
 
-    border:
-        1px solid
-        rgba(103,255,160,.65);
+    border:1px solid rgba(180,255,205,.80);
 
     box-shadow:
-        0 0 13px
-        rgba(24,220,100,.32);
+        0 0 14px rgba(85,230,135,.28);
 
-    color: #fff;
+    color:#073b1b;
 
-    font-weight: 950;
+    font-weight:950;
+    line-height:1;
 
-    line-height: 1;
-
-    z-index: 5;
+    z-index:5;
 }
 
-.brand-count-number {
-    font-size: 10px;
+.brand-count-number{
+    font-size:10px;
 }
 
-.brand-count-label {
-    font-size: 5px;
-
-    margin-top: 2px;
-
-    letter-spacing: .2px;
-
-    opacity: .95;
+.brand-count-label{
+    font-size:5px;
+    margin-top:2px;
+    letter-spacing:.2px;
 }
 
-/* =========================================================
-   LOADING
-========================================================= */
+/* ================= LOADING ================= */
 
-.loading {
-    grid-column: 1 / -1;
-
-    min-height: 150px;
-
-    display: grid;
-    place-items: center;
-
-    color: #8ea3bc;
-
-    font-size: 14px;
+.loading{
+    grid-column:1/-1;
+    min-height:150px;
+    display:grid;
+    place-items:center;
+    color:#8ea3bc;
+    font-size:14px;
 }
 
-.loading::before {
-    content: "";
-
-    width: 26px;
-    height: 26px;
-
-    border-radius: 50%;
-
-    border:
-        3px solid
-        rgba(255,255,255,.15);
-
-    border-top-color:
-        #00aaff;
-
-    animation:
-        spin .8s linear infinite;
-
-    margin-bottom: 10px;
+.loading::before{
+    content:"";
+    width:26px;
+    height:26px;
+    border-radius:50%;
+    border:3px solid rgba(255,255,255,.15);
+    border-top-color:#00aaff;
+    animation:spin .8s linear infinite;
+    margin-bottom:10px;
 }
 
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
+@keyframes spin{
+    to{
+        transform:rotate(360deg);
     }
 }
 
-/* =========================================================
-   EMPTY
-========================================================= */
+/* ================= EMPTY ================= */
 
-.empty {
-    display: none;
-
-    text-align: center;
-
-    padding: 55px 15px;
-
-    color: #8295ac;
+.empty{
+    display:none;
+    text-align:center;
+    padding:55px 15px;
+    color:#8295ac;
 }
 
-.empty strong {
-    display: block;
-
-    color: #fff;
-
-    font-size: 19px;
-
-    margin-bottom: 8px;
+.empty strong{
+    display:block;
+    color:#fff;
+    font-size:19px;
+    margin-bottom:8px;
 }
 
-/* =========================================================
-   PAYMENT
-========================================================= */
+/* ================= GENERAL CARD ================= */
 
-.payment-section {
-    margin:
-        48px 0 30px;
+.info-section{
+    margin:50px 0 28px;
 
-    display: grid;
-
-    grid-template-columns:
-        1fr
-        minmax(280px,420px);
-
-    gap: 28px;
-
-    align-items: center;
-
-    padding: 30px;
+    padding:30px;
 
     border:
         1px solid
         rgba(255,255,255,.11);
 
-    border-radius: 22px;
+    border-radius:22px;
 
     background:
         linear-gradient(
@@ -741,79 +517,131 @@ body::after {
         );
 
     box-shadow:
-        0 20px 60px
-        rgba(0,0,0,.30);
+        0 20px 60px rgba(0,0,0,.30);
 
-    backdrop-filter: blur(15px);
+    backdrop-filter:blur(15px);
 }
 
-.payment-info h2 {
-    font-size: 28px;
-
-    margin-bottom: 10px;
+.info-section h2{
+    font-size:28px;
+    margin-bottom:15px;
 }
 
-.payment-info p {
-    max-width: 650px;
-
-    color: #93a7bf;
-
-    line-height: 1.65;
-
-    font-size: 14px;
+.info-section p{
+    color:#93a7bf;
+    line-height:1.65;
+    font-size:14px;
 }
 
-.payment-card {
-    padding: 22px;
+/* ================= ADD BRAND ================= */
 
-    border-radius: 17px;
+.add-brand{
+    margin:50px 0 28px;
+    padding:30px;
+
+    border:1px solid rgba(255,255,255,.11);
+    border-radius:22px;
 
     background:
-        rgba(255,255,255,.055);
+        linear-gradient(
+            135deg,
+            rgba(7,24,48,.84),
+            rgba(2,8,18,.90)
+        );
 
-    border:
-        1px solid
-        rgba(255,255,255,.10);
-
-    text-align: center;
+    box-shadow:0 20px 60px rgba(0,0,0,.30);
+    backdrop-filter:blur(15px);
 }
 
-.payment-label {
-    color: #89a0ba;
-
-    font-size: 12px;
-
-    margin-bottom: 6px;
-
-    font-weight: 750;
+.add-brand-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    margin-bottom:20px;
 }
 
-.price {
-    font-size: 38px;
-
-    font-weight: 950;
-
-    color: #fff;
-
-    margin-bottom: 4px;
+.add-brand h2{
+    font-size:28px;
 }
 
-.price-note {
-    color: #7890aa;
+.brand-price{
+    padding:9px 14px;
+    border-radius:999px;
 
-    font-size: 11px;
+    background:rgba(110,240,160,.12);
+    border:1px solid rgba(110,240,160,.30);
 
-    margin-bottom: 15px;
+    color:#8df5b2;
+    font-size:14px;
+    font-weight:900;
 }
 
-.pay-button {
-    width: 100%;
+.brand-form{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+}
 
-    min-height: 50px;
+.form-group{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
 
-    border: 0;
+.form-group.full{
+    grid-column:1/-1;
+}
 
-    border-radius: 11px;
+.form-group label{
+    color:#a9bad0;
+    font-size:12px;
+    font-weight:750;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+    width:100%;
+
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:11px;
+
+    background:rgba(255,255,255,.055);
+
+    color:#fff;
+
+    padding:13px;
+
+    outline:none;
+
+    font-family:inherit;
+    font-size:14px;
+}
+
+.form-group select option{
+    background:#101827;
+    color:#fff;
+}
+
+.form-group textarea{
+    min-height:110px;
+    resize:vertical;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{
+    border-color:rgba(0,168,255,.60);
+}
+
+.submit-brand{
+    grid-column:1/-1;
+
+    min-height:50px;
+
+    border:0;
+    border-radius:11px;
 
     background:
         linear-gradient(
@@ -822,323 +650,468 @@ body::after {
             #0064ff
         );
 
-    color: #fff;
+    color:#fff;
 
-    font-size: 15px;
+    font-size:15px;
+    font-weight:850;
 
-    font-weight: 850;
-
-    cursor: pointer;
+    cursor:pointer;
 
     box-shadow:
         0 9px 28px
         rgba(0,126,255,.28);
-
-    transition: .2s;
 }
 
-.pay-button:hover {
-    transform:
-        translateY(-2px);
+.submit-brand:hover{
+    transform:translateY(-1px);
+}
+
+.brand-payment-note{
+    grid-column:1/-1;
+
+    text-align:center;
+
+    color:#8195ad;
+    font-size:12px;
+}
+
+/* ================= COMMENTS ================= */
+
+.comments-section{
+    margin:50px 0 28px;
+    padding:30px;
+
+    border:1px solid rgba(255,255,255,.11);
+    border-radius:22px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(7,24,48,.84),
+            rgba(2,8,18,.90)
+        );
+
+    box-shadow:0 20px 60px rgba(0,0,0,.30);
+    backdrop-filter:blur(15px);
+}
+
+.comments-section h2{
+    font-size:28px;
+    margin-bottom:20px;
+}
+
+.comment-form{
+    display:grid;
+    gap:12px;
+}
+
+.comment-form input,
+.comment-form textarea{
+    width:100%;
+
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:11px;
+
+    background:rgba(255,255,255,.055);
+    color:#fff;
+
+    padding:13px;
+
+    outline:none;
+
+    font-family:inherit;
+    font-size:14px;
+}
+
+.comment-form textarea{
+    min-height:100px;
+    resize:vertical;
+}
+
+.comment-form button{
+    min-height:48px;
+
+    border:0;
+    border-radius:11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #00a8ff,
+            #0064ff
+        );
+
+    color:#fff;
+    font-weight:850;
+    cursor:pointer;
+}
+
+.comments-list{
+    margin-top:25px;
+    display:grid;
+    gap:12px;
+}
+
+.comment-item{
+    padding:17px;
+
+    border-radius:13px;
+
+    background:rgba(255,255,255,.045);
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+}
+
+.comment-author{
+    color:#fff;
+    font-weight:850;
+    margin-bottom:6px;
+}
+
+.comment-text{
+    color:#a5b5c8;
+    line-height:1.55;
+    font-size:14px;
+}
+
+.no-comments{
+    color:#778ba4;
+    font-size:13px;
+}
+
+/* ================= CONTACT INFO ================= */
+
+.contact-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-top:20px;
+}
+
+.contact-item{
+    padding:17px;
+
+    border-radius:13px;
+
+    background:rgba(255,255,255,.045);
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+}
+
+.contact-label{
+    color:#8195ad;
+    font-size:11px;
+    margin-bottom:6px;
+}
+
+.contact-value{
+    color:#fff;
+    font-size:14px;
+    font-weight:750;
+    word-break:break-word;
+}
+
+.contact-value a{
+    color:#8edcff;
+    text-decoration:none;
+}
+
+/* ================= PAYMENT LOGOS ================= */
+
+.payment-methods{
+    margin-top:25px;
+    padding-top:22px;
+
+    border-top:
+        1px solid
+        rgba(255,255,255,.08);
+
+    text-align:center;
+}
+
+.payment-methods-title{
+    color:#8195ad;
+    font-size:11px;
+    margin-bottom:12px;
+}
+
+.payment-logos{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.payment-logo{
+    min-width:92px;
+    padding:10px 15px;
+
+    border-radius:9px;
+
+    background:#fff;
+
+    color:#111;
+
+    font-size:15px;
+    font-weight:950;
 
     box-shadow:
-        0 13px 34px
-        rgba(0,126,255,.38);
+        0 5px 18px
+        rgba(0,0,0,.20);
 }
 
-.pay-button:disabled {
-    opacity: .65;
-
-    cursor: wait;
-
-    transform: none;
+.payment-logo.visa{
+    font-style:italic;
+    color:#173ea5;
 }
 
-#message {
-    min-height: 18px;
-
-    margin-top: 11px;
-
-    color: #8ca1ba;
-
-    font-size: 12px;
+.payment-logo.mastercard{
+    color:#111;
 }
 
-/* =========================================================
-   FOOTER
-========================================================= */
+.payment-logo.mastercard span{
+    font-size:12px;
+}
 
-.footer {
-    margin-top: 24px;
+.payment-logo.paypal{
+    color:#123b80;
+}
 
-    padding:
-        27px 0 32px;
+/* ================= FOOTER ================= */
+
+.footer{
+    margin-top:24px;
+    padding:27px 0 32px;
 
     border-top:
         1px solid
         rgba(255,255,255,.09);
 
-    display: flex;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
 
-    align-items: center;
+    gap:20px;
 
-    justify-content: space-between;
-
-    gap: 20px;
-
-    color: #71859e;
-
-    font-size: 12px;
+    color:#71859e;
+    font-size:12px;
 }
 
-.footer strong {
-    color: #b5c5d8;
+.footer strong{
+    color:#b5c5d8;
 }
 
-.footer-links {
-    display: flex;
-    gap: 17px;
+.footer-links{
+    display:flex;
+    gap:17px;
 }
 
-.footer-links a {
-    color: #8094ac;
-    text-decoration: none;
+.footer-links a{
+    color:#8094ac;
+    text-decoration:none;
 }
 
-.footer-links a:hover {
-    color: #fff;
+.footer-links a:hover{
+    color:#fff;
 }
 
-/* =========================================================
-   TABLET
-========================================================= */
+/* ================= TABLET ================= */
 
-@media (max-width:1200px) {
+@media(max-width:1200px){
 
-    .countries-grid {
-        grid-template-columns:
-            repeat(
-                12,
-                minmax(0,1fr)
-            );
+    .countries-grid{
+        grid-template-columns:repeat(12,minmax(0,1fr));
     }
 }
 
-@media (max-width:900px) {
+@media(max-width:900px){
 
-    .countries-grid {
-        grid-template-columns:
-            repeat(
-                8,
-                minmax(0,1fr)
-            );
+    .countries-grid{
+        grid-template-columns:repeat(8,minmax(0,1fr));
     }
 
-    .payment-section {
-        grid-template-columns: 1fr;
-    }
-
-    .country-name {
-        font-size: 10px;
+    .contact-grid{
+        grid-template-columns:1fr;
     }
 }
 
-/* =========================================================
-   MOBILE
-   4 COLUMNS
-========================================================= */
+/* ================= MOBILE ================= */
 
-@media (max-width:700px) {
+@media(max-width:700px){
 
-    .header-inner {
-        min-height: 58px;
+    .header-inner{
+        min-height:58px;
     }
 
-    .logo-text {
-        font-size: 15px;
+    .logo-text{
+        font-size:15px;
     }
 
-    .logo-mark {
-        width: 35px;
-        height: 35px;
-        font-size: 18px;
+    .logo-mark{
+        width:35px;
+        height:35px;
+        font-size:18px;
     }
 
-    .nav a {
-        display: none;
+    .nav a{
+        display:none;
     }
 
-    .hero {
-        padding-top: 48px;
+    .hero{
+        padding-top:48px;
     }
 
-    .hero h1 {
-        letter-spacing: -1.8px;
+    .hero h1{
+        letter-spacing:-1.8px;
     }
 
-    .countries-grid {
-        grid-template-columns:
-            repeat(
-                4,
-                minmax(0,1fr)
-            );
-
-        gap: 7px;
+    .countries-grid{
+        grid-template-columns:repeat(4,minmax(0,1fr));
+        gap:7px;
     }
 
-    .country-card {
-        border-radius: 9px;
+    .country-card{
+        height:88px;
+        border-radius:9px;
     }
 
-    .country-content {
-        padding: 6px;
+    .country-content{
+        padding:6px;
+        padding-right:35px;
     }
 
-    .country-flag {
-        font-size: 18px;
+    .country-flag{
+        font-size:18px;
     }
 
-    .country-name {
-        font-size: 9px;
+    .country-name{
+        font-size:9px;
     }
 
-    .country-code {
-        font-size: 7px;
+    .country-code{
+        font-size:7px;
     }
 
-    .brand-count {
-        top: 5px;
-        right: 5px;
-
-        width: 27px;
-        height: 27px;
-
-        border-radius: 7px;
+    .brand-count{
+        width:26px;
+        height:32px;
+        right:5px;
     }
 
-    .brand-count-number {
-        font-size: 9px;
+    .brand-count-number{
+        font-size:9px;
     }
 
-    .brand-count-label {
-        font-size: 5px;
+    .brand-count-label{
+        font-size:5px;
     }
 
-    .payment-section {
-        margin-top: 32px;
-        padding: 20px;
+    .add-brand,
+    .comments-section,
+    .info-section{
+        padding:20px;
     }
 
-    .footer {
-        flex-direction: column;
-        text-align: center;
+    .brand-form{
+        grid-template-columns:1fr;
+    }
+
+    .form-group.full,
+    .submit-brand,
+    .brand-payment-note{
+        grid-column:auto;
+    }
+
+    .add-brand-header{
+        align-items:flex-start;
+        flex-direction:column;
+    }
+
+    .footer{
+        flex-direction:column;
+        text-align:center;
     }
 }
 
-/* =========================================================
-   SMALL PHONES
-   STILL 4 COLUMNS
-========================================================= */
+/* ================= SMALL PHONE ================= */
 
-@media (max-width:480px) {
+@media(max-width:480px){
 
     .main,
-    .header-inner {
-        width:
-            calc(100% - 18px);
+    .header-inner{
+        width:calc(100% - 18px);
     }
 
-    .hero {
-        padding-top: 35px;
+    .hero{
+        padding-top:35px;
     }
 
-    .hero p {
-        font-size: 13px;
+    .hero p{
+        font-size:13px;
     }
 
-    #searchInput {
-        height: 53px;
-
-        font-size: 14px;
-
-        border-radius: 13px;
+    #searchInput{
+        height:53px;
+        font-size:14px;
+        border-radius:13px;
     }
 
-    .countries-grid {
-        grid-template-columns:
-            repeat(
-                4,
-                minmax(0,1fr)
-            );
-
-        gap: 6px;
+    .countries-grid{
+        grid-template-columns:repeat(4,minmax(0,1fr));
+        gap:6px;
     }
 
-    .section-title {
-        font-size: 20px;
+    .country-card{
+        height:82px;
+        border-radius:8px;
     }
 
-    .payment-info h2 {
-        font-size: 23px;
+    .country-content{
+        padding:5px;
+        padding-right:31px;
     }
 
-    .price {
-        font-size: 34px;
+    .country-flag{
+        font-size:15px;
     }
 
-    .country-card {
-        border-radius: 8px;
+    .country-name{
+        font-size:8px;
+        line-height:1.12;
     }
 
-    .country-content {
-        padding: 5px;
+    .country-code{
+        font-size:6px;
     }
 
-    .country-flag {
-        font-size: 15px;
-        margin-bottom: 3px;
+    .brand-count{
+        width:23px;
+        height:29px;
+        top:50%;
+        right:4px;
     }
 
-    .country-name {
-        font-size: 8px;
+    .brand-count-number{
+        font-size:8px;
     }
 
-    .country-code {
-        font-size: 6px;
+    .brand-count-label{
+        font-size:4px;
     }
 
-    .brand-count {
-        width: 23px;
-        height: 23px;
-
-        top: 4px;
-        right: 4px;
-
-        border-radius: 6px;
+    .section-title{
+        font-size:20px;
     }
 
-    .brand-count-number {
-        font-size: 8px;
-    }
-
-    .brand-count-label {
-        font-size: 4px;
-    }
-}
-
-@media (max-width:350px) {
-
-    .logo-text {
-        font-size: 13px;
-    }
-
-    .countries-grid {
-        gap: 5px;
-    }
-
-    .brand-count {
-        width: 21px;
-        height: 21px;
+    .add-brand h2,
+    .comments-section h2,
+    .info-section h2{
+        font-size:23px;
     }
 }
 </style>
@@ -1150,15 +1123,9 @@ body::after {
 
     <div class="header-inner">
 
-        <a
-            href="/"
-            class="logo"
-            aria-label="ALL WORLD BRANDS"
-        >
+        <a href="/" class="logo" aria-label="ALL WORLD BRANDS">
 
-            <span class="logo-mark">
-                🌐
-            </span>
+            <span class="logo-mark">🌐</span>
 
             <span class="logo-text">
                 ALL WORLD BRANDS
@@ -1172,8 +1139,16 @@ body::after {
                 Countries
             </a>
 
-            <a href="#payment">
-                Payment
+            <a href="#add-brand">
+                Add Brand
+            </a>
+
+            <a href="#comments">
+                Comments
+            </a>
+
+            <a href="#info">
+                Info
             </a>
 
         </nav>
@@ -1185,196 +1160,513 @@ body::after {
 
 <main class="main">
 
-    <!-- HERO -->
+<!-- ================= HERO ================= -->
 
-    <section class="hero">
+<section class="hero">
 
-        <div class="badge">
+    <div class="badge">
 
-            <span class="badge-dot"></span>
+        <span class="badge-dot"></span>
 
-            GLOBAL BRAND DIRECTORY
+        GLOBAL BRAND DIRECTORY
+
+    </div>
+
+    <h1>
+        ALL WORLD BRANDS
+    </h1>
+
+    <p>
+        Discover countries, brands and companies
+        from around the world in one place.
+    </p>
+
+</section>
+
+
+<!-- ================= SEARCH ================= -->
+
+<div class="search-area">
+
+    <div class="search-box">
+
+        <span class="search-icon">
+            🔎
+        </span>
+
+        <input
+            id="searchInput"
+            type="search"
+            placeholder="Search country or brand..."
+            autocomplete="off"
+            aria-label="Search country or brand"
+        >
+
+        <button
+            id="clearSearch"
+            class="clear-search"
+            type="button"
+            aria-label="Clear search"
+        >
+            ×
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- ================= COUNTRIES ================= -->
+
+<section id="countries">
+
+    <div class="section-head">
+
+        <div>
+
+            <div class="section-title">
+                🌍 Countries
+            </div>
+
+            <div class="section-subtitle">
+                Explore countries and discover their brands
+            </div>
 
         </div>
 
-        <h1>
-            ALL WORLD BRANDS
-        </h1>
+        <div
+            id="resultCount"
+            class="result-count"
+        >
+            Loading...
+        </div>
 
-        <p>
-            Discover countries, brands and companies
-            from around the world in one place.
-        </p>
+    </div>
 
-    </section>
+    <div
+        id="countriesGrid"
+        class="countries-grid"
+    >
+
+        <div class="loading">
+            Loading countries...
+        </div>
+
+    </div>
+
+    <div
+        id="emptyState"
+        class="empty"
+    >
+
+        <strong>
+            Nothing found
+        </strong>
+
+        Search for another country or brand.
+
+    </div>
+
+</section>
 
 
-    <!-- SEARCH -->
+<!-- ================= ADD BRAND ================= -->
 
-    <div class="search-area">
+<section
+    id="add-brand"
+    class="add-brand"
+>
 
-        <div class="search-box">
+    <div class="add-brand-header">
 
-            <span class="search-icon">
-                🔎
-            </span>
+        <h2>
+            🏷️ Add Your Brand
+        </h2>
+
+        <div class="brand-price">
+            $1 USD
+        </div>
+
+    </div>
+
+    <form
+        id="brandForm"
+        class="brand-form"
+    >
+
+        <div class="form-group">
+
+            <label for="brandName">
+                Brand name *
+            </label>
 
             <input
-                id="searchInput"
-                type="search"
-                placeholder="Search country..."
-                autocomplete="off"
-                aria-label="Search country"
+                id="brandName"
+                name="brand_name"
+                type="text"
+                required
+                maxlength="120"
+                placeholder="Your brand name"
             >
 
-            <button
-                id="clearSearch"
-                class="clear-search"
-                type="button"
-                aria-label="Clear search"
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="brandCountry">
+                Country *
+            </label>
+
+            <select
+                id="brandCountry"
+                name="country"
+                required
             >
-                ×
-            </button>
+
+                <option value="">
+                    Select country
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="brandCategory">
+                Category *
+            </label>
+
+            <input
+                id="brandCategory"
+                name="category"
+                type="text"
+                required
+                maxlength="100"
+                placeholder="Fashion, Technology, Food..."
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="brandWebsite">
+                Website
+            </label>
+
+            <input
+                id="brandWebsite"
+                name="website"
+                type="url"
+                maxlength="500"
+                placeholder="https://example.com"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="ownerName">
+                Owner name *
+            </label>
+
+            <input
+                id="ownerName"
+                name="owner_name"
+                type="text"
+                required
+                maxlength="120"
+                placeholder="Your name"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="ownerEmail">
+                Email *
+            </label>
+
+            <input
+                id="ownerEmail"
+                name="email"
+                type="email"
+                required
+                maxlength="180"
+                placeholder="your@email.com"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="ownerPhone">
+                Phone
+            </label>
+
+            <input
+                id="ownerPhone"
+                name="phone"
+                type="tel"
+                maxlength="40"
+                placeholder="+..."
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="brandLogo">
+                Logo URL
+            </label>
+
+            <input
+                id="brandLogo"
+                name="logo"
+                type="url"
+                maxlength="500"
+                placeholder="https://example.com/logo.png"
+            >
+
+        </div>
+
+
+        <div class="form-group full">
+
+            <label for="brandDescription">
+                Description *
+            </label>
+
+            <textarea
+                id="brandDescription"
+                name="description"
+                required
+                maxlength="3000"
+                placeholder="Tell us about your brand..."
+            ></textarea>
+
+        </div>
+
+
+        <div class="brand-payment-note">
+
+            Adding a brand costs
+            <strong>$1 USD</strong>.
+
+            Your brand will be reviewed before
+            it becomes publicly visible.
+
+        </div>
+
+
+        <button
+            class="submit-brand"
+            type="submit"
+        >
+            Continue — $1 USD
+        </button>
+
+    </form>
+
+    <div
+        id="brandMessage"
+        style="
+            margin-top:12px;
+            color:#8da2ba;
+            font-size:13px;
+        "
+    ></div>
+
+</section>
+
+
+<!-- ================= COMMENTS ================= -->
+
+<section
+    id="comments"
+    class="comments-section"
+>
+
+    <h2>
+        💬 Comments
+    </h2>
+
+    <form
+        id="commentForm"
+        class="comment-form"
+    >
+
+        <input
+            id="commentName"
+            name="name"
+            type="text"
+            required
+            maxlength="80"
+            placeholder="Your name"
+        >
+
+        <textarea
+            id="commentText"
+            name="comment"
+            required
+            maxlength="1000"
+            placeholder="Write your comment..."
+        ></textarea>
+
+        <button type="submit">
+            Send Comment
+        </button>
+
+    </form>
+
+    <div
+        id="commentMessage"
+        style="
+            margin-top:10px;
+            color:#8da2ba;
+            font-size:13px;
+        "
+    ></div>
+
+    <div
+        id="commentsList"
+        class="comments-list"
+    >
+
+        <div class="no-comments">
+            Loading comments...
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= INFO ================= -->
+
+<section
+    id="info"
+    class="info-section"
+>
+
+    <h2>
+        ℹ️ Info
+    </h2>
+
+    <p>
+        ALL WORLD BRANDS is a global directory
+        created to help people discover brands,
+        companies and countries from around the world.
+    </p>
+
+
+    <div class="contact-grid">
+
+        <div class="contact-item">
+
+            <div class="contact-label">
+                PHONE
+            </div>
+
+            <div class="contact-value">
+                +998 93 384 31 12
+            </div>
+
+        </div>
+
+
+        <div class="contact-item">
+
+            <div class="contact-label">
+                WHATSAPP
+            </div>
+
+            <div class="contact-value">
+                +998 93 384 31 12
+            </div>
+
+        </div>
+
+
+        <div class="contact-item">
+
+            <div class="contact-label">
+                EMAIL
+            </div>
+
+            <div class="contact-value">
+                <a href="mailto:allworldbrandsnet@gmail.com">
+                    allworldbrandsnet@gmail.com
+                </a>
+            </div>
 
         </div>
 
     </div>
 
 
-    <!-- COUNTRIES -->
+    <div class="payment-methods">
 
-    <section id="countries">
+        <div class="payment-methods-title">
+            PAYMENT METHODS
+        </div>
 
-        <div class="section-head">
+        <div class="payment-logos">
 
-            <div>
-
-                <div class="section-title">
-                    🌍 Countries
-                </div>
-
-                <div class="section-subtitle">
-                    Explore countries and discover their brands
-                </div>
-
+            <div class="payment-logo mastercard">
+                ●●
+                <span>Mastercard</span>
             </div>
 
-            <div
-                id="resultCount"
-                class="result-count"
-            >
-                Loading...
+            <div class="payment-logo visa">
+                VISA
+            </div>
+
+            <div class="payment-logo paypal">
+                PayPal
             </div>
 
         </div>
 
+    </div>
 
-        <div
-            id="countriesGrid"
-            class="countries-grid"
-        >
-
-            <div class="loading">
-                Loading countries...
-            </div>
-
-        </div>
+</section>
 
 
-        <div
-            id="emptyState"
-            class="empty"
-        >
+<!-- ================= FOOTER ================= -->
 
-            <strong>
-                Nothing found
-            </strong>
+<footer class="footer">
 
-            Search for another country.
+    <div>
 
-        </div>
+        © 2026
 
-    </section>
+        <strong>
+            ALL WORLD BRANDS
+        </strong>
 
+    </div>
 
-    <!-- PAYMENT -->
+    <div class="footer-links">
 
-    <section
-        id="payment"
-        class="payment-section"
-    >
+        <a href="/robots.txt">
+            Robots
+        </a>
 
-        <div class="payment-info">
+        <a href="/sitemap.xml">
+            Sitemap
+        </a>
 
-            <h2>
-                Support ALL WORLD BRANDS
-            </h2>
+    </div>
 
-            <p>
-                Help us develop the global brand
-                directory. Secure online payment is
-                processed through OCTO.
-            </p>
-
-        </div>
-
-
-        <div class="payment-card">
-
-            <div class="payment-label">
-                SECURE PAYMENT
-            </div>
-
-            <div class="price">
-                1 000 UZS
-            </div>
-
-            <div class="price-note">
-                Secure OCTO payment
-            </div>
-
-            <button
-                id="payButton"
-                class="pay-button"
-                type="button"
-            >
-                To‘lash
-            </button>
-
-            <div id="message"></div>
-
-        </div>
-
-    </section>
-
-
-    <!-- FOOTER -->
-
-    <footer class="footer">
-
-        <div>
-
-            © 2026
-
-            <strong>
-                ALL WORLD BRANDS
-            </strong>
-
-        </div>
-
-        <div class="footer-links">
-
-            <a href="/robots.txt">
-                Robots
-            </a>
-
-            <a href="/sitemap.xml">
-                Sitemap
-            </a>
-
-        </div>
-
-    </footer>
+</footer>
 
 </main>
 
@@ -1386,39 +1678,37 @@ body::after {
 ========================================================= */
 
 const grid =
-    document.getElementById(
-        "countriesGrid"
-    );
+    document.getElementById("countriesGrid");
 
 const searchInput =
-    document.getElementById(
-        "searchInput"
-    );
+    document.getElementById("searchInput");
 
 const clearSearch =
-    document.getElementById(
-        "clearSearch"
-    );
+    document.getElementById("clearSearch");
 
 const emptyState =
-    document.getElementById(
-        "emptyState"
-    );
+    document.getElementById("emptyState");
 
 const resultCount =
-    document.getElementById(
-        "resultCount"
-    );
+    document.getElementById("resultCount");
 
-const payButton =
-    document.getElementById(
-        "payButton"
-    );
+const brandForm =
+    document.getElementById("brandForm");
 
-const message =
-    document.getElementById(
-        "message"
-    );
+const brandCountry =
+    document.getElementById("brandCountry");
+
+const brandMessage =
+    document.getElementById("brandMessage");
+
+const commentForm =
+    document.getElementById("commentForm");
+
+const commentsList =
+    document.getElementById("commentsList");
+
+const commentMessage =
+    document.getElementById("commentMessage");
 
 
 /* =========================================================
@@ -1431,12 +1721,27 @@ const brandCounts = new Map();
 
 
 /* =========================================================
+   ESCAPE
+========================================================= */
+
+function escapeHtml(value){
+
+    return String(value ?? "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+}
+
+
+/* =========================================================
    FLAG
 ========================================================= */
 
-function countryFlag(code) {
+function countryFlag(code){
 
-    if (!code) {
+    if(!code){
         return "🌍";
     }
 
@@ -1445,7 +1750,7 @@ function countryFlag(code) {
             .trim()
             .toUpperCase();
 
-    if (!/^[A-Z]{2}$/.test(value)) {
+    if(!/^[A-Z]{2}$/.test(value)){
         return "🌍";
     }
 
@@ -1463,33 +1768,10 @@ function countryFlag(code) {
 
 
 /* =========================================================
-   ESCAPE HTML
-========================================================= */
-
-function escapeHtml(value) {
-
-    return String(value ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-}
-
-
-/* =========================================================
    BRAND COUNT
 ========================================================= */
 
-function getBrandCount(countryId) {
-
-    if (
-        countryId === null ||
-        countryId === undefined ||
-        countryId === ""
-    ) {
-        return 0;
-    }
+function getBrandCount(countryId){
 
     return brandCounts.get(
         String(countryId)
@@ -1498,17 +1780,17 @@ function getBrandCount(countryId) {
 
 
 /* =========================================================
-   RENDER
+   RENDER COUNTRIES
 ========================================================= */
 
-function renderCountries(list) {
+function renderCountries(list){
 
     grid.innerHTML = "";
 
     resultCount.textContent =
         `${list.length} countries`;
 
-    if (!list.length) {
+    if(!list.length){
 
         emptyState.style.display =
             "block";
@@ -1524,7 +1806,13 @@ function renderCountries(list) {
 
     list.forEach(country => {
 
-        const id =
+        const card =
+            document.createElement("article");
+
+        card.className =
+            "country-card";
+
+        card.dataset.id =
             country.id;
 
         const name =
@@ -1535,28 +1823,7 @@ function renderCountries(list) {
 
         const flag =
             country.flag ||
-            country.emoji ||
             countryFlag(code);
-
-        const count =
-            getBrandCount(id);
-
-        const card =
-            document.createElement(
-                "article"
-            );
-
-        card.className =
-            "country-card";
-
-        card.dataset.name =
-            name.toLowerCase();
-
-        card.dataset.code =
-            code.toLowerCase();
-
-        card.dataset.id =
-            id ?? "";
 
         card.innerHTML = `
 
@@ -1565,7 +1832,9 @@ function renderCountries(list) {
             <div class="brand-count">
 
                 <div class="brand-count-number">
-                    ${escapeHtml(count)}
+                    ${escapeHtml(
+                        getBrandCount(country.id)
+                    )}
                 </div>
 
                 <div class="brand-count-label">
@@ -1589,26 +1858,16 @@ function renderCountries(list) {
                 </div>
 
             </div>
-
         `;
 
         card.addEventListener(
             "click",
             () => {
 
-                searchInput.value =
-                    name;
-
-                filterCountries(name);
-
-                document
-                    .getElementById(
-                        "countries"
-                    )
-                    .scrollIntoView({
-                        behavior: "smooth",
-                        block: "start"
-                    });
+                window.location.href =
+                    `/country/${encodeURIComponent(
+                        slugify(name)
+                    )}`;
 
             }
         );
@@ -1622,75 +1881,66 @@ function renderCountries(list) {
 
 
 /* =========================================================
-   LOAD ONE COUNTRY BRAND COUNT
+   SLUG
 ========================================================= */
 
-async function loadBrandCount(country) {
+function slugify(value){
 
-    if (
-        country.id === null ||
-        country.id === undefined ||
-        country.id === ""
-    ) {
-        return;
-    }
+    return String(value || "")
+        .normalize("NFKD")
+        .replace(/[\u0300-\u036f]/g,"")
+        .replace(/đ/g,"d")
+        .replace(/Đ/g,"D")
+        .toLowerCase()
+        .replace(/&/g,"and")
+        .replace(/[^a-z0-9]+/g,"-")
+        .replace(/^-+|-+$/g,"");
+}
 
-    try {
+
+/* =========================================================
+   LOAD BRAND COUNT
+========================================================= */
+
+async function loadBrandCount(country){
+
+    try{
 
         const response =
             await fetch(
-                `/api/countries/${encodeURIComponent(country.id)}/brands`,
+                `/api/countries/${encodeURIComponent(
+                    country.id
+                )}/brands`,
                 {
-                    method: "GET",
-                    headers: {
-                        "Accept":
-                            "application/json"
-                    },
-                    cache: "no-store"
+                    cache:"no-store"
                 }
             );
 
-        if (!response.ok) {
+        if(!response.ok){
             return;
         }
 
         const data =
             await response.json();
 
-        let count = 0;
-
-        if (Array.isArray(data)) {
-
-            count = data.length;
-
-        } else if (
-            data &&
-            Array.isArray(data.brands)
-        ) {
-
-            count =
-                data.brands.length;
-
-        } else if (
-            data &&
-            typeof data.count === "number"
-        ) {
-
-            count =
-                data.count;
-
-        }
+        const count =
+            Array.isArray(data)
+                ? data.length
+                : 0;
 
         brandCounts.set(
             String(country.id),
             count
         );
 
-    } catch (error) {
+        updateCountryBrandCount(
+            country.id
+        );
+
+    }catch(error){
 
         console.warn(
             "Brand count error:",
-            country.name,
             error
         );
 
@@ -1699,25 +1949,24 @@ async function loadBrandCount(country) {
 
 
 /* =========================================================
-   LOAD BRAND COUNTS
-   Limited concurrency so server is not overloaded.
+   LOAD ALL BRAND COUNTS
 ========================================================= */
 
-async function loadAllBrandCounts() {
+async function loadAllBrandCounts(){
 
     const queue =
         [...countries];
 
     const workers = 8;
 
-    async function worker() {
+    async function worker(){
 
-        while (queue.length) {
+        while(queue.length){
 
             const country =
                 queue.shift();
 
-            if (!country) {
+            if(!country){
                 break;
             }
 
@@ -1725,9 +1974,6 @@ async function loadAllBrandCounts() {
                 country
             );
 
-            updateCountryBrandCount(
-                country.id
-            );
         }
     }
 
@@ -1747,17 +1993,19 @@ async function loadAllBrandCounts() {
 
 
 /* =========================================================
-   UPDATE BRAND COUNT WITHOUT REBUILDING CARD
+   UPDATE COUNT
 ========================================================= */
 
-function updateCountryBrandCount(id) {
+function updateCountryBrandCount(id){
 
     const card =
         grid.querySelector(
-            `.country-card[data-id="${CSS.escape(String(id))}"]`
+            `.country-card[data-id="${CSS.escape(
+                String(id)
+            )}"]`
         );
 
-    if (!card) {
+    if(!card){
         return;
     }
 
@@ -1766,40 +2014,32 @@ function updateCountryBrandCount(id) {
             ".brand-count-number"
         );
 
-    if (!number) {
-        return;
-    }
+    if(number){
 
-    number.textContent =
-        getBrandCount(id);
+        number.textContent =
+            getBrandCount(id);
+
+    }
 }
 
 
 /* =========================================================
-   LOAD COUNTRIES FROM SERVER
+   LOAD COUNTRIES
 ========================================================= */
 
-async function loadCountries() {
+async function loadCountries(){
 
-    try {
-
-        resultCount.textContent =
-            "Loading...";
+    try{
 
         const response =
             await fetch(
                 "/api/countries",
                 {
-                    method: "GET",
-                    headers: {
-                        "Accept":
-                            "application/json"
-                    },
-                    cache: "no-store"
+                    cache:"no-store"
                 }
             );
 
-        if (!response.ok) {
+        if(!response.ok){
 
             throw new Error(
                 `Countries API error: ${response.status}`
@@ -1810,10 +2050,10 @@ async function loadCountries() {
         const data =
             await response.json();
 
-        if (!Array.isArray(data)) {
+        if(!Array.isArray(data)){
 
             throw new Error(
-                "Invalid countries API response"
+                "Invalid countries response"
             );
 
         }
@@ -1821,7 +2061,7 @@ async function loadCountries() {
         countries =
             data.map(country => ({
 
-                id: country.id,
+                id:country.id,
 
                 name:
                     country.name ||
@@ -1844,18 +2084,14 @@ async function loadCountries() {
             countries
         );
 
-        /*
-         * Сначала показываем страны,
-         * затем постепенно загружаем
-         * количество брендов.
-         */
+        fillCountrySelect();
 
         loadAllBrandCounts();
 
-    } catch (error) {
+    }catch(error){
 
         console.error(
-            "COUNTRIES API ERROR:",
+            "COUNTRIES ERROR:",
             error
         );
 
@@ -1868,17 +2104,44 @@ async function loadCountries() {
             "block";
 
         emptyState.innerHTML = `
-
             <strong>
                 Countries could not be loaded
             </strong>
-
             Please try again later.
-
         `;
 
     }
+}
 
+
+/* =========================================================
+   COUNTRY SELECT
+========================================================= */
+
+function fillCountrySelect(){
+
+    brandCountry.innerHTML = `
+        <option value="">
+            Select country
+        </option>
+    `;
+
+    countries.forEach(country => {
+
+        const option =
+            document.createElement("option");
+
+        option.value =
+            country.name;
+
+        option.textContent =
+            country.name;
+
+        brandCountry.appendChild(
+            option
+        );
+
+    });
 }
 
 
@@ -1886,7 +2149,7 @@ async function loadCountries() {
    SEARCH
 ========================================================= */
 
-function filterCountries(value) {
+function filterCountries(value){
 
     const query =
         String(value || "")
@@ -1898,7 +2161,7 @@ function filterCountries(value) {
             ? "block"
             : "none";
 
-    if (!query) {
+    if(!query){
 
         renderCountries(
             countries
@@ -1962,162 +2225,205 @@ clearSearch.addEventListener(
 
 
 /* =========================================================
-   OCTO PAYMENT
+   BRAND FORM
 ========================================================= */
 
-function resetPaymentButton() {
+brandForm.addEventListener(
+    "submit",
+    async event => {
 
-    payButton.disabled =
-        false;
+        event.preventDefault();
 
-    payButton.textContent =
-        "To‘lash";
+        brandMessage.textContent =
+            "Preparing your $1 brand submission...";
 
-    message.textContent =
-        "";
+        /*
+         * Hozircha haqiqiy payment gateway
+         * ulanmagan.
+         *
+         * Server-side endpoint tayyor bo‘lgach,
+         * shu joy:
+         *
+         * 1. application yaratadi
+         * 2. $1 payment yaratadi
+         * 3. payment sahifasiga yo‘naltiradi
+         *
+         * qilinadi.
+         */
 
-}
+        brandMessage.textContent =
+            "Brand submission is ready. The $1 payment gateway will be connected next.";
+
+    }
+);
 
 
 /* =========================================================
-   START OCTO PAYMENT
+   COMMENTS
 ========================================================= */
 
-async function startPayment() {
+async function loadComments(){
 
-    if (payButton.disabled) {
-        return;
-    }
-
-    payButton.disabled =
-        true;
-
-    payButton.textContent =
-        "Tayyorlanmoqda...";
-
-    message.textContent =
-        "OCTO to‘lov sahifasi tayyorlanmoqda...";
-
-    try {
+    try{
 
         const response =
             await fetch(
-                "/api/payments/octo/create",
+                "/api/comments",
                 {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json",
-
-                        "Accept":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify({})
+                    cache:"no-store"
                 }
             );
 
-
-        let data = {};
-
-        try {
-
-            data =
-                await response.json();
-
-        } catch (_) {
-
-            data = {};
-
-        }
-
-
-        if (!response.ok) {
+        if(!response.ok){
 
             throw new Error(
-                data.error ||
-                data.message ||
-                "Payment creation failed"
+                "Comments API unavailable"
             );
 
         }
 
+        const data =
+            await response.json();
 
-        if (
-            !data.payment_url ||
-            typeof data.payment_url !==
-                "string"
-        ) {
-
-            throw new Error(
-                "OCTO payment URL was not returned"
-            );
-
-        }
-
-
-        message.textContent =
-            "OCTO sahifasiga yo‘naltirilmoqda...";
-
-
-        window.location.assign(
-            data.payment_url
+        renderComments(
+            Array.isArray(data)
+                ? data
+                : []
         );
 
+    }catch(error){
 
-    } catch (error) {
-
-        console.error(
-            "OCTO PAYMENT ERROR:",
+        console.warn(
+            "Comments unavailable:",
             error
         );
 
-        message.textContent =
-            error.message ||
-            "To‘lovni boshlashda xatolik yuz berdi.";
-
-        resetPaymentButton();
+        commentsList.innerHTML = `
+            <div class="no-comments">
+                Comments will appear here soon.
+            </div>
+        `;
 
     }
-
 }
 
 
-payButton.addEventListener(
-    "click",
-    startPayment
-);
+function renderComments(list){
 
+    if(!list.length){
 
-/* =========================================================
-   BROWSER BACK / BF CACHE
-========================================================= */
+        commentsList.innerHTML = `
+            <div class="no-comments">
+                No comments yet.
+            </div>
+        `;
 
-window.addEventListener(
-    "pageshow",
-    () => {
-
-        resetPaymentButton();
-
+        return;
     }
-);
+
+    commentsList.innerHTML =
+        list.map(
+            comment => `
+
+                <div class="comment-item">
+
+                    <div class="comment-author">
+                        ${escapeHtml(
+                            comment.name ||
+                            "Anonymous"
+                        )}
+                    </div>
+
+                    <div class="comment-text">
+                        ${escapeHtml(
+                            comment.comment ||
+                            ""
+                        )}
+                    </div>
+
+                </div>
+
+            `
+        ).join("");
+}
 
 
-document.addEventListener(
-    "visibilitychange",
-    () => {
+commentForm.addEventListener(
+    "submit",
+    async event => {
 
-        if (
-            document.visibilityState ===
-            "visible"
-        ) {
+        event.preventDefault();
 
-            setTimeout(
-                resetPaymentButton,
-                50
+        const name =
+            document.getElementById(
+                "commentName"
+            ).value.trim();
+
+        const comment =
+            document.getElementById(
+                "commentText"
+            ).value.trim();
+
+        if(!name || !comment){
+            return;
+        }
+
+        commentMessage.textContent =
+            "Sending...";
+
+        try{
+
+            const response =
+                await fetch(
+                    "/api/comments",
+                    {
+                        method:"POST",
+
+                        headers:{
+                            "Content-Type":
+                                "application/json",
+
+                            "Accept":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify({
+                                name,
+                                comment
+                            })
+                    }
+                );
+
+            const data =
+                await response.json();
+
+            if(!response.ok){
+
+                throw new Error(
+                    data.error ||
+                    "Unable to send comment"
+                );
+
+            }
+
+            commentForm.reset();
+
+            commentMessage.textContent =
+                "Comment sent successfully.";
+
+            loadComments();
+
+        }catch(error){
+
+            console.error(
+                "COMMENT ERROR:",
+                error
             );
+
+            commentMessage.textContent =
+                error.message ||
+                "Unable to send comment.";
 
         }
 
@@ -2126,12 +2432,12 @@ document.addEventListener(
 
 
 /* =========================================================
-   INITIAL LOAD
+   START
 ========================================================= */
 
 loadCountries();
 
-resetPaymentButton();
+loadComments();
 
 </script>
 
