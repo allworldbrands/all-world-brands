@@ -1,251 +1,397 @@
 "use strict";
 
 const express = require("express");
-const helmet = require("helmet");
-const morgan = require("morgan");
 const path = require("path");
 const Database = require("better-sqlite3");
 
 const app = express();
 
 const PORT = process.env.PORT || 3000;
+const DB_FILE = process.env.DB_FILE || path.join(__dirname, "database.db");
 
 const SITE_URL =
     process.env.PUBLIC_BASE_URL ||
     "https://allworldbrands.net";
 
-const ADMIN_USER =
-    process.env.ADMIN_USER || "admin";
+const db = new Database(DB_FILE);
 
-const ADMIN_PASSWORD =
-    process.env.ADMIN_PASSWORD || "";
+db.pragma("journal_mode = WAL");
+db.pragma("foreign_keys = ON");
 
+app.use(express.json({ limit: "1mb" }));
+app.use(express.urlencoded({ extended: true }));
 
-/* =========================================================
-   APP
-========================================================= */
-
-app.disable("x-powered-by");
-
-app.use(
-    helmet({
-        contentSecurityPolicy: false
-    })
-);
-
-app.use(morgan("combined"));
-
-app.use(
-    express.json({
-        limit: "1mb"
-    })
-);
-
-app.use(
-    express.urlencoded({
-        extended: true,
-        limit: "1mb"
-    })
-);
-
+app.use(express.static(path.join(__dirname, "public"), {
+    extensions: ["html"]
+}));
 
 /* =========================================================
    DATABASE
 ========================================================= */
 
-const DB_FILE =
-    process.env.DB_FILE ||
-    path.join(__dirname, "database.sqlite");
-
-const db =
-    new Database(DB_FILE);
-
-db.pragma("journal_mode = WAL");
-db.pragma("foreign_keys = ON");
-
-
-/* =========================================================
-   TABLES
-========================================================= */
-
 db.exec(`
-    CREATE TABLE IF NOT EXISTS countries (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL UNIQUE,
-        code TEXT NOT NULL UNIQUE,
-        flag TEXT DEFAULT '',
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-    );
+CREATE TABLE IF NOT EXISTS countries (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL UNIQUE,
+    code TEXT NOT NULL UNIQUE
+);
 
-    CREATE TABLE IF NOT EXISTS brands (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+CREATE TABLE IF NOT EXISTS brands (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    country_id INTEGER NOT NULL,
+    description TEXT DEFAULT '',
+    website TEXT DEFAULT '',
+    logo_url TEXT DEFAULT '',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(country_id)
+        REFERENCES countries(id)
+        ON DELETE CASCADE
+);
 
-        country_id INTEGER NOT NULL,
+CREATE TABLE IF NOT EXISTS comments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    email TEXT DEFAULT '',
+    comment TEXT NOT NULL,
+    approved INTEGER DEFAULT 1,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
 
-        name TEXT NOT NULL,
-        description TEXT DEFAULT '',
-        website TEXT DEFAULT '',
-        logo_url TEXT DEFAULT '',
+CREATE TABLE IF NOT EXISTS brand_submissions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    brand_name TEXT NOT NULL,
+    country_id INTEGER NOT NULL,
+    description TEXT DEFAULT '',
+    website TEXT DEFAULT '',
+    contact_name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    amount REAL NOT NULL DEFAULT 1,
+    currency TEXT NOT NULL DEFAULT 'USD',
+    payment_status TEXT NOT NULL DEFAULT 'unpaid',
+    payment_id TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(country_id)
+        REFERENCES countries(id)
+        ON DELETE CASCADE
+);
 
-        status TEXT DEFAULT 'approved',
-
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-
-        FOREIGN KEY(country_id)
-            REFERENCES countries(id)
-            ON DELETE CASCADE
-    );
-
-    CREATE TABLE IF NOT EXISTS applications (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-
-        country_id INTEGER,
-
-        brand_name TEXT NOT NULL,
-        description TEXT DEFAULT '',
-        website TEXT DEFAULT '',
-        logo_url TEXT DEFAULT '',
-
-        contact_name TEXT DEFAULT '',
-        contact_email TEXT DEFAULT '',
-        contact_phone TEXT DEFAULT '',
-
-        price REAL DEFAULT 1,
-        currency TEXT DEFAULT 'USD',
-
-        payment_status TEXT DEFAULT 'unpaid',
-
-        status TEXT DEFAULT 'pending',
-
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-
-        FOREIGN KEY(country_id)
-            REFERENCES countries(id)
-            ON DELETE SET NULL
-    );
-
-    CREATE TABLE IF NOT EXISTS comments (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-
-        name TEXT NOT NULL,
-        email TEXT DEFAULT '',
-        comment TEXT NOT NULL,
-
-        status TEXT DEFAULT 'pending',
-
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-    );
+CREATE TABLE IF NOT EXISTS payments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    payment_id TEXT NOT NULL UNIQUE,
+    submission_id INTEGER NOT NULL,
+    amount REAL NOT NULL DEFAULT 1,
+    currency TEXT NOT NULL DEFAULT 'USD',
+    status TEXT NOT NULL DEFAULT 'pending',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(submission_id)
+        REFERENCES brand_submissions(id)
+        ON DELETE CASCADE
+);
 `);
 
-
 /* =========================================================
-   COUNTRY DATA
+   250 COUNTRIES / TERRITORIES
 ========================================================= */
 
 const countries = [
-    ["Uzbekistan", "UZ", "🇺🇿"],
-    ["United Kingdom", "GB", "🇬🇧"],
-    ["United States", "US", "🇺🇸"],
-    ["Germany", "DE", "🇩🇪"],
-    ["France", "FR", "🇫🇷"],
-    ["Italy", "IT", "🇮🇹"],
-    ["Spain", "ES", "🇪🇸"],
-    ["Turkey", "TR", "🇹🇷"],
-    ["Switzerland", "CH", "🇨🇭"],
-    ["Norway", "NO", "🇳🇴"],
-    ["Sweden", "SE", "🇸🇪"],
-    ["Denmark", "DK", "🇩🇰"],
-    ["Finland", "FI", "🇫🇮"],
-    ["Netherlands", "NL", "🇳🇱"],
-    ["Belgium", "BE", "🇧🇪"],
-    ["Austria", "AT", "🇦🇹"],
-    ["Poland", "PL", "🇵🇱"],
-    ["Czech Republic", "CZ", "🇨🇿"],
-    ["Portugal", "PT", "🇵🇹"],
-    ["Greece", "GR", "🇬🇷"],
-    ["Ireland", "IE", "🇮🇪"],
-    ["Iceland", "IS", "🇮🇸"],
-    ["Canada", "CA", "🇨🇦"],
-    ["Mexico", "MX", "🇲🇽"],
-    ["Brazil", "BR", "🇧🇷"],
-    ["Argentina", "AR", "🇦🇷"],
-    ["Chile", "CL", "🇨🇱"],
-    ["Australia", "AU", "🇦🇺"],
-    ["New Zealand", "NZ", "🇳🇿"],
-    ["Japan", "JP", "🇯🇵"],
-    ["South Korea", "KR", "🇰🇷"],
-    ["China", "CN", "🇨🇳"],
-    ["India", "IN", "🇮🇳"],
-    ["Singapore", "SG", "🇸🇬"],
-    ["Malaysia", "MY", "🇲🇾"],
-    ["Thailand", "TH", "🇹🇭"],
-    ["Vietnam", "VN", "🇻🇳"],
-    ["Indonesia", "ID", "🇮🇩"],
-    ["Philippines", "PH", "🇵🇭"],
-    ["United Arab Emirates", "AE", "🇦🇪"],
-    ["Qatar", "QA", "🇶🇦"],
-    ["Saudi Arabia", "SA", "🇸🇦"],
-    ["Kuwait", "KW", "🇰🇼"],
-    ["Oman", "OM", "🇴🇲"],
-    ["South Africa", "ZA", "🇿🇦"],
-    ["Egypt", "EG", "🇪🇬"],
-    ["Morocco", "MA", "🇲🇦"],
-    ["Nigeria", "NG", "🇳🇬"],
-    ["Kenya", "KE", "🇰🇪"],
-    ["Pakistan", "PK", "🇵🇰"]
+    ["AF", "Afghanistan"],
+    ["AL", "Albania"],
+    ["DZ", "Algeria"],
+    ["AS", "American Samoa"],
+    ["AD", "Andorra"],
+    ["AO", "Angola"],
+    ["AI", "Anguilla"],
+    ["AQ", "Antarctica"],
+    ["AG", "Antigua and Barbuda"],
+    ["AR", "Argentina"],
+    ["AM", "Armenia"],
+    ["AW", "Aruba"],
+    ["AU", "Australia"],
+    ["AT", "Austria"],
+    ["AZ", "Azerbaijan"],
+    ["BS", "Bahamas"],
+    ["BH", "Bahrain"],
+    ["BD", "Bangladesh"],
+    ["BB", "Barbados"],
+    ["BY", "Belarus"],
+    ["BE", "Belgium"],
+    ["BZ", "Belize"],
+    ["BJ", "Benin"],
+    ["BM", "Bermuda"],
+    ["BT", "Bhutan"],
+    ["BO", "Bolivia"],
+    ["BQ", "Bonaire, Sint Eustatius and Saba"],
+    ["BA", "Bosnia and Herzegovina"],
+    ["BW", "Botswana"],
+    ["BV", "Bouvet Island"],
+    ["BR", "Brazil"],
+    ["IO", "British Indian Ocean Territory"],
+    ["BN", "Brunei"],
+    ["BG", "Bulgaria"],
+    ["BF", "Burkina Faso"],
+    ["BI", "Burundi"],
+    ["CV", "Cabo Verde"],
+    ["KH", "Cambodia"],
+    ["CM", "Cameroon"],
+    ["CA", "Canada"],
+    ["KY", "Cayman Islands"],
+    ["CF", "Central African Republic"],
+    ["TD", "Chad"],
+    ["CL", "Chile"],
+    ["CN", "China"],
+    ["CX", "Christmas Island"],
+    ["CC", "Cocos (Keeling) Islands"],
+    ["CO", "Colombia"],
+    ["KM", "Comoros"],
+    ["CG", "Congo"],
+    ["CD", "Congo, Democratic Republic of the"],
+    ["CK", "Cook Islands"],
+    ["CR", "Costa Rica"],
+    ["CI", "Côte d'Ivoire"],
+    ["HR", "Croatia"],
+    ["CU", "Cuba"],
+    ["CW", "Curaçao"],
+    ["CY", "Cyprus"],
+    ["CZ", "Czechia"],
+    ["DK", "Denmark"],
+    ["DJ", "Djibouti"],
+    ["DM", "Dominica"],
+    ["DO", "Dominican Republic"],
+    ["EC", "Ecuador"],
+    ["EG", "Egypt"],
+    ["SV", "El Salvador"],
+    ["GQ", "Equatorial Guinea"],
+    ["ER", "Eritrea"],
+    ["EE", "Estonia"],
+    ["SZ", "Eswatini"],
+    ["ET", "Ethiopia"],
+    ["FK", "Falkland Islands"],
+    ["FO", "Faroe Islands"],
+    ["FJ", "Fiji"],
+    ["FI", "Finland"],
+    ["FR", "France"],
+    ["GF", "French Guiana"],
+    ["PF", "French Polynesia"],
+    ["TF", "French Southern Territories"],
+    ["GA", "Gabon"],
+    ["GM", "Gambia"],
+    ["GE", "Georgia"],
+    ["DE", "Germany"],
+    ["GH", "Ghana"],
+    ["GI", "Gibraltar"],
+    ["GR", "Greece"],
+    ["GL", "Greenland"],
+    ["GD", "Grenada"],
+    ["GP", "Guadeloupe"],
+    ["GU", "Guam"],
+    ["GT", "Guatemala"],
+    ["GG", "Guernsey"],
+    ["GN", "Guinea"],
+    ["GW", "Guinea-Bissau"],
+    ["GY", "Guyana"],
+    ["HT", "Haiti"],
+    ["HM", "Heard Island and McDonald Islands"],
+    ["VA", "Holy See"],
+    ["HN", "Honduras"],
+    ["HK", "Hong Kong"],
+    ["HU", "Hungary"],
+    ["IS", "Iceland"],
+    ["IN", "India"],
+    ["ID", "Indonesia"],
+    ["IR", "Iran"],
+    ["IQ", "Iraq"],
+    ["IE", "Ireland"],
+    ["IM", "Isle of Man"],
+    ["IL", "Israel"],
+    ["IT", "Italy"],
+    ["JM", "Jamaica"],
+    ["JP", "Japan"],
+    ["JE", "Jersey"],
+    ["JO", "Jordan"],
+    ["KZ", "Kazakhstan"],
+    ["KE", "Kenya"],
+    ["KI", "Kiribati"],
+    ["KP", "North Korea"],
+    ["KR", "South Korea"],
+    ["KW", "Kuwait"],
+    ["KG", "Kyrgyzstan"],
+    ["LA", "Laos"],
+    ["LV", "Latvia"],
+    ["LB", "Lebanon"],
+    ["LS", "Lesotho"],
+    ["LR", "Liberia"],
+    ["LY", "Libya"],
+    ["LI", "Liechtenstein"],
+    ["LT", "Lithuania"],
+    ["LU", "Luxembourg"],
+    ["MO", "Macao"],
+    ["MG", "Madagascar"],
+    ["MW", "Malawi"],
+    ["MY", "Malaysia"],
+    ["MV", "Maldives"],
+    ["ML", "Mali"],
+    ["MT", "Malta"],
+    ["MH", "Marshall Islands"],
+    ["MQ", "Martinique"],
+    ["MR", "Mauritania"],
+    ["MU", "Mauritius"],
+    ["YT", "Mayotte"],
+    ["MX", "Mexico"],
+    ["FM", "Micronesia"],
+    ["MD", "Moldova"],
+    ["MC", "Monaco"],
+    ["MN", "Mongolia"],
+    ["ME", "Montenegro"],
+    ["MS", "Montserrat"],
+    ["MA", "Morocco"],
+    ["MZ", "Mozambique"],
+    ["MM", "Myanmar"],
+    ["NA", "Namibia"],
+    ["NR", "Nauru"],
+    ["NP", "Nepal"],
+    ["NL", "Netherlands"],
+    ["NC", "New Caledonia"],
+    ["NZ", "New Zealand"],
+    ["NI", "Nicaragua"],
+    ["NE", "Niger"],
+    ["NG", "Nigeria"],
+    ["NU", "Niue"],
+    ["NF", "Norfolk Island"],
+    ["MK", "North Macedonia"],
+    ["MP", "Northern Mariana Islands"],
+    ["NO", "Norway"],
+    ["OM", "Oman"],
+    ["PK", "Pakistan"],
+    ["PW", "Palau"],
+    ["PS", "Palestine"],
+    ["PA", "Panama"],
+    ["PG", "Papua New Guinea"],
+    ["PY", "Paraguay"],
+    ["PE", "Peru"],
+    ["PH", "Philippines"],
+    ["PN", "Pitcairn"],
+    ["PL", "Poland"],
+    ["PT", "Portugal"],
+    ["PR", "Puerto Rico"],
+    ["QA", "Qatar"],
+    ["RE", "Réunion"],
+    ["RO", "Romania"],
+    ["RU", "Russia"],
+    ["RW", "Rwanda"],
+    ["BL", "Saint Barthélemy"],
+    ["SH", "Saint Helena"],
+    ["KN", "Saint Kitts and Nevis"],
+    ["LC", "Saint Lucia"],
+    ["MF", "Saint Martin"],
+    ["PM", "Saint Pierre and Miquelon"],
+    ["VC", "Saint Vincent and the Grenadines"],
+    ["WS", "Samoa"],
+    ["SM", "San Marino"],
+    ["ST", "Sao Tome and Principe"],
+    ["SA", "Saudi Arabia"],
+    ["SN", "Senegal"],
+    ["RS", "Serbia"],
+    ["SC", "Seychelles"],
+    ["SL", "Sierra Leone"],
+    ["SG", "Singapore"],
+    ["SX", "Sint Maarten"],
+    ["SK", "Slovakia"],
+    ["SI", "Slovenia"],
+    ["SB", "Solomon Islands"],
+    ["SO", "Somalia"],
+    ["ZA", "South Africa"],
+    ["GS", "South Georgia and the South Sandwich Islands"],
+    ["SS", "South Sudan"],
+    ["ES", "Spain"],
+    ["LK", "Sri Lanka"],
+    ["SD", "Sudan"],
+    ["SR", "Suriname"],
+    ["SJ", "Svalbard and Jan Mayen"],
+    ["SE", "Sweden"],
+    ["CH", "Switzerland"],
+    ["SY", "Syria"],
+    ["TW", "Taiwan"],
+    ["TJ", "Tajikistan"],
+    ["TZ", "Tanzania"],
+    ["TH", "Thailand"],
+    ["TL", "Timor-Leste"],
+    ["TG", "Togo"],
+    ["TK", "Tokelau"],
+    ["TO", "Tonga"],
+    ["TT", "Trinidad and Tobago"],
+    ["TN", "Tunisia"],
+    ["TR", "Turkey"],
+    ["TM", "Turkmenistan"],
+    ["TC", "Turks and Caicos Islands"],
+    ["TV", "Tuvalu"],
+    ["UG", "Uganda"],
+    ["UA", "Ukraine"],
+    ["AE", "United Arab Emirates"],
+    ["GB", "United Kingdom"],
+    ["US", "United States"],
+    ["UM", "United States Minor Outlying Islands"],
+    ["UY", "Uruguay"],
+    ["UZ", "Uzbekistan"],
+    ["VU", "Vanuatu"],
+    ["VE", "Venezuela"],
+    ["VN", "Vietnam"],
+    ["VG", "Virgin Islands, British"],
+    ["VI", "Virgin Islands, U.S."],
+    ["WF", "Wallis and Futuna"],
+    ["EH", "Western Sahara"],
+    ["YE", "Yemen"],
+    ["ZM", "Zambia"],
+    ["ZW", "Zimbabwe"],
+    ["AX", "Åland Islands"],
+    ["XK", "Kosovo"]
 ];
 
-const insertCountry =
-    db.prepare(`
-        INSERT OR IGNORE INTO countries
-        (name, code, flag)
-        VALUES (?, ?, ?)
-    `);
+if (countries.length !== 250) {
+    throw new Error(
+        `Countries list must contain 250 entries. Current: ${countries.length}`
+    );
+}
 
-const seedCountries =
-    db.transaction(() => {
+/* =========================================================
+   SEED COUNTRIES
+========================================================= */
 
-        for (const country of countries) {
-            insertCountry.run(
-                country[0],
-                country[1],
-                country[2]
-            );
-        }
+const insertCountry = db.prepare(`
+    INSERT OR IGNORE INTO countries
+    (code, name)
+    VALUES (?, ?)
+`);
 
-    });
+const seedCountries = db.transaction(() => {
+
+    for (const [code, name] of countries) {
+        insertCountry.run(code, name);
+    }
+
+});
 
 seedCountries();
-
 
 /* =========================================================
    STARTER BRANDS
 ========================================================= */
 
 const starterBrands = [
-    ["Apple", "US", "Technology"],
-    ["Nike", "US", "Sportswear"],
-    ["Microsoft", "US", "Technology"],
-
-    ["Burberry", "GB", "Fashion"],
-
-    ["BMW", "DE", "Automotive"],
-
-    ["L'Oréal", "FR", "Beauty"],
-
-    ["Ferrari", "IT", "Automotive"],
-
-    ["Arçelik", "TR", "Home Appliances"],
-
-    ["Artel", "UZ", "Electronics"],
-
-    ["Toyota", "JP", "Automotive"],
-
-    ["Samsung", "KR", "Electronics"],
-
-    ["Huawei", "CN", "Technology"],
-
-    ["Tata", "IN", "Industrial"]
+    ["Apple", "US", "Technology company", "https://www.apple.com"],
+    ["Nike", "US", "Sportswear brand", "https://www.nike.com"],
+    ["Microsoft", "US", "Technology company", "https://www.microsoft.com"],
+    ["BMW", "DE", "Automotive brand", "https://www.bmw.com"],
+    ["Mercedes-Benz", "DE", "Automotive brand", "https://www.mercedes-benz.com"],
+    ["Samsung", "KR", "Technology company", "https://www.samsung.com"],
+    ["Toyota", "JP", "Automotive brand", "https://www.toyota.com"],
+    ["Sony", "JP", "Technology and entertainment", "https://www.sony.com"],
+    ["Huawei", "CN", "Technology company", "https://www.huawei.com"],
+    ["L'Oréal", "FR", "Beauty company", "https://www.loreal.com"],
+    ["Ferrari", "IT", "Automotive brand", "https://www.ferrari.com"],
+    ["Artel", "UZ", "Technology and home appliances", "https://artelgroup.org"],
+    ["Arçelik", "TR", "Home appliances", "https://www.arcelik.com.tr"],
+    ["Tata", "IN", "Business group", "https://www.tata.com"]
 ];
 
 const findCountry =
@@ -255,92 +401,63 @@ const findCountry =
         WHERE code = ?
     `);
 
+const brandExists =
+    db.prepare(`
+        SELECT id
+        FROM brands
+        WHERE name = ?
+        AND country_id = ?
+    `);
+
 const insertBrand =
     db.prepare(`
         INSERT INTO brands
-        (
-            country_id,
-            name,
-            description,
-            status
-        )
-        VALUES (?, ?, ?, 'approved')
+        (name, country_id, description, website)
+        VALUES (?, ?, ?, ?)
     `);
 
-const seedBrands =
-    db.transaction(() => {
+for (const brand of starterBrands) {
 
-        for (const brand of starterBrands) {
+    const [name, code, description, website] = brand;
 
-            const country =
-                findCountry.get(
-                    brand[1]
-                );
+    const country = findCountry.get(code);
 
-            if (!country) {
-                continue;
-            }
+    if (!country) {
+        continue;
+    }
 
-            const exists =
-                db.prepare(`
-                    SELECT id
-                    FROM brands
-                    WHERE country_id = ?
-                    AND LOWER(name) = LOWER(?)
-                    LIMIT 1
-                `).get(
-                    country.id,
-                    brand[0]
-                );
-
-            if (!exists) {
-
-                insertBrand.run(
-                    country.id,
-                    brand[0],
-                    brand[2]
-                );
-
-            }
-
-        }
-
-    });
-
-seedBrands();
-
+    if (
+        !brandExists.get(
+            name,
+            country.id
+        )
+    ) {
+        insertBrand.run(
+            name,
+            country.id,
+            description,
+            website
+        );
+    }
+}
 
 /* =========================================================
    HELPERS
 ========================================================= */
 
-function normalizeText(value, max = 2000) {
+function cleanText(value, max = 500) {
 
     return String(value ?? "")
+        .replace(/[<>]/g, "")
         .trim()
         .slice(0, max);
 }
 
-
-function normalizeEmail(value) {
-
-    return String(value ?? "")
-        .trim()
-        .toLowerCase()
-        .slice(0, 254);
-}
-
-
-function isValidEmail(email) {
-
-    if (!email) {
-        return false;
-    }
+function validEmail(email) {
 
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-        .test(email);
+        .test(String(email || ""));
 }
-
 
 function isSafeUrl(value) {
 
@@ -348,205 +465,62 @@ function isSafeUrl(value) {
         return true;
     }
 
-    const url =
-        String(value).trim();
-
-    if (url.length > 2048) {
-        return false;
-    }
-
     try {
 
-        const parsed =
-            new URL(url);
+        const url =
+            new URL(value);
 
-        return (
-            parsed.protocol === "http:" ||
-            parsed.protocol === "https:"
-        );
+        return [
+            "http:",
+            "https:"
+        ].includes(url.protocol);
 
-    } catch (_) {
+    } catch {
 
         return false;
 
     }
-
 }
-
-
-/* =========================================================
-   BASIC AUTH
-========================================================= */
-
-function adminAuth(req, res, next) {
-
-    if (!ADMIN_PASSWORD) {
-
-        return res.status(503).json({
-            error:
-                "Admin password is not configured."
-        });
-
-    }
-
-    const header =
-        req.headers.authorization;
-
-    if (!header ||
-        !header.startsWith("Basic ")) {
-
-        res.set(
-            "WWW-Authenticate",
-            'Basic realm="ALL WORLD BRANDS ADMIN"'
-        );
-
-        return res.status(401).json({
-            error: "Authentication required."
-        });
-
-    }
-
-    const encoded =
-        header.slice(6);
-
-    let decoded;
-
-    try {
-
-        decoded =
-            Buffer
-                .from(
-                    encoded,
-                    "base64"
-                )
-                .toString("utf8");
-
-    } catch (_) {
-
-        return res.status(401).json({
-            error: "Invalid authentication."
-        });
-
-    }
-
-    const separator =
-        decoded.indexOf(":");
-
-    if (separator === -1) {
-
-        return res.status(401).json({
-            error: "Invalid authentication."
-        });
-
-    }
-
-    const username =
-        decoded.slice(0, separator);
-
-    const password =
-        decoded.slice(separator + 1);
-
-    if (
-        username !== ADMIN_USER ||
-        password !== ADMIN_PASSWORD
-    ) {
-
-        return res.status(401).json({
-            error: "Invalid credentials."
-        });
-
-    }
-
-    next();
-}
-
 
 /* =========================================================
    HEALTH
 ========================================================= */
 
-app.get(
-    "/api/health",
-    (req, res) => {
+app.get("/api/health", (req, res) => {
 
-        res.json({
-            ok: true,
-            site: "ALL WORLD BRANDS",
-            version: "2026",
-            payment: {
-                octo: false,
-                brand_submission_price: 1,
-                currency: "USD"
-            }
-        });
+    res.json({
+        ok: true,
+        site: "ALL WORLD BRANDS",
+        countries: 250,
+        brand_price: 1,
+        currency: "USD"
+    });
 
-    }
-);
-
-
-/* =========================================================
-   SITE INFO
-========================================================= */
-
-app.get(
-    "/api/info",
-    (req, res) => {
-
-        res.json({
-
-            site_name:
-                "ALL WORLD BRANDS",
-
-            phone:
-                "+998933843112",
-
-            whatsapp:
-                "+998933843112",
-
-            email:
-                "allworldbrandsnet@gmail.com",
-
-            payment_logos: [
-                "Mastercard",
-                "Visa",
-                "PayPal"
-            ],
-
-            brand_submission: {
-                price: 1,
-                currency: "USD"
-            }
-
-        });
-
-    }
-);
-
+});
 
 /* =========================================================
    COUNTRIES
 ========================================================= */
 
-app.get(
-    "/api/countries",
-    (req, res) => {
+app.get("/api/countries", (req, res) => {
 
-        const rows =
-            db.prepare(`
-                SELECT
-                    id,
-                    name,
-                    code,
-                    flag
-                FROM countries
-                ORDER BY name COLLATE NOCASE ASC
-            `).all();
+    const rows =
+        db.prepare(`
+            SELECT
+                c.id,
+                c.name,
+                c.code,
+                COUNT(b.id) AS brand_count
+            FROM countries c
+            LEFT JOIN brands b
+                ON b.country_id = c.id
+            GROUP BY c.id
+            ORDER BY c.name COLLATE NOCASE
+        `).all();
 
-        res.json(rows);
+    res.json(rows);
 
-    }
-);
-
+});
 
 /* =========================================================
    COUNTRY BRANDS
@@ -560,28 +534,23 @@ app.get(
             Number(req.params.id);
 
         if (!Number.isInteger(id)) {
-
             return res.status(400).json({
-                error: "Invalid country ID."
+                error: "Invalid country ID"
             });
-
         }
 
         const brands =
             db.prepare(`
                 SELECT
                     id,
-                    country_id,
                     name,
                     description,
                     website,
                     logo_url,
-                    status,
                     created_at
                 FROM brands
                 WHERE country_id = ?
-                AND status = 'approved'
-                ORDER BY name COLLATE NOCASE ASC
+                ORDER BY name COLLATE NOCASE
             `).all(id);
 
         res.json(brands);
@@ -589,164 +558,173 @@ app.get(
     }
 );
 
-
 /* =========================================================
-   BRAND
+   ALL BRANDS
 ========================================================= */
 
-app.get(
-    "/api/brands/:id",
-    (req, res) => {
+app.get("/api/brands", (req, res) => {
 
-        const id =
-            Number(req.params.id);
+    const brands =
+        db.prepare(`
+            SELECT
+                b.id,
+                b.name,
+                b.description,
+                b.website,
+                b.logo_url,
+                c.id AS country_id,
+                c.name AS country_name,
+                c.code AS country_code,
+                b.created_at
+            FROM brands b
+            JOIN countries c
+                ON c.id = b.country_id
+            ORDER BY b.created_at DESC
+        `).all();
 
-        if (!Number.isInteger(id)) {
+    res.json(brands);
 
-            return res.status(400).json({
-                error: "Invalid brand ID."
-            });
-
-        }
-
-        const brand =
-            db.prepare(`
-                SELECT
-                    b.*,
-                    c.name AS country_name,
-                    c.code AS country_code,
-                    c.flag AS country_flag
-                FROM brands b
-                JOIN countries c
-                    ON c.id = b.country_id
-                WHERE b.id = ?
-                AND b.status = 'approved'
-                LIMIT 1
-            `).get(id);
-
-        if (!brand) {
-
-            return res.status(404).json({
-                error: "Brand not found."
-            });
-
-        }
-
-        res.json(brand);
-
-    }
-);
-
+});
 
 /* =========================================================
    SEARCH
 ========================================================= */
 
-app.get(
-    "/api/search",
-    (req, res) => {
+app.get("/api/search", (req, res) => {
 
-        const q =
-            normalizeText(
-                req.query.q,
-                100
-            );
+    const q =
+        cleanText(req.query.q, 100);
 
-        if (!q) {
+    if (!q) {
+        return res.json([]);
+    }
 
-            return res.json([]);
+    const search =
+        `%${q}%`;
 
-        }
+    const results =
+        db.prepare(`
+            SELECT
+                b.id,
+                b.name,
+                b.description,
+                b.website,
+                c.id AS country_id,
+                c.name AS country_name,
+                c.code AS country_code
+            FROM brands b
+            JOIN countries c
+                ON c.id = b.country_id
+            WHERE
+                b.name LIKE ?
+                OR b.description LIKE ?
+                OR c.name LIKE ?
+                OR c.code LIKE ?
+            ORDER BY b.name COLLATE NOCASE
+            LIMIT 100
+        `).all(
+            search,
+            search,
+            search,
+            search
+        );
 
-        const search =
-            `%${q}%`;
+    res.json(results);
 
-        const results =
-            db.prepare(`
-                SELECT
-                    b.id,
-                    b.name,
-                    b.description,
-                    b.website,
-                    c.id AS country_id,
-                    c.name AS country_name,
-                    c.code AS country_code,
-                    c.flag AS country_flag
-                FROM brands b
-                JOIN countries c
-                    ON c.id = b.country_id
-                WHERE b.status = 'approved'
-                AND (
-                    b.name LIKE ?
-                    OR b.description LIKE ?
-                    OR c.name LIKE ?
-                    OR c.code LIKE ?
-                )
-                ORDER BY
-                    b.name COLLATE NOCASE ASC
-                LIMIT 100
-            `).all(
-                search,
-                search,
-                search,
-                search
-            );
+});
 
-        res.json(results);
+/* =========================================================
+   COMMENTS
+========================================================= */
+
+app.get("/api/comments", (req, res) => {
+
+    const comments =
+        db.prepare(`
+            SELECT
+                id,
+                name,
+                comment,
+                created_at
+            FROM comments
+            WHERE approved = 1
+            ORDER BY created_at DESC
+            LIMIT 100
+        `).all();
+
+    res.json(comments);
+
+});
+
+app.post("/api/comments", (req, res) => {
+
+    const name =
+        cleanText(req.body.name, 80);
+
+    const email =
+        cleanText(req.body.email, 120);
+
+    const comment =
+        cleanText(req.body.comment, 1000);
+
+    if (!name) {
+
+        return res.status(400).json({
+            error: "Name is required"
+        });
 
     }
-);
 
+    if (!comment) {
+
+        return res.status(400).json({
+            error: "Comment is required"
+        });
+
+    }
+
+    if (
+        email &&
+        !validEmail(email)
+    ) {
+
+        return res.status(400).json({
+            error: "Invalid email"
+        });
+
+    }
+
+    const result =
+        db.prepare(`
+            INSERT INTO comments
+            (name, email, comment, approved)
+            VALUES (?, ?, ?, 1)
+        `).run(
+            name,
+            email,
+            comment
+        );
+
+    res.status(201).json({
+        ok: true,
+        id: result.lastInsertRowid
+    });
+
+});
 
 /* =========================================================
    BRAND SUBMISSION
-   PRICE = $1
+   PRICE IS FIXED TO $1
 ========================================================= */
 
 app.post(
-    "/api/applications",
+    "/api/brand-submissions",
     (req, res) => {
 
         const brandName =
-            normalizeText(
-                req.body.brand_name ||
-                req.body.name,
-                150
-            );
-
-        const description =
-            normalizeText(
-                req.body.description,
-                3000
-            );
-
-        const website =
-            normalizeText(
-                req.body.website,
-                2048
-            );
-
-        const logoUrl =
-            normalizeText(
-                req.body.logo_url,
-                2048
-            );
-
-        const contactName =
-            normalizeText(
-                req.body.contact_name,
-                150
-            );
-
-        const contactEmail =
-            normalizeEmail(
-                req.body.contact_email
-            );
-
-        const contactPhone =
-            normalizeText(
-                req.body.contact_phone,
-                50
+            cleanText(
+                req.body.brand_name,
+                120
             );
 
         const countryId =
@@ -754,29 +732,71 @@ app.post(
                 req.body.country_id
             );
 
+        const description =
+            cleanText(
+                req.body.description,
+                1000
+            );
+
+        const website =
+            cleanText(
+                req.body.website,
+                500
+            );
+
+        const contactName =
+            cleanText(
+                req.body.contact_name,
+                120
+            );
+
+        const email =
+            cleanText(
+                req.body.email,
+                160
+            );
 
         if (!brandName) {
 
             return res.status(400).json({
-                error:
-                    "Brand name is required."
+                error: "Brand name is required"
             });
 
         }
 
-
         if (
-            !Number.isInteger(countryId) ||
-            countryId <= 0
+            !Number.isInteger(countryId)
         ) {
 
             return res.status(400).json({
-                error:
-                    "Valid country is required."
+                error: "Country is required"
             });
 
         }
 
+        if (!contactName) {
+
+            return res.status(400).json({
+                error: "Contact name is required"
+            });
+
+        }
+
+        if (!validEmail(email)) {
+
+            return res.status(400).json({
+                error: "Valid email is required"
+            });
+
+        }
+
+        if (!isSafeUrl(website)) {
+
+            return res.status(400).json({
+                error: "Invalid website URL"
+            });
+
+        }
 
         const country =
             db.prepare(`
@@ -787,862 +807,297 @@ app.post(
 
         if (!country) {
 
-            return res.status(400).json({
-                error:
-                    "Country not found."
+            return res.status(404).json({
+                error: "Country not found"
             });
 
         }
-
-
-        if (
-            contactEmail &&
-            !isValidEmail(contactEmail)
-        ) {
-
-            return res.status(400).json({
-                error:
-                    "Invalid email address."
-            });
-
-        }
-
-
-        if (
-            website &&
-            !isSafeUrl(website)
-        ) {
-
-            return res.status(400).json({
-                error:
-                    "Invalid website URL."
-            });
-
-        }
-
-
-        if (
-            logoUrl &&
-            !isSafeUrl(logoUrl)
-        ) {
-
-            return res.status(400).json({
-                error:
-                    "Invalid logo URL."
-            });
-
-        }
-
 
         /*
-         * Brand qo‘shish narxi:
-         *
+         * FIXED PRICE:
          * 1 USD
          *
-         * Hozircha OCTO yo‘q.
-         * Payment gateway keyin alohida ulanadi.
+         * Payment is NOT trusted from browser.
+         * A real payment provider/webhook must
+         * change payment_status to "paid".
          */
-
-        const price = 1;
-        const currency = "USD";
-
 
         const result =
             db.prepare(`
-                INSERT INTO applications
+                INSERT INTO brand_submissions
                 (
-                    country_id,
                     brand_name,
+                    country_id,
                     description,
                     website,
-                    logo_url,
                     contact_name,
-                    contact_email,
-                    contact_phone,
-                    price,
+                    email,
+                    amount,
                     currency,
-                    payment_status,
-                    status
+                    payment_status
                 )
-                VALUES
-                (
-                    @country_id,
-                    @brand_name,
-                    @description,
-                    @website,
-                    @logo_url,
-                    @contact_name,
-                    @contact_email,
-                    @contact_phone,
-                    @price,
-                    @currency,
-                    'unpaid',
-                    'pending'
-                )
-            `).run({
-
-                country_id:
-                    countryId,
-
-                brand_name:
-                    brandName,
-
-                description:
-                    description,
-
-                website:
-                    website,
-
-                logo_url:
-                    logoUrl,
-
-                contact_name:
-                    contactName,
-
-                contact_email:
-                    contactEmail,
-
-                contact_phone:
-                    contactPhone,
-
-                price:
-                    price,
-
-                currency:
-                    currency
-
-            });
-
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `).run(
+                brandName,
+                countryId,
+                description,
+                website,
+                contactName,
+                email,
+                1,
+                "USD",
+                "unpaid"
+            );
 
         res.status(201).json({
-
-            success: true,
-
-            application_id:
+            ok: true,
+            submission_id:
                 result.lastInsertRowid,
-
-            payment_required: true,
-
             amount: 1,
-
             currency: "USD",
-
-            payment_status:
-                "unpaid",
-
+            payment_status: "unpaid",
             message:
-                "Brand application created. Payment of $1 is required before approval."
-
+                "Brand submission created. Payment amount is $1 USD."
         });
 
     }
 );
 
-
 /* =========================================================
-   COMMENTS
+   PAYMENT RECORD
+   No OCTO.
+   No fake successful payment.
 ========================================================= */
 
-app.get(
-    "/api/comments",
+app.post(
+    "/api/payments/create",
     (req, res) => {
 
-        const comments =
+        const submissionId =
+            Number(
+                req.body.submission_id
+            );
+
+        if (
+            !Number.isInteger(
+                submissionId
+            )
+        ) {
+
+            return res.status(400).json({
+                error:
+                    "Invalid submission ID"
+            });
+
+        }
+
+        const submission =
             db.prepare(`
                 SELECT
                     id,
-                    name,
-                    comment,
-                    created_at
-                FROM comments
-                WHERE status = 'approved'
-                ORDER BY created_at DESC
-                LIMIT 100
-            `).all();
-
-        res.json(comments);
-
-    }
-);
-
-
-/* =========================================================
-   ADD COMMENT
-========================================================= */
-
-app.post(
-    "/api/comments",
-    (req, res) => {
-
-        const name =
-            normalizeText(
-                req.body.name,
-                100
-            );
-
-        const email =
-            normalizeEmail(
-                req.body.email
-            );
-
-        const comment =
-            normalizeText(
-                req.body.comment,
-                2000
-            );
-
-
-        if (!name) {
-
-            return res.status(400).json({
-                error:
-                    "Name is required."
-            });
-
-        }
-
-
-        if (!comment) {
-
-            return res.status(400).json({
-                error:
-                    "Comment is required."
-            });
-
-        }
-
-
-        if (
-            email &&
-            !isValidEmail(email)
-        ) {
-
-            return res.status(400).json({
-                error:
-                    "Invalid email address."
-            });
-
-        }
-
-
-        const result =
-            db.prepare(`
-                INSERT INTO comments
-                (
-                    name,
-                    email,
-                    comment,
-                    status
-                )
-                VALUES
-                (?, ?, ?, 'pending')
-            `).run(
-                name,
-                email,
-                comment
-            );
-
-
-        res.status(201).json({
-
-            success: true,
-
-            id:
-                result.lastInsertRowid,
-
-            message:
-                "Comment submitted for review."
-
-        });
-
-    }
-);
-
-
-/* =========================================================
-   ADMIN — APPLICATIONS
-========================================================= */
-
-app.get(
-    "/api/admin/applications",
-    adminAuth,
-    (req, res) => {
-
-        const rows =
-            db.prepare(`
-                SELECT
-                    a.*,
-                    c.name AS country_name,
-                    c.code AS country_code
-                FROM applications a
-                LEFT JOIN countries c
-                    ON c.id = a.country_id
-                ORDER BY
-                    a.created_at DESC
-            `).all();
-
-        res.json(rows);
-
-    }
-);
-
-
-/* =========================================================
-   ADMIN — COMMENTS
-========================================================= */
-
-app.get(
-    "/api/admin/comments",
-    adminAuth,
-    (req, res) => {
-
-        const rows =
-            db.prepare(`
-                SELECT *
-                FROM comments
-                ORDER BY created_at DESC
-            `).all();
-
-        res.json(rows);
-
-    }
-);
-
-
-/* =========================================================
-   ADMIN — APPROVE COMMENT
-========================================================= */
-
-app.patch(
-    "/api/admin/comments/:id",
-    adminAuth,
-    (req, res) => {
-
-        const id =
-            Number(req.params.id);
-
-        const status =
-            normalizeText(
-                req.body.status,
-                20
-            );
-
-        if (
-            !Number.isInteger(id) ||
-            ![
-                "approved",
-                "pending",
-                "rejected"
-            ].includes(status)
-        ) {
-
-            return res.status(400).json({
-                error:
-                    "Invalid request."
-            });
-
-        }
-
-        const result =
-            db.prepare(`
-                UPDATE comments
-                SET status = ?
+                    amount,
+                    currency,
+                    payment_status
+                FROM brand_submissions
                 WHERE id = ?
-            `).run(
-                status,
-                id
+            `).get(
+                submissionId
             );
 
-        res.json({
-            success:
-                result.changes > 0
-        });
-
-    }
-);
-
-
-/* =========================================================
-   ADMIN — APPROVE BRAND APPLICATION
-========================================================= */
-
-app.post(
-    "/api/admin/applications/:id/approve",
-    adminAuth,
-    (req, res) => {
-
-        const id =
-            Number(req.params.id);
-
-        if (!Number.isInteger(id)) {
-
-            return res.status(400).json({
-                error:
-                    "Invalid application ID."
-            });
-
-        }
-
-
-        const application =
-            db.prepare(`
-                SELECT *
-                FROM applications
-                WHERE id = ?
-                LIMIT 1
-            `).get(id);
-
-
-        if (!application) {
+        if (!submission) {
 
             return res.status(404).json({
                 error:
-                    "Application not found."
+                    "Submission not found"
             });
 
         }
 
-
-        /*
-         * Hozirgi tizimda haqiqiy payment
-         * provider ulanmagan.
-         *
-         * Shuning uchun admin faqat
-         * payment_status = paid bo‘lsa
-         * brandni tasdiqlashi kerak.
-         */
-
         if (
-            application.payment_status !==
+            submission.payment_status ===
             "paid"
         ) {
 
-            return res.status(400).json({
-
-                error:
-                    "Payment is not confirmed."
-
+            return res.json({
+                ok: true,
+                already_paid: true,
+                amount: 1,
+                currency: "USD"
             });
 
         }
 
+        const paymentId =
+            "AWB-" +
+            Date.now() +
+            "-" +
+            Math.random()
+                .toString(36)
+                .slice(2, 10)
+                .toUpperCase();
 
-        const insert =
-            db.prepare(`
-                INSERT INTO brands
-                (
-                    country_id,
-                    name,
-                    description,
-                    website,
-                    logo_url,
-                    status
-                )
-                VALUES
-                (?, ?, ?, ?, ?, 'approved')
-            `);
+        db.prepare(`
+            INSERT INTO payments
+            (
+                payment_id,
+                submission_id,
+                amount,
+                currency,
+                status
+            )
+            VALUES (?, ?, ?, ?, ?)
+        `).run(
+            paymentId,
+            submissionId,
+            1,
+            "USD",
+            "pending"
+        );
 
+        db.prepare(`
+            UPDATE brand_submissions
+            SET payment_id = ?
+            WHERE id = ?
+        `).run(
+            paymentId,
+            submissionId
+        );
 
-        const update =
-            db.prepare(`
-                UPDATE applications
-                SET status = 'approved'
-                WHERE id = ?
-            `);
-
-
-        const transaction =
-            db.transaction(() => {
-
-                const result =
-                    insert.run(
-                        application.country_id,
-                        application.brand_name,
-                        application.description,
-                        application.website,
-                        application.logo_url
-                    );
-
-                update.run(id);
-
-                return result;
-
-            });
-
-
-        const result =
-            transaction();
-
+        /*
+         * IMPORTANT:
+         * This endpoint DOES NOT mark payment as paid.
+         * The actual payment provider must confirm payment
+         * server-to-server/webhook before "paid".
+         */
 
         res.json({
-
-            success: true,
-
-            brand_id:
-                result.lastInsertRowid
-
+            ok: true,
+            payment_id: paymentId,
+            amount: 1,
+            currency: "USD",
+            status: "pending",
+            message:
+                "Payment record created for $1 USD."
         });
 
     }
 );
-
 
 /* =========================================================
-   ADMIN — CONFIRM PAYMENT
-   Temporary/manual until real gateway is selected.
+   INFO
 ========================================================= */
 
-app.post(
-    "/api/admin/applications/:id/payment",
-    adminAuth,
-    (req, res) => {
+app.get("/api/info", (req, res) => {
 
-        const id =
-            Number(req.params.id);
+    res.json({
 
-        if (!Number.isInteger(id)) {
+        site_name:
+            "ALL WORLD BRANDS",
 
-            return res.status(400).json({
-                error:
-                    "Invalid application ID."
-            });
+        phone:
+            "+998933843112",
 
-        }
+        whatsapp:
+            "+998933843112",
 
+        email:
+            "allworldbrandsnet@gmail.com",
 
-        const result =
-            db.prepare(`
-                UPDATE applications
-                SET
-                    payment_status = 'paid'
-                WHERE id = ?
-            `).run(id);
+        website:
+            SITE_URL,
 
+        brand_submission_price:
+            1,
 
-        if (!result.changes) {
+        currency:
+            "USD"
 
-            return res.status(404).json({
-                error:
-                    "Application not found."
-            });
+    });
 
-        }
-
-
-        res.json({
-
-            success: true,
-
-            payment_status:
-                "paid"
-
-        });
-
-    }
-);
-
-
-/* =========================================================
-   ADMIN — CREATE BRAND DIRECTLY
-========================================================= */
-
-app.post(
-    "/api/admin/brands",
-    adminAuth,
-    (req, res) => {
-
-        const countryId =
-            Number(
-                req.body.country_id
-            );
-
-        const name =
-            normalizeText(
-                req.body.name,
-                150
-            );
-
-        const description =
-            normalizeText(
-                req.body.description,
-                3000
-            );
-
-        const website =
-            normalizeText(
-                req.body.website,
-                2048
-            );
-
-        const logoUrl =
-            normalizeText(
-                req.body.logo_url,
-                2048
-            );
-
-
-        if (
-            !Number.isInteger(countryId) ||
-            !name
-        ) {
-
-            return res.status(400).json({
-                error:
-                    "Country and brand name are required."
-            });
-
-        }
-
-
-        if (
-            website &&
-            !isSafeUrl(website)
-        ) {
-
-            return res.status(400).json({
-                error:
-                    "Invalid website URL."
-            });
-
-        }
-
-
-        if (
-            logoUrl &&
-            !isSafeUrl(logoUrl)
-        ) {
-
-            return res.status(400).json({
-                error:
-                    "Invalid logo URL."
-            });
-
-        }
-
-
-        const result =
-            db.prepare(`
-                INSERT INTO brands
-                (
-                    country_id,
-                    name,
-                    description,
-                    website,
-                    logo_url,
-                    status
-                )
-                VALUES
-                (?, ?, ?, ?, ?, 'approved')
-            `).run(
-                countryId,
-                name,
-                description,
-                website,
-                logoUrl
-            );
-
-
-        res.status(201).json({
-
-            success: true,
-
-            brand_id:
-                result.lastInsertRowid
-
-        });
-
-    }
-);
-
+});
 
 /* =========================================================
    ROBOTS
 ========================================================= */
 
-app.get(
-    "/robots.txt",
-    (req, res) => {
+app.get("/robots.txt", (req, res) => {
 
-        res.type("text/plain");
+    res.type("text/plain");
 
-        res.send(
+    res.send(
 `User-agent: *
 Allow: /
 
-Sitemap: ${SITE_URL}/sitemap.xml
-`
-        );
+Sitemap: ${SITE_URL}/sitemap.xml`
+    );
 
-    }
-);
-
+});
 
 /* =========================================================
    SITEMAP
 ========================================================= */
 
-app.get(
-    "/sitemap.xml",
-    (req, res) => {
+app.get("/sitemap.xml", (req, res) => {
 
-        const countryRows =
-            db.prepare(`
-                SELECT id
-                FROM countries
-                ORDER BY id
-            `).all();
+    res.type("application/xml");
 
-
-        const brandRows =
-            db.prepare(`
-                SELECT id
-                FROM brands
-                WHERE status = 'approved'
-                ORDER BY id
-            `).all();
-
-
-        const urls = [
-
-            `${SITE_URL}/`
-
-        ];
-
-
-        for (const country of countryRows) {
-
-            urls.push(
-                `${SITE_URL}/country/${country.id}`
-            );
-
-        }
-
-
-        for (const brand of brandRows) {
-
-            urls.push(
-                `${SITE_URL}/brand/${brand.id}`
-            );
-
-        }
-
-
-        const xml =
+    res.send(
 `<?xml version="1.0" encoding="UTF-8"?>
 <urlset
     xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
 >
-${urls.map(
-    url =>
-`    <url>
-        <loc>${escapeXml(url)}</loc>
-    </url>`
-).join("\n")}
-</urlset>`;
+    <url>
+        <loc>${SITE_URL}/</loc>
+    </url>
+    <url>
+        <loc>${SITE_URL}/#countries</loc>
+    </url>
+    <url>
+        <loc>${SITE_URL}/#brands</loc>
+    </url>
+    <url>
+        <loc>${SITE_URL}/#comments</loc>
+    </url>
+    <url>
+        <loc>${SITE_URL}/#info</loc>
+    </url>
+</urlset>`
+    );
 
-
-        res
-            .type("application/xml")
-            .send(xml);
-
-    }
-);
-
-
-/* =========================================================
-   XML ESCAPE
-========================================================= */
-
-function escapeXml(value) {
-
-    return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&apos;");
-
-}
-
+});
 
 /* =========================================================
-   STATIC FILES
+   FALLBACK
 ========================================================= */
 
-app.use(
-    express.static(
+app.get("*", (req, res) => {
+
+    res.sendFile(
         path.join(
             __dirname,
-            "public"
-        ),
-        {
-            extensions: ["html"]
-        }
-    )
-);
+            "public",
+            "index.html"
+        )
+    );
 
+});
 
 /* =========================================================
-   HOME
-========================================================= */
-
-app.get(
-    "/",
-    (req, res) => {
-
-        res.sendFile(
-            path.join(
-                __dirname,
-                "public",
-                "index.html"
-            )
-        );
-
-    }
-);
-
-
-/* =========================================================
-   404 API
+   ERROR HANDLER
 ========================================================= */
 
 app.use(
-    "/api",
-    (req, res) => {
+    (err, req, res, next) => {
 
-        res.status(404).json({
-            error:
-                "API endpoint not found."
-        });
-
-    }
-);
-
-
-/* =========================================================
-   GLOBAL ERROR HANDLER
-========================================================= */
-
-app.use(
-    (error, req, res, next) => {
-
-        console.error(
-            "SERVER ERROR:",
-            error
-        );
-
-        if (res.headersSent) {
-            return next(error);
-        }
+        console.error(err);
 
         res.status(500).json({
             error:
-                "Internal server error."
+                "Internal server error"
         });
 
     }
 );
-
 
 /* =========================================================
    START
@@ -1657,15 +1112,11 @@ app.listen(
         );
 
         console.log(
-            `Site: ${SITE_URL}`
+            `Countries: ${countries.length}`
         );
 
         console.log(
-            "OCTO payment integration: REMOVED"
-        );
-
-        console.log(
-            "Brand submission price: $1 USD"
+            `Brand price: $1 USD`
         );
 
     }
