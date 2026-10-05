@@ -1832,9 +1832,14 @@ app.post(
 
         update();
 
-        res.redirect(
-            `/payment/demo/${transactionId}`
-        );
+        res.json({
+            success: true,
+            verified: true,
+            payment_status: "paid",
+            transaction_id: transactionId,
+            application_id: transaction.application_id,
+            payment_reference: transaction.reference
+        });
 
     }
 );
@@ -2297,7 +2302,6 @@ app.get(
         res.sendFile(
             path.join(
                 __dirname,
-                "public",
                 "admin.html"
             )
         );
