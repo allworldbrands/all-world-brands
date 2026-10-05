@@ -293,14 +293,14 @@ a{
 
 .countries-grid{
     display:grid;
-    grid-template-columns:repeat(10,minmax(0,1fr));
+    grid-template-columns:repeat(5,minmax(0,1fr));
     gap:9px;
 }
 
 .country-card{
     position:relative;
     min-width:0;
-    aspect-ratio:1/1;
+    aspect-ratio:16/9;
     overflow:hidden;
     border-radius:10px;
     border:1px solid rgba(255,255,255,.11);
@@ -326,11 +326,9 @@ a{
     position:absolute;
     inset:0;
     background:
-        radial-gradient(
-            circle at 80% 15%,
-            rgba(0,185,255,.22),
-            transparent 43%
-        );
+        linear-gradient(rgba(0,8,18,.12),rgba(0,8,18,.68)),
+        var(--country-image, none) center/cover no-repeat,
+        radial-gradient(circle at 80% 15%,rgba(0,185,255,.22),transparent 43%);
 }
 
 .country-content{
@@ -1799,6 +1797,12 @@ function renderCountries(list){
             document.createElement("article");
 
         card.className="country-card";
+        if(country.code){
+            card.style.setProperty(
+                "--country-image",
+                `url("/images/countries/${encodeURIComponent(String(country.code).toUpperCase())}.png")`
+            );
+        }
 
         card.innerHTML=`
 
@@ -1996,7 +2000,7 @@ brandForm.addEventListener(
 
             const applicationResponse =
                 await fetch(
-                    "/api/applications",
+                    "/api/brand-applications",
                     {
                         method:"POST",
 
@@ -2013,8 +2017,8 @@ brandForm.addEventListener(
                                     "brandName"
                                 ).value.trim(),
 
-                            country:
-                                brandCountry.value,
+                            country_id:
+                                Number(brandCountry.value),
 
                             logo:
                                 document
@@ -2123,21 +2127,16 @@ brandForm.addEventListener(
              * payment URL.
              */
 
-            if(payment.payment_url){
-
-                window.location.href =
-                    payment.payment_url;
-
+            if(payment.demo === false && payment.payment_url){
+                window.location.href = payment.payment_url;
                 return;
             }
 
-
             /*
-             * Current DEMO acquiring mode.
+             * Demo acquiring stays inside the site so the user
+             * can test the complete server-side payment flow.
              */
-
             paymentDemo.classList.add("active");
-
             paymentMessage.textContent="";
 
         }catch(error){
@@ -2274,6 +2273,9 @@ document
         paymentDemo.classList.remove("active");
 
         paymentMessage.textContent="";
+        currentSubmissionId=null;
+        brandSubmit.disabled=false;
+        brandSubmit.textContent="Continue to payment — $1";
 
         brandMessage.textContent =
             "Payment cancelled. The application remains unpaid.";
@@ -2377,6 +2379,25 @@ document
     }
 );
 
+
+/* =========================================================
+   PAYMENT STATE RESET / BROWSER BACK
+========================================================= */
+
+function resetPaymentUi(){
+    paymentDemo.classList.remove("active");
+    paymentMessage.textContent="";
+    brandSubmit.disabled=false;
+    brandSubmit.textContent="Continue to payment — $1";
+}
+
+window.addEventListener("pageshow", ()=>{
+    resetPaymentUi();
+});
+
+window.addEventListener("popstate", ()=>{
+    resetPaymentUi();
+});
 
 /* =========================================================
    START
