@@ -72,6 +72,10 @@ a{
     color:inherit;
 }
 
+/* =========================================================
+   HEADER
+========================================================= */
+
 .header{
     position:sticky;
     top:0;
@@ -144,6 +148,10 @@ a{
     background:rgba(255,255,255,.08);
 }
 
+/* =========================================================
+   MAIN
+========================================================= */
+
 .main{
     width:min(1500px,calc(100% - 28px));
     margin:auto;
@@ -212,6 +220,10 @@ a{
     line-height:1.6;
 }
 
+/* =========================================================
+   SEARCH
+========================================================= */
+
 .search-area{
     width:min(850px,100%);
     margin:0 auto 38px;
@@ -267,6 +279,10 @@ a{
     font-size:20px;
 }
 
+/* =========================================================
+   SECTION
+========================================================= */
+
 .section-head{
     display:flex;
     align-items:end;
@@ -290,6 +306,10 @@ a{
     color:#9aabc0;
     font-size:12px;
 }
+
+/* =========================================================
+   COUNTRY GRID
+========================================================= */
 
 .countries-grid{
     display:grid;
@@ -326,9 +346,17 @@ a{
     position:absolute;
     inset:0;
     background:
-        linear-gradient(rgba(0,8,18,.10),rgba(0,8,18,.72)),
-        var(--country-image, none) center/cover no-repeat,
-        radial-gradient(circle at 80% 15%,rgba(0,185,255,.22),transparent 43%);
+        linear-gradient(
+            rgba(0,8,18,.10),
+            rgba(0,8,18,.72)
+        ),
+        var(--country-image, none)
+        center/cover no-repeat,
+        radial-gradient(
+            circle at 80% 15%,
+            rgba(0,185,255,.22),
+            transparent 43%
+        );
 }
 
 .country-content{
@@ -349,10 +377,7 @@ a{
     font-weight:850;
     line-height:1.15;
     overflow-wrap:anywhere;
-    display:-webkit-box;
-    -webkit-box-orient:vertical;
-    -webkit-line-clamp:3;
-    overflow:hidden;
+    display:block;
     padding-right:4px;
 }
 
@@ -377,6 +402,10 @@ a{
 .country-flag{
     display:none;
 }
+
+/* =========================================================
+   PANELS
+========================================================= */
 
 .panel{
     margin-top:45px;
@@ -505,6 +534,10 @@ a{
     font-size:13px;
 }
 
+/* =========================================================
+   INFO
+========================================================= */
+
 .info-grid{
     display:grid;
     grid-template-columns:repeat(3,1fr);
@@ -558,6 +591,10 @@ a{
     text-decoration:none;
 }
 
+/* =========================================================
+   PAYMENT LOGOS
+========================================================= */
+
 .payment-logos{
     margin-top:30px;
     padding-top:20px;
@@ -586,6 +623,10 @@ a{
     height:30px;
 }
 
+/* =========================================================
+   FOOTER
+========================================================= */
+
 .footer{
     margin-top:30px;
     padding:28px 0 35px;
@@ -600,7 +641,9 @@ a{
     color:#b5c5d8;
 }
 
-/* PAYMENT */
+/* =========================================================
+   PAYMENT
+========================================================= */
 
 .payment-demo{
     display:none;
@@ -665,7 +708,9 @@ a{
     flex-wrap:wrap;
 }
 
-/* LEGAL MODAL */
+/* =========================================================
+   LEGAL MODAL
+========================================================= */
 
 .legal-modal{
     display:none;
@@ -722,14 +767,25 @@ a{
     cursor:pointer;
 }
 
+/* =========================================================
+   TABLET
+========================================================= */
+
 @media(max-width:1200px){
+
     .countries-grid{
         grid-template-columns:repeat(8,minmax(0,1fr));
         gap:5px;
     }
+
 }
 
+/* =========================================================
+   TABLET / SMALL SCREEN
+========================================================= */
+
 @media(max-width:900px){
+
     .countries-grid{
         grid-template-columns:repeat(6,minmax(0,1fr));
         gap:5px;
@@ -739,9 +795,15 @@ a{
     .legal-grid{
         grid-template-columns:1fr;
     }
+
 }
 
+/* =========================================================
+   MOBILE
+========================================================= */
+
 @media(max-width:700px){
+
     .header-inner{
         min-height:58px;
     }
@@ -760,11 +822,39 @@ a{
 
     .countries-grid{
         grid-template-columns:repeat(4,minmax(0,1fr));
-        gap:7px;
+        gap:6px;
+    }
+
+    .country-card{
+        min-height:74px;
+        aspect-ratio:auto;
+        border-radius:9px;
+    }
+
+    .country-content{
+        padding:6px;
     }
 
     .country-name{
-        font-size:9px;
+        font-size:11px;
+        line-height:1.15;
+        font-weight:850;
+        display:block;
+        overflow:visible;
+        white-space:normal;
+        overflow-wrap:anywhere;
+        padding-right:2px;
+    }
+
+    .country-code{
+        margin-top:3px;
+        font-size:7px;
+    }
+
+    .country-brand-count{
+        right:6px;
+        bottom:6px;
+        font-size:7px;
     }
 
     .form-grid{
@@ -784,9 +874,15 @@ a{
         text-align:center;
         gap:12px;
     }
+
 }
 
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
 @media(max-width:480px){
+
     .main,
     .header-inner{
         width:calc(100% - 18px);
@@ -796,21 +892,54 @@ a{
         letter-spacing:-1.8px;
     }
 
+    /*
+     * IMPORTANT:
+     * 4 columns on phone.
+     * Cards are compact.
+     * Country names are allowed to wrap fully.
+     */
+
     .countries-grid{
         grid-template-columns:repeat(4,minmax(0,1fr));
         gap:6px;
     }
 
+    .country-card{
+        min-height:76px;
+        aspect-ratio:auto;
+        border-radius:9px;
+    }
+
+    .country-content{
+        padding:6px;
+        justify-content:flex-end;
+    }
+
     .country-name{
-        font-size:24px;
+        font-size:11px;
+        line-height:1.15;
+        font-weight:850;
+
+        /*
+         * Do NOT cut country names.
+         */
+        display:block;
+        -webkit-line-clamp:unset;
+        overflow:visible;
+        white-space:normal;
+        overflow-wrap:anywhere;
+
+        padding-right:2px;
     }
 
     .country-code{
         font-size:7px;
+        margin-top:3px;
+        letter-spacing:.3px;
     }
 
     .country-brand-count{
-        right:7px;
+        right:6px;
         bottom:6px;
         font-size:7px;
     }
@@ -819,48 +948,192 @@ a{
         width:72px;
         height:38px;
     }
+
 }
+
+/* =========================================================
+   VERY SMALL PHONES
+========================================================= */
+
+@media(max-width:360px){
+
+    .countries-grid{
+        grid-template-columns:repeat(4,minmax(0,1fr));
+        gap:5px;
+    }
+
+    .country-card{
+        min-height:72px;
+    }
+
+    .country-name{
+        font-size:10px;
+    }
+
+    .country-code{
+        font-size:6px;
+    }
+
+    .country-brand-count{
+        font-size:6px;
+    }
+
+}
+
+/* =========================================================
+   LANDSCAPE MOBILE
+========================================================= */
+
+@media(max-width:700px) and (orientation:landscape){
+
+    .countries-grid{
+        grid-template-columns:repeat(6,minmax(0,1fr));
+    }
+
+    .country-card{
+        min-height:70px;
+    }
+
+    .country-name{
+        font-size:10px;
+    }
+
+}
+
+/* =========================================================
+   PAYMENT
+========================================================= */
+
+.payment-demo{
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:3000;
+    background:rgba(0,0,0,.72);
+    backdrop-filter:blur(8px);
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+}
+
+.payment-demo.active{
+    display:flex;
+}
+
+.payment-box{
+    width:min(480px,100%);
+    border-radius:22px;
+    padding:28px;
+    background:linear-gradient(
+        135deg,
+        #081a32,
+        #020914
+    );
+    border:1px solid rgba(255,255,255,.14);
+    box-shadow:0 30px 100px rgba(0,0,0,.55);
+}
+
+.payment-box h2{
+    margin-bottom:10px;
+}
+
+.payment-box p{
+    color:#9db0c7;
+    line-height:1.6;
+    margin-bottom:18px;
+}
+
+.payment-amount{
+    font-size:30px;
+    font-weight:950;
+    color:#8dffb5;
+    margin-bottom:20px;
+}
+
+.demo-notice{
+    padding:12px;
+    border-radius:10px;
+    background:rgba(255,196,0,.08);
+    border:1px solid rgba(255,196,0,.22);
+    color:#ffd66b;
+    font-size:12px;
+    line-height:1.5;
+    margin-bottom:18px;
+}
+
+.payment-actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
 </style>
 </head>
 
 <body>
 
 <header class="header">
+
 <div class="header-inner">
 
 <a href="/" class="logo">
-    <span class="logo-mark">🌐</span>
-    <span class="logo-text">ALL WORLD BRANDS</span>
+
+<span class="logo-mark">🌐</span>
+
+<span class="logo-text">
+ALL WORLD BRANDS
+</span>
+
 </a>
 
 <nav class="nav">
-    <a href="#countries">Countries</a>
-    <a href="#brands">Add Brand</a>
-    <a href="#legal">Legal</a>
-    <a href="#info">Contact</a>
 
-    <button
-        type="button"
-        class="back-button"
-        onclick="goBack()"
-    >
-        ← Back
-    </button>
+<a href="#countries">
+Countries
+</a>
+
+<a href="#brands">
+Add Brand
+</a>
+
+<a href="#legal">
+Legal
+</a>
+
+<a href="#info">
+Contact
+</a>
+
+<button
+    type="button"
+    class="back-button"
+    onclick="goBack()"
+>
+← Back
+</button>
+
 </nav>
 
 </div>
+
 </header>
+
 
 <main class="main">
 
 <section class="hero">
 
 <div class="badge">
-    <span class="badge-dot"></span>
-    GLOBAL DIRECTORY
+
+<span class="badge-dot"></span>
+
+GLOBAL DIRECTORY
+
 </div>
 
-<h1>ALL WORLD BRANDS</h1>
+<h1>
+ALL WORLD BRANDS
+</h1>
 
 <p>
 Explore countries and territories from around the world
@@ -869,10 +1142,14 @@ and discover companies and brands in one global directory.
 
 </section>
 
+
 <div class="search-area">
+
 <div class="search-box">
 
-<span class="search-icon">🔎</span>
+<span class="search-icon">
+🔎
+</span>
 
 <input
     id="searchInput"
@@ -890,27 +1167,40 @@ and discover companies and brands in one global directory.
 </button>
 
 </div>
+
 </div>
+
 
 <section id="countries">
 
 <div class="section-head">
 
 <div>
-    <div class="section-title">🌍 Countries & Territories</div>
 
-    <div class="section-subtitle">
-        Global country and territory directory
-    </div>
+<div class="section-title">
+🌍 Countries & Territories
 </div>
 
-<div id="resultCount" class="result-count">
-    Loading...
+<div class="section-subtitle">
+Global country and territory directory
 </div>
 
 </div>
 
-<div id="countriesGrid" class="countries-grid">
+<div
+    id="resultCount"
+    class="result-count"
+>
+Loading...
+</div>
+
+</div>
+
+
+<div
+    id="countriesGrid"
+    class="countries-grid"
+>
 
 <div style="
     grid-column:1/-1;
@@ -918,7 +1208,7 @@ and discover companies and brands in one global directory.
     text-align:center;
     color:#9aaabd;
 ">
-    Loading countries and territories...
+Loading countries and territories...
 </div>
 
 </div>
@@ -926,11 +1216,18 @@ and discover companies and brands in one global directory.
 </section>
 
 
-<!-- BRAND SUBMISSION -->
+<!-- =====================================================
+     BRAND SUBMISSION
+===================================================== -->
 
-<section id="brands" class="panel">
+<section
+    id="brands"
+    class="panel"
+>
 
-<h2>🏷️ Add Your Brand</h2>
+<h2>
+🏷️ Add Your Brand
+</h2>
 
 <p class="panel-description">
 
@@ -944,13 +1241,17 @@ be reviewed and moderated.
 
 </p>
 
+
 <form id="brandForm">
 
 <div class="form-grid">
 
+
 <div class="field">
 
-<label for="brandName">Brand name</label>
+<label for="brandName">
+Brand name
+</label>
 
 <input
     id="brandName"
@@ -961,22 +1262,32 @@ be reviewed and moderated.
 
 </div>
 
+
 <div class="field">
 
-<label for="brandCountry">Country or territory</label>
+<label for="brandCountry">
+Country or territory
+</label>
 
 <select
     id="brandCountry"
     required
 >
-<option value="">Select country or territory</option>
+
+<option value="">
+Select country or territory
+</option>
+
 </select>
 
 </div>
 
+
 <div class="field">
 
-<label for="contactName">Contact name</label>
+<label for="contactName">
+Contact name
+</label>
 
 <input
     id="contactName"
@@ -987,9 +1298,12 @@ be reviewed and moderated.
 
 </div>
 
+
 <div class="field">
 
-<label for="contactPhone">Phone</label>
+<label for="contactPhone">
+Phone
+</label>
 
 <input
     id="contactPhone"
@@ -999,9 +1313,12 @@ be reviewed and moderated.
 
 </div>
 
+
 <div class="field full">
 
-<label for="brandWebsite">Website</label>
+<label for="brandWebsite">
+Website
+</label>
 
 <input
     id="brandWebsite"
@@ -1012,9 +1329,12 @@ be reviewed and moderated.
 
 </div>
 
+
 <div class="field">
 
-<label for="contactEmail">Email</label>
+<label for="contactEmail">
+Email
+</label>
 
 <input
     id="contactEmail"
@@ -1026,9 +1346,12 @@ be reviewed and moderated.
 
 </div>
 
+
 <div class="field">
 
-<label for="brandLogo">Logo URL</label>
+<label for="brandLogo">
+Logo URL
+</label>
 
 <input
     id="brandLogo"
@@ -1039,9 +1362,12 @@ be reviewed and moderated.
 
 </div>
 
+
 <div class="field full">
 
-<label for="brandDescription">Description</label>
+<label for="brandDescription">
+Description
+</label>
 
 <textarea
     id="brandDescription"
@@ -1051,12 +1377,14 @@ be reviewed and moderated.
 
 </div>
 
+
 </div>
+
 
 <div class="submit-row">
 
 <div class="price-box">
-    Submission fee: $1 USD
+Submission fee: $1 USD
 </div>
 
 <button
@@ -1064,10 +1392,11 @@ be reviewed and moderated.
     type="submit"
     id="brandSubmit"
 >
-    Continue to payment — $1
+Continue to payment — $1
 </button>
 
 </div>
+
 
 <div
     id="brandMessage"
@@ -1079,22 +1408,33 @@ be reviewed and moderated.
 </section>
 
 
-<!-- LEGAL -->
+<!-- =====================================================
+     LEGAL
+===================================================== -->
 
-<section id="legal" class="panel">
+<section
+    id="legal"
+    class="panel"
+>
 
-<h2>⚖️ Legal Information</h2>
+<h2>
+⚖️ Legal Information
+</h2>
 
 <p class="panel-description">
 Please review the legal documents before using the
 brand submission service.
 </p>
 
+
 <div class="legal-grid">
+
 
 <div class="legal-card">
 
-<h3>📜 Public Offer</h3>
+<h3>
+📜 Public Offer
+</h3>
 
 <p>
 Terms governing the paid brand submission service,
@@ -1103,8 +1443,10 @@ payment, moderation and use of the platform.
 
 <br>
 
-<a href="#offer"
-   onclick="openLegal('offer');return false;">
+<a
+    href="#offer"
+    onclick="openLegal('offer');return false;"
+>
 Read Public Offer →
 </a>
 
@@ -1113,7 +1455,9 @@ Read Public Offer →
 
 <div class="legal-card">
 
-<h3>🔐 Privacy Policy</h3>
+<h3>
+🔐 Privacy Policy
+</h3>
 
 <p>
 Information about personal data collection,
@@ -1122,8 +1466,10 @@ processing, protection and payment-related data.
 
 <br>
 
-<a href="#privacy"
-   onclick="openLegal('privacy');return false;">
+<a
+    href="#privacy"
+    onclick="openLegal('privacy');return false;"
+>
 Read Privacy Policy →
 </a>
 
@@ -1132,7 +1478,9 @@ Read Privacy Policy →
 
 <div class="legal-card">
 
-<h3>💳 Payment & Refund Policy</h3>
+<h3>
+💳 Payment & Refund Policy
+</h3>
 
 <p>
 The standard brand submission service fee is
@@ -1142,8 +1490,10 @@ on the server side.
 
 <br>
 
-<a href="#refund"
-   onclick="openLegal('refund');return false;">
+<a
+    href="#refund"
+    onclick="openLegal('refund');return false;"
+>
 Read Payment & Refund Policy →
 </a>
 
@@ -1152,7 +1502,9 @@ Read Payment & Refund Policy →
 
 <div class="legal-card">
 
-<h3>📋 Terms of Use</h3>
+<h3>
+📋 Terms of Use
+</h3>
 
 <p>
 Rules for lawful use of the website, brand
@@ -1161,23 +1513,33 @@ submissions, content and moderation.
 
 <br>
 
-<a href="#terms"
-   onclick="openLegal('terms');return false;">
+<a
+    href="#terms"
+    onclick="openLegal('terms');return false;"
+>
 Read Terms of Use →
 </a>
 
 </div>
+
 
 </div>
 
 </section>
 
 
-<!-- CONTACT -->
+<!-- =====================================================
+     CONTACT
+===================================================== -->
 
-<section id="info" class="panel">
+<section
+    id="info"
+    class="panel"
+>
 
-<h2>ℹ️ Contact & Legal</h2>
+<h2>
+ℹ️ Contact & Legal
+</h2>
 
 <p class="panel-description">
 
@@ -1189,11 +1551,15 @@ privacy or legal matters, contact us below.
 
 </p>
 
+
 <div class="info-grid">
+
 
 <div class="info-card">
 
-<strong>📞 Phone</strong>
+<strong>
+📞 Phone
+</strong>
 
 <span style="
     color:#80d5ff;
@@ -1207,7 +1573,9 @@ privacy or legal matters, contact us below.
 
 <div class="info-card">
 
-<strong>💬 WhatsApp</strong>
+<strong>
+💬 WhatsApp
+</strong>
 
 <a
     href="https://wa.me/998933843112"
@@ -1222,33 +1590,45 @@ privacy or legal matters, contact us below.
 
 <div class="info-card">
 
-<strong>📧 Email</strong>
+<strong>
+📧 Email
+</strong>
 
-<a href="mailto:allworldbrandsnet@gmail.com">
+<a
+    href="mailto:allworldbrandsnet@gmail.com"
+>
 allworldbrandsnet@gmail.com
 </a>
 
 </div>
+
 
 </div>
 
 
 <div class="payment-logos">
 
-<div class="payment-logo" aria-label="Visa">
 
-<svg viewBox="0 0 100 40"
-xmlns="http://www.w3.org/2000/svg">
+<div
+    class="payment-logo"
+    aria-label="Visa"
+>
+
+<svg
+    viewBox="0 0 100 40"
+    xmlns="http://www.w3.org/2000/svg"
+>
 
 <text
-x="50"
-y="27"
-text-anchor="middle"
-font-family="Arial"
-font-size="27"
-font-weight="900"
-font-style="italic"
-fill="#1434CB">
+    x="50"
+    y="27"
+    text-anchor="middle"
+    font-family="Arial"
+    font-size="27"
+    font-weight="900"
+    font-style="italic"
+    fill="#1434CB"
+>
 VISA
 </text>
 
@@ -1257,42 +1637,66 @@ VISA
 </div>
 
 
-<div class="payment-logo" aria-label="Mastercard">
+<div
+    class="payment-logo"
+    aria-label="Mastercard"
+>
 
-<svg viewBox="0 0 100 40"
-xmlns="http://www.w3.org/2000/svg">
+<svg
+    viewBox="0 0 100 40"
+    xmlns="http://www.w3.org/2000/svg"
+>
 
-<circle cx="42" cy="20" r="13" fill="#EB001B"/>
-<circle cx="58" cy="20" r="13" fill="#F79E1B"/>
+<circle
+    cx="42"
+    cy="20"
+    r="13"
+    fill="#EB001B"
+/>
+
+<circle
+    cx="58"
+    cy="20"
+    r="13"
+    fill="#F79E1B"
+/>
 
 <path
-d="M50 9 A13 13 0 0 0 50 31 A13 13 0 0 0 50 9"
-fill="#FF5F00"/>
+    d="M50 9 A13 13 0 0 0 50 31 A13 13 0 0 0 50 9"
+    fill="#FF5F00"
+/>
 
 </svg>
 
 </div>
 
 
-<div class="payment-logo" aria-label="PayPal">
+<div
+    class="payment-logo"
+    aria-label="PayPal"
+>
 
-<svg viewBox="0 0 100 40"
-xmlns="http://www.w3.org/2000/svg">
+<svg
+    viewBox="0 0 100 40"
+    xmlns="http://www.w3.org/2000/svg"
+>
 
 <text
-x="50"
-y="27"
-text-anchor="middle"
-font-family="Arial"
-font-size="21"
-font-weight="900"
-fill="#003087">
+    x="50"
+    y="27"
+    text-anchor="middle"
+    font-family="Arial"
+    font-size="21"
+    font-weight="900"
+    fill="#003087"
+>
 PayPal
 </text>
 
 </svg>
 
 </div>
+
 
 </div>
 
@@ -1314,16 +1718,20 @@ Global Directory • Legal • Contact
 </main>
 
 
-<!-- DEMO ACQUIRING PAYMENT -->
+<!-- =====================================================
+     DEMO PAYMENT
+===================================================== -->
 
 <div
-id="paymentDemo"
-class="payment-demo"
+    id="paymentDemo"
+    class="payment-demo"
 >
 
 <div class="payment-box">
 
-<h2>💳 Secure Payment</h2>
+<h2>
+💳 Secure Payment
+</h2>
 
 <p>
 You are entering the payment page for the
@@ -1334,9 +1742,14 @@ ALL WORLD BRANDS brand submission service.
 $1.00 USD
 </div>
 
+
 <div class="demo-notice">
 
-<strong>DEMO ACQUIRING MODE</strong><br>
+<strong>
+DEMO ACQUIRING MODE
+</strong>
+
+<br>
 
 No real money will be charged in demo mode.
 Payment confirmation is processed by the server.
@@ -1347,29 +1760,31 @@ official acquiring API and server-side verification.
 
 </div>
 
+
 <div class="payment-actions">
 
 <button
-class="primary-button"
-id="demoPayButton"
-type="button"
+    class="primary-button"
+    id="demoPayButton"
+    type="button"
 >
 Demo — Pay $1
 </button>
 
 <button
-class="secondary-button"
-id="demoCancelButton"
-type="button"
+    class="secondary-button"
+    id="demoCancelButton"
+    type="button"
 >
 Cancel / Back
 </button>
 
 </div>
 
+
 <div
-id="paymentMessage"
-class="form-message"
+    id="paymentMessage"
+    class="form-message"
 ></div>
 
 </div>
@@ -1377,35 +1792,46 @@ class="form-message"
 </div>
 
 
-<!-- LEGAL MODAL -->
+<!-- =====================================================
+     LEGAL MODAL
+===================================================== -->
 
 <div
-id="legalModal"
-class="legal-modal"
+    id="legalModal"
+    class="legal-modal"
 >
 
 <div class="legal-window">
 
 <button
-class="close-legal"
-onclick="closeLegal()"
+    class="close-legal"
+    onclick="closeLegal()"
 >
 ×
 </button>
 
 
-<div id="legalOffer" style="display:none">
+<div
+    id="legalOffer"
+    style="display:none"
+>
 
-<h2>📜 Public Offer</h2>
+<h2>
+📜 Public Offer
+</h2>
 
-<h3>1. General Provisions</h3>
+<h3>
+1. General Provisions
+</h3>
 
 <p>
 This Public Offer defines the terms for using the
 brand submission service provided by ALL WORLD BRANDS.
 </p>
 
-<h3>2. Service</h3>
+<h3>
+2. Service
+</h3>
 
 <p>
 Users may submit information about their company
@@ -1414,14 +1840,18 @@ Applications may be reviewed and moderated before
 publication.
 </p>
 
-<h3>3. Service Fee</h3>
+<h3>
+3. Service Fee
+</h3>
 
 <p>
 The standard brand submission service fee is
 <strong>$1 USD</strong>.
 </p>
 
-<h3>4. Payment</h3>
+<h3>
+4. Payment
+</h3>
 
 <p>
 Payment is processed through an electronic acquiring
@@ -1431,7 +1861,9 @@ response. The website does not rely on a payment
 status supplied by the browser.
 </p>
 
-<h3>5. Moderation</h3>
+<h3>
+5. Moderation
+</h3>
 
 <p>
 Payment does not guarantee automatic publication.
@@ -1440,28 +1872,41 @@ submissions containing unlawful, fraudulent,
 misleading or prohibited information.
 </p>
 
-<h3>6. User Responsibility</h3>
+<h3>
+6. User Responsibility
+</h3>
 
 <p>
 The user is responsible for the accuracy and legality
 of information submitted to the platform.
 </p>
 
-<h3>7. Contact</h3>
+<h3>
+7. Contact
+</h3>
 
 <p>
 Email:
-<strong>allworldbrandsnet@gmail.com</strong>
+<strong>
+allworldbrandsnet@gmail.com
+</strong>
 </p>
 
 </div>
 
 
-<div id="legalPrivacy" style="display:none">
+<div
+    id="legalPrivacy"
+    style="display:none"
+>
 
-<h2>🔐 Privacy Policy</h2>
+<h2>
+🔐 Privacy Policy
+</h2>
 
-<h3>1. Information We May Collect</h3>
+<h3>
+1. Information We May Collect
+</h3>
 
 <p>
 The brand submission process may collect the brand
@@ -1469,7 +1914,9 @@ name, country or territory, contact name, email,
 phone number, website, logo URL and description.
 </p>
 
-<h3>2. Purpose of Processing</h3>
+<h3>
+2. Purpose of Processing
+</h3>
 
 <p>
 Information may be used to process applications,
@@ -1478,7 +1925,9 @@ associate payments with applications and provide
 the requested service.
 </p>
 
-<h3>3. Payment Information</h3>
+<h3>
+3. Payment Information
+</h3>
 
 <p>
 ALL WORLD BRANDS should not store sensitive card
@@ -1488,7 +1937,9 @@ Payment processing is performed by the applicable
 payment provider or acquiring system.
 </p>
 
-<h3>4. Security</h3>
+<h3>
+4. Security
+</h3>
 
 <p>
 Server-side controls are used to protect application
@@ -1499,25 +1950,36 @@ confirmed by the server.
 </div>
 
 
-<div id="legalRefund" style="display:none">
+<div
+    id="legalRefund"
+    style="display:none"
+>
 
-<h2>💳 Payment & Refund Policy</h2>
+<h2>
+💳 Payment & Refund Policy
+</h2>
 
-<h3>1. Service Fee</h3>
+<h3>
+1. Service Fee
+</h3>
 
 <p>
 The standard brand submission service fee is
 <strong>$1 USD</strong>.
 </p>
 
-<h3>2. Payment Verification</h3>
+<h3>
+2. Payment Verification
+</h3>
 
 <p>
 Payment must be confirmed by the server through
 the applicable payment provider or acquiring system.
 </p>
 
-<h3>3. Refunds</h3>
+<h3>
+3. Refunds
+</h3>
 
 <p>
 If the service cannot be provided because of a
@@ -1526,7 +1988,9 @@ charged, the matter may be reviewed after contacting
 ALL WORLD BRANDS.
 </p>
 
-<h3>4. Moderation Rejection</h3>
+<h3>
+4. Moderation Rejection
+</h3>
 
 <p>
 Submissions containing unlawful, fraudulent, spam,
@@ -1538,28 +2002,58 @@ payment terms and applicable law.
 </div>
 
 
-<div id="legalTerms" style="display:none">
+<div
+    id="legalTerms"
+    style="display:none"
+>
 
-<h2>📋 Terms of Use</h2>
+<h2>
+📋 Terms of Use
+</h2>
 
-<h3>1. Lawful Use</h3>
+<h3>
+1. Lawful Use
+</h3>
 
 <p>
 The website may only be used for lawful purposes.
 </p>
 
-<h3>2. Prohibited Content</h3>
+<h3>
+2. Prohibited Content
+</h3>
 
 <ul>
-<li>fraudulent information;</li>
-<li>misleading information;</li>
-<li>malware or harmful links;</li>
-<li>unlawful activities;</li>
-<li>spam;</li>
-<li>content that violates the rights of others.</li>
+
+<li>
+fraudulent information;
+</li>
+
+<li>
+misleading information;
+</li>
+
+<li>
+malware or harmful links;
+</li>
+
+<li>
+unlawful activities;
+</li>
+
+<li>
+spam;
+</li>
+
+<li>
+content that violates the rights of others.
+</li>
+
 </ul>
 
-<h3>3. Brand Information</h3>
+<h3>
+3. Brand Information
+</h3>
 
 <p>
 The user confirms that they have the right to submit
@@ -1567,7 +2061,9 @@ the information, trademarks, logos and other materials
 provided to ALL WORLD BRANDS.
 </p>
 
-<h3>4. Moderation</h3>
+<h3>
+4. Moderation
+</h3>
 
 <p>
 ALL WORLD BRANDS may review, edit, reject or remove
@@ -1618,6 +2114,7 @@ const paymentMessage =
     document.getElementById("paymentMessage");
 
 let countries = [];
+
 let brandCounts = new Map();
 
 let currentSubmissionId = null;
@@ -1629,25 +2126,46 @@ let currentSubmissionId = null;
 
 function goBack(){
 
-    const referrer = document.referrer;
+    const referrer =
+        document.referrer;
 
     if(referrer){
-        try{
-            const previous = new URL(referrer);
 
-            if(previous.origin === window.location.origin){
+        try{
+
+            const previous =
+                new URL(referrer);
+
+            if(
+                previous.origin ===
+                window.location.origin
+            ){
+
                 window.history.back();
+
                 return;
             }
+
         }catch(error){
-            console.warn("Back navigation check failed", error);
+
+            console.warn(
+                "Back navigation check failed",
+                error
+            );
+
         }
+
     }
 
+
     if(window.history.length > 1){
+
         window.history.back();
+
         return;
+
     }
+
 
     window.location.href="/";
 
@@ -1667,8 +2185,12 @@ function countryFlag(code){
     const value =
         String(code).toUpperCase();
 
-    if(!/^[A-Z]{2}$/.test(value)){
+    if(
+        !/^[A-Z]{2}$/.test(value)
+    ){
+
         return "🌍";
+
     }
 
     return value
@@ -1686,7 +2208,7 @@ function countryFlag(code){
 
 
 /* =========================================================
-   ESCAPE
+   ESCAPE HTML
 ========================================================= */
 
 function escapeHtml(value){
@@ -1712,13 +2234,17 @@ async function loadCountries(){
         const response =
             await fetch(
                 "/api/countries",
-                {cache:"no-store"}
+                {
+                    cache:"no-store"
+                }
             );
 
         if(!response.ok){
+
             throw new Error(
                 "Countries could not be loaded."
             );
+
         }
 
         const data =
@@ -1727,31 +2253,53 @@ async function loadCountries(){
         countries =
             Array.isArray(data)
                 ? data
-                : (data.countries || []);
+                : (
+                    data.countries ||
+                    []
+                );
+
 
         resultCount.textContent =
             `${countries.length} countries & territories`;
 
-        populateCountrySelect(countries);
 
-        await loadBrandCounts(countries);
-        renderCountries(countries);
+        populateCountrySelect(
+            countries
+        );
+
+
+        await loadBrandCounts(
+            countries
+        );
+
+
+        renderCountries(
+            countries
+        );
+
 
     }catch(error){
 
         console.error(error);
 
-        resultCount.textContent="Error";
+        resultCount.textContent =
+            "Error";
+
 
         grid.innerHTML=`
+
             <div style="
                 grid-column:1/-1;
                 padding:40px;
                 text-align:center;
                 color:#9aaabd;
             ">
-                Countries and territories could not be loaded.
+
+                Countries and territories
+                could not be loaded.
+
             </div>
+
         `;
 
     }
@@ -1766,25 +2314,37 @@ async function loadCountries(){
 function populateCountrySelect(list){
 
     brandCountry.innerHTML=`
+
         <option value="">
             Select country or territory
         </option>
+
     `;
 
-    list.forEach(country=>{
 
-        const option =
-            document.createElement("option");
+    list.forEach(
+        country=>{
 
-        option.value =
-            country.id;
+            const option =
+                document.createElement(
+                    "option"
+                );
 
-        option.textContent =
-            country.name;
 
-        brandCountry.appendChild(option);
+            option.value =
+                country.id;
 
-    });
+
+            option.textContent =
+                country.name;
+
+
+            brandCountry.appendChild(
+                option
+            );
+
+        }
+    );
 
 }
 
@@ -1795,52 +2355,129 @@ function populateCountrySelect(list){
 
 async function loadBrandCounts(list){
 
-    const results = await Promise.all(
-        list.map(async country => {
-            try{
-                const response = await fetch(
-                    `/api/countries/${encodeURIComponent(country.id)}/brands`,
-                    {cache:"no-store"}
-                );
+    const results =
+        await Promise.all(
 
-                if(!response.ok) return [country.id, 0];
+            list.map(
+                async country=>{
 
-                const data = await response.json();
-                const brands = Array.isArray(data) ? data : (data.brands || []);
-                return [country.id, brands.length];
-            }catch{
-                return [country.id, 0];
-            }
-        })
-    );
+                    try{
 
-    brandCounts = new Map(results);
+                        const response =
+                            await fetch(
+                                `/api/countries/${encodeURIComponent(country.id)}/brands`,
+                                {
+                                    cache:"no-store"
+                                }
+                            );
+
+
+                        if(!response.ok){
+
+                            return [
+                                country.id,
+                                0
+                            ];
+
+                        }
+
+
+                        const data =
+                            await response.json();
+
+
+                        const brands =
+                            Array.isArray(data)
+                                ? data
+                                : (
+                                    data.brands ||
+                                    []
+                                );
+
+
+                        return [
+                            country.id,
+                            brands.length
+                        ];
+
+
+                    }catch{
+
+                        return [
+                            country.id,
+                            0
+                        ];
+
+                    }
+
+                }
+            )
+
+        );
+
+
+    brandCounts =
+        new Map(results);
+
 }
 
 
 /* =========================================================
-   LANDMARK IMAGES
+   COUNTRY IMAGE
 ========================================================= */
 
-function setCountryImage(card, country){
+function setCountryImage(
+    card,
+    country
+){
 
-    const bg = card.querySelector(".country-bg");
+    const bg =
+        card.querySelector(
+            ".country-bg"
+        );
 
-    if(!bg || !country) return;
 
-    const code = String(country.code || "").toLowerCase();
+    if(
+        !bg ||
+        !country
+    ){
 
-    if(!/^[a-z]{2}$/.test(code)) return;
+        return;
 
-    const imagePath = `/images/countries/${code}.jpg`;
+    }
+
+
+    const code =
+        String(
+            country.code || ""
+        ).toLowerCase();
+
+
+    if(
+        !/^[a-z]{2}$/.test(code)
+    ){
+
+        return;
+
+    }
+
+
+    const imagePath =
+        `/images/countries/${code}.jpg`;
+
 
     bg.style.setProperty(
         "--country-image",
         `url("${imagePath}")`
     );
 
-    bg.title = country.name || "";
+
+    bg.title =
+        country.name || "";
+
 }
+
+
 /* =========================================================
    RENDER COUNTRIES
 ========================================================= */
@@ -1849,68 +2486,99 @@ function renderCountries(list){
 
     grid.innerHTML="";
 
+
     resultCount.textContent =
         `${list.length} countries & territories`;
+
 
     if(!list.length){
 
         grid.innerHTML=`
+
             <div style="
                 grid-column:1/-1;
                 padding:50px;
                 text-align:center;
                 color:#8fa2b9;
             ">
+
                 No country or territory found.
+
             </div>
+
         `;
 
         return;
+
     }
+
 
     const fragment =
         document.createDocumentFragment();
 
-    list.forEach(country=>{
 
-        const card =
-            document.createElement("article");
+    list.forEach(
+        country=>{
 
-        card.className="country-card";
+            const card =
+                document.createElement(
+                    "article"
+                );
 
-        card.innerHTML=`
 
-            <div class="country-bg"></div>
+            card.className =
+                "country-card";
 
-            <div class="country-content">
 
-                <div class="country-name">
-                    ${escapeHtml(country.name)}
+            card.innerHTML=`
+
+                <div class="country-bg"></div>
+
+                <div class="country-content">
+
+                    <div class="country-name">
+                        ${escapeHtml(country.name)}
+                    </div>
+
+                    <div class="country-code">
+                        ${escapeHtml(country.code || "")}
+                    </div>
+
+                    <div class="country-brand-count">
+                        ${brandCounts.get(country.id) ?? 0} brands
+                    </div>
+
                 </div>
 
-                <div class="country-code">
-                    ${escapeHtml(country.code || "")}
-                </div>
+            `;
 
-                <div class="country-brand-count">
-                    ${brandCounts.get(country.id) ?? 0} brands
-                </div>
 
-            </div>
-        `;
+            setCountryImage(
+                card,
+                country
+            );
 
-        setCountryImage(card, country);
 
-        card.addEventListener(
-            "click",
-            ()=>loadCountryBrands(country)
-        );
+            card.addEventListener(
+                "click",
+                () =>
+                    loadCountryBrands(
+                        country
+                    )
+            );
 
-        fragment.appendChild(card);
 
-    });
+            fragment.appendChild(
+                card
+            );
 
-    grid.appendChild(fragment);
+        }
+    );
+
+
+    grid.appendChild(
+        fragment
+    );
 
 }
 
@@ -1919,29 +2587,42 @@ function renderCountries(list){
    COUNTRY BRANDS
 ========================================================= */
 
-async function loadCountryBrands(country){
+async function loadCountryBrands(
+    country
+){
 
     try{
 
         const response =
             await fetch(
                 `/api/countries/${encodeURIComponent(country.id)}/brands`,
-                {cache:"no-store"}
+                {
+                    cache:"no-store"
+                }
             );
 
+
         if(!response.ok){
+
             throw new Error(
                 "Brands could not be loaded."
             );
+
         }
+
 
         const data =
             await response.json();
 
+
         const brands =
             Array.isArray(data)
                 ? data
-                : (data.brands || []);
+                : (
+                    data.brands ||
+                    []
+                );
+
 
         if(!brands.length){
 
@@ -1950,7 +2631,9 @@ async function loadCountryBrands(country){
             );
 
             return;
+
         }
+
 
         const names =
             brands
@@ -1960,9 +2643,11 @@ async function loadCountryBrands(country){
                 )
                 .join("\n");
 
+
         alert(
             `${country.name}\n\n${names}`
         );
+
 
     }catch(error){
 
@@ -1988,42 +2673,64 @@ function filterCountries(value){
             .trim()
             .toLowerCase();
 
+
     clearSearch.style.display =
-        query ? "block" : "none";
+        query
+            ? "block"
+            : "none";
+
 
     if(!query){
 
-        renderCountries(countries);
+        renderCountries(
+            countries
+        );
 
         return;
+
     }
 
+
     const filtered =
-        countries.filter(country=>{
+        countries.filter(
+            country=>{
 
-            return(
-                String(country.name || "")
+                return(
+
+                    String(
+                        country.name || ""
+                    )
                     .toLowerCase()
                     .includes(query)
 
-                ||
+                    ||
 
-                String(country.code || "")
+                    String(
+                        country.code || ""
+                    )
                     .toLowerCase()
                     .includes(query)
 
-                ||
+                    ||
 
-                String(country.type || "")
+                    String(
+                        country.type || ""
+                    )
                     .toLowerCase()
                     .includes(query)
-            );
 
-        });
+                );
 
-    renderCountries(filtered);
+            }
+        );
+
+
+    renderCountries(
+        filtered
+    );
 
 }
+
 
 searchInput.addEventListener(
     "input",
@@ -2032,6 +2739,7 @@ searchInput.addEventListener(
             event.target.value
         )
 );
+
 
 clearSearch.addEventListener(
     "click",
@@ -2057,19 +2765,20 @@ brandForm.addEventListener(
 
         event.preventDefault();
 
-        brandSubmit.disabled=true;
+
+        brandSubmit.disabled =
+            true;
+
 
         brandSubmit.textContent =
             "Preparing payment...";
 
-        brandMessage.textContent="";
+
+        brandMessage.textContent =
+            "";
+
 
         try{
-
-            /*
-             * The browser never sends payment_status.
-             * The server creates an unpaid application.
-             */
 
             const applicationResponse =
                 await fetch(
@@ -2088,53 +2797,73 @@ brandForm.addEventListener(
                                 document
                                 .getElementById(
                                     "brandName"
-                                ).value.trim(),
+                                )
+                                .value
+                                .trim(),
 
                             country_id:
-                                Number(brandCountry.value),
+                                Number(
+                                    brandCountry.value
+                                ),
 
                             logo:
                                 document
                                 .getElementById(
                                     "brandLogo"
-                                ).value.trim(),
+                                )
+                                .value
+                                .trim(),
 
                             website:
                                 document
                                 .getElementById(
                                     "brandWebsite"
-                                ).value.trim(),
+                                )
+                                .value
+                                .trim(),
 
                             description:
                                 document
                                 .getElementById(
                                     "brandDescription"
-                                ).value.trim(),
+                                )
+                                .value
+                                .trim(),
 
                             contact_name:
                                 document
                                 .getElementById(
                                     "contactName"
-                                ).value.trim(),
+                                )
+                                .value
+                                .trim(),
 
                             contact_phone:
                                 document
                                 .getElementById(
                                     "contactPhone"
-                                ).value.trim(),
+                                )
+                                .value
+                                .trim(),
 
                             email:
                                 document
                                 .getElementById(
                                     "contactEmail"
-                                ).value.trim()
+                                )
+                                .value
+                                .trim()
 
                         })
+
                     }
                 );
 
+
             const application =
-                await applicationResponse.json();
+                await applicationResponse
+                    .json();
+
 
             if(!applicationResponse.ok){
 
@@ -2144,6 +2873,7 @@ brandForm.addEventListener(
                 );
 
             }
+
 
             currentSubmissionId =
                 application.application_id ||
@@ -2159,10 +2889,6 @@ brandForm.addEventListener(
             }
 
 
-            /*
-             * Ask the server to create the payment.
-             */
-
             const paymentResponse =
                 await fetch(
                     "/api/payments/create",
@@ -2175,14 +2901,19 @@ brandForm.addEventListener(
                         },
 
                         body:JSON.stringify({
+
                             application_id:
                                 currentSubmissionId
+
                         })
+
                     }
                 );
 
+
             const payment =
                 await paymentResponse.json();
+
 
             if(!paymentResponse.ok){
 
@@ -2194,35 +2925,43 @@ brandForm.addEventListener(
             }
 
 
-            /*
-             * When the bank/acquirer is connected,
-             * the server can return the official
-             * payment URL.
-             */
+            if(
+                payment.demo === false &&
+                payment.payment_url
+            ){
 
-            if(payment.demo === false && payment.payment_url){
-                window.location.href = payment.payment_url;
+                window.location.href =
+                    payment.payment_url;
+
                 return;
+
             }
 
-            /*
-             * Demo acquiring stays inside the site so the user
-             * can test the complete server-side payment flow.
-             */
-            paymentDemo.classList.add("active");
-            paymentMessage.textContent="";
+
+            paymentDemo.classList.add(
+                "active"
+            );
+
+
+            paymentMessage.textContent =
+                "";
+
 
         }catch(error){
 
             console.error(error);
 
+
             brandMessage.textContent =
                 error.message ||
                 "Something went wrong.";
 
+
         }finally{
 
-            brandSubmit.disabled=false;
+            brandSubmit.disabled =
+                false;
+
 
             brandSubmit.textContent =
                 "Continue to payment — $1";
@@ -2238,123 +2977,166 @@ brandForm.addEventListener(
 ========================================================= */
 
 document
-.getElementById("demoPayButton")
-.addEventListener(
-    "click",
-    async()=>{
+    .getElementById(
+        "demoPayButton"
+    )
+    .addEventListener(
+        "click",
+        async()=>{
 
-        if(!currentSubmissionId){
-            return;
-        }
+            if(!currentSubmissionId){
 
-        const button =
-            document.getElementById(
-                "demoPayButton"
-            );
-
-        button.disabled=true;
-
-        button.textContent =
-            "Processing...";
-
-        paymentMessage.textContent="";
-
-        try{
-
-            /*
-             * Demo confirmation is still server-side.
-             * The browser never directly sets payment_status.
-             */
-
-            const response =
-                await fetch(
-                    "/api/payments/demo/confirm",
-                    {
-                        method:"POST",
-
-                        headers:{
-                            "Content-Type":
-                                "application/json"
-                        },
-
-                        body:JSON.stringify({
-                            application_id:
-                                currentSubmissionId
-                        })
-                    }
-                );
-
-            const data =
-                await response.json();
-
-            if(!response.ok){
-
-                throw new Error(
-                    data.error ||
-                    "Payment failed."
-                );
+                return;
 
             }
 
-            paymentMessage.textContent =
-                "Payment confirmed by the server.";
 
-            brandMessage.innerHTML = `
-                <strong style="color:#8dffb5">
-                    Payment successful.
-                </strong>
-                <br>
-                Your brand application has been received
-                and is waiting for moderation.
-            `;
+            const button =
+                document.getElementById(
+                    "demoPayButton"
+                );
 
-            paymentDemo.classList.remove("active");
 
-            brandForm.reset();
+            button.disabled =
+                true;
 
-            currentSubmissionId=null;
-
-        }catch(error){
-
-            paymentMessage.textContent =
-                error.message ||
-                "Payment failed.";
-
-        }finally{
-
-            button.disabled=false;
 
             button.textContent =
-                "Demo — Pay $1";
+                "Processing...";
+
+
+            paymentMessage.textContent =
+                "";
+
+
+            try{
+
+                const response =
+                    await fetch(
+                        "/api/payments/demo/confirm",
+                        {
+                            method:"POST",
+
+                            headers:{
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:JSON.stringify({
+
+                                application_id:
+                                    currentSubmissionId
+
+                            })
+
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if(!response.ok){
+
+                    throw new Error(
+                        data.error ||
+                        "Payment failed."
+                    );
+
+                }
+
+
+                paymentMessage.textContent =
+                    "Payment confirmed by the server.";
+
+
+                brandMessage.innerHTML = `
+
+                    <strong style="color:#8dffb5">
+                        Payment successful.
+                    </strong>
+
+                    <br>
+
+                    Your brand application has been received
+                    and is waiting for moderation.
+
+                `;
+
+
+                paymentDemo.classList.remove(
+                    "active"
+                );
+
+
+                brandForm.reset();
+
+
+                currentSubmissionId =
+                    null;
+
+
+            }catch(error){
+
+                paymentMessage.textContent =
+                    error.message ||
+                    "Payment failed.";
+
+
+            }finally{
+
+                button.disabled =
+                    false;
+
+
+                button.textContent =
+                    "Demo — Pay $1";
+
+            }
 
         }
-
-    }
-);
+    );
 
 
 /* =========================================================
-   CANCEL / BACK
+   CANCEL / BACK PAYMENT
 ========================================================= */
 
 document
-.getElementById("demoCancelButton")
-.addEventListener(
-    "click",
-    ()=>{
+    .getElementById(
+        "demoCancelButton"
+    )
+    .addEventListener(
+        "click",
+        ()=>{
 
-        paymentDemo.classList.remove("active");
+            paymentDemo.classList.remove(
+                "active"
+            );
 
-        paymentMessage.textContent="";
-        currentSubmissionId=null;
-        brandSubmit.disabled=false;
-        brandSubmit.textContent="Continue to payment — $1";
 
-        brandMessage.textContent =
-            "Payment cancelled. The application remains unpaid.";
+            paymentMessage.textContent =
+                "";
 
-    }
-);
+
+            currentSubmissionId =
+                null;
+
+
+            brandSubmit.disabled =
+                false;
+
+
+            brandSubmit.textContent =
+                "Continue to payment — $1";
+
+
+            brandMessage.textContent =
+                "Payment cancelled. The application remains unpaid.";
+
+        }
+    );
 
 
 /* =========================================================
@@ -2368,45 +3150,76 @@ function openLegal(type){
             "legalModal"
         );
 
+
     [
         "legalOffer",
         "legalPrivacy",
         "legalRefund",
         "legalTerms"
-    ].forEach(id=>{
+    ]
+    .forEach(
+        id=>{
 
-        document.getElementById(id)
-            .style.display="none";
+            document
+                .getElementById(id)
+                .style.display =
+                    "none";
 
-    });
+        }
+    );
+
 
     const target = {
-        offer:"legalOffer",
-        privacy:"legalPrivacy",
-        refund:"legalRefund",
-        terms:"legalTerms"
+
+        offer:
+            "legalOffer",
+
+        privacy:
+            "legalPrivacy",
+
+        refund:
+            "legalRefund",
+
+        terms:
+            "legalTerms"
+
     }[type];
+
 
     if(target){
 
-        document.getElementById(target)
-            .style.display="block";
+        document
+            .getElementById(target)
+            .style.display =
+                "block";
 
     }
 
-    modal.classList.add("active");
 
-    document.body.style.overflow="hidden";
+    modal.classList.add(
+        "active"
+    );
+
+
+    document.body.style.overflow =
+        "hidden";
 
 }
+
 
 function closeLegal(){
 
     document
-        .getElementById("legalModal")
-        .classList.remove("active");
+        .getElementById(
+            "legalModal"
+        )
+        .classList.remove(
+            "active"
+        );
 
-    document.body.style.overflow="";
+
+    document.body.style.overflow =
+        "";
 
 }
 
@@ -2419,11 +3232,16 @@ document.addEventListener(
     "keydown",
     event=>{
 
-        if(event.key==="Escape"){
+        if(
+            event.key ===
+            "Escape"
+        ){
 
             closeLegal();
 
-            paymentDemo.classList.remove("active");
+            paymentDemo.classList.remove(
+                "active"
+            );
 
         }
 
@@ -2436,41 +3254,66 @@ document.addEventListener(
 ========================================================= */
 
 document
-.getElementById("legalModal")
-.addEventListener(
-    "click",
-    event=>{
+    .getElementById(
+        "legalModal"
+    )
+    .addEventListener(
+        "click",
+        event=>{
 
-        if(
-            event.target.id === "legalModal"
-        ){
+            if(
+                event.target.id ===
+                "legalModal"
+            ){
 
-            closeLegal();
+                closeLegal();
+
+            }
 
         }
+    );
 
+
+/* =========================================================
+   PAYMENT STATE RESET
+========================================================= */
+
+function resetPaymentUi(){
+
+    paymentDemo.classList.remove(
+        "active"
+    );
+
+
+    paymentMessage.textContent =
+        "";
+
+
+    brandSubmit.disabled =
+        false;
+
+
+    brandSubmit.textContent =
+        "Continue to payment — $1";
+
+}
+
+
+window.addEventListener(
+    "pageshow",
+    ()=>{
+        resetPaymentUi();
     }
 );
 
 
-/* =========================================================
-   PAYMENT STATE RESET / BROWSER BACK
-========================================================= */
+window.addEventListener(
+    "popstate",
+    ()=>{
+        resetPaymentUi();
+    }
+);
 
-function resetPaymentUi(){
-    paymentDemo.classList.remove("active");
-    paymentMessage.textContent="";
-    brandSubmit.disabled=false;
-    brandSubmit.textContent="Continue to payment — $1";
-}
-
-window.addEventListener("pageshow", ()=>{
-    resetPaymentUi();
-});
-
-window.addEventListener("popstate", ()=>{
-    resetPaymentUi();
-});
 
 /* =========================================================
    START
