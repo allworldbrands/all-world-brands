@@ -291,22 +291,18 @@ a{
     font-size:12px;
 }
 
-/* =========================================================
-   COUNTRY CARDS
-========================================================= */
-
 .countries-grid{
     display:grid;
-    grid-template-columns:repeat(5,minmax(0,1fr));
-    gap:9px;
+    grid-template-columns:repeat(10,minmax(0,1fr));
+    gap:5px;
 }
 
 .country-card{
     position:relative;
     min-width:0;
-    aspect-ratio:16/9;
+    aspect-ratio:2.4/1;
     overflow:hidden;
-    border-radius:10px;
+    border-radius:8px;
     border:1px solid rgba(255,255,255,.11);
     background:linear-gradient(
         135deg,
@@ -330,73 +326,56 @@ a{
     position:absolute;
     inset:0;
     background:
-        linear-gradient(
-            rgba(0,8,18,.12),
-            rgba(0,8,18,.68)
-        ),
-        var(--country-image, none)
-        center/cover no-repeat,
-        radial-gradient(
-            circle at 80% 15%,
-            rgba(0,185,255,.22),
-            transparent 43%
-        );
+        linear-gradient(rgba(0,8,18,.12),rgba(0,8,18,.68)),
+        var(--country-image, none) center/cover no-repeat,
+        radial-gradient(circle at 80% 15%,rgba(0,185,255,.22),transparent 43%);
 }
 
 .country-content{
     position:absolute;
     inset:0;
-    padding:14px;
+    padding:7px;
     display:flex;
     flex-direction:column;
-    justify-content:center;
+    justify-content:flex-end;
     background:linear-gradient(
         transparent 5%,
-        rgba(1,5,14,.82)
+        rgba(1,5,14,.95)
     );
 }
 
-/* DAVLAT NOMI */
 .country-name{
-    font-size:30px;
-    font-weight:900;
-    line-height:1.08;
+    font-size:10px;
+    font-weight:850;
+    line-height:1.15;
     overflow-wrap:anywhere;
     display:-webkit-box;
     -webkit-box-orient:vertical;
-    -webkit-line-clamp:2;
+    -webkit-line-clamp:3;
     overflow:hidden;
-    padding-right:55px;
-    text-shadow:
-        0 2px 8px rgba(0,0,0,.85),
-        0 0 18px rgba(0,0,0,.45);
+    padding-right:4px;
 }
 
-/* COUNTRY CODE */
 .country-code{
-    margin-top:6px;
-    font-size:9px;
+    margin-top:4px;
+    font-size:8px;
     color:#8298b2;
     letter-spacing:.5px;
 }
 
-/* BRAND SONI */
 .country-brand-count{
     position:absolute;
-    right:10px;
+    right:9px;
     bottom:8px;
-    z-index:5;
-    font-size:10px;
+    font-size:8px;
     line-height:1;
-    font-weight:500;
-    color:rgba(255,255,255,.68);
+    color:rgba(255,255,255,.62);
+    letter-spacing:.2px;
     white-space:nowrap;
-    text-shadow:0 1px 5px rgba(0,0,0,.8);
 }
 
-/* Eski bayroq elementi ishlatilmasligi uchun */
 .country-flag{
-    display:none !important;
+    display:none;
 }
 
 .panel{
@@ -743,39 +722,26 @@ a{
     cursor:pointer;
 }
 
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
 @media(max-width:1200px){
-
     .countries-grid{
-        grid-template-columns:repeat(4,minmax(0,1fr));
-    }
-
-    .country-name{
-        font-size:26px;
+        grid-template-columns:repeat(8,minmax(0,1fr));
+        gap:5px;
     }
 }
 
 @media(max-width:900px){
-
     .countries-grid{
-        grid-template-columns:repeat(3,minmax(0,1fr));
+        grid-template-columns:repeat(6,minmax(0,1fr));
+        gap:5px;
     }
 
     .info-grid,
     .legal-grid{
         grid-template-columns:1fr;
     }
-
-    .country-name{
-        font-size:25px;
-    }
 }
 
 @media(max-width:700px){
-
     .header-inner{
         min-height:58px;
     }
@@ -793,32 +759,11 @@ a{
     }
 
     .countries-grid{
-        grid-template-columns:repeat(2,minmax(0,1fr));
-        gap:8px;
-    }
-
-    .country-card{
-        border-radius:12px;
-    }
-
-    .country-content{
-        padding:11px;
+        grid-template-columns:repeat(4,minmax(0,1fr));
+        gap:7px;
     }
 
     .country-name{
-        font-size:24px;
-        line-height:1.05;
-        padding-right:45px;
-    }
-
-    .country-code{
-        font-size:8px;
-        margin-top:4px;
-    }
-
-    .country-brand-count{
-        right:8px;
-        bottom:7px;
         font-size:9px;
     }
 
@@ -833,10 +778,15 @@ a{
     .panel{
         padding:20px;
     }
+
+    .footer{
+        flex-direction:column;
+        text-align:center;
+        gap:12px;
+    }
 }
 
 @media(max-width:480px){
-
     .main,
     .header-inner{
         width:calc(100% - 18px);
@@ -847,32 +797,22 @@ a{
     }
 
     .countries-grid{
-        grid-template-columns:repeat(2,minmax(0,1fr));
+        grid-template-columns:repeat(4,minmax(0,1fr));
         gap:6px;
     }
 
-    .country-card{
-        border-radius:10px;
-    }
-
-    .country-content{
-        padding:9px;
-    }
-
     .country-name{
-        font-size:20px;
-        line-height:1.05;
-        padding-right:35px;
+        font-size:24px;
     }
 
     .country-code{
-        display:none;
+        font-size:7px;
     }
 
     .country-brand-count{
         right:7px;
         bottom:6px;
-        font-size:8px;
+        font-size:7px;
     }
 
     .payment-logo{
@@ -1678,6 +1618,7 @@ const paymentMessage =
     document.getElementById("paymentMessage");
 
 let countries = [];
+let brandCounts = new Map();
 
 let currentSubmissionId = null;
 
@@ -1688,14 +1629,58 @@ let currentSubmissionId = null;
 
 function goBack(){
 
-    if(
-        window.history.length > 1 &&
-        document.referrer
-    ){
-        window.history.back();
-    }else{
-        window.location.href="/";
+    const referrer = document.referrer;
+
+    if(referrer){
+        try{
+            const previous = new URL(referrer);
+
+            if(previous.origin === window.location.origin){
+                window.history.back();
+                return;
+            }
+        }catch(error){
+            console.warn("Back navigation check failed", error);
+        }
     }
+
+    if(window.history.length > 1){
+        window.history.back();
+        return;
+    }
+
+    window.location.href="/";
+
+}
+
+
+/* =========================================================
+   FLAG
+========================================================= */
+
+function countryFlag(code){
+
+    if(!code){
+        return "🌍";
+    }
+
+    const value =
+        String(code).toUpperCase();
+
+    if(!/^[A-Z]{2}$/.test(value)){
+        return "🌍";
+    }
+
+    return value
+        .split("")
+        .map(
+            char =>
+                String.fromCodePoint(
+                    127397 +
+                    char.charCodeAt(0)
+                )
+        )
+        .join("");
 
 }
 
@@ -1749,6 +1734,7 @@ async function loadCountries(){
 
         populateCountrySelect(countries);
 
+        await loadBrandCounts(countries);
         renderCountries(countries);
 
     }catch(error){
@@ -1804,30 +1790,31 @@ function populateCountrySelect(list){
 
 
 /* =========================================================
-   GET BRAND COUNT
+   LOAD BRAND COUNTS
 ========================================================= */
 
-function getBrandCount(country){
+async function loadBrandCounts(list){
 
-    /*
-     * Supports the common field names that may already
-     * be returned by the server.
-     */
+    const results = await Promise.all(
+        list.map(async country => {
+            try{
+                const response = await fetch(
+                    `/api/countries/${encodeURIComponent(country.id)}/brands`,
+                    {cache:"no-store"}
+                );
 
-    const count =
-        country.brand_count ??
-        country.brands_count ??
-        country.brandCount ??
-        country.brandsCount ??
-        0;
+                if(!response.ok) return [country.id, 0];
 
-    const number =
-        Number(count);
+                const data = await response.json();
+                const brands = Array.isArray(data) ? data : (data.brands || []);
+                return [country.id, brands.length];
+            }catch{
+                return [country.id, 0];
+            }
+        })
+    );
 
-    return Number.isFinite(number)
-        ? number
-        : 0;
-
+    brandCounts = new Map(results);
 }
 
 
@@ -1867,20 +1854,12 @@ function renderCountries(list){
             document.createElement("article");
 
         card.className="country-card";
-
         if(country.code){
-
             card.style.setProperty(
                 "--country-image",
-                `url("/images/countries/${encodeURIComponent(
-                    String(country.code).toUpperCase()
-                )}.png")`
+                `url("/images/countries/${encodeURIComponent(String(country.code).toUpperCase())}.png")`
             );
-
         }
-
-        const brandCount =
-            getBrandCount(country);
 
         card.innerHTML=`
 
@@ -1892,8 +1871,12 @@ function renderCountries(list){
                     ${escapeHtml(country.name)}
                 </div>
 
+                <div class="country-code">
+                    ${escapeHtml(country.code || "")}
+                </div>
+
                 <div class="country-brand-count">
-                    ${brandCount} brands
+                    ${brandCounts.get(country.id) ?? 0} brands
                 </div>
 
             </div>
@@ -2064,6 +2047,11 @@ brandForm.addEventListener(
 
         try{
 
+            /*
+             * The browser never sends payment_status.
+             * The server creates an unpaid application.
+             */
+
             const applicationResponse =
                 await fetch(
                     "/api/brand-applications",
@@ -2142,6 +2130,7 @@ brandForm.addEventListener(
                 application.application_id ||
                 application.id;
 
+
             if(!currentSubmissionId){
 
                 throw new Error(
@@ -2149,6 +2138,11 @@ brandForm.addEventListener(
                 );
 
             }
+
+
+            /*
+             * Ask the server to create the payment.
+             */
 
             const paymentResponse =
                 await fetch(
@@ -2180,20 +2174,23 @@ brandForm.addEventListener(
 
             }
 
-            if(
-                payment.demo === false &&
-                payment.payment_url
-            ){
 
-                window.location.href =
-                    payment.payment_url;
+            /*
+             * When the bank/acquirer is connected,
+             * the server can return the official
+             * payment URL.
+             */
 
+            if(payment.demo === false && payment.payment_url){
+                window.location.href = payment.payment_url;
                 return;
-
             }
 
+            /*
+             * Demo acquiring stays inside the site so the user
+             * can test the complete server-side payment flow.
+             */
             paymentDemo.classList.add("active");
-
             paymentMessage.textContent="";
 
         }catch(error){
@@ -2244,6 +2241,11 @@ document
         paymentMessage.textContent="";
 
         try{
+
+            /*
+             * Demo confirmation is still server-side.
+             * The browser never directly sets payment_status.
+             */
 
             const response =
                 await fetch(
@@ -2325,13 +2327,9 @@ document
         paymentDemo.classList.remove("active");
 
         paymentMessage.textContent="";
-
         currentSubmissionId=null;
-
         brandSubmit.disabled=false;
-
-        brandSubmit.textContent =
-            "Continue to payment — $1";
+        brandSubmit.textContent="Continue to payment — $1";
 
         brandMessage.textContent =
             "Payment cancelled. The application remains unpaid.";
@@ -2441,32 +2439,19 @@ document
 ========================================================= */
 
 function resetPaymentUi(){
-
     paymentDemo.classList.remove("active");
-
     paymentMessage.textContent="";
-
     brandSubmit.disabled=false;
-
-    brandSubmit.textContent =
-        "Continue to payment — $1";
-
+    brandSubmit.textContent="Continue to payment — $1";
 }
 
-window.addEventListener(
-    "pageshow",
-    ()=>{
-        resetPaymentUi();
-    }
-);
+window.addEventListener("pageshow", ()=>{
+    resetPaymentUi();
+});
 
-window.addEventListener(
-    "popstate",
-    ()=>{
-        resetPaymentUi();
-    }
-);
-
+window.addEventListener("popstate", ()=>{
+    resetPaymentUi();
+});
 
 /* =========================================================
    START
