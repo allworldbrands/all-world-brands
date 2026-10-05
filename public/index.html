@@ -300,7 +300,7 @@ a{
 .country-card{
     position:relative;
     min-width:0;
-    aspect-ratio:2.4/1;
+    aspect-ratio:16/9;
     overflow:hidden;
     border-radius:8px;
     border:1px solid rgba(255,255,255,.11);
@@ -326,7 +326,7 @@ a{
     position:absolute;
     inset:0;
     background:
-        linear-gradient(rgba(0,8,18,.12),rgba(0,8,18,.68)),
+        linear-gradient(rgba(0,8,18,.10),rgba(0,8,18,.72)),
         var(--country-image, none) center/cover no-repeat,
         radial-gradient(circle at 80% 15%,rgba(0,185,255,.22),transparent 43%);
 }
@@ -1819,6 +1819,24 @@ async function loadBrandCounts(list){
 
 
 /* =========================================================
+   LANDMARK IMAGES
+========================================================= */
+
+function setCountryImage(card, country){
+    const bg = card.querySelector('.country-bg');
+    if (!bg || !country?.id) return;
+
+    fetch(`/api/countries/${encodeURIComponent(country.id)}/image`, {cache:"force-cache"})
+        .then(response => response.ok ? response.json() : null)
+        .then(data => {
+            if (!data?.image_url) return;
+            bg.style.setProperty('--country-image', `url("${String(data.image_url).replaceAll('"','%22')}")`);
+            bg.title = data.image_title || country.name;
+        })
+        .catch(() => {});
+}
+
+/* =========================================================
    RENDER COUNTRIES
 ========================================================= */
 
@@ -1854,12 +1872,6 @@ function renderCountries(list){
             document.createElement("article");
 
         card.className="country-card";
-        if(country.code){
-            card.style.setProperty(
-                "--country-image",
-                `url("/images/countries/${encodeURIComponent(String(country.code).toUpperCase())}.png")`
-            );
-        }
 
         card.innerHTML=`
 
@@ -1881,6 +1893,8 @@ function renderCountries(list){
 
             </div>
         `;
+
+        setCountryImage(card, country);
 
         card.addEventListener(
             "click",
