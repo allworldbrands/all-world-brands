@@ -79,6 +79,15 @@ CREATE TABLE IF NOT EXISTS countries (
     slug TEXT UNIQUE
 );
 
+CREATE TABLE IF NOT EXISTS country_images (
+    country_id INTEGER PRIMARY KEY,
+    image_url TEXT,
+    image_title TEXT,
+    source_url TEXT,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(country_id) REFERENCES countries(id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS brands (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     country_id INTEGER NOT NULL,
