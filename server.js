@@ -5,11 +5,7 @@ const crypto = require("crypto");
 
 const app = express();
 
-/* =========================================================
-   CONFIGURATION
-========================================================= */
-
-const PORT = Number(process.env.PORT || 3000);
+const PORT = process.env.PORT || 3000;
 
 const SITE_URL =
     process.env.PUBLIC_BASE_URL ||
@@ -19,41 +15,22 @@ const DB_FILE =
     process.env.DB_FILE ||
     path.join(__dirname, "database.db");
 
-/*
- * Payment modes:
- *
- * demo = local/server demo acquiring flow
- * bank = future real bank acquiring integration
- *
- * IMPORTANT:
- * The browser must never be trusted to mark an application as paid.
- */
-const PAYMENT_MODE =
-    String(process.env.PAYMENT_MODE || "demo").toLowerCase();
+const DEMO_ACQUIRING =
+    process.env.DEMO_ACQUIRING !== "false";
 
-const DEMO_PAYMENT_ENABLED =
-    String(process.env.DEMO_PAYMENT_ENABLED || "true").toLowerCase() === "true";
+const SUBMISSION_AMOUNT = 1;
+const SUBMISSION_CURRENCY = "USD";
 
-const APPLICATION_AMOUNT = 1;
-const APPLICATION_CURRENCY = "USD";
-
-const app = express();
-
-app.disable("x-powered-by");
+const db = new Database(DB_FILE);
 
 app.use(express.json({ limit: "2mb" }));
 app.use(express.urlencoded({ extended: true }));
 
 app.use(
     express.static(
-        path.join(__dirname, "public"),
-        {
-            extensions: ["html"]
-        }
+        path.join(__dirname, "public")
     )
 );
-
-const db = new Database(DB_FILE);
 
 db.pragma("journal_mode = WAL");
 db.pragma("foreign_keys = ON");
@@ -67,18 +44,24 @@ db.exec(`
 CREATE TABLE IF NOT EXISTS countries (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL UNIQUE,
-    code TEXT NOT NULL UNIQUE,
-    slug TEXT NOT NULL UNIQUE
+    code TEXT,
+    flag TEXT,
+    type TEXT DEFAULT 'country',
+    slug TEXT UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS brands (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+
     country_id INTEGER NOT NULL,
+
     name TEXT NOT NULL,
-    slug TEXT NOT NULL UNIQUE,
+    slug TEXT UNIQUE,
+
     logo TEXT,
     website TEXT,
     description TEXT,
+
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 
     FOREIGN KEY(country_id)
@@ -112,21 +95,25 @@ CREATE TABLE IF NOT EXISTS brand_applications (
     country_id INTEGER NOT NULL,
 
     brand_name TEXT NOT NULL,
+
     logo TEXT,
     website TEXT,
     description TEXT,
 
     contact_name TEXT,
     contact_phone TEXT,
+    contact_email TEXT,
 
     amount REAL NOT NULL DEFAULT 1,
     currency TEXT NOT NULL DEFAULT 'USD',
 
     payment_status TEXT NOT NULL DEFAULT 'unpaid',
 
+    payment_provider TEXT DEFAULT 'demo_acquiring',
+
     payment_reference TEXT,
-    payment_provider TEXT,
-    payment_session_id TEXT,
+
+    payment_url TEXT,
 
     paid_at DATETIME,
 
@@ -136,48 +123,101 @@ CREATE TABLE IF NOT EXISTS brand_applications (
         REFERENCES countries(id)
 );
 
-CREATE TABLE IF NOT EXISTS payment_sessions (
+CREATE TABLE IF NOT EXISTS payment_transactions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
 
     application_id INTEGER NOT NULL,
 
-    session_id TEXT NOT NULL UNIQUE,
-
     provider TEXT NOT NULL,
 
+    reference TEXT NOT NULL UNIQUE,
+
     amount REAL NOT NULL,
+
     currency TEXT NOT NULL,
 
     status TEXT NOT NULL DEFAULT 'created',
 
-    provider_reference TEXT,
+    provider_transaction_id TEXT,
 
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    completed_at DATETIME,
+
+    paid_at DATETIME,
 
     FOREIGN KEY(application_id)
         REFERENCES brand_applications(id)
         ON DELETE CASCADE
 );
 
-CREATE INDEX IF NOT EXISTS idx_brands_country
-ON brands(country_id);
-
-CREATE INDEX IF NOT EXISTS idx_brands_name
-ON brands(name);
-
-CREATE INDEX IF NOT EXISTS idx_comments_brand
-ON comments(brand_id);
-
-CREATE INDEX IF NOT EXISTS idx_comments_country
-ON comments(country_id);
-
-CREATE INDEX IF NOT EXISTS idx_applications_payment
-ON brand_applications(payment_status);
-
-CREATE INDEX IF NOT EXISTS idx_payment_sessions_application
-ON payment_sessions(application_id);
+CREATE TABLE IF NOT EXISTS admin_users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT NOT NULL UNIQUE,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
 `);
+
+
+/* =========================================================
+   SAFE MIGRATIONS
+========================================================= */
+
+function columnExists(table, column) {
+
+    const columns =
+        db.prepare(
+            `PRAGMA table_info(${table})`
+        ).all();
+
+    return columns.some(
+        item => item.name === column
+    );
+}
+
+function addColumnIfMissing(
+    table,
+    column,
+    definition
+) {
+
+    if (!columnExists(table, column)) {
+
+        db.exec(
+            `ALTER TABLE ${table}
+             ADD COLUMN ${column} ${definition}`
+        );
+
+    }
+}
+
+addColumnIfMissing(
+    "brand_applications",
+    "contact_email",
+    "TEXT"
+);
+
+addColumnIfMissing(
+    "brand_applications",
+    "payment_provider",
+    "TEXT DEFAULT 'demo_acquiring'"
+);
+
+addColumnIfMissing(
+    "brand_applications",
+    "payment_reference",
+    "TEXT"
+);
+
+addColumnIfMissing(
+    "brand_applications",
+    "payment_url",
+    "TEXT"
+);
+
+addColumnIfMissing(
+    "brand_applications",
+    "paid_at",
+    "DATETIME"
+);
 
 
 /* =========================================================
@@ -185,25 +225,30 @@ ON payment_sessions(application_id);
 ========================================================= */
 
 function slugify(value) {
+
     return String(value || "")
         .trim()
         .toLowerCase()
         .normalize("NFKD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .replace(/[^a-z0-9\s-]/g, "")
+        .replace(/[^\w\s-]/g, "")
         .replace(/\s+/g, "-")
         .replace(/-+/g, "-")
         .replace(/^-|-$/g, "");
 }
 
-function makeUniqueSlug(table, value, id = null) {
 
-    const base =
-        slugify(value) ||
+function uniqueSlug(
+    table,
+    base,
+    id = null
+) {
+
+    let slug =
+        slugify(base) ||
         crypto.randomUUID();
 
-    let candidate = base;
-    let counter = 2;
+    let candidate = slug;
+    let number = 2;
 
     while (true) {
 
@@ -218,6 +263,7 @@ function makeUniqueSlug(table, value, id = null) {
                     WHERE slug = ?
                     AND id != ?
                 `).get(candidate, id)
+
                 : db.prepare(`
                     SELECT id
                     FROM countries
@@ -233,6 +279,7 @@ function makeUniqueSlug(table, value, id = null) {
                     WHERE slug = ?
                     AND id != ?
                 `).get(candidate, id)
+
                 : db.prepare(`
                     SELECT id
                     FROM brands
@@ -244,9 +291,11 @@ function makeUniqueSlug(table, value, id = null) {
             return candidate;
         }
 
-        candidate = `${base}-${counter++}`;
+        candidate =
+            `${slug}-${number++}`;
     }
 }
+
 
 function safeUrl(value) {
 
@@ -256,7 +305,8 @@ function safeUrl(value) {
 
     try {
 
-        const url = new URL(String(value).trim());
+        const url =
+            new URL(String(value).trim());
 
         if (
             url.protocol !== "http:" &&
@@ -268,460 +318,481 @@ function safeUrl(value) {
         return url.toString();
 
     } catch {
+
         return "";
     }
 }
 
-function flagFromCode(code) {
 
-    if (!/^[A-Z]{2}$/.test(code)) {
-        return "";
-    }
-
-    return code
-        .split("")
-        .map(
-            char =>
-                String.fromCodePoint(
-                    127397 + char.charCodeAt(0)
-                )
-        )
-        .join("");
-}
-
-function normalizeText(value, maxLength) {
+function cleanText(
+    value,
+    max
+) {
 
     return String(value || "")
         .trim()
-        .slice(0, maxLength);
+        .slice(0, max);
+}
+
+
+function isValidEmail(email) {
+
+    if (!email) {
+        return false;
+    }
+
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        .test(email);
+}
+
+
+function htmlEscape(value) {
+
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
 }
 
 
 /* =========================================================
-   BASIC CONTENT MODERATION
+   COUNTRY / TERRITORY DATA
 ========================================================= */
 
-const BLOCKED_CONTENT = [
-    "porn",
-    "pornography",
-    "xxx",
-    "sex video",
-    "sexual services",
-    "escort service",
-    "child sexual",
-    "csam"
+/*
+ * No starter brands are inserted.
+ *
+ * This list intentionally contains countries
+ * plus territories / special geographic entities.
+ *
+ * The database uses:
+ *
+ * type = country
+ * type = territory
+ */
+
+const locations = [
+
+    ["Afghanistan","AF","🇦🇫","country"],
+    ["Albania","AL","🇦🇱","country"],
+    ["Algeria","DZ","🇩🇿","country"],
+    ["Andorra","AD","🇦🇩","country"],
+    ["Angola","AO","🇦🇴","country"],
+    ["Anguilla","AI","🇦🇮","territory"],
+    ["Antarctica","AQ","🇦🇶","territory"],
+    ["Antigua and Barbuda","AG","🇦🇬","country"],
+    ["Argentina","AR","🇦🇷","country"],
+    ["Armenia","AM","🇦🇲","country"],
+    ["Aruba","AW","🇦🇼","territory"],
+    ["Australia","AU","🇦🇺","country"],
+    ["Austria","AT","🇦🇹","country"],
+    ["Azerbaijan","AZ","🇦🇿","country"],
+
+    ["Bahamas","BS","🇧🇸","country"],
+    ["Bahrain","BH","🇧🇭","country"],
+    ["Bangladesh","BD","🇧🇩","country"],
+    ["Barbados","BB","🇧🇧","country"],
+    ["Belarus","BY","🇧🇾","country"],
+    ["Belgium","BE","🇧🇪","country"],
+    ["Belize","BZ","🇧🇿","country"],
+    ["Benin","BJ","🇧🇯","country"],
+    ["Bermuda","BM","🇧🇲","territory"],
+    ["Bhutan","BT","🇧🇹","country"],
+    ["Bolivia","BO","🇧🇴","country"],
+    ["Bonaire, Sint Eustatius and Saba","BQ","🇧🇶","territory"],
+    ["Bosnia and Herzegovina","BA","🇧🇦","country"],
+    ["Botswana","BW","🇧🇼","country"],
+    ["Bouvet Island","BV","🇧🇻","territory"],
+    ["Brazil","BR","🇧🇷","country"],
+    ["British Indian Ocean Territory","IO","🇮🇴","territory"],
+    ["Brunei","BN","🇧🇳","country"],
+    ["Bulgaria","BG","🇧🇬","country"],
+    ["Burkina Faso","BF","🇧🇫","country"],
+    ["Burundi","BI","🇧🇮","country"],
+
+    ["Cabo Verde","CV","🇨🇻","country"],
+    ["Cambodia","KH","🇰🇭","country"],
+    ["Cameroon","CM","🇨🇲","country"],
+    ["Canada","CA","🇨🇦","country"],
+    ["Cayman Islands","KY","🇰🇾","territory"],
+    ["Central African Republic","CF","🇨🇫","country"],
+    ["Chad","TD","🇹🇩","country"],
+    ["Chile","CL","🇨🇱","country"],
+    ["China","CN","🇨🇳","country"],
+    ["Christmas Island","CX","🇨🇽","territory"],
+    ["Cocos Islands","CC","🇨🇨","territory"],
+    ["Colombia","CO","🇨🇴","country"],
+    ["Comoros","KM","🇰🇲","country"],
+    ["Congo","CG","🇨🇬","country"],
+    ["Cook Islands","CK","🇨🇰","territory"],
+    ["Costa Rica","CR","🇨🇷","country"],
+    ["Croatia","HR","🇭🇷","country"],
+    ["Cuba","CU","🇨🇺","country"],
+    ["Curaçao","CW","🇨🇼","territory"],
+    ["Cyprus","CY","🇨🇾","country"],
+    ["Czechia","CZ","🇨🇿","country"],
+
+    ["Denmark","DK","🇩🇰","country"],
+    ["Djibouti","DJ","🇩🇯","country"],
+    ["Dominica","DM","🇩🇲","country"],
+    ["Dominican Republic","DO","🇩🇴","country"],
+
+    ["Ecuador","EC","🇪🇨","country"],
+    ["Egypt","EG","🇪🇬","country"],
+    ["El Salvador","SV","🇸🇻","country"],
+    ["Equatorial Guinea","GQ","🇬🇶","country"],
+    ["Eritrea","ER","🇪🇷","country"],
+    ["Estonia","EE","🇪🇪","country"],
+    ["Eswatini","SZ","🇸🇿","country"],
+    ["Ethiopia","ET","🇪🇹","country"],
+
+    ["Falkland Islands","FK","🇫🇰","territory"],
+    ["Faroe Islands","FO","🇫🇴","territory"],
+    ["Fiji","FJ","🇫🇯","country"],
+    ["Finland","FI","🇫🇮","country"],
+    ["France","FR","🇫🇷","country"],
+    ["French Guiana","GF","🇬🇫","territory"],
+    ["French Polynesia","PF","🇵🇫","territory"],
+    ["French Southern Territories","TF","🇹🇫","territory"],
+
+    ["Gabon","GA","🇬🇦","country"],
+    ["Gambia","GM","🇬🇲","country"],
+    ["Georgia","GE","🇬🇪","country"],
+    ["Germany","DE","🇩🇪","country"],
+    ["Ghana","GH","🇬🇭","country"],
+    ["Gibraltar","GI","🇬🇮","territory"],
+    ["Greece","GR","🇬🇷","country"],
+    ["Greenland","GL","🇬🇱","territory"],
+    ["Grenada","GD","🇬🇩","country"],
+    ["Guadeloupe","GP","🇬🇵","territory"],
+    ["Guam","GU","🇬🇺","territory"],
+    ["Guatemala","GT","🇬🇹","country"],
+    ["Guernsey","GG","🇬🇬","territory"],
+    ["Guinea","GN","🇬🇳","country"],
+    ["Guinea-Bissau","GW","🇬🇼","country"],
+    ["Guyana","GY","🇬🇾","country"],
+
+    ["Haiti","HT","🇭🇹","country"],
+    ["Heard Island and McDonald Islands","HM","🇭🇲","territory"],
+    ["Holy See","VA","🇻🇦","country"],
+    ["Honduras","HN","🇭🇳","country"],
+    ["Hong Kong","HK","🇭🇰","territory"],
+    ["Hungary","HU","🇭🇺","country"],
+
+    ["Iceland","IS","🇮🇸","country"],
+    ["India","IN","🇮🇳","country"],
+    ["Indonesia","ID","🇮🇩","country"],
+    ["Iran","IR","🇮🇷","country"],
+    ["Iraq","IQ","🇮🇶","country"],
+    ["Ireland","IE","🇮🇪","country"],
+    ["Isle of Man","IM","🇮🇲","territory"],
+    ["Israel","IL","🇮🇱","country"],
+    ["Italy","IT","🇮🇹","country"],
+
+    ["Jamaica","JM","🇯🇲","country"],
+    ["Japan","JP","🇯🇵","country"],
+    ["Jersey","JE","🇯🇪","territory"],
+    ["Jordan","JO","🇯🇴","country"],
+
+    ["Kazakhstan","KZ","🇰🇿","country"],
+    ["Kenya","KE","🇰🇪","country"],
+    ["Kiribati","KI","🇰🇮","country"],
+    ["Kuwait","KW","🇰🇼","country"],
+    ["Kyrgyzstan","KG","🇰🇬","country"],
+
+    ["Laos","LA","🇱🇦","country"],
+    ["Latvia","LV","🇱🇻","country"],
+    ["Lebanon","LB","🇱🇧","country"],
+    ["Lesotho","LS","🇱🇸","country"],
+    ["Liberia","LR","🇱🇷","country"],
+    ["Libya","LY","🇱🇾","country"],
+    ["Liechtenstein","LI","🇱🇮","country"],
+    ["Lithuania","LT","🇱🇹","country"],
+    ["Luxembourg","LU","🇱🇺","country"],
+
+    ["Macao","MO","🇲🇴","territory"],
+    ["Madagascar","MG","🇲🇬","country"],
+    ["Malawi","MW","🇲🇼","country"],
+    ["Malaysia","MY","🇲🇾","country"],
+    ["Maldives","MV","🇲🇻","country"],
+    ["Mali","ML","🇲🇱","country"],
+    ["Malta","MT","🇲🇹","country"],
+    ["Marshall Islands","MH","🇲🇭","country"],
+    ["Martinique","MQ","🇲🇶","territory"],
+    ["Mauritania","MR","🇲🇷","country"],
+    ["Mauritius","MU","🇲🇺","country"],
+    ["Mayotte","YT","🇾🇹","territory"],
+    ["Mexico","MX","🇲🇽","country"],
+    ["Micronesia","FM","🇫🇲","country"],
+    ["Moldova","MD","🇲🇩","country"],
+    ["Monaco","MC","🇲🇨","country"],
+    ["Mongolia","MN","🇲🇳","country"],
+    ["Montenegro","ME","🇲🇪","country"],
+    ["Montserrat","MS","🇲🇸","territory"],
+    ["Morocco","MA","🇲🇦","country"],
+    ["Mozambique","MZ","🇲🇿","country"],
+    ["Myanmar","MM","🇲🇲","country"],
+
+    ["Namibia","NA","🇳🇦","country"],
+    ["Nauru","NR","🇳🇷","country"],
+    ["Nepal","NP","🇳🇵","country"],
+    ["Netherlands","NL","🇳🇱","country"],
+    ["New Caledonia","NC","🇳🇨","territory"],
+    ["New Zealand","NZ","🇳🇿","country"],
+    ["Nicaragua","NI","🇳🇮","country"],
+    ["Niger","NE","🇳🇪","country"],
+    ["Nigeria","NG","🇳🇬","country"],
+    ["Niue","NU","🇳🇺","territory"],
+    ["Norfolk Island","NF","🇳🇫","territory"],
+    ["North Korea","KP","🇰🇵","country"],
+    ["North Macedonia","MK","🇲🇰","country"],
+    ["Northern Mariana Islands","MP","🇲🇵","territory"],
+    ["Norway","NO","🇳🇴","country"],
+
+    ["Oman","OM","🇴🇲","country"],
+
+    ["Pakistan","PK","🇵🇰","country"],
+    ["Palau","PW","🇵🇼","country"],
+    ["Palestine","PS","🇵🇸","territory"],
+    ["Panama","PA","🇵🇦","country"],
+    ["Papua New Guinea","PG","🇵🇬","country"],
+    ["Paraguay","PY","🇵🇾","country"],
+    ["Peru","PE","🇵🇪","country"],
+    ["Philippines","PH","🇵🇭","country"],
+    ["Pitcairn","PN","🇵🇳","territory"],
+    ["Poland","PL","🇵🇱","country"],
+    ["Portugal","PT","🇵🇹","country"],
+    ["Puerto Rico","PR","🇵🇷","territory"],
+
+    ["Qatar","QA","🇶🇦","country"],
+
+    ["Réunion","RE","🇷🇪","territory"],
+    ["Romania","RO","🇷🇴","country"],
+    ["Russia","RU","🇷🇺","country"],
+    ["Rwanda","RW","🇷🇼","country"],
+
+    ["Saint Barthélemy","BL","🇧🇱","territory"],
+    ["Saint Helena","SH","🇸🇭","territory"],
+    ["Saint Kitts and Nevis","KN","🇰🇳","country"],
+    ["Saint Lucia","LC","🇱🇨","country"],
+    ["Saint Martin","MF","🇲🇫","territory"],
+    ["Saint Pierre and Miquelon","PM","🇵🇲","territory"],
+    ["Saint Vincent and the Grenadines","VC","🇻🇨","country"],
+    ["Samoa","WS","🇼🇸","country"],
+    ["San Marino","SM","🇸🇲","country"],
+    ["Sao Tome and Principe","ST","🇸🇹","country"],
+    ["Saudi Arabia","SA","🇸🇦","country"],
+    ["Senegal","SN","🇸🇳","country"],
+    ["Serbia","RS","🇷🇸","country"],
+    ["Seychelles","SC","🇸🇨","country"],
+    ["Sierra Leone","SL","🇸🇱","country"],
+    ["Singapore","SG","🇸🇬","country"],
+    ["Sint Maarten","SX","🇸🇽","territory"],
+    ["Slovakia","SK","🇸🇰","country"],
+    ["Slovenia","SI","🇸🇮","country"],
+    ["Solomon Islands","SB","🇸🇧","country"],
+    ["Somalia","SO","🇸🇴","country"],
+    ["South Africa","ZA","🇿🇦","country"],
+    ["South Georgia and the South Sandwich Islands","GS","🇬🇸","territory"],
+    ["South Korea","KR","🇰🇷","country"],
+    ["South Sudan","SS","🇸🇸","country"],
+    ["Spain","ES","🇪🇸","country"],
+    ["Sri Lanka","LK","🇱🇰","country"],
+    ["Sudan","SD","🇸🇩","country"],
+    ["Suriname","SR","🇸🇷","country"],
+    ["Svalbard and Jan Mayen","SJ","🇸🇯","territory"],
+    ["Sweden","SE","🇸🇪","country"],
+    ["Switzerland","CH","🇨🇭","country"],
+    ["Syria","SY","🇸🇾","country"],
+
+    ["Taiwan","TW","🇹🇼","territory"],
+    ["Tajikistan","TJ","🇹🇯","country"],
+    ["Tanzania","TZ","🇹🇿","country"],
+    ["Thailand","TH","🇹🇭","country"],
+    ["Timor-Leste","TL","🇹🇱","country"],
+    ["Togo","TG","🇹🇬","country"],
+    ["Tokelau","TK","🇹🇰","territory"],
+    ["Tonga","TO","🇹🇴","country"],
+    ["Trinidad and Tobago","TT","🇹🇹","country"],
+    ["Tunisia","TN","🇹🇳","country"],
+    ["Turkey","TR","🇹🇷","country"],
+    ["Turkmenistan","TM","🇹🇲","country"],
+    ["Turks and Caicos Islands","TC","🇹🇨","territory"],
+    ["Tuvalu","TV","🇹🇻","country"],
+
+    ["Uganda","UG","🇺🇬","country"],
+    ["Ukraine","UA","🇺🇦","country"],
+    ["United Arab Emirates","AE","🇦🇪","country"],
+    ["United Kingdom","GB","🇬🇧","country"],
+    ["United States","US","🇺🇸","country"],
+    ["United States Minor Outlying Islands","UM","🇺🇲","territory"],
+    ["Uruguay","UY","🇺🇾","country"],
+    ["Uzbekistan","UZ","🇺🇿","country"],
+
+    ["Vanuatu","VU","🇻🇺","country"],
+    ["Vatican City","VA","🇻🇦","country"],
+    ["Venezuela","VE","🇻🇪","country"],
+    ["Vietnam","VN","🇻🇳","country"],
+    ["Virgin Islands, British","VG","🇻🇬","territory"],
+    ["Virgin Islands, U.S.","VI","🇻🇮","territory"],
+
+    ["Wallis and Futuna","WF","🇼🇫","territory"],
+
+    ["Western Sahara","EH","🇪🇭","territory"],
+
+    ["Yemen","YE","🇾🇪","country"],
+
+    ["Zambia","ZM","🇿🇲","country"],
+    ["Zimbabwe","ZW","🇿🇼","country"]
 ];
 
-function containsBlockedContent(value) {
-
-    const text =
-        String(value || "")
-            .toLowerCase()
-            .replace(/\s+/g, " ");
-
-    return BLOCKED_CONTENT.some(
-        word => text.includes(word)
-    );
-}
-
 
 /* =========================================================
-   ISO 3166-1 COUNTRIES AND TERRITORIES
-   249 CURRENT ISO COUNTRY/TERRITORY ENTRIES
+   SEED LOCATIONS
 ========================================================= */
 
-const ISO_COUNTRIES = `
-AF|Afghanistan
-AX|Åland Islands
-AL|Albania
-DZ|Algeria
-AS|American Samoa
-AD|Andorra
-AO|Angola
-AI|Anguilla
-AQ|Antarctica
-AG|Antigua and Barbuda
-AR|Argentina
-AM|Armenia
-AW|Aruba
-AU|Australia
-AT|Austria
-AZ|Azerbaijan
-BS|Bahamas
-BH|Bahrain
-BD|Bangladesh
-BB|Barbados
-BY|Belarus
-BE|Belgium
-BZ|Belize
-BJ|Benin
-BM|Bermuda
-BT|Bhutan
-BO|Bolivia
-BQ|Bonaire, Sint Eustatius and Saba
-BA|Bosnia and Herzegovina
-BW|Botswana
-BV|Bouvet Island
-BR|Brazil
-IO|British Indian Ocean Territory
-BN|Brunei
-BG|Bulgaria
-BF|Burkina Faso
-BI|Burundi
-CV|Cabo Verde
-KH|Cambodia
-CM|Cameroon
-CA|Canada
-KY|Cayman Islands
-CF|Central African Republic
-TD|Chad
-CL|Chile
-CN|China
-CX|Christmas Island
-CC|Cocos (Keeling) Islands
-CO|Colombia
-KM|Comoros
-CG|Congo
-CD|Congo, Democratic Republic of the
-CK|Cook Islands
-CR|Costa Rica
-CI|Côte d'Ivoire
-HR|Croatia
-CU|Cuba
-CW|Curaçao
-CY|Cyprus
-CZ|Czechia
-DK|Denmark
-DJ|Djibouti
-DM|Dominica
-DO|Dominican Republic
-EC|Ecuador
-EG|Egypt
-SV|El Salvador
-GQ|Equatorial Guinea
-ER|Eritrea
-EE|Estonia
-SZ|Eswatini
-ET|Ethiopia
-FK|Falkland Islands
-FO|Faroe Islands
-FJ|Fiji
-FI|Finland
-FR|France
-GF|French Guiana
-PF|French Polynesia
-TF|French Southern Territories
-GA|Gabon
-GM|Gambia
-GE|Georgia
-DE|Germany
-GH|Ghana
-GI|Gibraltar
-GR|Greece
-GL|Greenland
-GD|Grenada
-GP|Guadeloupe
-GU|Guam
-GT|Guatemala
-GG|Guernsey
-GN|Guinea
-GW|Guinea-Bissau
-GY|Guyana
-HT|Haiti
-HM|Heard Island and McDonald Islands
-VA|Holy See
-HN|Honduras
-HK|Hong Kong
-HU|Hungary
-IS|Iceland
-IN|India
-ID|Indonesia
-IR|Iran
-IQ|Iraq
-IE|Ireland
-IM|Isle of Man
-IL|Israel
-IT|Italy
-JM|Jamaica
-JP|Japan
-JE|Jersey
-JO|Jordan
-KZ|Kazakhstan
-KE|Kenya
-KI|Kiribati
-KP|North Korea
-KR|South Korea
-KW|Kuwait
-KG|Kyrgyzstan
-LA|Laos
-LV|Latvia
-LB|Lebanon
-LS|Lesotho
-LR|Liberia
-LY|Libya
-LI|Liechtenstein
-LT|Lithuania
-LU|Luxembourg
-MO|Macao
-MG|Madagascar
-MW|Malawi
-MY|Malaysia
-MV|Maldives
-ML|Mali
-MT|Malta
-MH|Marshall Islands
-MQ|Martinique
-MR|Mauritania
-MU|Mauritius
-YT|Mayotte
-MX|Mexico
-FM|Micronesia
-MD|Moldova
-MC|Monaco
-MN|Mongolia
-ME|Montenegro
-MS|Montserrat
-MA|Morocco
-MZ|Mozambique
-MM|Myanmar
-NA|Namibia
-NR|Nauru
-NP|Nepal
-NL|Netherlands
-NC|New Caledonia
-NZ|New Zealand
-NI|Nicaragua
-NE|Niger
-NG|Nigeria
-NU|Niue
-NF|Norfolk Island
-MK|North Macedonia
-MP|Northern Mariana Islands
-NO|Norway
-OM|Oman
-PK|Pakistan
-PW|Palau
-PS|Palestine
-PA|Panama
-PG|Papua New Guinea
-PY|Paraguay
-PE|Peru
-PH|Philippines
-PN|Pitcairn
-PL|Poland
-PT|Portugal
-PR|Puerto Rico
-QA|Qatar
-RE|Réunion
-RO|Romania
-RU|Russia
-RW|Rwanda
-BL|Saint Barthélemy
-SH|Saint Helena
-KN|Saint Kitts and Nevis
-LC|Saint Lucia
-MF|Saint Martin
-PM|Saint Pierre and Miquelon
-VC|Saint Vincent and the Grenadines
-WS|Samoa
-SM|San Marino
-ST|Sao Tome and Principe
-SA|Saudi Arabia
-SN|Senegal
-RS|Serbia
-SC|Seychelles
-SL|Sierra Leone
-SG|Singapore
-SX|Sint Maarten
-SK|Slovakia
-SI|Slovenia
-SB|Solomon Islands
-SO|Somalia
-ZA|South Africa
-GS|South Georgia and the South Sandwich Islands
-SS|South Sudan
-ES|Spain
-LK|Sri Lanka
-SD|Sudan
-SR|Suriname
-SJ|Svalbard and Jan Mayen
-SE|Sweden
-CH|Switzerland
-SY|Syria
-TW|Taiwan
-TJ|Tajikistan
-TZ|Tanzania
-TH|Thailand
-TL|Timor-Leste
-TG|Togo
-TK|Tokelau
-TO|Tonga
-TT|Trinidad and Tobago
-TN|Tunisia
-TR|Türkiye
-TM|Turkmenistan
-TC|Turks and Caicos Islands
-TV|Tuvalu
-UG|Uganda
-UA|Ukraine
-AE|United Arab Emirates
-GB|United Kingdom
-US|United States
-UM|United States Minor Outlying Islands
-UY|Uruguay
-UZ|Uzbekistan
-VU|Vanuatu
-VE|Venezuela
-VN|Vietnam
-VG|Virgin Islands, British
-VI|Virgin Islands, U.S.
-WF|Wallis and Futuna
-EH|Western Sahara
-YE|Yemen
-ZM|Zambia
-ZW|Zimbabwe
-`.trim()
-    .split("\n")
-    .map(line => {
-
-        const [code, name] =
-            line.split("|");
-
-        return {
-            code,
-            name
-        };
-
-    });
-
-
-/* =========================================================
-   SEED COUNTRIES
-========================================================= */
-
-const insertCountry =
+const insertLocation =
     db.prepare(`
         INSERT OR IGNORE INTO countries
-        (name, code, slug)
-        VALUES (?, ?, ?)
+        (
+            name,
+            code,
+            flag,
+            type,
+            slug
+        )
+        VALUES (?, ?, ?, ?, ?)
     `);
 
-const seedCountries =
+const seedLocations =
     db.transaction(() => {
 
-        for (const country of ISO_COUNTRIES) {
+        for (
+            const [
+                name,
+                code,
+                flag,
+                type
+            ] of locations
+        ) {
 
-            insertCountry.run(
-                country.name,
-                country.code,
-                slugify(country.name)
+            insertLocation.run(
+                name,
+                code,
+                flag,
+                type,
+                slugify(name)
             );
 
         }
 
     });
 
-seedCountries();
+seedLocations();
 
 
 /* =========================================================
-   API — HEALTH
+   IMPORTANT:
+   NO STARTER BRANDS
 ========================================================= */
 
-app.get("/api/health", (req, res) => {
-
-    const countryCount =
-        db.prepare(`
-            SELECT COUNT(*) AS count
-            FROM countries
-        `).get().count;
-
-    const brandCount =
-        db.prepare(`
-            SELECT COUNT(*) AS count
-            FROM brands
-        `).get().count;
-
-    const applicationCount =
-        db.prepare(`
-            SELECT COUNT(*) AS count
-            FROM brand_applications
-        `).get().count;
-
-    res.json({
-        ok: true,
-        site: "ALL WORLD BRANDS",
-        language: "English",
-        payment_mode: PAYMENT_MODE,
-        application_fee: APPLICATION_AMOUNT,
-        currency: APPLICATION_CURRENCY,
-        countries: countryCount,
-        expected_iso_countries: ISO_COUNTRIES.length,
-        brands: brandCount,
-        applications: applicationCount
-    });
-});
+/*
+ * Existing starter brands from an older version
+ * are NOT automatically deleted here because this
+ * server must not unexpectedly delete user-created data.
+ *
+ * If this is a fresh installation, brands table
+ * starts empty.
+ *
+ * To deliberately remove old demo/starter brands,
+ * use the admin cleanup endpoint below after backup.
+ */
 
 
 /* =========================================================
    API — COUNTRIES
 ========================================================= */
 
-app.get("/api/countries", (req, res) => {
+app.get(
+    "/api/countries",
+    (req, res) => {
 
-    const rows =
-        db.prepare(`
-            SELECT
-                c.id,
-                c.name,
-                c.code,
-                COUNT(b.id) AS brand_count
-            FROM countries c
-            LEFT JOIN brands b
-                ON b.country_id = c.id
-            GROUP BY c.id
-            ORDER BY c.name COLLATE NOCASE
-        `).all();
+        try {
 
-    const result =
-        rows.map(row => ({
-            ...row,
-            flag: flagFromCode(row.code)
-        }));
+            const rows =
+                db.prepare(`
+                    SELECT
+                        c.id,
+                        c.name,
+                        c.code,
+                        c.flag,
+                        c.type,
+                        COUNT(b.id)
+                            AS brand_count
+                    FROM countries c
 
-    res.json(result);
-});
+                    LEFT JOIN brands b
+                        ON b.country_id = c.id
+
+                    GROUP BY c.id
+
+                    ORDER BY
+                        c.name COLLATE NOCASE
+                `).all();
+
+            res.json(rows);
+
+        } catch (error) {
+
+            console.error(error);
+
+            res.status(500).json({
+                error:
+                    "Countries could not be loaded"
+            });
+
+        }
+
+    }
+);
 
 
 /* =========================================================
    API — COUNTRY
 ========================================================= */
 
-app.get("/api/countries/:id", (req, res) => {
+app.get(
+    "/api/countries/:id",
+    (req, res) => {
 
-    const country =
-        db.prepare(`
-            SELECT
-                id,
-                name,
-                code
-            FROM countries
-            WHERE id = ?
-        `).get(req.params.id);
+        const country =
+            db.prepare(`
+                SELECT
+                    id,
+                    name,
+                    code,
+                    flag,
+                    type,
+                    slug
+                FROM countries
+                WHERE id = ?
+            `).get(req.params.id);
 
-    if (!country) {
+        if (!country) {
 
-        return res.status(404).json({
-            error: "Country not found"
-        });
+            return res.status(404).json({
+                error:
+                    "Country or territory not found"
+            });
+
+        }
+
+        res.json(country);
 
     }
-
-    res.json({
-        ...country,
-        flag: flagFromCode(country.code)
-    });
-});
+);
 
 
 /* =========================================================
@@ -734,10 +805,7 @@ app.get(
 
         const country =
             db.prepare(`
-                SELECT
-                    id,
-                    name,
-                    code
+                SELECT *
                 FROM countries
                 WHERE id = ?
             `).get(req.params.id);
@@ -745,7 +813,8 @@ app.get(
         if (!country) {
 
             return res.status(404).json({
-                error: "Country not found"
+                error:
+                    "Country or territory not found"
             });
 
         }
@@ -763,16 +832,20 @@ app.get(
                     created_at
                 FROM brands
                 WHERE country_id = ?
-                ORDER BY name COLLATE NOCASE
+                ORDER BY
+                    name COLLATE NOCASE
             `).all(country.id);
 
+        /*
+         * This endpoint returns an object,
+         * not only an array.
+         */
+
         res.json({
-            country: {
-                ...country,
-                flag: flagFromCode(country.code)
-            },
+            country,
             brands
         });
+
     }
 );
 
@@ -789,18 +862,25 @@ app.get(
             db.prepare(`
                 SELECT
                     b.*,
+
                     c.name AS country_name,
-                    c.code AS country_code
+                    c.code AS country_code,
+                    c.flag AS country_flag,
+                    c.type AS country_type
+
                 FROM brands b
+
                 JOIN countries c
                     ON c.id = b.country_id
+
                 WHERE b.id = ?
             `).get(req.params.id);
 
         if (!brand) {
 
             return res.status(404).json({
-                error: "Brand not found"
+                error:
+                    "Brand not found"
             });
 
         }
@@ -814,17 +894,15 @@ app.get(
                     created_at
                 FROM comments
                 WHERE brand_id = ?
-                ORDER BY created_at DESC
+                ORDER BY
+                    created_at DESC
             `).all(brand.id);
 
         res.json({
-            brand: {
-                ...brand,
-                country_flag:
-                    flagFromCode(brand.country_code)
-            },
+            brand,
             comments
         });
+
     }
 );
 
@@ -833,408 +911,556 @@ app.get(
    API — SEARCH
 ========================================================= */
 
-app.get("/api/search", (req, res) => {
+app.get(
+    "/api/search",
+    (req, res) => {
 
-    const q =
-        normalizeText(req.query.q, 100);
+        const q =
+            cleanText(
+                req.query.q,
+                100
+            );
 
-    if (!q) {
-        return res.json([]);
+        if (!q) {
+            return res.json([]);
+        }
+
+        const like =
+            `%${q}%`;
+
+        const rows =
+            db.prepare(`
+                SELECT
+                    b.id,
+                    b.name,
+                    b.logo,
+                    b.slug,
+
+                    c.id AS country_id,
+                    c.name AS country_name,
+                    c.flag AS country_flag,
+                    c.type AS country_type
+
+                FROM brands b
+
+                JOIN countries c
+                    ON c.id = b.country_id
+
+                WHERE
+                    b.name LIKE ?
+                    OR c.name LIKE ?
+
+                ORDER BY
+                    b.name COLLATE NOCASE
+
+                LIMIT 100
+            `).all(
+                like,
+                like
+            );
+
+        res.json(rows);
+
     }
-
-    const like = `%${q}%`;
-
-    const rows =
-        db.prepare(`
-            SELECT
-                b.id,
-                b.name,
-                b.logo,
-                b.slug,
-
-                c.id AS country_id,
-                c.name AS country_name,
-                c.code AS country_code
-
-            FROM brands b
-
-            JOIN countries c
-                ON c.id = b.country_id
-
-            WHERE
-                b.name LIKE ?
-                OR c.name LIKE ?
-
-            ORDER BY
-                b.name COLLATE NOCASE
-
-            LIMIT 100
-        `).all(like, like);
-
-    res.json(
-        rows.map(row => ({
-            ...row,
-            country_flag:
-                flagFromCode(row.country_code)
-        }))
-    );
-});
+);
 
 
 /* =========================================================
    COMMENTS
 ========================================================= */
 
-app.post("/api/comments", (req, res) => {
+app.get(
+    "/api/comments",
+    (req, res) => {
 
-    const name =
-        normalizeText(req.body.name, 80);
-
-    const comment =
-        normalizeText(req.body.comment, 1000);
-
-    const brandId =
-        req.body.brand_id
-            ? Number(req.body.brand_id)
-            : null;
-
-    const countryId =
-        req.body.country_id
-            ? Number(req.body.country_id)
-            : null;
-
-    if (!name || !comment) {
-
-        return res.status(400).json({
-            error: "Name and comment are required."
-        });
-
-    }
-
-    if (containsBlockedContent(name + " " + comment)) {
-
-        return res.status(400).json({
-            error: "This content is not allowed."
-        });
-
-    }
-
-    if (!brandId && !countryId) {
-
-        return res.status(400).json({
-            error: "Brand or country is required."
-        });
-
-    }
-
-    if (brandId) {
-
-        const brand =
+        const rows =
             db.prepare(`
-                SELECT id
-                FROM brands
-                WHERE id = ?
-            `).get(brandId);
+                SELECT
+                    id,
+                    name,
+                    comment,
+                    brand_id,
+                    country_id,
+                    created_at
+                FROM comments
+                ORDER BY
+                    created_at DESC
+                LIMIT 100
+            `).all();
 
-        if (!brand) {
+        res.json(rows);
 
-            return res.status(404).json({
-                error: "Brand not found."
+    }
+);
+
+
+app.post(
+    "/api/comments",
+    (req, res) => {
+
+        const name =
+            cleanText(
+                req.body.name,
+                80
+            );
+
+        const comment =
+            cleanText(
+                req.body.comment,
+                1000
+            );
+
+        const brandId =
+            req.body.brand_id
+                ? Number(req.body.brand_id)
+                : null;
+
+        const countryId =
+            req.body.country_id
+                ? Number(req.body.country_id)
+                : null;
+
+        if (!name || !comment) {
+
+            return res.status(400).json({
+                error:
+                    "Name and comment are required"
             });
 
         }
-    }
 
-    if (countryId) {
+        if (!brandId && !countryId) {
 
-        const country =
-            db.prepare(`
-                SELECT id
-                FROM countries
-                WHERE id = ?
-            `).get(countryId);
-
-        if (!country) {
-
-            return res.status(404).json({
-                error: "Country not found."
+            return res.status(400).json({
+                error:
+                    "Brand or country is required"
             });
 
         }
-    }
 
-    const result =
-        db.prepare(`
-            INSERT INTO comments
-            (
-                brand_id,
-                country_id,
+        if (
+            brandId &&
+            !db.prepare(
+                "SELECT id FROM brands WHERE id = ?"
+            ).get(brandId)
+        ) {
+
+            return res.status(404).json({
+                error:
+                    "Brand not found"
+            });
+
+        }
+
+        if (
+            countryId &&
+            !db.prepare(
+                "SELECT id FROM countries WHERE id = ?"
+            ).get(countryId)
+        ) {
+
+            return res.status(404).json({
+                error:
+                    "Country or territory not found"
+            });
+
+        }
+
+        const result =
+            db.prepare(`
+                INSERT INTO comments
+                (
+                    brand_id,
+                    country_id,
+                    name,
+                    comment
+                )
+                VALUES (?, ?, ?, ?)
+            `).run(
+                brandId,
+                countryId,
                 name,
                 comment
-            )
-            VALUES (?, ?, ?, ?)
-        `).run(
-            brandId,
-            countryId,
-            name,
-            comment
-        );
+            );
 
-    res.status(201).json({
-        success: true,
-        id: result.lastInsertRowid
-    });
-});
+        res.status(201).json({
+            success: true,
+            id:
+                result.lastInsertRowid
+        });
+
+    }
+);
 
 
 /* =========================================================
    BRAND APPLICATION
-   $1 USD
 ========================================================= */
 
 app.post(
     "/api/brand-applications",
     (req, res) => {
 
-        const countryId =
-            Number(req.body.country_id);
+        try {
 
-        const brandName =
-            normalizeText(
-                req.body.brand_name,
-                150
-            );
+            const countryId =
+                Number(
+                    req.body.country_id
+                );
 
-        const logo =
-            safeUrl(req.body.logo);
+            const brandName =
+                cleanText(
+                    req.body.brand_name,
+                    150
+                );
 
-        const website =
-            safeUrl(req.body.website);
+            const logo =
+                safeUrl(
+                    req.body.logo
+                );
 
-        const description =
-            normalizeText(
-                req.body.description,
-                3000
-            );
+            const website =
+                safeUrl(
+                    req.body.website
+                );
 
-        const contactName =
-            normalizeText(
-                req.body.contact_name,
-                120
-            );
+            const description =
+                cleanText(
+                    req.body.description,
+                    3000
+                );
 
-        const contactPhone =
-            normalizeText(
-                req.body.contact_phone,
-                40
-            );
+            const contactName =
+                cleanText(
+                    req.body.contact_name,
+                    120
+                );
 
-        if (!countryId || !brandName) {
+            const contactPhone =
+                cleanText(
+                    req.body.contact_phone,
+                    40
+                );
 
-            return res.status(400).json({
-                error:
-                    "Country and brand name are required."
-            });
+            const contactEmail =
+                cleanText(
+                    req.body.contact_email ||
+                    req.body.email,
+                    160
+                );
 
-        }
+            if (
+                !countryId ||
+                !brandName ||
+                !contactName ||
+                !contactEmail
+            ) {
 
-        if (
-            containsBlockedContent(
-                brandName +
-                " " +
-                description
-            )
-        ) {
+                return res.status(400).json({
+                    error:
+                        "Country, brand name, contact name and email are required."
+                });
 
-            return res.status(400).json({
-                error:
-                    "This application contains prohibited content."
-            });
+            }
 
-        }
+            if (
+                !isValidEmail(
+                    contactEmail
+                )
+            ) {
 
-        const country =
-            db.prepare(`
-                SELECT id
-                FROM countries
-                WHERE id = ?
-            `).get(countryId);
+                return res.status(400).json({
+                    error:
+                        "Please enter a valid email address."
+                });
 
-        if (!country) {
+            }
 
-            return res.status(404).json({
-                error: "Country not found."
-            });
+            const country =
+                db.prepare(`
+                    SELECT id
+                    FROM countries
+                    WHERE id = ?
+                `).get(countryId);
 
-        }
+            if (!country) {
 
-        /*
-         * IMPORTANT:
-         *
-         * The amount and payment status are controlled
-         * by the SERVER.
-         *
-         * The browser cannot choose:
-         *
-         * payment_status = paid
-         *
-         * or:
-         *
-         * amount = 0
-         */
+                return res.status(404).json({
+                    error:
+                        "Country or territory not found."
+                });
 
-        const result =
-            db.prepare(`
-                INSERT INTO brand_applications
-                (
-                    country_id,
-                    brand_name,
+            }
+
+            /*
+             * IMPORTANT:
+             *
+             * Payment status is ALWAYS created
+             * by the server as "unpaid".
+             *
+             * The browser cannot set payment_status.
+             */
+
+            const result =
+                db.prepare(`
+                    INSERT INTO brand_applications
+                    (
+                        country_id,
+                        brand_name,
+                        logo,
+                        website,
+                        description,
+                        contact_name,
+                        contact_phone,
+                        contact_email,
+                        amount,
+                        currency,
+                        payment_status,
+                        payment_provider
+                    )
+                    VALUES
+                    (
+                        ?,
+                        ?,
+                        ?,
+                        ?,
+                        ?,
+                        ?,
+                        ?,
+                        ?,
+                        ?,
+                        ?,
+                        'unpaid',
+                        'demo_acquiring'
+                    )
+                `).run(
+                    countryId,
+                    brandName,
                     logo,
                     website,
                     description,
-                    contact_name,
-                    contact_phone,
-                    amount,
-                    currency,
-                    payment_status
-                )
-                VALUES
-                (?, ?, ?, ?, ?, ?, ?, ?, ?, 'unpaid')
-            `).run(
-                countryId,
-                brandName,
-                logo,
-                website,
-                description,
-                contactName,
-                contactPhone,
-                APPLICATION_AMOUNT,
-                APPLICATION_CURRENCY
-            );
+                    contactName,
+                    contactPhone,
+                    contactEmail,
+                    SUBMISSION_AMOUNT,
+                    SUBMISSION_CURRENCY
+                );
 
-        res.status(201).json({
-            success: true,
+            res.status(201).json({
 
-            application_id:
-                Number(result.lastInsertRowid),
+                success: true,
 
-            amount:
-                APPLICATION_AMOUNT,
+                application_id:
+                    result.lastInsertRowid,
 
-            currency:
-                APPLICATION_CURRENCY,
+                amount:
+                    SUBMISSION_AMOUNT,
 
-            payment_status:
-                "unpaid",
+                currency:
+                    SUBMISSION_CURRENCY,
 
-            message:
-                "Application created. Payment is required."
-        });
+                payment_status:
+                    "unpaid",
+
+                message:
+                    "Application created. Payment of $1 USD is required."
+
+            });
+
+        } catch (error) {
+
+            console.error(error);
+
+            res.status(500).json({
+                error:
+                    "Could not create brand application."
+            });
+
+        }
+
     }
 );
 
 
 /* =========================================================
-   PAYMENT — CREATE SESSION
+   COMPATIBILITY ENDPOINT
+========================================================= */
+
+/*
+ * Your previous index.html used:
+ *
+ * /api/brand-submissions
+ *
+ * Keep this route so the old frontend
+ * does not immediately break.
+ */
+
+app.post(
+    "/api/brand-submissions",
+    (req, res, next) => {
+
+        req.url =
+            "/api/brand-applications";
+
+        next();
+
+    }
+);
+
+
+/* =========================================================
+   DEMO ACQUIRING — CREATE PAYMENT
 ========================================================= */
 
 app.post(
     "/api/payments/create",
     (req, res) => {
 
-        const applicationId =
-            Number(req.body.application_id);
+        try {
 
-        if (!applicationId) {
+            const applicationId =
+                Number(
+                    req.body.submission_id ||
+                    req.body.application_id
+                );
 
-            return res.status(400).json({
-                error:
-                    "Application ID is required."
-            });
+            if (!applicationId) {
 
-        }
+                return res.status(400).json({
+                    error:
+                        "Application ID is required."
+                });
 
-        const application =
+            }
+
+            const application =
+                db.prepare(`
+                    SELECT *
+                    FROM brand_applications
+                    WHERE id = ?
+                `).get(applicationId);
+
+            if (!application) {
+
+                return res.status(404).json({
+                    error:
+                        "Application not found."
+                });
+
+            }
+
+            if (
+                application.payment_status ===
+                "paid"
+            ) {
+
+                return res.json({
+
+                    success: true,
+
+                    payment_status:
+                        "paid",
+
+                    message:
+                        "Payment has already been confirmed."
+
+                });
+
+            }
+
+            const reference =
+                `DEMO-${Date.now()}-${crypto
+                    .randomBytes(4)
+                    .toString("hex")
+                    .toUpperCase()}`;
+
+            const transaction =
+                db.prepare(`
+                    INSERT INTO payment_transactions
+                    (
+                        application_id,
+                        provider,
+                        reference,
+                        amount,
+                        currency,
+                        status
+                    )
+                    VALUES (?, ?, ?, ?, ?, 'created')
+                `).run(
+                    applicationId,
+                    "demo_acquiring",
+                    reference,
+                    application.amount,
+                    application.currency
+                );
+
+            /*
+             * Demo checkout page.
+             *
+             * When the real bank is connected,
+             * this URL generation will be replaced
+             * by the bank acquiring API.
+             */
+
+            const paymentUrl =
+                `/payment/demo/${transaction.lastInsertRowid}`;
+
             db.prepare(`
-                SELECT
-                    id,
-                    amount,
-                    currency,
-                    payment_status
-                FROM brand_applications
+                UPDATE brand_applications
+
+                SET
+                    payment_reference = ?,
+                    payment_url = ?,
+                    payment_provider = 'demo_acquiring'
+
                 WHERE id = ?
-            `).get(applicationId);
+            `).run(
+                reference,
+                paymentUrl,
+                applicationId
+            );
 
-        if (!application) {
+            res.json({
 
-            return res.status(404).json({
-                error:
-                    "Application not found."
-            });
-
-        }
-
-        if (
-            application.payment_status === "paid"
-        ) {
-
-            return res.json({
                 success: true,
-                already_paid: true,
-                application_id:
-                    application.id
+
+                provider:
+                    "demo_acquiring",
+
+                demo:
+                    DEMO_ACQUIRING,
+
+                transaction_id:
+                    transaction.lastInsertRowid,
+
+                payment_reference:
+                    reference,
+
+                payment_url:
+                    paymentUrl,
+
+                amount:
+                    application.amount,
+
+                currency:
+                    application.currency,
+
+                payment_status:
+                    "unpaid"
+
+            });
+
+        } catch (error) {
+
+            console.error(error);
+
+            res.status(500).json({
+                error:
+                    "Payment could not be created."
             });
 
         }
 
-        const sessionId =
-            crypto.randomUUID();
-
-        db.prepare(`
-            INSERT INTO payment_sessions
-            (
-                application_id,
-                session_id,
-                provider,
-                amount,
-                currency,
-                status
-            )
-            VALUES (?, ?, ?, ?, ?, 'created')
-        `).run(
-            application.id,
-            sessionId,
-            PAYMENT_MODE === "bank"
-                ? "bank_acquiring"
-                : "demo_bank_acquiring",
-            application.amount,
-            application.currency
-        );
-
-        /*
-         * DEMO MODE
-         *
-         * The returned URL simulates the future bank
-         * payment page.
-         *
-         * Later this URL will be replaced with the
-         * real bank acquiring URL.
-         */
-
-        const paymentUrl =
-            `${SITE_URL}/payment/demo/${encodeURIComponent(sessionId)}`;
-
-        res.json({
-            success: true,
-            payment_session_id: sessionId,
-            provider:
-                PAYMENT_MODE === "bank"
-                    ? "bank_acquiring"
-                    : "demo_bank_acquiring",
-            amount: application.amount,
-            currency: application.currency,
-            payment_url: paymentUrl
-        });
     }
 );
 
@@ -1244,128 +1470,212 @@ app.post(
 ========================================================= */
 
 app.get(
-    "/payment/demo/:sessionId",
+    "/payment/demo/:id",
     (req, res) => {
 
-        if (!DEMO_PAYMENT_ENABLED) {
-
-            return res.status(404).send(
-                "Demo payment is disabled."
-            );
-
-        }
-
-        const session =
+        const transaction =
             db.prepare(`
                 SELECT
-                    ps.id,
-                    ps.session_id,
-                    ps.application_id,
-                    ps.amount,
-                    ps.currency,
-                    ps.status,
-
+                    pt.*,
                     ba.brand_name
-                FROM payment_sessions ps
+                FROM payment_transactions pt
 
                 JOIN brand_applications ba
-                    ON ba.id = ps.application_id
+                    ON ba.id = pt.application_id
 
-                WHERE ps.session_id = ?
-            `).get(req.params.sessionId);
+                WHERE pt.id = ?
+            `).get(req.params.id);
 
-        if (!session) {
+        if (!transaction) {
 
             return res.status(404).send(
-                "Payment session not found."
+                "Payment transaction not found."
             );
 
         }
 
-        const html = `
+        if (
+            transaction.status ===
+            "paid"
+        ) {
+
+            return res.send(`
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport"
-content="width=device-width,initial-scale=1">
+content="width=device-width, initial-scale=1.0">
+<title>Payment Confirmed</title>
+<style>
+body{
+    margin:0;
+    min-height:100vh;
+    display:grid;
+    place-items:center;
+    background:#02050c;
+    color:white;
+    font-family:Arial,sans-serif;
+}
+.box{
+    width:min(500px,calc(100% - 30px));
+    padding:35px;
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:20px;
+    background:#071326;
+    text-align:center;
+}
+h1{color:#8dffb5}
+a{color:#80d5ff}
+</style>
+</head>
+<body>
+<div class="box">
+<h1>Payment Confirmed</h1>
+<p>Your $1 USD payment has been confirmed.</p>
+<p>Brand application: ${htmlEscape(transaction.brand_name)}</p>
+<a href="/">Return to ALL WORLD BRANDS</a>
+</div>
+</body>
+</html>
+            `);
 
-<title>Demo Payment — ALL WORLD BRANDS</title>
+        }
+
+        res.send(`
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+>
+
+<title>Demo Acquiring — $1 USD</title>
 
 <style>
 
-body {
-    margin: 0;
-    min-height: 100vh;
+*{
+    box-sizing:border-box;
+}
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+body{
+    margin:0;
+    min-height:100vh;
 
-    background: #050914;
-    color: white;
+    display:grid;
+    place-items:center;
+
+    background:
+        radial-gradient(
+            circle at top,
+            #0b3150,
+            #02050c 60%
+        );
+
+    color:#fff;
 
     font-family:
+        Inter,
         Arial,
-        Helvetica,
         sans-serif;
 }
 
-.card {
-    width: min(92%, 430px);
+.box{
 
-    background: #111827;
+    width:
+        min(
+            500px,
+            calc(100% - 30px)
+        );
 
-    border: 1px solid #293548;
+    padding:32px;
 
-    border-radius: 20px;
+    border:
+        1px solid
+        rgba(255,255,255,.12);
 
-    padding: 28px;
+    border-radius:22px;
 
-    box-sizing: border-box;
+    background:
+        rgba(7,19,38,.94);
+
+    box-shadow:
+        0 25px 80px
+        rgba(0,0,0,.45);
+
 }
 
-h1 {
-    margin-top: 0;
+h1{
+    margin-top:0;
 }
 
-.amount {
-    font-size: 36px;
-    font-weight: 700;
-    margin: 24px 0;
+.amount{
+    font-size:32px;
+    font-weight:900;
+    margin:20px 0;
 }
 
-button {
-    width: 100%;
-    border: 0;
-
-    padding: 15px;
-
-    border-radius: 12px;
-
-    font-size: 16px;
-    font-weight: 700;
-
-    cursor: pointer;
-
-    margin-top: 12px;
+.reference{
+    color:#91a4bc;
+    font-size:13px;
+    word-break:break-all;
 }
 
-.pay {
-    background: #22c55e;
-    color: #03120a;
+button{
+
+    width:100%;
+
+    border:0;
+
+    border-radius:12px;
+
+    padding:14px;
+
+    margin-top:20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #00a8ff,
+            #0064ff
+        );
+
+    color:white;
+
+    font-size:16px;
+
+    font-weight:800;
+
+    cursor:pointer;
 }
 
-.cancel {
-    background: #374151;
-    color: white;
+.cancel{
+
+    display:block;
+
+    text-align:center;
+
+    margin-top:15px;
+
+    color:#9eb1c7;
+
+    text-decoration:none;
+
+    font-size:13px;
 }
 
-.note {
-    color: #9ca3af;
-    font-size: 13px;
-    line-height: 1.5;
-    margin-top: 20px;
+.note{
+
+    margin-top:20px;
+
+    color:#8ea1b8;
+
+    font-size:12px;
+
+    line-height:1.5;
 }
 
 </style>
@@ -1373,346 +1683,165 @@ button {
 
 <body>
 
-<div class="card">
+<div class="box">
 
-<h1>Demo Bank Payment</h1>
+<h1>
+Demo Acquiring
+</h1>
 
 <p>
-ALL WORLD BRANDS
+This is a temporary payment page.
+The real bank Internet Acquiring system
+will be connected later.
 </p>
+
+<div class="amount">
+$1.00 USD
+</div>
 
 <p>
 Brand application:
 <strong>
-${String(session.brand_name)
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")}
+${htmlEscape(transaction.brand_name)}
 </strong>
 </p>
 
-<div class="amount">
-$${Number(session.amount).toFixed(2)}
-</div>
-
-<p>
-This is a demonstration payment page.
-No real money will be charged.
+<p class="reference">
+Payment reference:
+${htmlEscape(transaction.reference)}
 </p>
 
 <form
 method="POST"
-action="/api/payments/demo/${encodeURIComponent(session.session_id)}/success"
+action="/api/payments/demo/confirm"
 >
 
-<button class="pay" type="submit">
-Complete Demo Payment
+<input
+type="hidden"
+name="transaction_id"
+value="${transaction.id}"
+>
+
+<button type="submit">
+Confirm Demo Payment
 </button>
 
 </form>
 
-<form
-method="POST"
-action="/api/payments/demo/${encodeURIComponent(session.session_id)}/cancel"
+<a
+class="cancel"
+href="/"
 >
-
-<button class="cancel" type="submit">
-Cancel Payment
-</button>
-
-</form>
+Cancel and return
+</a>
 
 <div class="note">
-Production mode will connect this payment session
-to the bank acquiring provider. Payment confirmation
-must come from the server/provider, not from the browser.
+Demo mode only. No real money is charged.
+The final payment status is created by the
+server, not by the browser.
 </div>
 
 </div>
 
 </body>
 </html>
-`;
+        `);
 
-        res.type("html").send(html);
     }
 );
 
 
 /* =========================================================
-   DEMO PAYMENT — SUCCESS
-   SERVER-SIDE ONLY
+   DEMO PAYMENT CONFIRMATION
 ========================================================= */
 
 app.post(
-    "/api/payments/demo/:sessionId/success",
+    "/api/payments/demo/confirm",
     (req, res) => {
 
-        if (!DEMO_PAYMENT_ENABLED) {
+        const transactionId =
+            Number(
+                req.body.transaction_id
+            );
 
-            return res.status(404).send(
-                "Demo payment is disabled."
+        if (!transactionId) {
+
+            return res.status(400).send(
+                "Transaction ID is required."
             );
 
         }
-
-        const session =
-            db.prepare(`
-                SELECT
-                    id,
-                    session_id,
-                    application_id,
-                    amount,
-                    currency,
-                    status
-                FROM payment_sessions
-                WHERE session_id = ?
-            `).get(req.params.sessionId);
-
-        if (!session) {
-
-            return res.status(404).send(
-                "Payment session not found."
-            );
-
-        }
-
-        if (session.status === "paid") {
-
-            return res.redirect(
-                `/payment/result?status=paid&application_id=${session.application_id}`
-            );
-
-        }
-
-        const providerReference =
-            `DEMO-${crypto.randomBytes(8).toString("hex").toUpperCase()}`;
 
         const transaction =
+            db.prepare(`
+                SELECT *
+                FROM payment_transactions
+                WHERE id = ?
+            `).get(transactionId);
+
+        if (!transaction) {
+
+            return res.status(404).send(
+                "Transaction not found."
+            );
+
+        }
+
+        const now =
+            new Date()
+                .toISOString();
+
+        const update =
             db.transaction(() => {
 
                 db.prepare(`
-                    UPDATE payment_sessions
+                    UPDATE payment_transactions
+
                     SET
                         status = 'paid',
-                        provider_reference = ?,
-                        completed_at = CURRENT_TIMESTAMP
+                        provider_transaction_id = ?,
+                        paid_at = ?
+
                     WHERE id = ?
+                    AND status != 'paid'
                 `).run(
-                    providerReference,
-                    session.id
+                    `DEMO-${crypto
+                        .randomBytes(8)
+                        .toString("hex")}`,
+                    now,
+                    transactionId
                 );
 
                 db.prepare(`
                     UPDATE brand_applications
+
                     SET
                         payment_status = 'paid',
-                        payment_reference = ?,
-                        payment_provider = 'demo_bank_acquiring',
-                        payment_session_id = ?,
-                        paid_at = CURRENT_TIMESTAMP
+                        paid_at = ?,
+                        payment_reference = ?
+
                     WHERE id = ?
                     AND payment_status != 'paid'
                 `).run(
-                    providerReference,
-                    session.session_id,
-                    session.application_id
+                    now,
+                    transaction.reference,
+                    transaction.application_id
                 );
 
             });
 
-        transaction();
+        update();
 
         res.redirect(
-            `/payment/result?status=paid&application_id=${session.application_id}`
+            `/payment/demo/${transactionId}`
         );
+
     }
 );
 
 
 /* =========================================================
-   DEMO PAYMENT — CANCEL
-========================================================= */
-
-app.post(
-    "/api/payments/demo/:sessionId/cancel",
-    (req, res) => {
-
-        if (!DEMO_PAYMENT_ENABLED) {
-
-            return res.status(404).send(
-                "Demo payment is disabled."
-            );
-
-        }
-
-        const session =
-            db.prepare(`
-                SELECT
-                    id,
-                    application_id
-                FROM payment_sessions
-                WHERE session_id = ?
-            `).get(req.params.sessionId);
-
-        if (!session) {
-
-            return res.status(404).send(
-                "Payment session not found."
-            );
-
-        }
-
-        db.prepare(`
-            UPDATE payment_sessions
-            SET status = 'cancelled'
-            WHERE id = ?
-        `).run(session.id);
-
-        /*
-         * IMPORTANT:
-         *
-         * The application remains UNPAID.
-         *
-         * This is what allows the frontend to return
-         * to the original "Pay $1" state.
-         */
-
-        res.redirect(
-            `/payment/result?status=cancelled&application_id=${session.application_id}`
-        );
-    }
-);
-
-
-/* =========================================================
-   PAYMENT RESULT
-========================================================= */
-
-app.get(
-    "/payment/result",
-    (req, res) => {
-
-        const status =
-            String(req.query.status || "");
-
-        const applicationId =
-            Number(req.query.application_id || 0);
-
-        let title =
-            "Payment";
-
-        let message =
-            "Payment status could not be determined.";
-
-        if (status === "paid") {
-
-            title =
-                "Payment Successful";
-
-            message =
-                "Your payment has been confirmed by the server.";
-
-        } else if (status === "cancelled") {
-
-            title =
-                "Payment Cancelled";
-
-            message =
-                "No payment was completed. Your application remains unpaid.";
-
-        }
-
-        res.type("html").send(`
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width,initial-scale=1">
-
-<title>${title} — ALL WORLD BRANDS</title>
-
-<style>
-
-body {
-    margin: 0;
-    min-height: 100vh;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: #050914;
-    color: white;
-
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-.card {
-    max-width: 500px;
-    margin: 20px;
-
-    padding: 30px;
-
-    border-radius: 20px;
-
-    background: #111827;
-
-    border: 1px solid #293548;
-}
-
-a {
-    display: inline-block;
-
-    margin-top: 20px;
-
-    color: white;
-
-    background: #2563eb;
-
-    padding: 12px 18px;
-
-    border-radius: 10px;
-
-    text-decoration: none;
-}
-
-</style>
-
-</head>
-
-<body>
-
-<div class="card">
-
-<h1>${title}</h1>
-
-<p>${message}</p>
-
-<p>
-Application ID:
-<strong>${applicationId || "N/A"}</strong>
-</p>
-
-<a href="/">
-Return to ALL WORLD BRANDS
-</a>
-
-</div>
-
-</body>
-
-</html>
-`);
-    }
-);
-
-
-/* =========================================================
-   APPLICATION STATUS
+   PAYMENT STATUS
 ========================================================= */
 
 app.get(
@@ -1728,8 +1857,8 @@ app.get(
                     amount,
                     currency,
                     payment_status,
-                    payment_reference,
                     payment_provider,
+                    payment_reference,
                     paid_at,
                     created_at
                 FROM brand_applications
@@ -1746,64 +1875,433 @@ app.get(
         }
 
         res.json(application);
+
     }
 );
 
 
 /* =========================================================
-   FUTURE BANK ACQUIRING WEBHOOK
+   PAYMENT VERIFICATION
 ========================================================= */
 
 /*
- * This endpoint is intentionally a placeholder.
+ * This endpoint is intentionally server-side.
  *
- * When the real bank is selected, the bank's official
- * webhook/callback specification must be implemented here.
+ * The browser cannot send:
  *
- * NEVER allow:
+ * payment_status = paid
  *
- * POST /webhook
- * { payment_status: "paid" }
+ * and make it trusted.
  *
- * to mark a payment paid without verifying:
- *
- * 1. provider signature
- * 2. transaction ID
- * 3. application ID
- * 4. amount
- * 5. currency
- * 6. transaction status
- *
- * The browser must never be the source of truth.
+ * Later the real bank webhook/API verification
+ * should be implemented here.
  */
 
 app.post(
-    "/api/payments/bank/webhook",
+    "/api/payments/verify",
     (req, res) => {
 
-        if (PAYMENT_MODE !== "bank") {
+        const reference =
+            cleanText(
+                req.body.payment_reference,
+                200
+            );
+
+        if (!reference) {
+
+            return res.status(400).json({
+                error:
+                    "Payment reference is required."
+            });
+
+        }
+
+        const transaction =
+            db.prepare(`
+                SELECT *
+                FROM payment_transactions
+                WHERE reference = ?
+            `).get(reference);
+
+        if (!transaction) {
 
             return res.status(404).json({
                 error:
-                    "Bank payment mode is not enabled."
+                    "Payment transaction not found."
             });
 
         }
 
         /*
-         * TODO:
+         * DEMO:
          *
-         * Implement the selected bank's
-         * official signature verification.
+         * Status is read from our server-side
+         * transaction record.
          *
-         * Until a real bank is connected,
-         * this endpoint does NOT change payment status.
+         * REAL BANK:
+         *
+         * Replace this section with the bank's
+         * server-to-server verification.
          */
 
-        return res.status(501).json({
-            error:
-                "Bank acquiring webhook is not configured yet."
+        res.json({
+
+            verified:
+                transaction.status === "paid",
+
+            status:
+                transaction.status,
+
+            transaction_id:
+                transaction.id,
+
+            provider:
+                transaction.provider
+
         });
+
+    }
+);
+
+
+/* =========================================================
+   ADMIN AUTH
+========================================================= */
+
+function requireAdmin(
+    req,
+    res,
+    next
+) {
+
+    const user =
+        process.env.ADMIN_USER;
+
+    const password =
+        process.env.ADMIN_PASSWORD;
+
+    if (!user || !password) {
+
+        return res.status(503).send(
+            "Admin authentication is not configured."
+        );
+
+    }
+
+    const header =
+        req.headers.authorization;
+
+    if (!header) {
+
+        res.set(
+            "WWW-Authenticate",
+            'Basic realm="ALL WORLD BRANDS Admin"'
+        );
+
+        return res.status(401).send(
+            "Authentication required."
+        );
+
+    }
+
+    const encoded =
+        header.split(" ")[1];
+
+    if (!encoded) {
+
+        return res.status(401).send(
+            "Authentication required."
+        );
+
+    }
+
+    let decoded;
+
+    try {
+
+        decoded =
+            Buffer
+                .from(
+                    encoded,
+                    "base64"
+                )
+                .toString("utf8");
+
+    } catch {
+
+        return res.status(401).send(
+            "Invalid authentication."
+        );
+
+    }
+
+    const separator =
+        decoded.indexOf(":");
+
+    const suppliedUser =
+        separator >= 0
+            ? decoded.slice(
+                0,
+                separator
+            )
+            : "";
+
+    const suppliedPassword =
+        separator >= 0
+            ? decoded.slice(
+                separator + 1
+            )
+            : "";
+
+    if (
+        suppliedUser !== user ||
+        suppliedPassword !== password
+    ) {
+
+        res.set(
+            "WWW-Authenticate",
+            'Basic realm="ALL WORLD BRANDS Admin"'
+        );
+
+        return res.status(401).send(
+            "Invalid credentials."
+        );
+
+    }
+
+    next();
+
+}
+
+
+/* =========================================================
+   ADMIN — APPLICATIONS
+========================================================= */
+
+app.get(
+    "/api/admin/applications",
+    requireAdmin,
+    (req, res) => {
+
+        const applications =
+            db.prepare(`
+                SELECT
+                    a.*,
+                    c.name AS country_name,
+                    c.code AS country_code
+
+                FROM brand_applications a
+
+                JOIN countries c
+                    ON c.id = a.country_id
+
+                ORDER BY
+                    a.created_at DESC
+            `).all();
+
+        res.json(
+            applications
+        );
+
+    }
+);
+
+
+/* =========================================================
+   ADMIN — CREATE BRAND
+========================================================= */
+
+app.post(
+    "/api/admin/brands",
+    requireAdmin,
+    (req, res) => {
+
+        const countryId =
+            Number(
+                req.body.country_id
+            );
+
+        const name =
+            cleanText(
+                req.body.name,
+                150
+            );
+
+        const logo =
+            safeUrl(
+                req.body.logo
+            );
+
+        const website =
+            safeUrl(
+                req.body.website
+            );
+
+        const description =
+            cleanText(
+                req.body.description,
+                3000
+            );
+
+        if (
+            !countryId ||
+            !name
+        ) {
+
+            return res.status(400).json({
+                error:
+                    "Country and brand name are required."
+            });
+
+        }
+
+        const country =
+            db.prepare(`
+                SELECT id
+                FROM countries
+                WHERE id = ?
+            `).get(countryId);
+
+        if (!country) {
+
+            return res.status(404).json({
+                error:
+                    "Country or territory not found."
+            });
+
+        }
+
+        const existing =
+            db.prepare(`
+                SELECT id
+                FROM brands
+                WHERE name = ?
+                AND country_id = ?
+            `).get(
+                name,
+                countryId
+            );
+
+        if (existing) {
+
+            return res.status(409).json({
+                error:
+                    "This brand already exists in this country or territory."
+            });
+
+        }
+
+        const result =
+            db.prepare(`
+                INSERT INTO brands
+                (
+                    country_id,
+                    name,
+                    slug,
+                    logo,
+                    website,
+                    description
+                )
+                VALUES (?, ?, ?, ?, ?, ?)
+            `).run(
+                countryId,
+                name,
+                uniqueSlug(
+                    "brands",
+                    name
+                ),
+                logo,
+                website,
+                description
+            );
+
+        res.status(201).json({
+            success: true,
+            id:
+                result.lastInsertRowid
+        });
+
+    }
+);
+
+
+/* =========================================================
+   ADMIN — DELETE OLD STARTER BRANDS
+========================================================= */
+
+/*
+ * This route is intentionally protected.
+ *
+ * Use it ONCE if the current database still contains
+ * the old demo starter brands.
+ *
+ * It does NOT delete brands submitted by users unless
+ * their names exactly match this old starter list.
+ */
+
+app.delete(
+    "/api/admin/remove-starter-brands",
+    requireAdmin,
+    (req, res) => {
+
+        const oldStarterBrands = [
+            "Apple",
+            "Microsoft",
+            "Nike",
+            "Coca-Cola",
+            "BMW",
+            "Mercedes-Benz",
+            "Adidas",
+            "Toyota",
+            "Samsung",
+            "Huawei",
+            "L'Oréal",
+            "Ferrari",
+            "Arçelik",
+            "Artel",
+            "Tata"
+        ];
+
+        const placeholders =
+            oldStarterBrands
+                .map(() => "?")
+                .join(",");
+
+        const result =
+            db.prepare(`
+                DELETE FROM brands
+                WHERE name IN (${placeholders})
+            `).run(
+                ...oldStarterBrands
+            );
+
+        res.json({
+            success: true,
+            deleted:
+                result.changes
+        });
+
+    }
+);
+
+
+/* =========================================================
+   ADMIN PAGE
+========================================================= */
+
+app.get(
+    "/admin",
+    requireAdmin,
+    (req, res) => {
+
+        res.sendFile(
+            path.join(
+                __dirname,
+                "public",
+                "admin.html"
+            )
+        );
+
     }
 );
 
@@ -1812,183 +2310,271 @@ app.post(
    LEGAL PAGES
 ========================================================= */
 
-const LEGAL_PAGES = {
+const legalPages = {
 
-    offer: {
-        title: "Public Offer",
+    "/legal/offer": {
+        title:
+            "Public Offer — ALL WORLD BRANDS",
+
+        heading:
+            "Public Offer",
+
         text: `
-<h1>Public Offer</h1>
+<h2>Public Offer</h2>
 
 <p>
-ALL WORLD BRANDS provides an online service for submitting
-and publishing brand information.
+This Public Offer governs the use of paid brand
+submission services provided by ALL WORLD BRANDS.
 </p>
 
-<h2>Service</h2>
+<h3>1. Service</h3>
 
 <p>
-The service allows users to submit information about a brand
-for review and possible publication on the platform.
+ALL WORLD BRANDS provides a digital directory service
+for submitting company and brand information to the
+ALL WORLD BRANDS directory.
 </p>
 
-<h2>Service Fee</h2>
+<h3>2. Service Price</h3>
+
+<p>
+The standard brand submission service fee is
+<strong>$1 USD</strong>.
+</p>
+
+<h3>3. Payment</h3>
+
+<p>
+Payment must be successfully confirmed by the
+payment provider before a paid submission can be
+processed.
+</p>
+
+<h3>4. Payment Verification</h3>
+
+<p>
+Payment status is verified by the server and,
+when a real acquiring provider is connected,
+through server-to-server payment verification.
+The website does not rely on payment status supplied
+only by the customer's browser.
+</p>
+
+<h3>5. Content</h3>
+
+<p>
+Submitted information must be accurate, lawful and
+must not infringe the rights of third parties.
+</p>
+
+<h3>6. Acceptance</h3>
+
+<p>
+Submitting an application and completing payment means
+that the customer accepts this Public Offer.
+</p>
+`
+    },
+
+
+    "/legal/privacy": {
+
+        title:
+            "Privacy Policy — ALL WORLD BRANDS",
+
+        heading:
+            "Privacy Policy",
+
+        text: `
+<h2>Privacy Policy</h2>
+
+<p>
+ALL WORLD BRANDS respects the privacy of visitors,
+customers and brand representatives.
+</p>
+
+<h3>Information We May Collect</h3>
+
+<p>
+We may collect information necessary to process a
+brand application, including brand name, country,
+contact name, email address, phone number, website
+and description.
+</p>
+
+<h3>Payment Information</h3>
+
+<p>
+Payment card details should be processed by the
+authorized payment provider. ALL WORLD BRANDS should
+not store full card numbers or CVV codes on its own
+server.
+</p>
+
+<h3>Use of Information</h3>
+
+<p>
+Information may be used to process applications,
+communicate with customers, prevent abuse and
+operate the directory.
+</p>
+
+<h3>Security</h3>
+
+<p>
+Reasonable technical and organizational measures are
+used to protect submitted information.
+</p>
+
+<h3>Contact</h3>
+
+<p>
+For privacy questions, contact:
+allworldbrandsnet@gmail.com
+</p>
+`
+    },
+
+
+    "/legal/payment-refund": {
+
+        title:
+            "Payment & Refund Policy — ALL WORLD BRANDS",
+
+        heading:
+            "Payment & Refund Policy",
+
+        text: `
+<h2>Payment & Refund Policy</h2>
+
+<h3>Payment</h3>
 
 <p>
 The standard brand submission fee is
-<strong>USD 1.00</strong>.
+<strong>$1 USD</strong>.
 </p>
 
-<h2>Payment</h2>
+<h3>Payment Processing</h3>
 
 <p>
-Payment must be successfully confirmed by the payment provider
-and verified by the ALL WORLD BRANDS server.
+Payments are processed through the available
+acquiring/payment provider. Until a bank acquiring
+connection is activated, the website may operate in
+demo payment mode.
 </p>
 
-<h2>Acceptance</h2>
+<h3>Refunds</h3>
 
 <p>
-By submitting an application and completing payment,
-the user confirms that they have read and accepted this offer.
-</p>
-`
-    },
-
-    privacy: {
-        title: "Privacy Policy",
-        text: `
-<h1>Privacy Policy</h1>
-
-<p>
-ALL WORLD BRANDS respects user privacy and processes personal
-information only for legitimate service purposes.
+If a payment was successfully charged but the
+corresponding service cannot reasonably be provided,
+the customer may contact ALL WORLD BRANDS for review.
 </p>
 
-<h2>Information We May Collect</h2>
-
-<ul>
-<li>Name</li>
-<li>Phone number</li>
-<li>Brand information</li>
-<li>Website information</li>
-<li>Payment references</li>
-</ul>
-
-<h2>Payment Information</h2>
-
 <p>
-ALL WORLD BRANDS does not need to store full bank card numbers
-or CVV codes. Payment information should be handled by the
-authorized payment provider.
+Refund decisions are handled according to the
+applicable payment provider rules and applicable law.
 </p>
 
-<h2>Security</h2>
+<h3>Fraudulent or Unauthorized Payments</h3>
 
 <p>
-Reasonable technical and organizational measures are used
-to protect stored information.
+Suspected unauthorized transactions may be reviewed
+and may be reported to the relevant payment provider.
 </p>
 `
     },
 
-    payments: {
-        title: "Payment and Refund Policy",
+
+    "/legal/terms": {
+
+        title:
+            "Terms of Use — ALL WORLD BRANDS",
+
+        heading:
+            "Terms of Use",
+
         text: `
-<h1>Payment and Refund Policy</h1>
+<h2>Terms of Use</h2>
 
-<h2>Payment</h2>
+<h3>1. Website Use</h3>
 
 <p>
-The standard brand application fee is
-<strong>USD 1.00</strong>.
+You may use ALL WORLD BRANDS only for lawful purposes.
 </p>
 
-<h2>Payment Confirmation</h2>
+<h3>2. Submitted Content</h3>
 
 <p>
-A payment is considered completed only after server-side
-confirmation from the authorized payment provider.
+You are responsible for the accuracy and legality of
+information you submit.
 </p>
 
-<h2>Failed or Cancelled Payment</h2>
+<h3>3. Prohibited Content</h3>
 
 <p>
-If a user leaves the payment page, cancels the payment,
-or the payment fails, the application remains unpaid.
+Users must not submit illegal, fraudulent, abusive,
+malicious or infringing content.
 </p>
 
-<h2>Refunds</h2>
+<h3>4. Moderation</h3>
 
 <p>
-Refund requests are reviewed according to the applicable
-service terms, payment-provider rules, and applicable law.
+ALL WORLD BRANDS may review, reject, edit or remove
+submissions that violate these Terms or applicable
+law.
+</p>
+
+<h3>5. Availability</h3>
+
+<p>
+The website may be updated, modified or temporarily
+unavailable for maintenance or technical reasons.
+</p>
+
+<h3>6. Contact</h3>
+
+<p>
+allworldbrandsnet@gmail.com
 </p>
 `
     },
 
-    terms: {
-        title: "Terms of Use",
+
+    "/legal/contact": {
+
+        title:
+            "Legal & Contact — ALL WORLD BRANDS",
+
+        heading:
+            "Legal & Contact",
+
         text: `
-<h1>Terms of Use</h1>
+<h2>Legal & Contact</h2>
 
 <p>
-By using ALL WORLD BRANDS, you agree to use the service
-lawfully and responsibly.
+<strong>Website:</strong>
+ALL WORLD BRANDS
 </p>
 
-<h2>User Content</h2>
-
 <p>
-Users are responsible for information they submit.
-Users must not submit illegal, fraudulent, misleading,
-harmful, or prohibited content.
+<strong>Website:</strong>
+${htmlEscape(SITE_URL)}
 </p>
 
-<h2>Moderation</h2>
-
 <p>
-ALL WORLD BRANDS may review, reject, modify, or remove
-content that violates the platform rules or applicable law.
+<strong>Email:</strong>
+allworldbrandsnet@gmail.com
 </p>
 
-<h2>Brand Information</h2>
-
 <p>
-Submission of a brand does not automatically guarantee
-publication. Applications may require review.
-</p>
-`
-    },
-
-    contact: {
-        title: "Legal and Contact",
-        text: `
-<h1>Legal and Contact</h1>
-
-<p>
-ALL WORLD BRANDS is an online brand information platform.
+<strong>Phone:</strong>
++998933843112
 </p>
 
-<h2>Service</h2>
-
 <p>
-Website:
-<strong>https://allworldbrands.net</strong>
-</p>
-
-<h2>Support</h2>
-
-<p>
-For legal, payment, privacy, or account-related questions,
-please use the official contact information published
-on the website.
-</p>
-
-<h2>Business Information</h2>
-
-<p>
-Official business identification and contact information
-should be displayed here before production launch.
+For legal, privacy, payment or service questions,
+please contact us by email.
 </p>
 `
     }
@@ -1996,13 +2582,20 @@ should be displayed here before production launch.
 };
 
 
-for (const [key, page] of Object.entries(LEGAL_PAGES)) {
+for (
+    const [
+        route,
+        page
+    ] of Object.entries(
+        legalPages
+    )
+) {
 
     app.get(
-        `/legal/${key}`,
+        route,
         (req, res) => {
 
-            res.type("html").send(`
+            res.send(`
 <!DOCTYPE html>
 
 <html lang="en">
@@ -2013,56 +2606,70 @@ for (const [key, page] of Object.entries(LEGAL_PAGES)) {
 
 <meta
 name="viewport"
-content="width=device-width, initial-scale=1"
+content="width=device-width, initial-scale=1.0"
 >
 
 <title>
-${page.title} — ALL WORLD BRANDS
+${htmlEscape(page.title)}
 </title>
+
+<meta
+name="robots"
+content="index,follow"
+>
 
 <style>
 
-body {
-    margin: 0;
+body{
 
-    background: #050914;
+    margin:0;
 
-    color: #e5e7eb;
+    background:#02050c;
+
+    color:#fff;
 
     font-family:
+        Inter,
         Arial,
-        Helvetica,
         sans-serif;
 
-    line-height: 1.7;
+    line-height:1.7;
+
 }
 
-main {
-    max-width: 900px;
+main{
 
-    margin: auto;
+    width:
+        min(
+            850px,
+            calc(100% - 30px)
+        );
 
-    padding: 40px 20px;
-}
+    margin:60px auto;
 
-h1,
-h2 {
-    color: white;
-}
+    padding:35px;
 
-a {
-    color: #60a5fa;
-}
-
-.card {
-    background: #111827;
+    background:
+        rgba(7,19,38,.92);
 
     border:
-        1px solid #293548;
+        1px solid
+        rgba(255,255,255,.12);
 
-    border-radius: 18px;
+    border-radius:20px;
 
-    padding: 30px;
+}
+
+h1{
+    margin-top:0;
+}
+
+h2,h3{
+    color:#80d5ff;
+}
+
+a{
+    color:#80d5ff;
 }
 
 </style>
@@ -2073,92 +2680,116 @@ a {
 
 <main>
 
-<div class="card">
+<h1>
+${htmlEscape(page.heading)}
+</h1>
 
 ${page.text}
 
+<hr
+style="
+border:0;
+border-top:
+1px solid
+rgba(255,255,255,.1);
+margin:30px 0;
+"
+>
+
 <p>
 <a href="/">
-Back to ALL WORLD BRANDS
+← Back to ALL WORLD BRANDS
 </a>
 </p>
-
-</div>
 
 </main>
 
 </body>
 
 </html>
-`);
+            `);
 
         }
     );
+
 }
 
 
 /* =========================================================
-   ROBOTS.TXT
+   SEO — ROBOTS
 ========================================================= */
 
-app.get("/robots.txt", (req, res) => {
+app.get(
+    "/robots.txt",
+    (req, res) => {
 
-    res.type("text/plain");
+        res.type(
+            "text/plain"
+        );
 
-    res.send(
+        res.send(
 `User-agent: *
 Allow: /
 
 Sitemap: ${SITE_URL}/sitemap.xml`
-    );
+        );
 
-});
+    }
+);
 
 
 /* =========================================================
-   SITEMAP
+   SEO — SITEMAP
 ========================================================= */
 
-app.get("/sitemap.xml", (req, res) => {
+app.get(
+    "/sitemap.xml",
+    (req, res) => {
 
-    const countries =
-        db.prepare(`
-            SELECT id
-            FROM countries
-        `).all();
+        const countryRows =
+            db.prepare(`
+                SELECT id
+                FROM countries
+            `).all();
 
-    const brands =
-        db.prepare(`
-            SELECT id
-            FROM brands
-        `).all();
+        const brandRows =
+            db.prepare(`
+                SELECT id
+                FROM brands
+            `).all();
 
-    const urls = [
-        `${SITE_URL}/`,
-        `${SITE_URL}/legal/offer`,
-        `${SITE_URL}/legal/privacy`,
-        `${SITE_URL}/legal/payments`,
-        `${SITE_URL}/legal/terms`,
-        `${SITE_URL}/legal/contact`
-    ];
+        const urls = [
+            `${SITE_URL}/`,
+            `${SITE_URL}/legal/offer`,
+            `${SITE_URL}/legal/privacy`,
+            `${SITE_URL}/legal/payment-refund`,
+            `${SITE_URL}/legal/terms`,
+            `${SITE_URL}/legal/contact`
+        ];
 
-    for (const country of countries) {
+        for (
+            const country
+            of countryRows
+        ) {
 
-        urls.push(
-            `${SITE_URL}/country/${country.id}`
-        );
+            urls.push(
+                `${SITE_URL}/country/${country.id}`
+            );
 
-    }
+        }
 
-    for (const brand of brands) {
+        for (
+            const brand
+            of brandRows
+        ) {
 
-        urls.push(
-            `${SITE_URL}/brand/${brand.id}`
-        );
+            urls.push(
+                `${SITE_URL}/brand/${brand.id}`
+            );
 
-    }
+        }
 
-    const xml =
+        const xml =
 `<?xml version="1.0" encoding="UTF-8"?>
 
 <urlset
@@ -2166,45 +2797,25 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 ${urls.map(url => `
 <url>
-<loc>${escapeXml(url)}</loc>
+<loc>${htmlEscape(url)}</loc>
 </url>
 `).join("")}
 
 </urlset>`;
 
-    res.type("application/xml");
+        res.type(
+            "application/xml"
+        );
 
-    res.send(xml);
-});
+        res.send(xml);
 
-
-function escapeXml(value) {
-
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&apos;");
-}
+    }
+);
 
 
 /* =========================================================
-   HTML PAGES
+   COUNTRY HTML
 ========================================================= */
-
-app.get("/", (req, res) => {
-
-    res.sendFile(
-        path.join(
-            __dirname,
-            "public",
-            "index.html"
-        )
-    );
-
-});
-
 
 app.get(
     "/country/:id",
@@ -2221,6 +2832,10 @@ app.get(
     }
 );
 
+
+/* =========================================================
+   BRAND HTML
+========================================================= */
 
 app.get(
     "/brand/:id",
@@ -2239,70 +2854,164 @@ app.get(
 
 
 /* =========================================================
-   404
+   HOME
 ========================================================= */
 
-app.use((req, res) => {
+app.get(
+    "/",
+    (req, res) => {
 
-    if (
-        req.path.startsWith("/api/")
-    ) {
-
-        return res.status(404).json({
-            error: "Not found."
-        });
+        res.sendFile(
+            path.join(
+                __dirname,
+                "public",
+                "index.html"
+            )
+        );
 
     }
-
-    res.status(404).send(`
-<!DOCTYPE html>
-
-<html lang="en">
-
-<head>
-
-<meta charset="UTF-8">
-
-<title>Page Not Found — ALL WORLD BRANDS</title>
-
-</head>
-
-<body>
-
-<h1>Page Not Found</h1>
-
-<p>
-The requested page could not be found.
-</p>
-
-<a href="/">
-Return to ALL WORLD BRANDS
-</a>
-
-</body>
-
-</html>
-`);
-
-});
+);
 
 
 /* =========================================================
-   START SERVER
+   HEALTH
 ========================================================= */
 
-app.listen(PORT, () => {
+app.get(
+    "/api/health",
+    (req, res) => {
 
-    console.log(
-        `ALL WORLD BRANDS running on port ${PORT}`
-    );
+        const countryCount =
+            db.prepare(`
+                SELECT COUNT(*) AS count
+                FROM countries
+            `).get().count;
 
-    console.log(
-        `Payment mode: ${PAYMENT_MODE}`
-    );
+        const brandCount =
+            db.prepare(`
+                SELECT COUNT(*) AS count
+                FROM brands
+            `).get().count;
 
-    console.log(
-        `Countries loaded: ${ISO_COUNTRIES.length}`
-    );
+        const applicationCount =
+            db.prepare(`
+                SELECT COUNT(*) AS count
+                FROM brand_applications
+            `).get().count;
 
-});
+        res.json({
+
+            ok: true,
+
+            site:
+                "ALL WORLD BRANDS",
+
+            countries:
+                countryCount,
+
+            brands:
+                brandCount,
+
+            applications:
+                applicationCount,
+
+            payment:
+                DEMO_ACQUIRING
+                    ? "demo_acquiring"
+                    : "bank_acquiring",
+
+            submission_price:
+                SUBMISSION_AMOUNT,
+
+            currency:
+                SUBMISSION_CURRENCY
+
+        });
+
+    }
+);
+
+
+/* =========================================================
+   404
+========================================================= */
+
+app.use(
+    (req, res) => {
+
+        if (
+            req.path.startsWith(
+                "/api/"
+            )
+        ) {
+
+            return res.status(404).json({
+                error:
+                    "Not found"
+            });
+
+        }
+
+        res.status(404).send(
+            "Page not found"
+        );
+
+    }
+);
+
+
+/* =========================================================
+   ERROR HANDLER
+========================================================= */
+
+app.use(
+    (error, req, res, next) => {
+
+        console.error(
+            "SERVER ERROR:",
+            error
+        );
+
+        if (
+            res.headersSent
+        ) {
+
+            return next(error);
+
+        }
+
+        res.status(500).json({
+            error:
+                "Internal server error."
+        });
+
+    }
+);
+
+
+/* =========================================================
+   SERVER
+========================================================= */
+
+app.listen(
+    PORT,
+    () => {
+
+        console.log(
+            `ALL WORLD BRANDS running on port ${PORT}`
+        );
+
+        console.log(
+            `Site: ${SITE_URL}`
+        );
+
+        console.log(
+            `Payment mode: ${
+                DEMO_ACQUIRING
+                    ? "DEMO ACQUIRING"
+                    : "BANK ACQUIRING"
+            }`
+        );
+
+    }
+);
