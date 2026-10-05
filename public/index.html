@@ -1823,19 +1823,24 @@ async function loadBrandCounts(list){
 ========================================================= */
 
 function setCountryImage(card, country){
-    const bg = card.querySelector('.country-bg');
-    if (!bg || !country?.id) return;
 
-    fetch(`/api/countries/${encodeURIComponent(country.id)}/image`, {cache:"force-cache"})
-        .then(response => response.ok ? response.json() : null)
-        .then(data => {
-            if (!data?.image_url) return;
-            bg.style.setProperty('--country-image', `url("${String(data.image_url).replaceAll('"','%22')}")`);
-            bg.title = data.image_title || country.name;
-        })
-        .catch(() => {});
+    const bg = card.querySelector(".country-bg");
+
+    if(!bg || !country) return;
+
+    const code = String(country.code || "").toLowerCase();
+
+    if(!/^[a-z]{2}$/.test(code)) return;
+
+    const imagePath = `/images/countries/${code}.jpg`;
+
+    bg.style.setProperty(
+        "--country-image",
+        `url("${imagePath}")`
+    );
+
+    bg.title = country.name || "";
 }
-
 /* =========================================================
    RENDER COUNTRIES
 ========================================================= */
