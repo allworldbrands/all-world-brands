@@ -1,83 +1,58 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+<meta name="description"
+      content="ALL WORLD BRANDS — dunyo mamlakatlari, kompaniyalari va brendlarini kashf qilish uchun global katalog.">
 
-<meta
-    name="description"
-    content="ALL WORLD BRANDS — Discover brands and countries from around the world."
->
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#030711">
 
-<meta
-    name="robots"
-    content="index, follow"
->
+<link rel="canonical" href="https://allworldbrands.net/">
 
-<meta
-    name="theme-color"
-    content="#030711"
->
-
-<link
-    rel="canonical"
-    href="https://allworldbrands.net/"
->
-
-<title>ALL WORLD BRANDS — Discover Global Brands</title>
+<title>ALL WORLD BRANDS — Global Brand Directory</title>
 
 <style>
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
-html {
-    scroll-behavior: smooth;
+html{
+    scroll-behavior:smooth;
 }
 
-body {
-    min-height: 100vh;
-    font-family: Inter, Arial, Helvetica, sans-serif;
-    color: #fff;
-    background: #02050c;
-    overflow-x: hidden;
+body{
+    min-height:100vh;
+    font-family:Inter,Arial,Helvetica,sans-serif;
+    color:#fff;
+    background:#02050c;
+    overflow-x:hidden;
 }
 
-/* =========================================================
-   EARTH BACKGROUND
-========================================================= */
-
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
     background:
         linear-gradient(
             rgba(2,6,15,.54),
-            rgba(2,6,15,.90)
+            rgba(2,6,15,.92)
         ),
         url("/earth-4k.png")
-        center center / cover no-repeat;
-
-    opacity: .92;
-    pointer-events: none;
-    z-index: -3;
+        center center/cover no-repeat;
+    opacity:.92;
+    pointer-events:none;
+    z-index:-3;
 }
 
-body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
     background:
         radial-gradient(
             circle at 50% 20%,
@@ -89,436 +64,267 @@ body::after {
             rgba(2,6,15,.05),
             rgba(2,6,15,.70)
         );
-
-    pointer-events: none;
-    z-index: -2;
+    pointer-events:none;
+    z-index:-2;
 }
 
-/* =========================================================
-   HEADER
-========================================================= */
-
-.header {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    width: 100%;
-
-    background: rgba(2,7,17,.72);
-
-    backdrop-filter: blur(18px);
-
-    border-bottom:
-        1px solid
-        rgba(255,255,255,.10);
+a{
+    color:inherit;
 }
 
-.header-inner {
-    width:
-        min(
-            1500px,
-            calc(100% - 28px)
-        );
-
-    min-height: 68px;
-
-    margin: auto;
-
-    display: flex;
-    align-items: center;
-    gap: 15px;
+.header{
+    position:sticky;
+    top:0;
+    z-index:1000;
+    background:rgba(2,7,17,.76);
+    backdrop-filter:blur(18px);
+    border-bottom:1px solid rgba(255,255,255,.10);
 }
 
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    color: #fff;
-    text-decoration: none;
-    white-space: nowrap;
+.header-inner{
+    width:min(1500px,calc(100% - 28px));
+    min-height:68px;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    gap:15px;
 }
 
-.logo-mark {
-    width: 40px;
-    height: 40px;
-
-    display: grid;
-    place-items: center;
-
-    border-radius: 12px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #00b7ff,
-            #005cff
-        );
-
-    box-shadow:
-        0 0 30px
-        rgba(0,145,255,.42);
-
-    font-size: 21px;
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:#fff;
+    text-decoration:none;
+    white-space:nowrap;
 }
 
-.logo-text {
-    font-size: 18px;
-    font-weight: 950;
-    letter-spacing: .5px;
+.logo-mark{
+    width:40px;
+    height:40px;
+    display:grid;
+    place-items:center;
+    border-radius:12px;
+    background:linear-gradient(135deg,#00b7ff,#005cff);
+    box-shadow:0 0 30px rgba(0,145,255,.42);
+    font-size:21px;
 }
 
-.nav {
-    margin-left: auto;
+.logo-text{
+    font-size:18px;
+    font-weight:950;
+    letter-spacing:.5px;
+}
 
-    display: flex;
-    align-items: center;
-    gap: 6px;
+.nav{
+    margin-left:auto;
+    display:flex;
+    align-items:center;
+    gap:5px;
+    flex-wrap:wrap;
 }
 
 .nav a,
-.back-button {
-    color: #c3d1e4;
-
-    text-decoration: none;
-
-    padding: 9px 12px;
-
-    border-radius: 9px;
-
-    font-size: 13px;
-    font-weight: 750;
-
-    background: transparent;
-    border: 0;
-
-    cursor: pointer;
-
-    font-family: inherit;
+.back-button{
+    color:#c3d1e4;
+    text-decoration:none;
+    padding:9px 11px;
+    border-radius:9px;
+    font-size:13px;
+    font-weight:750;
+    background:transparent;
+    border:0;
+    cursor:pointer;
+    font-family:inherit;
 }
 
 .nav a:hover,
-.back-button:hover {
-    color: #fff;
-    background: rgba(255,255,255,.08);
+.back-button:hover{
+    color:#fff;
+    background:rgba(255,255,255,.08);
 }
 
-/* =========================================================
-   MAIN
-========================================================= */
-
-.main {
-    width:
-        min(
-            1500px,
-            calc(100% - 28px)
-        );
-
-    margin: auto;
+.main{
+    width:min(1500px,calc(100% - 28px));
+    margin:auto;
 }
 
-/* =========================================================
-   HERO
-========================================================= */
-
-.hero {
-    padding: 70px 0 30px;
-    text-align: center;
+.hero{
+    padding:70px 0 30px;
+    text-align:center;
 }
 
-.badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-
-    padding: 8px 14px;
-
-    border-radius: 999px;
-
-    background: rgba(0,145,255,.12);
-
-    border:
-        1px solid
-        rgba(0,168,255,.30);
-
-    color: #7bd1ff;
-
-    font-size: 12px;
-    font-weight: 850;
-
-    letter-spacing: .6px;
-
-    margin-bottom: 17px;
+.badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 14px;
+    border-radius:999px;
+    background:rgba(0,145,255,.12);
+    border:1px solid rgba(0,168,255,.30);
+    color:#7bd1ff;
+    font-size:12px;
+    font-weight:850;
+    letter-spacing:.6px;
+    margin-bottom:17px;
 }
 
-.badge-dot {
-    width: 8px;
-    height: 8px;
-
-    border-radius: 50%;
-
-    background: #00c3ff;
-
-    box-shadow:
-        0 0 15px
-        #00b7ff;
+.badge-dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#00c3ff;
+    box-shadow:0 0 15px #00b7ff;
 }
 
-.hero h1 {
-    font-size:
-        clamp(
-            38px,
-            7vw,
-            82px
-        );
-
-    line-height: .95;
-
-    font-weight: 950;
-
-    letter-spacing: -3px;
-
-    margin-bottom: 17px;
-
-    background:
-        linear-gradient(
-            90deg,
-            #fff,
-            #8edcff,
-            #fff,
-            #69f0ff,
-            #fff
-        );
-
-    background-size: 300% auto;
-
-    animation:
-        titleShine 7s linear infinite;
-
-    -webkit-background-clip: text;
-    background-clip: text;
-
-    color: transparent;
+.hero h1{
+    font-size:clamp(38px,7vw,82px);
+    line-height:.95;
+    font-weight:950;
+    letter-spacing:-3px;
+    margin-bottom:17px;
+    background:linear-gradient(
+        90deg,
+        #fff,
+        #8edcff,
+        #fff,
+        #69f0ff,
+        #fff
+    );
+    background-size:300% auto;
+    animation:titleShine 7s linear infinite;
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
 }
 
-@keyframes titleShine {
-
-    0% {
-        background-position: 0% center;
-    }
-
-    50% {
-        background-position: 100% center;
-    }
-
-    100% {
-        background-position: 0% center;
-    }
+@keyframes titleShine{
+    0%{background-position:0% center}
+    50%{background-position:100% center}
+    100%{background-position:0% center}
 }
 
-.hero p {
-    max-width: 700px;
-
-    margin: auto;
-
-    color: #a2b3c9;
-
-    font-size: 16px;
-
-    line-height: 1.6;
+.hero p{
+    max-width:720px;
+    margin:auto;
+    color:#a2b3c9;
+    font-size:16px;
+    line-height:1.6;
 }
 
-/* =========================================================
-   SEARCH
-========================================================= */
-
-.search-area {
-    width:
-        min(
-            850px,
-            100%
-        );
-
-    margin:
-        0 auto 38px;
+.search-area{
+    width:min(850px,100%);
+    margin:0 auto 38px;
 }
 
-.search-box {
-    position: relative;
+.search-box{
+    position:relative;
 }
 
-.search-icon {
-    position: absolute;
-
-    left: 18px;
-    top: 50%;
-
-    transform:
-        translateY(-50%);
-
-    color: #7590ad;
-
-    font-size: 20px;
+.search-icon{
+    position:absolute;
+    left:18px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#7590ad;
+    font-size:20px;
 }
 
-#searchInput {
-    width: 100%;
-    height: 58px;
-
-    padding:
-        0 55px 0 50px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.14);
-
-    border-radius: 16px;
-
-    outline: none;
-
-    background:
-        rgba(5,15,31,.78);
-
-    color: #fff;
-
-    font-size: 16px;
+#searchInput{
+    width:100%;
+    height:58px;
+    padding:0 55px 0 50px;
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:16px;
+    outline:none;
+    background:rgba(5,15,31,.78);
+    color:#fff;
+    font-size:16px;
 }
 
-#searchInput:focus {
-    border-color:
-        rgba(0,168,255,.65);
-
-    box-shadow:
-        0 0 0 4px
-        rgba(0,168,255,.09);
+#searchInput:focus{
+    border-color:rgba(0,168,255,.65);
+    box-shadow:0 0 0 4px rgba(0,168,255,.09);
 }
 
-#searchInput::placeholder {
-    color: #7890aa;
+#searchInput::placeholder{
+    color:#7890aa;
 }
 
-.clear-search {
-    position: absolute;
-
-    right: 12px;
-    top: 50%;
-
-    transform:
-        translateY(-50%);
-
-    width: 34px;
-    height: 34px;
-
-    border: 0;
-    border-radius: 9px;
-
-    background:
-        rgba(255,255,255,.07);
-
-    color: #fff;
-
-    cursor: pointer;
-
-    display: none;
-
-    font-size: 20px;
+.clear-search{
+    position:absolute;
+    right:12px;
+    top:50%;
+    transform:translateY(-50%);
+    width:34px;
+    height:34px;
+    border:0;
+    border-radius:9px;
+    background:rgba(255,255,255,.07);
+    color:#fff;
+    cursor:pointer;
+    display:none;
+    font-size:20px;
 }
 
-/* =========================================================
-   SECTION HEAD
-========================================================= */
-
-.section-head {
-    display: flex;
-
-    align-items: end;
-
-    justify-content:
-        space-between;
-
-    gap: 15px;
-
-    margin-bottom: 16px;
+.section-head{
+    display:flex;
+    align-items:end;
+    justify-content:space-between;
+    gap:15px;
+    margin-bottom:16px;
 }
 
-.section-title {
-    font-size: 24px;
-    font-weight: 900;
+.section-title{
+    font-size:24px;
+    font-weight:900;
 }
 
-.section-subtitle {
-    color: #91a4bc;
-    font-size: 13px;
-    margin-top: 5px;
+.section-subtitle{
+    color:#91a4bc;
+    font-size:13px;
+    margin-top:5px;
 }
 
-.result-count {
-    color: #9aabc0;
-    font-size: 12px;
+.result-count{
+    color:#9aabc0;
+    font-size:12px;
 }
 
-/* =========================================================
-   COUNTRIES
-========================================================= */
-
-.countries-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(
-            10,
-            minmax(0,1fr)
-        );
-
-    gap: 9px;
+.countries-grid{
+    display:grid;
+    grid-template-columns:repeat(10,minmax(0,1fr));
+    gap:9px;
 }
 
-.country-card {
-    position: relative;
-
-    min-width: 0;
-
-    aspect-ratio: 1 / 1;
-
-    overflow: hidden;
-
-    border-radius: 10px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.11);
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(15,35,60,.90),
-            rgba(3,10,22,.94)
-        );
-
-    cursor: pointer;
-
+.country-card{
+    position:relative;
+    min-width:0;
+    aspect-ratio:1/1;
+    overflow:hidden;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,.11);
+    background:linear-gradient(
+        135deg,
+        rgba(15,35,60,.90),
+        rgba(3,10,22,.94)
+    );
+    cursor:pointer;
     transition:
         transform .2s,
         border-color .2s,
         box-shadow .2s;
 }
 
-.country-card:hover {
-    transform:
-        translateY(-3px);
-
-    border-color:
-        rgba(0,181,255,.55);
-
-    box-shadow:
-        0 12px 28px
-        rgba(0,0,0,.38);
+.country-card:hover{
+    transform:translateY(-3px);
+    border-color:rgba(0,181,255,.55);
+    box-shadow:0 12px 28px rgba(0,0,0,.38);
 }
 
-.country-bg {
-    position: absolute;
-    inset: 0;
-
+.country-bg{
+    position:absolute;
+    inset:0;
     background:
         radial-gradient(
             circle at 80% 15%,
@@ -527,735 +333,622 @@ body::after {
         );
 }
 
-.country-content {
-    position: absolute;
-    inset: 0;
-
-    padding: 7px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: flex-end;
-
-    background:
-        linear-gradient(
-            transparent 5%,
-            rgba(1,5,14,.95)
-        );
+.country-content{
+    position:absolute;
+    inset:0;
+    padding:7px;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    background:linear-gradient(
+        transparent 5%,
+        rgba(1,5,14,.95)
+    );
 }
 
-.country-name {
-    font-size: 10px;
-    font-weight: 850;
-
-    line-height: 1.15;
-
-    white-space: normal;
-
-    overflow-wrap: anywhere;
-
-    display: -webkit-box;
-
-    -webkit-box-orient: vertical;
-
-    -webkit-line-clamp: 3;
-
-    overflow: hidden;
-
-    padding-right: 4px;
+.country-name{
+    font-size:10px;
+    font-weight:850;
+    line-height:1.15;
+    overflow-wrap:anywhere;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:3;
+    overflow:hidden;
+    padding-right:4px;
 }
 
-.country-code {
-    margin-top: 3px;
-
-    font-size: 7px;
-
-    color: #8298b2;
-
-    letter-spacing: .5px;
+.country-code{
+    margin-top:3px;
+    font-size:7px;
+    color:#8298b2;
+    letter-spacing:.5px;
 }
 
-.country-flag {
-    font-size: 20px;
-
-    line-height: 1;
-
-    margin-bottom: 4px;
+.country-flag{
+    font-size:20px;
+    line-height:1;
+    margin-bottom:4px;
 }
 
-/* =========================================================
-   BRAND COUNT
-========================================================= */
-
-.brand-count {
-    position: absolute;
-
-    right: 6px;
-    top: 50%;
-
-    transform:
-        translateY(-50%);
-
-    width: 30px;
-    height: 30px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-    justify-content: center;
-
-    border-radius: 8px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #8dffb5,
-            #48e982
-        );
-
-    border:
-        1px solid
-        rgba(190,255,215,.85);
-
-    box-shadow:
-        0 0 15px
-        rgba(70,245,130,.30);
-
-    color: #063d1b;
-
-    font-weight: 950;
-
-    line-height: 1;
-
-    z-index: 5;
+.brand-count{
+    position:absolute;
+    right:6px;
+    top:50%;
+    transform:translateY(-50%);
+    width:30px;
+    height:30px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    border-radius:8px;
+    background:linear-gradient(135deg,#8dffb5,#48e982);
+    border:1px solid rgba(190,255,215,.85);
+    box-shadow:0 0 15px rgba(70,245,130,.30);
+    color:#063d1b;
+    font-weight:950;
+    line-height:1;
+    z-index:5;
 }
 
-.brand-count-number {
-    font-size: 10px;
+.brand-count-number{
+    font-size:10px;
 }
 
-.brand-count-label {
-    font-size: 5px;
-
-    margin-top: 2px;
-
-    letter-spacing: .2px;
+.brand-count-label{
+    font-size:5px;
+    margin-top:2px;
+    letter-spacing:.2px;
 }
 
-/* =========================================================
-   PANELS
-========================================================= */
-
-.panel {
-    margin-top: 45px;
-
-    padding: 28px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.11);
-
-    border-radius: 22px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(7,24,48,.84),
-            rgba(2,8,18,.90)
-        );
-
-    backdrop-filter:
-        blur(15px);
-
-    box-shadow:
-        0 20px 60px
-        rgba(0,0,0,.30);
+.panel{
+    margin-top:45px;
+    padding:28px;
+    border:1px solid rgba(255,255,255,.11);
+    border-radius:22px;
+    background:linear-gradient(
+        135deg,
+        rgba(7,24,48,.84),
+        rgba(2,8,18,.90)
+    );
+    backdrop-filter:blur(15px);
+    box-shadow:0 20px 60px rgba(0,0,0,.30);
 }
 
-.panel h2 {
-    font-size: 28px;
-    margin-bottom: 10px;
+.panel h2{
+    font-size:28px;
+    margin-bottom:10px;
 }
 
-.panel-description {
-    color: #93a7bf;
-
-    line-height: 1.6;
-
-    margin-bottom: 20px;
+.panel-description{
+    color:#93a7bf;
+    line-height:1.6;
+    margin-bottom:20px;
 }
 
-/* =========================================================
-   BRAND FORM
-========================================================= */
-
-.form-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(
-            2,
-            minmax(0,1fr)
-        );
-
-    gap: 13px;
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:13px;
 }
 
-.field {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+.field{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
 }
 
-.field.full {
-    grid-column:
-        1 / -1;
+.field.full{
+    grid-column:1/-1;
 }
 
-.field label {
-    color: #9db0c7;
-
-    font-size: 12px;
-    font-weight: 700;
+.field label{
+    color:#9db0c7;
+    font-size:12px;
+    font-weight:700;
 }
 
 .field input,
 .field textarea,
-.field select {
-    width: 100%;
-
-    border:
-        1px solid
-        rgba(255,255,255,.12);
-
-    border-radius: 10px;
-
-    background:
-        rgba(0,0,0,.22);
-
-    color: #fff;
-
-    padding: 12px;
-
-    outline: none;
-
-    font: inherit;
+.field select{
+    width:100%;
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:10px;
+    background:rgba(0,0,0,.22);
+    color:#fff;
+    padding:12px;
+    outline:none;
+    font:inherit;
 }
 
-.field select option {
-    background: #071326;
-    color: #fff;
+.field select option{
+    background:#071326;
+    color:#fff;
 }
 
-.field textarea {
-    min-height: 100px;
-    resize: vertical;
+.field textarea{
+    min-height:100px;
+    resize:vertical;
 }
 
 .field input:focus,
 .field textarea:focus,
-.field select:focus {
-    border-color:
-        rgba(0,174,255,.65);
+.field select:focus{
+    border-color:rgba(0,174,255,.65);
 }
 
-.submit-row {
-    margin-top: 18px;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 15px;
-
-    flex-wrap: wrap;
+.submit-row{
+    margin-top:18px;
+    display:flex;
+    align-items:center;
+    gap:15px;
+    flex-wrap:wrap;
 }
 
-.price-box {
-    color: #8dffb5;
-
-    font-weight: 900;
-
-    font-size: 18px;
+.price-box{
+    color:#8dffb5;
+    font-weight:900;
+    font-size:18px;
 }
 
-.primary-button {
-    border: 0;
-
-    border-radius: 11px;
-
-    padding:
-        13px 22px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #00a8ff,
-            #0064ff
-        );
-
-    color: #fff;
-
-    font-weight: 850;
-
-    cursor: pointer;
-
-    transition:
-        transform .2s,
-        opacity .2s;
+.primary-button{
+    border:0;
+    border-radius:11px;
+    padding:13px 22px;
+    background:linear-gradient(135deg,#00a8ff,#0064ff);
+    color:#fff;
+    font-weight:850;
+    cursor:pointer;
+    transition:transform .2s,opacity .2s;
 }
 
-.primary-button:hover {
-    transform:
-        translateY(-1px);
+.primary-button:hover{
+    transform:translateY(-1px);
 }
 
-.primary-button:disabled {
-    opacity: .55;
-    cursor: wait;
+.primary-button:disabled{
+    opacity:.55;
+    cursor:wait;
 }
 
-.form-message {
-    margin-top: 12px;
-
-    min-height: 20px;
-
-    color: #9eb1c7;
-
-    font-size: 13px;
+.secondary-button{
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:11px;
+    padding:13px 22px;
+    background:rgba(255,255,255,.06);
+    color:#fff;
+    font-weight:800;
+    cursor:pointer;
 }
 
-/* =========================================================
-   COMMENTS
-========================================================= */
-
-.comments-layout {
-    display: grid;
-
-    grid-template-columns:
-        330px
-        1fr;
-
-    gap: 25px;
+.form-message{
+    margin-top:12px;
+    min-height:20px;
+    color:#9eb1c7;
+    font-size:13px;
 }
 
-.comment-list {
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 12px;
-
-    max-height: 450px;
-
-    overflow-y: auto;
+.comments-layout{
+    display:grid;
+    grid-template-columns:330px 1fr;
+    gap:25px;
 }
 
-.comment {
-    padding: 15px;
-
-    border-radius: 13px;
-
-    background:
-        rgba(255,255,255,.045);
-
-    border:
-        1px solid
-        rgba(255,255,255,.08);
+.comment-list{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    max-height:450px;
+    overflow-y:auto;
 }
 
-.comment-name {
-    font-weight: 850;
-    margin-bottom: 5px;
+.comment{
+    padding:15px;
+    border-radius:13px;
+    background:rgba(255,255,255,.045);
+    border:1px solid rgba(255,255,255,.08);
 }
 
-.comment-text {
-    color: #a4b4c8;
-
-    font-size: 13px;
-
-    line-height: 1.5;
+.comment-name{
+    font-weight:850;
+    margin-bottom:5px;
 }
 
-/* =========================================================
-   INFO
-========================================================= */
-
-.info-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(
-            3,
-            1fr
-        );
-
-    gap: 15px;
+.comment-text{
+    color:#a4b4c8;
+    font-size:13px;
+    line-height:1.5;
 }
 
-.info-card {
-    padding: 18px;
-
-    border-radius: 14px;
-
-    background:
-        rgba(255,255,255,.045);
-
-    border:
-        1px solid
-        rgba(255,255,255,.08);
+.info-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
 }
 
-.info-card strong {
-    display: block;
-
-    color: #fff;
-
-    margin-bottom: 7px;
+.info-card{
+    padding:18px;
+    border-radius:14px;
+    background:rgba(255,255,255,.045);
+    border:1px solid rgba(255,255,255,.08);
 }
 
-.info-card a {
-    color: #80d5ff;
-
-    text-decoration: none;
-
-    overflow-wrap: anywhere;
+.info-card strong{
+    display:block;
+    color:#fff;
+    margin-bottom:7px;
 }
 
-/* =========================================================
-   PAYMENT LOGOS
-   ONLY LOGOS AT THE VERY BOTTOM
-========================================================= */
-
-.payment-logos {
-    margin-top: 30px;
-
-    padding-top: 20px;
-
-    border-top:
-        1px solid
-        rgba(255,255,255,.07);
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    gap: 18px;
-
-    flex-wrap: wrap;
+.info-card a{
+    color:#80d5ff;
+    text-decoration:none;
+    overflow-wrap:anywhere;
 }
 
-.payment-logo {
-    width: 82px;
-    height: 42px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    border-radius: 8px;
-
-    background: #fff;
-
-    box-shadow:
-        0 5px 18px
-        rgba(0,0,0,.25);
-
-    overflow: hidden;
+.legal-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
 }
 
-.payment-logo svg {
-    width: 70px;
-    height: 30px;
+.legal-card{
+    padding:20px;
+    border-radius:14px;
+    background:rgba(255,255,255,.045);
+    border:1px solid rgba(255,255,255,.08);
 }
 
-/* =========================================================
-   FOOTER
-========================================================= */
-
-.footer {
-    margin-top: 30px;
-
-    padding:
-        28px 0 35px;
-
-    border-top:
-        1px solid
-        rgba(255,255,255,.09);
-
-    display: flex;
-
-    justify-content:
-        space-between;
-
-    color: #71859e;
-
-    font-size: 12px;
+.legal-card h3{
+    margin-bottom:8px;
 }
 
-.footer strong {
-    color: #b5c5d8;
+.legal-card p{
+    color:#9eb0c5;
+    font-size:13px;
+    line-height:1.6;
 }
 
-/* =========================================================
-   RESPONSIVE
-========================================================= */
+.legal-card a{
+    color:#80d5ff;
+    text-decoration:none;
+}
 
-@media (max-width:1200px) {
+.payment-logos{
+    margin-top:30px;
+    padding-top:20px;
+    border-top:1px solid rgba(255,255,255,.07);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:18px;
+    flex-wrap:wrap;
+}
 
-    .countries-grid {
-        grid-template-columns:
-            repeat(
-                8,
-                minmax(0,1fr)
-            );
+.payment-logo{
+    width:82px;
+    height:42px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:8px;
+    background:#fff;
+    box-shadow:0 5px 18px rgba(0,0,0,.25);
+    overflow:hidden;
+}
+
+.payment-logo svg{
+    width:70px;
+    height:30px;
+}
+
+.footer{
+    margin-top:30px;
+    padding:28px 0 35px;
+    border-top:1px solid rgba(255,255,255,.09);
+    display:flex;
+    justify-content:space-between;
+    color:#71859e;
+    font-size:12px;
+}
+
+.footer strong{
+    color:#b5c5d8;
+}
+
+/* DEMO PAYMENT */
+
+.payment-demo{
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:3000;
+    background:rgba(0,0,0,.72);
+    backdrop-filter:blur(8px);
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+}
+
+.payment-demo.active{
+    display:flex;
+}
+
+.payment-box{
+    width:min(480px,100%);
+    border-radius:22px;
+    padding:28px;
+    background:linear-gradient(
+        135deg,
+        #081a32,
+        #020914
+    );
+    border:1px solid rgba(255,255,255,.14);
+    box-shadow:0 30px 100px rgba(0,0,0,.55);
+}
+
+.payment-box h2{
+    margin-bottom:10px;
+}
+
+.payment-box p{
+    color:#9db0c7;
+    line-height:1.6;
+    margin-bottom:18px;
+}
+
+.payment-amount{
+    font-size:30px;
+    font-weight:950;
+    color:#8dffb5;
+    margin-bottom:20px;
+}
+
+.demo-notice{
+    padding:12px;
+    border-radius:10px;
+    background:rgba(255,196,0,.08);
+    border:1px solid rgba(255,196,0,.22);
+    color:#ffd66b;
+    font-size:12px;
+    line-height:1.5;
+    margin-bottom:18px;
+}
+
+.payment-actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+/* LEGAL MODAL */
+
+.legal-modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:2500;
+    background:rgba(0,0,0,.76);
+    backdrop-filter:blur(8px);
+    padding:20px;
+    overflow:auto;
+}
+
+.legal-modal.active{
+    display:block;
+}
+
+.legal-window{
+    width:min(900px,100%);
+    margin:30px auto;
+    padding:30px;
+    border-radius:20px;
+    background:#061224;
+    border:1px solid rgba(255,255,255,.12);
+    box-shadow:0 30px 100px rgba(0,0,0,.55);
+}
+
+.legal-window h2{
+    margin-bottom:18px;
+}
+
+.legal-window h3{
+    margin:22px 0 8px;
+}
+
+.legal-window p,
+.legal-window li{
+    color:#a9b8ca;
+    font-size:14px;
+    line-height:1.7;
+}
+
+.legal-window ul{
+    padding-left:20px;
+}
+
+.close-legal{
+    float:right;
+    border:0;
+    background:rgba(255,255,255,.08);
+    color:#fff;
+    border-radius:8px;
+    width:34px;
+    height:34px;
+    cursor:pointer;
+}
+
+@media(max-width:1200px){
+    .countries-grid{
+        grid-template-columns:repeat(8,minmax(0,1fr));
     }
 }
 
-@media (max-width:900px) {
-
-    .countries-grid {
-        grid-template-columns:
-            repeat(
-                6,
-                minmax(0,1fr)
-            );
+@media(max-width:900px){
+    .countries-grid{
+        grid-template-columns:repeat(6,minmax(0,1fr));
     }
 
-    .comments-layout {
-        grid-template-columns: 1fr;
+    .comments-layout{
+        grid-template-columns:1fr;
     }
 
-    .info-grid {
-        grid-template-columns: 1fr;
+    .info-grid,
+    .legal-grid{
+        grid-template-columns:1fr;
     }
 }
 
-@media (max-width:700px) {
-
-    .header-inner {
-        min-height: 58px;
+@media(max-width:700px){
+    .header-inner{
+        min-height:58px;
     }
 
-    .logo-text {
-        font-size: 15px;
+    .logo-text{
+        font-size:15px;
     }
 
-    .nav a {
-        display: none;
+    .nav a{
+        display:none;
     }
 
-    .back-button {
-        display: block;
+    .hero{
+        padding-top:45px;
     }
 
-    .hero {
-        padding-top: 45px;
+    .countries-grid{
+        grid-template-columns:repeat(4,minmax(0,1fr));
+        gap:7px;
     }
 
-    .countries-grid {
-        grid-template-columns:
-            repeat(
-                4,
-                minmax(0,1fr)
-            );
-
-        gap: 7px;
+    .country-name{
+        font-size:9px;
     }
 
-    .country-name {
-        font-size: 9px;
+    .brand-count{
+        width:27px;
+        height:27px;
+        right:4px;
     }
 
-    .brand-count {
-        width: 27px;
-        height: 27px;
-        right: 4px;
+    .form-grid{
+        grid-template-columns:1fr;
     }
 
-    .form-grid {
-        grid-template-columns: 1fr;
+    .field.full{
+        grid-column:auto;
     }
 
-    .field.full {
-        grid-column: auto;
+    .panel{
+        padding:20px;
     }
 
-    .panel {
-        padding: 20px;
-    }
-
-    .footer {
-        flex-direction: column;
-
-        text-align: center;
-
-        gap: 12px;
+    .footer{
+        flex-direction:column;
+        text-align:center;
+        gap:12px;
     }
 }
 
-@media (max-width:480px) {
-
+@media(max-width:480px){
     .main,
-    .header-inner {
-        width:
-            calc(100% - 18px);
+    .header-inner{
+        width:calc(100% - 18px);
     }
 
-    .hero h1 {
-        letter-spacing: -1.8px;
+    .hero h1{
+        letter-spacing:-1.8px;
     }
 
-    .countries-grid {
-        grid-template-columns:
-            repeat(
-                4,
-                minmax(0,1fr)
-            );
-
-        gap: 6px;
+    .countries-grid{
+        grid-template-columns:repeat(4,minmax(0,1fr));
+        gap:6px;
     }
 
-    .country-flag {
-        font-size: 15px;
+    .country-flag{
+        font-size:15px;
     }
 
-    .country-name {
-        font-size: 8px;
-
-        -webkit-line-clamp: 3;
+    .country-name{
+        font-size:8px;
     }
 
-    .country-code {
-        font-size: 6px;
+    .country-code{
+        font-size:6px;
     }
 
-    .brand-count {
-        width: 24px;
-        height: 24px;
+    .brand-count{
+        width:24px;
+        height:24px;
     }
 
-    .brand-count-number {
-        font-size: 8px;
+    .brand-count-number{
+        font-size:8px;
     }
 
-    .brand-count-label {
-        font-size: 4px;
+    .brand-count-label{
+        font-size:4px;
     }
 
-    .payment-logo {
-        width: 72px;
-        height: 38px;
+    .payment-logo{
+        width:72px;
+        height:38px;
     }
 }
-
 </style>
-
 </head>
 
 <body>
 
 <header class="header">
-
 <div class="header-inner">
 
-<a
-    href="/"
-    class="logo"
->
-
-<span class="logo-mark">
-🌐
-</span>
-
-<span class="logo-text">
-ALL WORLD BRANDS
-</span>
-
+<a href="/" class="logo">
+    <span class="logo-mark">🌐</span>
+    <span class="logo-text">ALL WORLD BRANDS</span>
 </a>
 
 <nav class="nav">
+    <a href="#countries">Countries</a>
+    <a href="#brands">Add Brand</a>
+    <a href="#comments">Comments</a>
+    <a href="#legal">Legal</a>
+    <a href="#info">Contact</a>
 
-<a href="#countries">
-Countries
-</a>
-
-<a href="#brands">
-Add Brand
-</a>
-
-<a href="#comments">
-Comments
-</a>
-
-<a href="#info">
-Info
-</a>
-
-<button
-    type="button"
-    class="back-button"
-    onclick="goBack()"
->
-← Back
-</button>
-
+    <button
+        type="button"
+        class="back-button"
+        onclick="goBack()"
+    >
+        ← Back
+    </button>
 </nav>
 
 </div>
-
 </header>
 
-
 <main class="main">
-
-
-<!-- =====================================================
-     HERO
-===================================================== -->
 
 <section class="hero">
 
 <div class="badge">
-
-<span class="badge-dot"></span>
-
-GLOBAL BRAND DIRECTORY
-
+    <span class="badge-dot"></span>
+    GLOBAL BRAND DIRECTORY
 </div>
 
-<h1>
-ALL WORLD BRANDS
-</h1>
+<h1>ALL WORLD BRANDS</h1>
 
 <p>
-Discover countries, brands and companies
+Discover countries, companies and brands
 from around the world in one place.
 </p>
 
 </section>
 
-
-<!-- =====================================================
-     SEARCH
-===================================================== -->
-
 <div class="search-area">
-
 <div class="search-box">
 
-<span class="search-icon">
-🔎
-</span>
+<span class="search-icon">🔎</span>
 
 <input
     id="searchInput"
@@ -1273,46 +966,35 @@ from around the world in one place.
 </button>
 
 </div>
-
 </div>
-
-
-<!-- =====================================================
-     COUNTRIES
-===================================================== -->
 
 <section id="countries">
 
 <div class="section-head">
 
 <div>
+    <div class="section-title">🌍 Countries</div>
 
-<div class="section-title">
-🌍 Countries
+    <div class="section-subtitle">
+        Countries and territories
+    </div>
 </div>
 
-<div class="section-subtitle">
-250 countries and territories
-</div>
-
-</div>
-
-<div
-    id="resultCount"
-    class="result-count"
->
-Loading...
+<div id="resultCount" class="result-count">
+    Loading...
 </div>
 
 </div>
 
-<div
-    id="countriesGrid"
-    class="countries-grid"
->
+<div id="countriesGrid" class="countries-grid">
 
-<div class="loading">
-Loading...
+<div style="
+    grid-column:1/-1;
+    padding:40px;
+    text-align:center;
+    color:#9aaabd;
+">
+    Loading...
 </div>
 
 </div>
@@ -1321,26 +1003,23 @@ Loading...
 
 
 <!-- =====================================================
-     ADD BRAND
+     BRAND SUBMISSION
 ===================================================== -->
 
-<section
-    id="brands"
-    class="panel"
->
+<section id="brands" class="panel">
 
-<h2>
-🏷️ Add Your Brand
-</h2>
+<h2>🏷️ Add Your Brand</h2>
 
 <p class="panel-description">
 
 Add your company or brand to ALL WORLD BRANDS.
-The brand submission price is fixed at
 
-<strong>
-$1 USD
-</strong>.
+The official submission service price is:
+
+<strong>$1 USD</strong>.
+
+Payment is required before the application can
+be reviewed and published.
 
 </p>
 
@@ -1350,45 +1029,33 @@ $1 USD
 
 <div class="field">
 
-<label>
-Brand name
-</label>
+<label>Brand name</label>
 
 <input
     id="brandName"
     required
-    maxlength="120"
+    maxlength="150"
     placeholder="Brand name"
 >
 
 </div>
 
-
 <div class="field">
 
-<label>
-Country
-</label>
+<label>Country</label>
 
 <select
     id="brandCountry"
     required
 >
-
-<option value="">
-Select country
-</option>
-
+<option value="">Select country</option>
 </select>
 
 </div>
 
-
 <div class="field">
 
-<label>
-Contact name
-</label>
+<label>Contact name</label>
 
 <input
     id="contactName"
@@ -1399,12 +1066,34 @@ Contact name
 
 </div>
 
+<div class="field">
+
+<label>Phone</label>
+
+<input
+    id="contactPhone"
+    maxlength="40"
+    placeholder="+998..."
+>
+
+</div>
+
+<div class="field full">
+
+<label>Website</label>
+
+<input
+    id="brandWebsite"
+    type="url"
+    maxlength="500"
+    placeholder="https://example.com"
+>
+
+</div>
 
 <div class="field">
 
-<label>
-Email
-</label>
+<label>Email</label>
 
 <input
     id="contactEmail"
@@ -1416,32 +1105,26 @@ Email
 
 </div>
 
+<div class="field">
 
-<div class="field full">
-
-<label>
-Website
-</label>
+<label>Logo URL</label>
 
 <input
-    id="brandWebsite"
+    id="brandLogo"
     type="url"
     maxlength="500"
-    placeholder="https://example.com"
+    placeholder="https://example.com/logo.png"
 >
 
 </div>
 
-
 <div class="field full">
 
-<label>
-Description
-</label>
+<label>Description</label>
 
 <textarea
     id="brandDescription"
-    maxlength="1000"
+    maxlength="3000"
     placeholder="Tell us about your brand..."
 ></textarea>
 
@@ -1449,11 +1132,10 @@ Description
 
 </div>
 
-
 <div class="submit-row">
 
 <div class="price-box">
-Brand submission: $1 USD
+    Brand submission: $1 USD
 </div>
 
 <button
@@ -1461,7 +1143,7 @@ Brand submission: $1 USD
     type="submit"
     id="brandSubmit"
 >
-Continue to payment — $1
+    Continue to payment — $1
 </button>
 
 </div>
@@ -1480,14 +1162,9 @@ Continue to payment — $1
      COMMENTS
 ===================================================== -->
 
-<section
-    id="comments"
-    class="panel"
->
+<section id="comments" class="panel">
 
-<h2>
-💬 Comments
-</h2>
+<h2>💬 Comments</h2>
 
 <p class="panel-description">
 Share your opinion or tell us what you would like
@@ -1500,9 +1177,7 @@ to see on ALL WORLD BRANDS.
 
 <div class="field">
 
-<label>
-Name
-</label>
+<label>Name</label>
 
 <input
     id="commentName"
@@ -1517,15 +1192,13 @@ Name
 
 <div class="field">
 
-<label>
-Email
-</label>
+<label>Email (optional)</label>
 
 <input
     id="commentEmail"
     type="email"
     maxlength="120"
-    placeholder="Email (optional)"
+    placeholder="Email"
 >
 
 </div>
@@ -1534,9 +1207,7 @@ Email
 
 <div class="field">
 
-<label>
-Comment
-</label>
+<label>Comment</label>
 
 <textarea
     id="commentText"
@@ -1565,7 +1236,6 @@ Send Comment
 
 </form>
 
-
 <div
     id="commentList"
     class="comment-list"
@@ -1579,22 +1249,122 @@ Loading comments...
 
 
 <!-- =====================================================
-     INFO
+     LEGAL
 ===================================================== -->
 
-<section
-    id="info"
-    class="panel"
->
+<section id="legal" class="panel">
 
-<h2>
-ℹ️ Info
-</h2>
+<h2>⚖️ Legal Information</h2>
+
+<p class="panel-description">
+ALL WORLD BRANDS provides an online directory service.
+The following documents explain the main conditions
+for using the website and submitting a brand.
+</p>
+
+<div class="legal-grid">
+
+<div class="legal-card">
+
+<h3>📜 Ommaviy oferta</h3>
+
+<p>
+ALL WORLD BRANDS website provides a paid brand
+submission service. By submitting a brand and
+completing payment, the customer agrees to the
+terms of the public offer.
+</p>
+
+<br>
+
+<a href="#offer"
+   onclick="openLegal('offer');return false;">
+Read public offer →
+</a>
+
+</div>
+
+
+<div class="legal-card">
+
+<h3>🔐 Maxfiylik siyosati</h3>
+
+<p>
+Personal information submitted through the website
+is used for processing applications, communication,
+moderation and providing the requested service.
+</p>
+
+<br>
+
+<a href="#privacy"
+   onclick="openLegal('privacy');return false;">
+Read privacy policy →
+</a>
+
+</div>
+
+
+<div class="legal-card">
+
+<h3>💳 To‘lov va qaytarish</h3>
+
+<p>
+The standard brand submission service fee is
+<strong>$1 USD</strong>. Payment status is verified
+on the server side.
+</p>
+
+<br>
+
+<a href="#refund"
+   onclick="openLegal('refund');return false;">
+Read payment and refund policy →
+</a>
+
+</div>
+
+
+<div class="legal-card">
+
+<h3>📋 Foydalanish qoidalari</h3>
+
+<p>
+Users must provide accurate information and must not
+submit unlawful, fraudulent, abusive or misleading
+content.
+</p>
+
+<br>
+
+<a href="#terms"
+   onclick="openLegal('terms');return false;">
+Read terms →
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     CONTACT
+===================================================== -->
+
+<section id="info" class="panel">
+
+<h2>ℹ️ Contact & Legal</h2>
 
 <p class="panel-description">
 
 ALL WORLD BRANDS is a global directory for
 discovering companies, brands and countries.
+
+For questions about submissions, payments,
+privacy or legal matters, contact us using the
+information below.
 
 </p>
 
@@ -1602,9 +1372,7 @@ discovering companies, brands and countries.
 
 <div class="info-card">
 
-<strong>
-📞 Phone
-</strong>
+<strong>📞 Phone</strong>
 
 <span style="
     color:#80d5ff;
@@ -1618,9 +1386,7 @@ discovering companies, brands and countries.
 
 <div class="info-card">
 
-<strong>
-💬 WhatsApp
-</strong>
+<strong>💬 WhatsApp</strong>
 
 <a
     href="https://wa.me/998933843112"
@@ -1635,13 +1401,9 @@ discovering companies, brands and countries.
 
 <div class="info-card">
 
-<strong>
-📧 Email
-</strong>
+<strong>📧 Email</strong>
 
-<a
-    href="mailto:allworldbrandsnet@gmail.com"
->
+<a href="mailto:allworldbrandsnet@gmail.com">
 allworldbrandsnet@gmail.com
 </a>
 
@@ -1650,20 +1412,14 @@ allworldbrandsnet@gmail.com
 </div>
 
 
-<!-- =====================================================
-     PAYMENT LOGOS
-===================================================== -->
+<!-- PAYMENT LOGOS -->
 
 <div class="payment-logos">
 
-<!-- VISA -->
-
 <div class="payment-logo" aria-label="Visa">
 
-<svg
-    viewBox="0 0 100 40"
-    xmlns="http://www.w3.org/2000/svg"
->
+<svg viewBox="0 0 100 40"
+     xmlns="http://www.w3.org/2000/svg">
 
 <text
     x="50"
@@ -1683,17 +1439,10 @@ VISA
 </div>
 
 
-<!-- MASTERCARD -->
+<div class="payment-logo" aria-label="Mastercard">
 
-<div
-    class="payment-logo"
-    aria-label="Mastercard"
->
-
-<svg
-    viewBox="0 0 100 40"
-    xmlns="http://www.w3.org/2000/svg"
->
+<svg viewBox="0 0 100 40"
+     xmlns="http://www.w3.org/2000/svg">
 
 <circle
     cx="42"
@@ -1721,17 +1470,10 @@ VISA
 </div>
 
 
-<!-- PAYPAL -->
+<div class="payment-logo" aria-label="PayPal">
 
-<div
-    class="payment-logo"
-    aria-label="PayPal"
->
-
-<svg
-    viewBox="0 0 100 40"
-    xmlns="http://www.w3.org/2000/svg"
->
+<svg viewBox="0 0 100 40"
+     xmlns="http://www.w3.org/2000/svg">
 
 <text
     x="50"
@@ -1757,22 +1499,283 @@ PayPal
 <footer class="footer">
 
 <div>
-
 © 2026
-
-<strong>
-ALL WORLD BRANDS
-</strong>
-
+<strong>ALL WORLD BRANDS</strong>
 </div>
 
 <div>
-250 countries • Global Brand Directory
+Global Brand Directory • Legal • Contact
 </div>
 
 </footer>
 
 </main>
+
+
+<!-- =====================================================
+     DEMO ACQUIRING PAYMENT WINDOW
+===================================================== -->
+
+<div
+    id="paymentDemo"
+    class="payment-demo"
+>
+
+<div class="payment-box">
+
+<h2>💳 Secure Payment</h2>
+
+<p>
+You are entering the payment page for the
+ALL WORLD BRANDS brand submission service.
+</p>
+
+<div class="payment-amount">
+$1.00 USD
+</div>
+
+<div class="demo-notice">
+
+<strong>DEMO ACQUIRING MODE</strong><br>
+
+No real money will be charged in demo mode.
+The payment confirmation is processed by the
+server. When the bank acquiring system is ready,
+this demo payment adapter will be replaced by
+the bank's official acquiring API.
+
+</div>
+
+<div class="payment-actions">
+
+<button
+    class="primary-button"
+    id="demoPayButton"
+    type="button"
+>
+    Demo — Pay $1
+</button>
+
+<button
+    class="secondary-button"
+    id="demoCancelButton"
+    type="button"
+>
+    Cancel / Back
+</button>
+
+</div>
+
+<div
+    id="paymentMessage"
+    class="form-message"
+></div>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     LEGAL MODAL
+===================================================== -->
+
+<div
+    id="legalModal"
+    class="legal-modal"
+>
+
+<div class="legal-window">
+
+<button
+    class="close-legal"
+    onclick="closeLegal()"
+>
+×
+</button>
+
+
+<div id="legalOffer" style="display:none">
+
+<h2>📜 Ommaviy oferta</h2>
+
+<h3>1. Umumiy qoidalar</h3>
+
+<p>
+Ushbu ommaviy oferta ALL WORLD BRANDS tomonidan
+taqdim etiladigan brendni global katalogga yuborish
+xizmatidan foydalanish shartlarini belgilaydi.
+</p>
+
+<h3>2. Xizmat</h3>
+
+<p>
+Foydalanuvchi o‘z brendi yoki kompaniyasi haqidagi
+ma'lumotlarni yuborishi mumkin. Ariza to‘lovdan
+so‘ng moderatsiya va tekshiruvdan o‘tkaziladi.
+</p>
+
+<h3>3. Xizmat narxi</h3>
+
+<p>
+Brend yuborish xizmatining standart narxi
+<strong>$1 USD</strong>.
+</p>
+
+<h3>4. To‘lov</h3>
+
+<p>
+To‘lov elektron ekvayring/to‘lov provayderi orqali
+amalga oshiriladi. To‘lovning haqiqiy holati
+server tomonidan tasdiqlanadi. Foydalanuvchi
+brauzer orqali to‘lov holatini o‘zboshimchalik bilan
+o‘zgartira olmaydi.
+</p>
+
+<h3>5. Moderatsiya</h3>
+
+<p>
+To‘lov amalga oshirilgani brend avtomatik ravishda
+e'lon qilinishini anglatmaydi. ALL WORLD BRANDS
+yuborilgan ma'lumotlarni tekshirish va noqonuniy,
+aldamchi yoki nomaqbul kontentni rad etish huquqiga ega.
+</p>
+
+<h3>6. Foydalanuvchi majburiyatlari</h3>
+
+<p>
+Foydalanuvchi taqdim etgan ma'lumotlarning to‘g‘riligi
+uchun javobgar hisoblanadi.
+</p>
+
+<h3>7. Aloqa</h3>
+
+<p>
+Email:
+<strong>allworldbrandsnet@gmail.com</strong>
+</p>
+
+</div>
+
+
+<div id="legalPrivacy" style="display:none">
+
+<h2>🔐 Maxfiylik siyosati</h2>
+
+<h3>1. Yig‘iladigan ma'lumotlar</h3>
+
+<p>
+Brend yuborish vaqtida ism, aloqa ma'lumotlari,
+email, telefon, website, brend nomi, mamlakat va
+brend tavsifi kabi ma'lumotlar olinishi mumkin.
+</p>
+
+<h3>2. Maqsad</h3>
+
+<p>
+Ma'lumotlar arizani qayta ishlash, foydalanuvchi
+bilan aloqa qilish, moderatsiya, to‘lovni bog‘lash
+va xizmatni taqdim etish uchun ishlatiladi.
+</p>
+
+<h3>3. To‘lov ma'lumotlari</h3>
+
+<p>
+ALL WORLD BRANDS demo yoki kelajakdagi bank
+ekvayring tizimida karta maxfiy ma'lumotlarini
+o‘z bazasida saqlamasligi kerak. To‘lovni qayta
+ishlash tegishli to‘lov provayderi orqali amalga oshiriladi.
+</p>
+
+<h3>4. Himoya</h3>
+
+<p>
+Server tomonida to‘lov holati va ma'lumotlarni
+himoyalash mexanizmlari qo‘llanadi.
+</p>
+
+</div>
+
+
+<div id="legalRefund" style="display:none">
+
+<h2>💳 To‘lov va qaytarish siyosati</h2>
+
+<h3>1. Narx</h3>
+
+<p>
+Brend yuborish xizmati uchun to‘lov:
+<strong>$1 USD</strong>.
+</p>
+
+<h3>2. To‘lovni tasdiqlash</h3>
+
+<p>
+To‘lov server tomonidan haqiqiy provider/bank
+javobi orqali tasdiqlanadi.
+</p>
+
+<h3>3. Qaytarish</h3>
+
+<p>
+Agar xizmat texnik sababga ko‘ra ko‘rsatilmasa
+yoki to‘lov xato tarzda yechilgan bo‘lsa,
+murojaat email orqali ko‘rib chiqiladi.
+</p>
+
+<h3>4. Moderatsiya rad etilishi</h3>
+
+<p>
+Noqonuniy, firibgarlik, spam, zararli yoki
+aldamchi ma'lumot yuborilgan hollarda ariza
+rad etilishi mumkin. Qaytarish masalasi
+to‘lov shartlari va amaldagi qonunchilik asosida
+ko‘rib chiqiladi.
+</p>
+
+</div>
+
+
+<div id="legalTerms" style="display:none">
+
+<h2>📋 Foydalanish qoidalari</h2>
+
+<h3>1. Qonuniy foydalanish</h3>
+
+<p>
+Saytdan faqat qonuniy maqsadlarda foydalanish mumkin.
+</p>
+
+<h3>2. Taqiqlangan kontent</h3>
+
+<ul>
+<li>firibgarlik;</li>
+<li>aldamchi ma'lumot;</li>
+<li>zararli dasturlar yoki havolalar;</li>
+<li>noqonuniy faoliyat;</li>
+<li>spam;</li>
+<li>boshqa shaxslarning huquqlarini buzuvchi materiallar.</li>
+</ul>
+
+<h3>3. Brend ma'lumotlari</h3>
+
+<p>
+Foydalanuvchi yuborgan brend ma'lumotlaridan
+foydalanish huquqiga ega ekanligini tasdiqlaydi.
+</p>
+
+<h3>4. Admin moderatsiyasi</h3>
+
+<p>
+ALL WORLD BRANDS ma'lumotlarni tekshirish,
+tahrirlash yoki rad etish huquqiga ega.
+</p>
+
+</div>
+
+</div>
+
+</div>
 
 
 <script>
@@ -1782,88 +1785,62 @@ ALL WORLD BRANDS
 ========================================================= */
 
 const grid =
-    document.getElementById(
-        "countriesGrid"
-    );
+    document.getElementById("countriesGrid");
 
 const searchInput =
-    document.getElementById(
-        "searchInput"
-    );
+    document.getElementById("searchInput");
 
 const clearSearch =
-    document.getElementById(
-        "clearSearch"
-    );
+    document.getElementById("clearSearch");
 
 const resultCount =
-    document.getElementById(
-        "resultCount"
-    );
+    document.getElementById("resultCount");
 
 const brandCountry =
-    document.getElementById(
-        "brandCountry"
-    );
+    document.getElementById("brandCountry");
 
 const brandForm =
-    document.getElementById(
-        "brandForm"
-    );
+    document.getElementById("brandForm");
 
 const brandMessage =
-    document.getElementById(
-        "brandMessage"
-    );
+    document.getElementById("brandMessage");
 
 const brandSubmit =
-    document.getElementById(
-        "brandSubmit"
-    );
+    document.getElementById("brandSubmit");
 
 const commentForm =
-    document.getElementById(
-        "commentForm"
-    );
+    document.getElementById("commentForm");
 
 const commentList =
-    document.getElementById(
-        "commentList"
-    );
+    document.getElementById("commentList");
 
 const commentMessage =
-    document.getElementById(
-        "commentMessage"
-    );
+    document.getElementById("commentMessage");
 
+const paymentDemo =
+    document.getElementById("paymentDemo");
+
+const paymentMessage =
+    document.getElementById("paymentMessage");
 
 let countries = [];
 
+let currentSubmissionId = null;
+
 
 /* =========================================================
-   BACK BUTTON
+   BACK
 ========================================================= */
 
-function goBack() {
+function goBack(){
 
-    /*
-     * If there is a previous page in browser history,
-     * go there.
-     *
-     * Otherwise stay on the website home page.
-     */
-
-    if (
+    if(
         window.history.length > 1 &&
         document.referrer
-    ) {
-
+    ){
         window.history.back();
-
-    } else {
-
-        window.location.href = "/";
-
+    }else{
+        window.location.href="/";
     }
 
 }
@@ -1873,17 +1850,16 @@ function goBack() {
    FLAG
 ========================================================= */
 
-function countryFlag(code) {
+function countryFlag(code){
 
-    if (!code) {
+    if(!code){
         return "🌍";
     }
 
     const value =
-        String(code)
-            .toUpperCase();
+        String(code).toUpperCase();
 
-    if (!/^[A-Z]{2}$/.test(value)) {
+    if(!/^[A-Z]{2}$/.test(value)){
         return "🌍";
     }
 
@@ -1897,6 +1873,7 @@ function countryFlag(code) {
                 )
         )
         .join("");
+
 }
 
 
@@ -1904,14 +1881,15 @@ function countryFlag(code) {
    ESCAPE
 ========================================================= */
 
-function escapeHtml(value) {
+function escapeHtml(value){
 
     return String(value ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+
 }
 
 
@@ -1919,19 +1897,17 @@ function escapeHtml(value) {
    LOAD COUNTRIES
 ========================================================= */
 
-async function loadCountries() {
+async function loadCountries(){
 
-    try {
+    try{
 
         const response =
             await fetch(
                 "/api/countries",
-                {
-                    cache: "no-store"
-                }
+                {cache:"no-store"}
             );
 
-        if (!response.ok) {
+        if(!response.ok){
             throw new Error(
                 "Countries API error"
             );
@@ -1951,14 +1927,13 @@ async function loadCountries() {
             countries
         );
 
-    } catch (error) {
+    }catch(error){
 
         console.error(error);
 
-        resultCount.textContent =
-            "Error";
+        resultCount.textContent="Error";
 
-        grid.innerHTML = `
+        grid.innerHTML=`
             <div style="
                 grid-column:1/-1;
                 padding:40px;
@@ -1978,20 +1953,18 @@ async function loadCountries() {
    COUNTRY SELECT
 ========================================================= */
 
-function populateCountrySelect(list) {
+function populateCountrySelect(list){
 
-    brandCountry.innerHTML = `
+    brandCountry.innerHTML=`
         <option value="">
             Select country
         </option>
     `;
 
-    list.forEach(country => {
+    list.forEach(country=>{
 
         const option =
-            document.createElement(
-                "option"
-            );
+            document.createElement("option");
 
         option.value =
             country.id;
@@ -1999,9 +1972,7 @@ function populateCountrySelect(list) {
         option.textContent =
             country.name;
 
-        brandCountry.appendChild(
-            option
-        );
+        brandCountry.appendChild(option);
 
     });
 
@@ -2009,19 +1980,19 @@ function populateCountrySelect(list) {
 
 
 /* =========================================================
-   RENDER COUNTRIES
+   COUNTRIES
 ========================================================= */
 
-function renderCountries(list) {
+function renderCountries(list){
 
-    grid.innerHTML = "";
+    grid.innerHTML="";
 
     resultCount.textContent =
         `${list.length} countries`;
 
-    if (!list.length) {
+    if(!list.length){
 
-        grid.innerHTML = `
+        grid.innerHTML=`
             <div style="
                 grid-column:1/-1;
                 padding:50px;
@@ -2038,37 +2009,23 @@ function renderCountries(list) {
     const fragment =
         document.createDocumentFragment();
 
-    list.forEach(country => {
+    list.forEach(country=>{
 
         const card =
-            document.createElement(
-                "article"
-            );
+            document.createElement("article");
 
-        card.className =
-            "country-card";
-
-        card.dataset.name =
-            String(
-                country.name || ""
-            ).toLowerCase();
-
-        card.dataset.code =
-            String(
-                country.code || ""
-            ).toLowerCase();
+        card.className="country-card";
 
         const count =
             Number(
                 country.brand_count || 0
             );
 
-        card.innerHTML = `
+        card.innerHTML=`
 
             <div class="country-bg"></div>
 
             <div class="brand-count">
-
                 <div class="brand-count-number">
                     ${count}
                 </div>
@@ -2076,29 +2033,22 @@ function renderCountries(list) {
                 <div class="brand-count-label">
                     BRANDS
                 </div>
-
             </div>
 
             <div class="country-content">
 
                 <div class="country-flag">
                     ${escapeHtml(
-                        countryFlag(
-                            country.code
-                        )
+                        countryFlag(country.code)
                     )}
                 </div>
 
                 <div class="country-name">
-                    ${escapeHtml(
-                        country.name
-                    )}
+                    ${escapeHtml(country.name)}
                 </div>
 
                 <div class="country-code">
-                    ${escapeHtml(
-                        country.code
-                    )}
+                    ${escapeHtml(country.code)}
                 </div>
 
             </div>
@@ -2106,51 +2056,52 @@ function renderCountries(list) {
 
         card.addEventListener(
             "click",
-            () => {
-
-                loadCountryBrands(
-                    country
-                );
-
-            }
+            ()=>loadCountryBrands(country)
         );
 
-        fragment.appendChild(
-            card
-        );
+        fragment.appendChild(card);
 
     });
 
-    grid.appendChild(
-        fragment
-    );
+    grid.appendChild(fragment);
 
 }
 
 
 /* =========================================================
-   COUNTRY CLICK
+   COUNTRY BRANDS
 ========================================================= */
 
-async function loadCountryBrands(country) {
+async function loadCountryBrands(country){
 
-    try {
+    try{
 
         const response =
             await fetch(
                 `/api/countries/${country.id}/brands`
             );
 
-        if (!response.ok) {
+        if(!response.ok){
             throw new Error(
                 "Brands could not be loaded"
             );
         }
 
-        const brands =
+        const data =
             await response.json();
 
-        if (!brands.length) {
+        /*
+         * Compatible with both:
+         * array response
+         * and {country,brands} response
+         */
+
+        const brands =
+            Array.isArray(data)
+                ? data
+                : (data.brands || []);
+
+        if(!brands.length){
 
             alert(
                 `${country.name}: no brands yet.`
@@ -2171,7 +2122,7 @@ async function loadCountryBrands(country) {
             `${country.name}\n\n${names}`
         );
 
-    } catch (error) {
+    }catch(error){
 
         console.error(error);
 
@@ -2188,7 +2139,7 @@ async function loadCountryBrands(country) {
    SEARCH
 ========================================================= */
 
-function filterCountries(value) {
+function filterCountries(value){
 
     const query =
         String(value || "")
@@ -2196,66 +2147,49 @@ function filterCountries(value) {
             .toLowerCase();
 
     clearSearch.style.display =
-        query
-            ? "block"
-            : "none";
+        query ? "block" : "none";
 
-    if (!query) {
+    if(!query){
 
-        renderCountries(
-            countries
-        );
+        renderCountries(countries);
 
         return;
     }
 
     const filtered =
-        countries.filter(
-            country => {
+        countries.filter(country=>{
 
-                return (
-                    String(
-                        country.name || ""
-                    )
+            return(
+                String(country.name || "")
                     .toLowerCase()
                     .includes(query)
 
-                    ||
+                ||
 
-                    String(
-                        country.code || ""
-                    )
+                String(country.code || "")
                     .toLowerCase()
                     .includes(query)
-                );
+            );
 
-            }
-        );
+        });
 
-    renderCountries(
-        filtered
-    );
+    renderCountries(filtered);
 
 }
 
-
 searchInput.addEventListener(
     "input",
-    event => {
-
+    event =>
         filterCountries(
             event.target.value
-        );
-
-    }
+        )
 );
-
 
 clearSearch.addEventListener(
     "click",
-    () => {
+    ()=>{
 
-        searchInput.value = "";
+        searchInput.value="";
 
         filterCountries("");
 
@@ -2266,129 +2200,128 @@ clearSearch.addEventListener(
 
 
 /* =========================================================
-   BRAND SUBMISSION
+   BRAND APPLICATION
+   SERVER CREATES UNPAID APPLICATION
 ========================================================= */
 
 brandForm.addEventListener(
     "submit",
-    async event => {
+    async event=>{
 
         event.preventDefault();
 
-        brandSubmit.disabled = true;
+        brandSubmit.disabled=true;
 
         brandSubmit.textContent =
-            "Preparing $1 payment...";
+            "Preparing payment...";
 
-        brandMessage.textContent =
-            "";
+        brandMessage.textContent="";
 
-        try {
+        try{
 
-            const response =
+            /*
+             * IMPORTANT:
+             * Payment status is NOT sent by frontend.
+             */
+
+            const applicationResponse =
                 await fetch(
-                    "/api/brand-submissions",
+                    "/api/brand-applications",
                     {
-                        method: "POST",
+                        method:"POST",
 
-                        headers: {
+                        headers:{
                             "Content-Type":
                                 "application/json"
                         },
 
-                        body:
-                            JSON.stringify({
+                        body:JSON.stringify({
 
-                                brand_name:
-                                    document
-                                        .getElementById(
-                                            "brandName"
-                                        )
-                                        .value,
+                            brand_name:
+                                document
+                                .getElementById(
+                                    "brandName"
+                                ).value,
 
-                                country_id:
-                                    brandCountry.value,
+                            country_id:
+                                brandCountry.value,
 
-                                contact_name:
-                                    document
-                                        .getElementById(
-                                            "contactName"
-                                        )
-                                        .value,
+                            logo:
+                                document
+                                .getElementById(
+                                    "brandLogo"
+                                ).value,
 
-                                email:
-                                    document
-                                        .getElementById(
-                                            "contactEmail"
-                                        )
-                                        .value,
+                            website:
+                                document
+                                .getElementById(
+                                    "brandWebsite"
+                                ).value,
 
-                                website:
-                                    document
-                                        .getElementById(
-                                            "brandWebsite"
-                                        )
-                                        .value,
+                            description:
+                                document
+                                .getElementById(
+                                    "brandDescription"
+                                ).value,
 
-                                description:
-                                    document
-                                        .getElementById(
-                                            "brandDescription"
-                                        )
-                                        .value
+                            contact_name:
+                                document
+                                .getElementById(
+                                    "contactName"
+                                ).value,
 
-                            })
+                            contact_phone:
+                                document
+                                .getElementById(
+                                    "contactPhone"
+                                ).value
 
+                        })
                     }
                 );
 
-            const data =
-                await response.json();
+            const application =
+                await applicationResponse.json();
 
-            if (!response.ok) {
+            if(!applicationResponse.ok){
 
                 throw new Error(
-                    data.error ||
-                    "Submission failed"
+                    application.error ||
+                    "Application failed"
                 );
 
             }
 
+            currentSubmissionId =
+                application.application_id;
+
 
             /*
-             * Payment creation.
-             *
-             * IMPORTANT:
-             * The frontend does NOT mark the payment
-             * as paid.
-             *
-             * The server/payment provider must
-             * verify the actual transaction.
+             * Ask server to create payment.
              */
 
             const paymentResponse =
                 await fetch(
                     "/api/payments/create",
                     {
-                        method: "POST",
+                        method:"POST",
 
-                        headers: {
+                        headers:{
                             "Content-Type":
                                 "application/json"
                         },
 
-                        body:
-                            JSON.stringify({
-                                submission_id:
-                                    data.submission_id
-                            })
+                        body:JSON.stringify({
+                            application_id:
+                                currentSubmissionId
+                        })
                     }
                 );
 
             const payment =
                 await paymentResponse.json();
 
-            if (!paymentResponse.ok) {
+            if(!paymentResponse.ok){
 
                 throw new Error(
                     payment.error ||
@@ -2399,13 +2332,13 @@ brandForm.addEventListener(
 
 
             /*
-             * If the server provides a payment URL,
-             * open it.
+             * Real bank/payment provider URL:
+             *
+             * If supplied by the server,
+             * redirect to it.
              */
 
-            if (
-                payment.payment_url
-            ) {
+            if(payment.payment_url){
 
                 window.location.href =
                     payment.payment_url;
@@ -2414,20 +2347,16 @@ brandForm.addEventListener(
             }
 
 
-            brandMessage.innerHTML =
-                `
-                Brand submission created.
-                <br>
-                Payment amount:
-                <strong>$1 USD</strong>.
-                <br>
-                Payment is waiting for
-                provider confirmation.
-                `;
+            /*
+             * Demo acquiring mode.
+             */
 
-            brandForm.reset();
+            paymentDemo.classList.add("active");
 
-        } catch (error) {
+            paymentMessage.textContent =
+                "";
+
+        }catch(error){
 
             console.error(error);
 
@@ -2435,10 +2364,9 @@ brandForm.addEventListener(
                 error.message ||
                 "Something went wrong.";
 
-        } finally {
+        }finally{
 
-            brandSubmit.disabled =
-                false;
+            brandSubmit.disabled=false;
 
             brandSubmit.textContent =
                 "Continue to payment — $1";
@@ -2450,22 +2378,155 @@ brandForm.addEventListener(
 
 
 /* =========================================================
+   DEMO PAYMENT
+========================================================= */
+
+document
+.getElementById("demoPayButton")
+.addEventListener(
+    "click",
+    async()=>{
+
+        if(!currentSubmissionId){
+            return;
+        }
+
+        const button =
+            document.getElementById(
+                "demoPayButton"
+            );
+
+        button.disabled=true;
+
+        button.textContent =
+            "Processing...";
+
+        paymentMessage.textContent =
+            "";
+
+        try{
+
+            /*
+             * IMPORTANT:
+             * Browser does NOT directly set paid.
+             *
+             * The server demo payment endpoint
+             * changes status.
+             *
+             * Later this request is replaced
+             * with the official bank callback/
+             * acquiring verification.
+             */
+
+            const response =
+                await fetch(
+                    "/api/payments/demo/confirm",
+                    {
+                        method:"POST",
+
+                        headers:{
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:JSON.stringify({
+                            application_id:
+                                currentSubmissionId
+                        })
+                    }
+                );
+
+            const data =
+                await response.json();
+
+            if(!response.ok){
+
+                throw new Error(
+                    data.error ||
+                    "Payment failed"
+                );
+
+            }
+
+            paymentMessage.textContent =
+                "Payment confirmed by server.";
+
+            brandMessage.innerHTML = `
+                <strong style="color:#8dffb5">
+                    Payment successful.
+                </strong>
+                <br>
+                Your brand application has been
+                received and is waiting for moderation.
+            `;
+
+            paymentDemo.classList.remove("active");
+
+            brandForm.reset();
+
+            currentSubmissionId=null;
+
+        }catch(error){
+
+            paymentMessage.textContent =
+                error.message ||
+                "Payment failed.";
+
+        }finally{
+
+            button.disabled=false;
+
+            button.textContent =
+                "Demo — Pay $1";
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   CANCEL / BACK PAYMENT
+========================================================= */
+
+document
+.getElementById("demoCancelButton")
+.addEventListener(
+    "click",
+    ()=>{
+
+        /*
+         * IMPORTANT:
+         * Application remains UNPAID.
+         * User can try payment again.
+         */
+
+        paymentDemo.classList.remove("active");
+
+        paymentMessage.textContent="";
+
+        brandMessage.textContent =
+            "Payment cancelled. Your application was not marked as paid.";
+
+    }
+);
+
+
+/* =========================================================
    COMMENTS
 ========================================================= */
 
-async function loadComments() {
+async function loadComments(){
 
-    try {
+    try{
 
         const response =
             await fetch(
                 "/api/comments",
-                {
-                    cache: "no-store"
-                }
+                {cache:"no-store"}
             );
 
-        if (!response.ok) {
+        if(!response.ok){
             throw new Error(
                 "Comments error"
             );
@@ -2474,9 +2535,9 @@ async function loadComments() {
         const comments =
             await response.json();
 
-        if (!comments.length) {
+        if(!comments.length){
 
-            commentList.innerHTML = `
+            commentList.innerHTML=`
                 <div class="comment">
                     No comments yet.
                     Be the first!
@@ -2488,28 +2549,29 @@ async function loadComments() {
 
         commentList.innerHTML =
             comments
-                .map(
-                    comment => `
-                        <div class="comment">
+            .map(
+                comment=>`
 
-                            <div class="comment-name">
-                                ${escapeHtml(
-                                    comment.name
-                                )}
-                            </div>
+                    <div class="comment">
 
-                            <div class="comment-text">
-                                ${escapeHtml(
-                                    comment.comment
-                                )}
-                            </div>
-
+                        <div class="comment-name">
+                            ${escapeHtml(
+                                comment.name
+                            )}
                         </div>
-                    `
-                )
-                .join("");
 
-    } catch (error) {
+                        <div class="comment-text">
+                            ${escapeHtml(
+                                comment.comment
+                            )}
+                        </div>
+
+                    </div>
+                `
+            )
+            .join("");
+
+    }catch(error){
 
         console.error(error);
 
@@ -2523,58 +2585,71 @@ async function loadComments() {
 
 commentForm.addEventListener(
     "submit",
-    async event => {
+    async event=>{
 
         event.preventDefault();
 
         commentMessage.textContent =
             "Sending...";
 
-        try {
+        try{
+
+            /*
+             * Public comments in the current
+             * server schema require a brand_id
+             * or country_id.
+             *
+             * We attach a neutral country
+             * when available.
+             */
+
+            const firstCountry =
+                countries.length
+                    ? countries[0].id
+                    : null;
 
             const response =
                 await fetch(
                     "/api/comments",
                     {
-                        method: "POST",
+                        method:"POST",
 
-                        headers: {
+                        headers:{
                             "Content-Type":
                                 "application/json"
                         },
 
-                        body:
-                            JSON.stringify({
+                        body:JSON.stringify({
 
-                                name:
-                                    document
-                                        .getElementById(
-                                            "commentName"
-                                        )
-                                        .value,
+                            name:
+                                document
+                                .getElementById(
+                                    "commentName"
+                                ).value,
 
-                                email:
-                                    document
-                                        .getElementById(
-                                            "commentEmail"
-                                        )
-                                        .value,
+                            email:
+                                document
+                                .getElementById(
+                                    "commentEmail"
+                                ).value,
 
-                                comment:
-                                    document
-                                        .getElementById(
-                                            "commentText"
-                                        )
-                                        .value
+                            comment:
+                                document
+                                .getElementById(
+                                    "commentText"
+                                ).value,
 
-                            })
+                            country_id:
+                                firstCountry
+
+                        })
                     }
                 );
 
             const data =
                 await response.json();
 
-            if (!response.ok) {
+            if(!response.ok){
 
                 throw new Error(
                     data.error ||
@@ -2590,7 +2665,7 @@ commentForm.addEventListener(
 
             loadComments();
 
-        } catch (error) {
+        }catch(error){
 
             commentMessage.textContent =
                 error.message ||
@@ -2600,6 +2675,60 @@ commentForm.addEventListener(
 
     }
 );
+
+
+/* =========================================================
+   LEGAL MODALS
+========================================================= */
+
+function openLegal(type){
+
+    const modal =
+        document.getElementById(
+            "legalModal"
+        );
+
+    [
+        "legalOffer",
+        "legalPrivacy",
+        "legalRefund",
+        "legalTerms"
+    ].forEach(id=>{
+
+        document.getElementById(id)
+            .style.display="none";
+
+    });
+
+    const target = {
+        offer:"legalOffer",
+        privacy:"legalPrivacy",
+        refund:"legalRefund",
+        terms:"legalTerms"
+    }[type];
+
+    if(target){
+
+        document.getElementById(target)
+            .style.display="block";
+
+    }
+
+    modal.classList.add("active");
+
+    document.body.style.overflow="hidden";
+
+}
+
+function closeLegal(){
+
+    document
+        .getElementById("legalModal")
+        .classList.remove("active");
+
+    document.body.style.overflow="";
+
+}
 
 
 /* =========================================================
