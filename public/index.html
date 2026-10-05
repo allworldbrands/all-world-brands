@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <meta name="description"
-      content="ALL WORLD BRANDS — dunyo mamlakatlari, kompaniyalari va brendlarini kashf qilish uchun global katalog.">
+      content="ALL WORLD BRANDS — a global directory of countries, territories, companies and brands.">
 
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#030711">
 
 <link rel="canonical" href="https://allworldbrands.net/">
 
-<title>ALL WORLD BRANDS — Global Brand Directory</title>
+<title>ALL WORLD BRANDS — Global Directory</title>
 
 <style>
 *{
@@ -371,37 +371,6 @@ a{
     margin-bottom:4px;
 }
 
-.brand-count{
-    position:absolute;
-    right:6px;
-    top:50%;
-    transform:translateY(-50%);
-    width:30px;
-    height:30px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    border-radius:8px;
-    background:linear-gradient(135deg,#8dffb5,#48e982);
-    border:1px solid rgba(190,255,215,.85);
-    box-shadow:0 0 15px rgba(70,245,130,.30);
-    color:#063d1b;
-    font-weight:950;
-    line-height:1;
-    z-index:5;
-}
-
-.brand-count-number{
-    font-size:10px;
-}
-
-.brand-count-label{
-    font-size:5px;
-    margin-top:2px;
-    letter-spacing:.2px;
-}
-
 .panel{
     margin-top:45px;
     padding:28px;
@@ -529,38 +498,6 @@ a{
     font-size:13px;
 }
 
-.comments-layout{
-    display:grid;
-    grid-template-columns:330px 1fr;
-    gap:25px;
-}
-
-.comment-list{
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-    max-height:450px;
-    overflow-y:auto;
-}
-
-.comment{
-    padding:15px;
-    border-radius:13px;
-    background:rgba(255,255,255,.045);
-    border:1px solid rgba(255,255,255,.08);
-}
-
-.comment-name{
-    font-weight:850;
-    margin-bottom:5px;
-}
-
-.comment-text{
-    color:#a4b4c8;
-    font-size:13px;
-    line-height:1.5;
-}
-
 .info-grid{
     display:grid;
     grid-template-columns:repeat(3,1fr);
@@ -656,7 +593,7 @@ a{
     color:#b5c5d8;
 }
 
-/* DEMO PAYMENT */
+/* PAYMENT */
 
 .payment-demo{
     display:none;
@@ -789,10 +726,6 @@ a{
         grid-template-columns:repeat(6,minmax(0,1fr));
     }
 
-    .comments-layout{
-        grid-template-columns:1fr;
-    }
-
     .info-grid,
     .legal-grid{
         grid-template-columns:1fr;
@@ -823,12 +756,6 @@ a{
 
     .country-name{
         font-size:9px;
-    }
-
-    .brand-count{
-        width:27px;
-        height:27px;
-        right:4px;
     }
 
     .form-grid{
@@ -877,19 +804,6 @@ a{
         font-size:6px;
     }
 
-    .brand-count{
-        width:24px;
-        height:24px;
-    }
-
-    .brand-count-number{
-        font-size:8px;
-    }
-
-    .brand-count-label{
-        font-size:4px;
-    }
-
     .payment-logo{
         width:72px;
         height:38px;
@@ -911,7 +825,6 @@ a{
 <nav class="nav">
     <a href="#countries">Countries</a>
     <a href="#brands">Add Brand</a>
-    <a href="#comments">Comments</a>
     <a href="#legal">Legal</a>
     <a href="#info">Contact</a>
 
@@ -933,14 +846,14 @@ a{
 
 <div class="badge">
     <span class="badge-dot"></span>
-    GLOBAL BRAND DIRECTORY
+    GLOBAL DIRECTORY
 </div>
 
 <h1>ALL WORLD BRANDS</h1>
 
 <p>
-Discover countries, companies and brands
-from around the world in one place.
+Explore countries and territories from around the world
+and discover companies and brands in one global directory.
 </p>
 
 </section>
@@ -953,7 +866,7 @@ from around the world in one place.
 <input
     id="searchInput"
     type="search"
-    placeholder="Search country..."
+    placeholder="Search countries or territories..."
     autocomplete="off"
 >
 
@@ -973,10 +886,10 @@ from around the world in one place.
 <div class="section-head">
 
 <div>
-    <div class="section-title">🌍 Countries</div>
+    <div class="section-title">🌍 Countries & Territories</div>
 
     <div class="section-subtitle">
-        Countries and territories
+        Global country and territory directory
     </div>
 </div>
 
@@ -994,7 +907,7 @@ from around the world in one place.
     text-align:center;
     color:#9aaabd;
 ">
-    Loading...
+    Loading countries and territories...
 </div>
 
 </div>
@@ -1002,9 +915,7 @@ from around the world in one place.
 </section>
 
 
-<!-- =====================================================
-     BRAND SUBMISSION
-===================================================== -->
+<!-- BRAND SUBMISSION -->
 
 <section id="brands" class="panel">
 
@@ -1012,14 +923,13 @@ from around the world in one place.
 
 <p class="panel-description">
 
-Add your company or brand to ALL WORLD BRANDS.
+Submit your company or brand to ALL WORLD BRANDS.
 
-The official submission service price is:
-
+The standard brand submission service fee is
 <strong>$1 USD</strong>.
 
 Payment is required before the application can
-be reviewed and published.
+be reviewed and moderated.
 
 </p>
 
@@ -1029,7 +939,7 @@ be reviewed and published.
 
 <div class="field">
 
-<label>Brand name</label>
+<label for="brandName">Brand name</label>
 
 <input
     id="brandName"
@@ -1042,20 +952,20 @@ be reviewed and published.
 
 <div class="field">
 
-<label>Country</label>
+<label for="brandCountry">Country or territory</label>
 
 <select
     id="brandCountry"
     required
 >
-<option value="">Select country</option>
+<option value="">Select country or territory</option>
 </select>
 
 </div>
 
 <div class="field">
 
-<label>Contact name</label>
+<label for="contactName">Contact name</label>
 
 <input
     id="contactName"
@@ -1068,7 +978,7 @@ be reviewed and published.
 
 <div class="field">
 
-<label>Phone</label>
+<label for="contactPhone">Phone</label>
 
 <input
     id="contactPhone"
@@ -1080,7 +990,7 @@ be reviewed and published.
 
 <div class="field full">
 
-<label>Website</label>
+<label for="brandWebsite">Website</label>
 
 <input
     id="brandWebsite"
@@ -1093,21 +1003,21 @@ be reviewed and published.
 
 <div class="field">
 
-<label>Email</label>
+<label for="contactEmail">Email</label>
 
 <input
     id="contactEmail"
     type="email"
     required
     maxlength="160"
-    placeholder="Email"
+    placeholder="Email address"
 >
 
 </div>
 
 <div class="field">
 
-<label>Logo URL</label>
+<label for="brandLogo">Logo URL</label>
 
 <input
     id="brandLogo"
@@ -1120,7 +1030,7 @@ be reviewed and published.
 
 <div class="field full">
 
-<label>Description</label>
+<label for="brandDescription">Description</label>
 
 <textarea
     id="brandDescription"
@@ -1135,7 +1045,7 @@ be reviewed and published.
 <div class="submit-row">
 
 <div class="price-box">
-    Brand submission: $1 USD
+    Submission fee: $1 USD
 </div>
 
 <button
@@ -1158,128 +1068,33 @@ be reviewed and published.
 </section>
 
 
-<!-- =====================================================
-     COMMENTS
-===================================================== -->
-
-<section id="comments" class="panel">
-
-<h2>💬 Comments</h2>
-
-<p class="panel-description">
-Share your opinion or tell us what you would like
-to see on ALL WORLD BRANDS.
-</p>
-
-<div class="comments-layout">
-
-<form id="commentForm">
-
-<div class="field">
-
-<label>Name</label>
-
-<input
-    id="commentName"
-    required
-    maxlength="80"
-    placeholder="Your name"
->
-
-</div>
-
-<br>
-
-<div class="field">
-
-<label>Email (optional)</label>
-
-<input
-    id="commentEmail"
-    type="email"
-    maxlength="120"
-    placeholder="Email"
->
-
-</div>
-
-<br>
-
-<div class="field">
-
-<label>Comment</label>
-
-<textarea
-    id="commentText"
-    required
-    maxlength="1000"
-    placeholder="Write your comment..."
-></textarea>
-
-</div>
-
-<div class="submit-row">
-
-<button
-    type="submit"
-    class="primary-button"
->
-Send Comment
-</button>
-
-</div>
-
-<div
-    id="commentMessage"
-    class="form-message"
-></div>
-
-</form>
-
-<div
-    id="commentList"
-    class="comment-list"
->
-Loading comments...
-</div>
-
-</div>
-
-</section>
-
-
-<!-- =====================================================
-     LEGAL
-===================================================== -->
+<!-- LEGAL -->
 
 <section id="legal" class="panel">
 
 <h2>⚖️ Legal Information</h2>
 
 <p class="panel-description">
-ALL WORLD BRANDS provides an online directory service.
-The following documents explain the main conditions
-for using the website and submitting a brand.
+Please review the legal documents before using the
+brand submission service.
 </p>
 
 <div class="legal-grid">
 
 <div class="legal-card">
 
-<h3>📜 Ommaviy oferta</h3>
+<h3>📜 Public Offer</h3>
 
 <p>
-ALL WORLD BRANDS website provides a paid brand
-submission service. By submitting a brand and
-completing payment, the customer agrees to the
-terms of the public offer.
+Terms governing the paid brand submission service,
+payment, moderation and use of the platform.
 </p>
 
 <br>
 
 <a href="#offer"
    onclick="openLegal('offer');return false;">
-Read public offer →
+Read Public Offer →
 </a>
 
 </div>
@@ -1287,19 +1102,18 @@ Read public offer →
 
 <div class="legal-card">
 
-<h3>🔐 Maxfiylik siyosati</h3>
+<h3>🔐 Privacy Policy</h3>
 
 <p>
-Personal information submitted through the website
-is used for processing applications, communication,
-moderation and providing the requested service.
+Information about personal data collection,
+processing, protection and payment-related data.
 </p>
 
 <br>
 
 <a href="#privacy"
    onclick="openLegal('privacy');return false;">
-Read privacy policy →
+Read Privacy Policy →
 </a>
 
 </div>
@@ -1307,7 +1121,7 @@ Read privacy policy →
 
 <div class="legal-card">
 
-<h3>💳 To‘lov va qaytarish</h3>
+<h3>💳 Payment & Refund Policy</h3>
 
 <p>
 The standard brand submission service fee is
@@ -1319,7 +1133,7 @@ on the server side.
 
 <a href="#refund"
    onclick="openLegal('refund');return false;">
-Read payment and refund policy →
+Read Payment & Refund Policy →
 </a>
 
 </div>
@@ -1327,19 +1141,18 @@ Read payment and refund policy →
 
 <div class="legal-card">
 
-<h3>📋 Foydalanish qoidalari</h3>
+<h3>📋 Terms of Use</h3>
 
 <p>
-Users must provide accurate information and must not
-submit unlawful, fraudulent, abusive or misleading
-content.
+Rules for lawful use of the website, brand
+submissions, content and moderation.
 </p>
 
 <br>
 
 <a href="#terms"
    onclick="openLegal('terms');return false;">
-Read terms →
+Read Terms of Use →
 </a>
 
 </div>
@@ -1349,9 +1162,7 @@ Read terms →
 </section>
 
 
-<!-- =====================================================
-     CONTACT
-===================================================== -->
+<!-- CONTACT -->
 
 <section id="info" class="panel">
 
@@ -1360,11 +1171,10 @@ Read terms →
 <p class="panel-description">
 
 ALL WORLD BRANDS is a global directory for
-discovering companies, brands and countries.
+discovering countries, companies and brands.
 
 For questions about submissions, payments,
-privacy or legal matters, contact us using the
-information below.
+privacy or legal matters, contact us below.
 
 </p>
 
@@ -1391,7 +1201,7 @@ information below.
 <a
     href="https://wa.me/998933843112"
     target="_blank"
-    rel="noopener"
+    rel="noopener noreferrer"
 >
 +998933843112
 </a>
@@ -1412,25 +1222,22 @@ allworldbrandsnet@gmail.com
 </div>
 
 
-<!-- PAYMENT LOGOS -->
-
 <div class="payment-logos">
 
 <div class="payment-logo" aria-label="Visa">
 
 <svg viewBox="0 0 100 40"
-     xmlns="http://www.w3.org/2000/svg">
+xmlns="http://www.w3.org/2000/svg">
 
 <text
-    x="50"
-    y="27"
-    text-anchor="middle"
-    font-family="Arial"
-    font-size="27"
-    font-weight="900"
-    font-style="italic"
-    fill="#1434CB"
->
+x="50"
+y="27"
+text-anchor="middle"
+font-family="Arial"
+font-size="27"
+font-weight="900"
+font-style="italic"
+fill="#1434CB">
 VISA
 </text>
 
@@ -1442,28 +1249,14 @@ VISA
 <div class="payment-logo" aria-label="Mastercard">
 
 <svg viewBox="0 0 100 40"
-     xmlns="http://www.w3.org/2000/svg">
+xmlns="http://www.w3.org/2000/svg">
 
-<circle
-    cx="42"
-    cy="20"
-    r="13"
-    fill="#EB001B"
-/>
-
-<circle
-    cx="58"
-    cy="20"
-    r="13"
-    fill="#F79E1B"
-/>
+<circle cx="42" cy="20" r="13" fill="#EB001B"/>
+<circle cx="58" cy="20" r="13" fill="#F79E1B"/>
 
 <path
-    d="M50 9
-       A13 13 0 0 0 50 31
-       A13 13 0 0 0 50 9"
-    fill="#FF5F00"
-/>
+d="M50 9 A13 13 0 0 0 50 31 A13 13 0 0 0 50 9"
+fill="#FF5F00"/>
 
 </svg>
 
@@ -1473,17 +1266,16 @@ VISA
 <div class="payment-logo" aria-label="PayPal">
 
 <svg viewBox="0 0 100 40"
-     xmlns="http://www.w3.org/2000/svg">
+xmlns="http://www.w3.org/2000/svg">
 
 <text
-    x="50"
-    y="27"
-    text-anchor="middle"
-    font-family="Arial"
-    font-size="21"
-    font-weight="900"
-    fill="#003087"
->
+x="50"
+y="27"
+text-anchor="middle"
+font-family="Arial"
+font-size="21"
+font-weight="900"
+fill="#003087">
 PayPal
 </text>
 
@@ -1499,12 +1291,11 @@ PayPal
 <footer class="footer">
 
 <div>
-© 2026
-<strong>ALL WORLD BRANDS</strong>
+© 2026 <strong>ALL WORLD BRANDS</strong>
 </div>
 
 <div>
-Global Brand Directory • Legal • Contact
+Global Directory • Legal • Contact
 </div>
 
 </footer>
@@ -1512,13 +1303,11 @@ Global Brand Directory • Legal • Contact
 </main>
 
 
-<!-- =====================================================
-     DEMO ACQUIRING PAYMENT WINDOW
-===================================================== -->
+<!-- DEMO ACQUIRING PAYMENT -->
 
 <div
-    id="paymentDemo"
-    class="payment-demo"
+id="paymentDemo"
+class="payment-demo"
 >
 
 <div class="payment-box">
@@ -1539,36 +1328,37 @@ $1.00 USD
 <strong>DEMO ACQUIRING MODE</strong><br>
 
 No real money will be charged in demo mode.
-The payment confirmation is processed by the
-server. When the bank acquiring system is ready,
-this demo payment adapter will be replaced by
-the bank's official acquiring API.
+Payment confirmation is processed by the server.
+
+When the bank acquiring system is connected,
+this demo adapter will be replaced by the bank's
+official acquiring API and server-side verification.
 
 </div>
 
 <div class="payment-actions">
 
 <button
-    class="primary-button"
-    id="demoPayButton"
-    type="button"
+class="primary-button"
+id="demoPayButton"
+type="button"
 >
-    Demo — Pay $1
+Demo — Pay $1
 </button>
 
 <button
-    class="secondary-button"
-    id="demoCancelButton"
-    type="button"
+class="secondary-button"
+id="demoCancelButton"
+type="button"
 >
-    Cancel / Back
+Cancel / Back
 </button>
 
 </div>
 
 <div
-    id="paymentMessage"
-    class="form-message"
+id="paymentMessage"
+class="form-message"
 ></div>
 
 </div>
@@ -1576,20 +1366,18 @@ the bank's official acquiring API.
 </div>
 
 
-<!-- =====================================================
-     LEGAL MODAL
-===================================================== -->
+<!-- LEGAL MODAL -->
 
 <div
-    id="legalModal"
-    class="legal-modal"
+id="legalModal"
+class="legal-modal"
 >
 
 <div class="legal-window">
 
 <button
-    class="close-legal"
-    onclick="closeLegal()"
+class="close-legal"
+onclick="closeLegal()"
 >
 ×
 </button>
@@ -1597,58 +1385,58 @@ the bank's official acquiring API.
 
 <div id="legalOffer" style="display:none">
 
-<h2>📜 Ommaviy oferta</h2>
+<h2>📜 Public Offer</h2>
 
-<h3>1. Umumiy qoidalar</h3>
+<h3>1. General Provisions</h3>
 
 <p>
-Ushbu ommaviy oferta ALL WORLD BRANDS tomonidan
-taqdim etiladigan brendni global katalogga yuborish
-xizmatidan foydalanish shartlarini belgilaydi.
+This Public Offer defines the terms for using the
+brand submission service provided by ALL WORLD BRANDS.
 </p>
 
-<h3>2. Xizmat</h3>
+<h3>2. Service</h3>
 
 <p>
-Foydalanuvchi o‘z brendi yoki kompaniyasi haqidagi
-ma'lumotlarni yuborishi mumkin. Ariza to‘lovdan
-so‘ng moderatsiya va tekshiruvdan o‘tkaziladi.
+Users may submit information about their company
+or brand for consideration in the global directory.
+Applications may be reviewed and moderated before
+publication.
 </p>
 
-<h3>3. Xizmat narxi</h3>
+<h3>3. Service Fee</h3>
 
 <p>
-Brend yuborish xizmatining standart narxi
+The standard brand submission service fee is
 <strong>$1 USD</strong>.
 </p>
 
-<h3>4. To‘lov</h3>
+<h3>4. Payment</h3>
 
 <p>
-To‘lov elektron ekvayring/to‘lov provayderi orqali
-amalga oshiriladi. To‘lovning haqiqiy holati
-server tomonidan tasdiqlanadi. Foydalanuvchi
-brauzer orqali to‘lov holatini o‘zboshimchalik bilan
-o‘zgartira olmaydi.
+Payment is processed through an electronic acquiring
+or payment provider. The actual payment status must
+be verified by the server using the payment provider's
+response. The website does not rely on a payment
+status supplied by the browser.
 </p>
 
-<h3>5. Moderatsiya</h3>
+<h3>5. Moderation</h3>
 
 <p>
-To‘lov amalga oshirilgani brend avtomatik ravishda
-e'lon qilinishini anglatmaydi. ALL WORLD BRANDS
-yuborilgan ma'lumotlarni tekshirish va noqonuniy,
-aldamchi yoki nomaqbul kontentni rad etish huquqiga ega.
+Payment does not guarantee automatic publication.
+ALL WORLD BRANDS may review, moderate or reject
+submissions containing unlawful, fraudulent,
+misleading or prohibited information.
 </p>
 
-<h3>6. Foydalanuvchi majburiyatlari</h3>
+<h3>6. User Responsibility</h3>
 
 <p>
-Foydalanuvchi taqdim etgan ma'lumotlarning to‘g‘riligi
-uchun javobgar hisoblanadi.
+The user is responsible for the accuracy and legality
+of information submitted to the platform.
 </p>
 
-<h3>7. Aloqa</h3>
+<h3>7. Contact</h3>
 
 <p>
 Email:
@@ -1660,38 +1448,41 @@ Email:
 
 <div id="legalPrivacy" style="display:none">
 
-<h2>🔐 Maxfiylik siyosati</h2>
+<h2>🔐 Privacy Policy</h2>
 
-<h3>1. Yig‘iladigan ma'lumotlar</h3>
+<h3>1. Information We May Collect</h3>
 
 <p>
-Brend yuborish vaqtida ism, aloqa ma'lumotlari,
-email, telefon, website, brend nomi, mamlakat va
-brend tavsifi kabi ma'lumotlar olinishi mumkin.
+The brand submission process may collect the brand
+name, country or territory, contact name, email,
+phone number, website, logo URL and description.
 </p>
 
-<h3>2. Maqsad</h3>
+<h3>2. Purpose of Processing</h3>
 
 <p>
-Ma'lumotlar arizani qayta ishlash, foydalanuvchi
-bilan aloqa qilish, moderatsiya, to‘lovni bog‘lash
-va xizmatni taqdim etish uchun ishlatiladi.
+Information may be used to process applications,
+communicate with users, perform moderation,
+associate payments with applications and provide
+the requested service.
 </p>
 
-<h3>3. To‘lov ma'lumotlari</h3>
+<h3>3. Payment Information</h3>
 
 <p>
-ALL WORLD BRANDS demo yoki kelajakdagi bank
-ekvayring tizimida karta maxfiy ma'lumotlarini
-o‘z bazasida saqlamasligi kerak. To‘lovni qayta
-ishlash tegishli to‘lov provayderi orqali amalga oshiriladi.
+ALL WORLD BRANDS should not store sensitive card
+information such as full card numbers, CVV codes
+or other confidential payment credentials.
+Payment processing is performed by the applicable
+payment provider or acquiring system.
 </p>
 
-<h3>4. Himoya</h3>
+<h3>4. Security</h3>
 
 <p>
-Server tomonida to‘lov holati va ma'lumotlarni
-himoyalash mexanizmlari qo‘llanadi.
+Server-side controls are used to protect application
+and payment information. Payment status must be
+confirmed by the server.
 </p>
 
 </div>
@@ -1699,38 +1490,38 @@ himoyalash mexanizmlari qo‘llanadi.
 
 <div id="legalRefund" style="display:none">
 
-<h2>💳 To‘lov va qaytarish siyosati</h2>
+<h2>💳 Payment & Refund Policy</h2>
 
-<h3>1. Narx</h3>
+<h3>1. Service Fee</h3>
 
 <p>
-Brend yuborish xizmati uchun to‘lov:
+The standard brand submission service fee is
 <strong>$1 USD</strong>.
 </p>
 
-<h3>2. To‘lovni tasdiqlash</h3>
+<h3>2. Payment Verification</h3>
 
 <p>
-To‘lov server tomonidan haqiqiy provider/bank
-javobi orqali tasdiqlanadi.
+Payment must be confirmed by the server through
+the applicable payment provider or acquiring system.
 </p>
 
-<h3>3. Qaytarish</h3>
+<h3>3. Refunds</h3>
 
 <p>
-Agar xizmat texnik sababga ko‘ra ko‘rsatilmasa
-yoki to‘lov xato tarzda yechilgan bo‘lsa,
-murojaat email orqali ko‘rib chiqiladi.
+If the service cannot be provided because of a
+technical failure or if a payment was incorrectly
+charged, the matter may be reviewed after contacting
+ALL WORLD BRANDS.
 </p>
 
-<h3>4. Moderatsiya rad etilishi</h3>
+<h3>4. Moderation Rejection</h3>
 
 <p>
-Noqonuniy, firibgarlik, spam, zararli yoki
-aldamchi ma'lumot yuborilgan hollarda ariza
-rad etilishi mumkin. Qaytarish masalasi
-to‘lov shartlari va amaldagi qonunchilik asosida
-ko‘rib chiqiladi.
+Submissions containing unlawful, fraudulent, spam,
+harmful or misleading information may be rejected.
+Refund matters are handled according to the applicable
+payment terms and applicable law.
 </p>
 
 </div>
@@ -1738,37 +1529,38 @@ ko‘rib chiqiladi.
 
 <div id="legalTerms" style="display:none">
 
-<h2>📋 Foydalanish qoidalari</h2>
+<h2>📋 Terms of Use</h2>
 
-<h3>1. Qonuniy foydalanish</h3>
+<h3>1. Lawful Use</h3>
 
 <p>
-Saytdan faqat qonuniy maqsadlarda foydalanish mumkin.
+The website may only be used for lawful purposes.
 </p>
 
-<h3>2. Taqiqlangan kontent</h3>
+<h3>2. Prohibited Content</h3>
 
 <ul>
-<li>firibgarlik;</li>
-<li>aldamchi ma'lumot;</li>
-<li>zararli dasturlar yoki havolalar;</li>
-<li>noqonuniy faoliyat;</li>
+<li>fraudulent information;</li>
+<li>misleading information;</li>
+<li>malware or harmful links;</li>
+<li>unlawful activities;</li>
 <li>spam;</li>
-<li>boshqa shaxslarning huquqlarini buzuvchi materiallar.</li>
+<li>content that violates the rights of others.</li>
 </ul>
 
-<h3>3. Brend ma'lumotlari</h3>
+<h3>3. Brand Information</h3>
 
 <p>
-Foydalanuvchi yuborgan brend ma'lumotlaridan
-foydalanish huquqiga ega ekanligini tasdiqlaydi.
+The user confirms that they have the right to submit
+the information, trademarks, logos and other materials
+provided to ALL WORLD BRANDS.
 </p>
 
-<h3>4. Admin moderatsiyasi</h3>
+<h3>4. Moderation</h3>
 
 <p>
-ALL WORLD BRANDS ma'lumotlarni tekshirish,
-tahrirlash yoki rad etish huquqiga ega.
+ALL WORLD BRANDS may review, edit, reject or remove
+information that violates these Terms or applicable law.
 </p>
 
 </div>
@@ -1807,15 +1599,6 @@ const brandMessage =
 
 const brandSubmit =
     document.getElementById("brandSubmit");
-
-const commentForm =
-    document.getElementById("commentForm");
-
-const commentList =
-    document.getElementById("commentList");
-
-const commentMessage =
-    document.getElementById("commentMessage");
 
 const paymentDemo =
     document.getElementById("paymentDemo");
@@ -1909,23 +1692,24 @@ async function loadCountries(){
 
         if(!response.ok){
             throw new Error(
-                "Countries API error"
+                "Countries could not be loaded."
             );
         }
 
-        countries =
+        const data =
             await response.json();
 
+        countries =
+            Array.isArray(data)
+                ? data
+                : (data.countries || []);
+
         resultCount.textContent =
-            `${countries.length} countries`;
+            `${countries.length} countries & territories`;
 
-        populateCountrySelect(
-            countries
-        );
+        populateCountrySelect(countries);
 
-        renderCountries(
-            countries
-        );
+        renderCountries(countries);
 
     }catch(error){
 
@@ -1940,7 +1724,7 @@ async function loadCountries(){
                 text-align:center;
                 color:#9aaabd;
             ">
-                Countries could not be loaded.
+                Countries and territories could not be loaded.
             </div>
         `;
 
@@ -1957,7 +1741,7 @@ function populateCountrySelect(list){
 
     brandCountry.innerHTML=`
         <option value="">
-            Select country
+            Select country or territory
         </option>
     `;
 
@@ -1980,7 +1764,7 @@ function populateCountrySelect(list){
 
 
 /* =========================================================
-   COUNTRIES
+   RENDER COUNTRIES
 ========================================================= */
 
 function renderCountries(list){
@@ -1988,7 +1772,7 @@ function renderCountries(list){
     grid.innerHTML="";
 
     resultCount.textContent =
-        `${list.length} countries`;
+        `${list.length} countries & territories`;
 
     if(!list.length){
 
@@ -1999,7 +1783,7 @@ function renderCountries(list){
                 text-align:center;
                 color:#8fa2b9;
             ">
-                Nothing found.
+                No country or territory found.
             </div>
         `;
 
@@ -2016,29 +1800,15 @@ function renderCountries(list){
 
         card.className="country-card";
 
-        const count =
-            Number(
-                country.brand_count || 0
-            );
-
         card.innerHTML=`
 
             <div class="country-bg"></div>
-
-            <div class="brand-count">
-                <div class="brand-count-number">
-                    ${count}
-                </div>
-
-                <div class="brand-count-label">
-                    BRANDS
-                </div>
-            </div>
 
             <div class="country-content">
 
                 <div class="country-flag">
                     ${escapeHtml(
+                        country.flag ||
                         countryFlag(country.code)
                     )}
                 </div>
@@ -2048,7 +1818,7 @@ function renderCountries(list){
                 </div>
 
                 <div class="country-code">
-                    ${escapeHtml(country.code)}
+                    ${escapeHtml(country.code || "")}
                 </div>
 
             </div>
@@ -2078,23 +1848,18 @@ async function loadCountryBrands(country){
 
         const response =
             await fetch(
-                `/api/countries/${country.id}/brands`
+                `/api/countries/${encodeURIComponent(country.id)}/brands`,
+                {cache:"no-store"}
             );
 
         if(!response.ok){
             throw new Error(
-                "Brands could not be loaded"
+                "Brands could not be loaded."
             );
         }
 
         const data =
             await response.json();
-
-        /*
-         * Compatible with both:
-         * array response
-         * and {country,brands} response
-         */
 
         const brands =
             Array.isArray(data)
@@ -2104,7 +1869,7 @@ async function loadCountryBrands(country){
         if(!brands.length){
 
             alert(
-                `${country.name}: no brands yet.`
+                `${country.name}\n\nNo brands have been added yet.`
             );
 
             return;
@@ -2169,6 +1934,12 @@ function filterCountries(value){
                 String(country.code || "")
                     .toLowerCase()
                     .includes(query)
+
+                ||
+
+                String(country.type || "")
+                    .toLowerCase()
+                    .includes(query)
             );
 
         });
@@ -2201,7 +1972,6 @@ clearSearch.addEventListener(
 
 /* =========================================================
    BRAND APPLICATION
-   SERVER CREATES UNPAID APPLICATION
 ========================================================= */
 
 brandForm.addEventListener(
@@ -2220,13 +1990,13 @@ brandForm.addEventListener(
         try{
 
             /*
-             * IMPORTANT:
-             * Payment status is NOT sent by frontend.
+             * The browser never sends payment_status.
+             * The server creates an unpaid application.
              */
 
             const applicationResponse =
                 await fetch(
-                    "/api/brand-applications",
+                    "/api/applications",
                     {
                         method:"POST",
 
@@ -2241,40 +2011,46 @@ brandForm.addEventListener(
                                 document
                                 .getElementById(
                                     "brandName"
-                                ).value,
+                                ).value.trim(),
 
-                            country_id:
+                            country:
                                 brandCountry.value,
 
                             logo:
                                 document
                                 .getElementById(
                                     "brandLogo"
-                                ).value,
+                                ).value.trim(),
 
                             website:
                                 document
                                 .getElementById(
                                     "brandWebsite"
-                                ).value,
+                                ).value.trim(),
 
                             description:
                                 document
                                 .getElementById(
                                     "brandDescription"
-                                ).value,
+                                ).value.trim(),
 
                             contact_name:
                                 document
                                 .getElementById(
                                     "contactName"
-                                ).value,
+                                ).value.trim(),
 
                             contact_phone:
                                 document
                                 .getElementById(
                                     "contactPhone"
-                                ).value
+                                ).value.trim(),
+
+                            email:
+                                document
+                                .getElementById(
+                                    "contactEmail"
+                                ).value.trim()
 
                         })
                     }
@@ -2287,17 +2063,27 @@ brandForm.addEventListener(
 
                 throw new Error(
                     application.error ||
-                    "Application failed"
+                    "Application could not be created."
                 );
 
             }
 
             currentSubmissionId =
-                application.application_id;
+                application.application_id ||
+                application.id;
+
+
+            if(!currentSubmissionId){
+
+                throw new Error(
+                    "The server did not return an application ID."
+                );
+
+            }
 
 
             /*
-             * Ask server to create payment.
+             * Ask the server to create the payment.
              */
 
             const paymentResponse =
@@ -2325,17 +2111,16 @@ brandForm.addEventListener(
 
                 throw new Error(
                     payment.error ||
-                    "Payment creation failed"
+                    "Payment could not be created."
                 );
 
             }
 
 
             /*
-             * Real bank/payment provider URL:
-             *
-             * If supplied by the server,
-             * redirect to it.
+             * When the bank/acquirer is connected,
+             * the server can return the official
+             * payment URL.
              */
 
             if(payment.payment_url){
@@ -2348,13 +2133,12 @@ brandForm.addEventListener(
 
 
             /*
-             * Demo acquiring mode.
+             * Current DEMO acquiring mode.
              */
 
             paymentDemo.classList.add("active");
 
-            paymentMessage.textContent =
-                "";
+            paymentMessage.textContent="";
 
         }catch(error){
 
@@ -2401,21 +2185,13 @@ document
         button.textContent =
             "Processing...";
 
-        paymentMessage.textContent =
-            "";
+        paymentMessage.textContent="";
 
         try{
 
             /*
-             * IMPORTANT:
-             * Browser does NOT directly set paid.
-             *
-             * The server demo payment endpoint
-             * changes status.
-             *
-             * Later this request is replaced
-             * with the official bank callback/
-             * acquiring verification.
+             * Demo confirmation is still server-side.
+             * The browser never directly sets payment_status.
              */
 
             const response =
@@ -2443,21 +2219,21 @@ document
 
                 throw new Error(
                     data.error ||
-                    "Payment failed"
+                    "Payment failed."
                 );
 
             }
 
             paymentMessage.textContent =
-                "Payment confirmed by server.";
+                "Payment confirmed by the server.";
 
             brandMessage.innerHTML = `
                 <strong style="color:#8dffb5">
                     Payment successful.
                 </strong>
                 <br>
-                Your brand application has been
-                received and is waiting for moderation.
+                Your brand application has been received
+                and is waiting for moderation.
             `;
 
             paymentDemo.classList.remove("active");
@@ -2486,7 +2262,7 @@ document
 
 
 /* =========================================================
-   CANCEL / BACK PAYMENT
+   CANCEL / BACK
 ========================================================= */
 
 document
@@ -2495,183 +2271,12 @@ document
     "click",
     ()=>{
 
-        /*
-         * IMPORTANT:
-         * Application remains UNPAID.
-         * User can try payment again.
-         */
-
         paymentDemo.classList.remove("active");
 
         paymentMessage.textContent="";
 
         brandMessage.textContent =
-            "Payment cancelled. Your application was not marked as paid.";
-
-    }
-);
-
-
-/* =========================================================
-   COMMENTS
-========================================================= */
-
-async function loadComments(){
-
-    try{
-
-        const response =
-            await fetch(
-                "/api/comments",
-                {cache:"no-store"}
-            );
-
-        if(!response.ok){
-            throw new Error(
-                "Comments error"
-            );
-        }
-
-        const comments =
-            await response.json();
-
-        if(!comments.length){
-
-            commentList.innerHTML=`
-                <div class="comment">
-                    No comments yet.
-                    Be the first!
-                </div>
-            `;
-
-            return;
-        }
-
-        commentList.innerHTML =
-            comments
-            .map(
-                comment=>`
-
-                    <div class="comment">
-
-                        <div class="comment-name">
-                            ${escapeHtml(
-                                comment.name
-                            )}
-                        </div>
-
-                        <div class="comment-text">
-                            ${escapeHtml(
-                                comment.comment
-                            )}
-                        </div>
-
-                    </div>
-                `
-            )
-            .join("");
-
-    }catch(error){
-
-        console.error(error);
-
-        commentList.textContent =
-            "Comments could not be loaded.";
-
-    }
-
-}
-
-
-commentForm.addEventListener(
-    "submit",
-    async event=>{
-
-        event.preventDefault();
-
-        commentMessage.textContent =
-            "Sending...";
-
-        try{
-
-            /*
-             * Public comments in the current
-             * server schema require a brand_id
-             * or country_id.
-             *
-             * We attach a neutral country
-             * when available.
-             */
-
-            const firstCountry =
-                countries.length
-                    ? countries[0].id
-                    : null;
-
-            const response =
-                await fetch(
-                    "/api/comments",
-                    {
-                        method:"POST",
-
-                        headers:{
-                            "Content-Type":
-                                "application/json"
-                        },
-
-                        body:JSON.stringify({
-
-                            name:
-                                document
-                                .getElementById(
-                                    "commentName"
-                                ).value,
-
-                            email:
-                                document
-                                .getElementById(
-                                    "commentEmail"
-                                ).value,
-
-                            comment:
-                                document
-                                .getElementById(
-                                    "commentText"
-                                ).value,
-
-                            country_id:
-                                firstCountry
-
-                        })
-                    }
-                );
-
-            const data =
-                await response.json();
-
-            if(!response.ok){
-
-                throw new Error(
-                    data.error ||
-                    "Comment failed"
-                );
-
-            }
-
-            commentMessage.textContent =
-                "Comment added.";
-
-            commentForm.reset();
-
-            loadComments();
-
-        }catch(error){
-
-            commentMessage.textContent =
-                error.message ||
-                "Something went wrong.";
-
-        }
+            "Payment cancelled. The application remains unpaid.";
 
     }
 );
@@ -2732,12 +2337,52 @@ function closeLegal(){
 
 
 /* =========================================================
+   ESC KEY
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    event=>{
+
+        if(event.key==="Escape"){
+
+            closeLegal();
+
+            paymentDemo.classList.remove("active");
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   CLICK OUTSIDE LEGAL MODAL
+========================================================= */
+
+document
+.getElementById("legalModal")
+.addEventListener(
+    "click",
+    event=>{
+
+        if(
+            event.target.id === "legalModal"
+        ){
+
+            closeLegal();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
    START
 ========================================================= */
 
 loadCountries();
-
-loadComments();
 
 </script>
 
