@@ -2576,10 +2576,14 @@ function renderCountries(list){
 
             card.addEventListener(
                 "click",
-                () =>
-                    loadCountryBrands(
-                        country
-                    )
+                () => {
+                    const id = Number(country.id);
+                    if (!Number.isInteger(id) || id <= 0) {
+                        console.error("Invalid country id", country);
+                        return;
+                    }
+                    window.location.href = `/country/${encodeURIComponent(id)}`;
+                }
             );
 
 
