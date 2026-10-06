@@ -2995,7 +2995,7 @@ function renderSeoShell({ title, description, canonical, body, jsonLd }) {
 <script type="application/ld+json">${JSON.stringify(jsonLd).replace(/</g, "\\u003c")}</script>
 <style>body{font-family:Arial,Helvetica,sans-serif;max-width:1000px;margin:0 auto;padding:24px;background:#030711;color:#f5f7ff;line-height:1.6}a{color:#8ec5ff}header{margin-bottom:28px}h1{line-height:1.2}.card{padding:18px;border:1px solid #273047;border-radius:14px;margin:12px 0;background:#0b1222}small{opacity:.7}</style>
 </head>
-<body>${body}</body>
+<body><p><a href="${htmlEscape(SITE_URL)}/">← Back to ALL WORLD BRANDS</a></p>${body}</body>
 </html>`;
 }
 
