@@ -53,9 +53,30 @@ app.use(
     })
 );
 
+/* =========================================================
+   PUBLIC STATIC FILES
+
+   IMPORTANT:
+   /public/admin/admin.html must NOT be accessible
+   without Basic Authentication.
+========================================================= */
+
+app.use((req, res, next) => {
+    if (
+        req.path === "/admin" ||
+        req.path === "/admin/" ||
+        req.path === "/admin/admin.html"
+    ) {
+        return requireAdmin(req, res, next);
+    }
+
+    next();
+});
+
 app.use(
     express.static(
-        path.join(__dirname, "public")
+        path.join(__dirname, "public"),
+        { index: false }
     )
 );
 
@@ -2484,6 +2505,7 @@ app.get(
             path.join(
                 __dirname,
                 "public",
+                "admin",
                 "admin.html"
             )
         );
@@ -2978,118 +3000,35 @@ ${urls.map(url => `
    COUNTRY PAGE
 ========================================================= */
 
-function renderSeoShell({ title, description, canonical, body, jsonLd }) {
-    return `<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${htmlEscape(title)}</title>
-<meta name="description" content="${htmlEscape(description)}">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="${htmlEscape(canonical)}">
-<meta property="og:type" content="website">
-<meta property="og:title" content="${htmlEscape(title)}">
-<meta property="og:description" content="${htmlEscape(description)}">
-<meta property="og:url" content="${htmlEscape(canonical)}">
-<script type="application/ld+json">${JSON.stringify(jsonLd).replace(/</g, "\\u003c")}</script>
-<style>body{font-family:Arial,Helvetica,sans-serif;max-width:1000px;margin:0 auto;padding:24px;background:#030711;color:#f5f7ff;line-height:1.6}a{color:#8ec5ff}header{margin-bottom:28px}h1{line-height:1.2}.card{padding:18px;border:1px solid #273047;border-radius:14px;margin:12px 0;background:#0b1222}small{opacity:.7}</style>
-</head>
-<body><p><a href="${htmlEscape(SITE_URL)}/">← Back to ALL WORLD BRANDS</a></p>${body}</body>
-</html>`;
-}
-
-/* =========================================================
-   SEO COUNTRY PAGE
-========================================================= */
-
 app.get(
     "/country/:id",
     (req, res) => {
-        const id = safeInteger(req.params.id);
-        if (!id) return res.status(404).send("Country not found");
 
-        const country = db.prepare(`
-            SELECT id, name, code, type
-            FROM countries
-            WHERE id = ?
-        `).get(id);
-
-        if (!country) return res.status(404).send("Country not found");
-
-        const brands = db.prepare(`
-            SELECT id, name, description, website
-            FROM brands
-            WHERE country_id = ?
-            ORDER BY name COLLATE NOCASE
-        `).all(id);
-
-        const canonical = `${SITE_URL}/country/${country.id}`;
-        const description = `${country.name} brands and companies in the ALL WORLD BRANDS global directory.`;
-        const list = brands.length
-            ? brands.map(b => `<div class="card"><h2><a href="${SITE_URL}/brand/${b.id}">${htmlEscape(b.name)}</a></h2>${b.description ? `<p>${htmlEscape(b.description)}</p>` : ""}${b.website ? `<small>${htmlEscape(b.website)}</small>` : ""}</div>`).join("")
-            : `<div class="card"><p>No brands have been published for ${htmlEscape(country.name)} yet.</p></div>`;
-
-        const body = `
-<header><p><a href="${SITE_URL}/">ALL WORLD BRANDS</a></p><h1>${htmlEscape(country.name)} Brands</h1><p>Discover brands and companies associated with ${htmlEscape(country.name)}.</p></header>
-<section><h2>Brands from ${htmlEscape(country.name)}</h2>${list}</section>`;
-
-        res.type("html").send(renderSeoShell({
-            title: `${country.name} Brands — ALL WORLD BRANDS`,
-            description,
-            canonical,
-            body,
-            jsonLd: {
-                "@context": "https://schema.org",
-                "@type": "CollectionPage",
-                name: `${country.name} Brands`,
-                url: canonical,
-                description
-            }
-        }));
+        res.sendFile(
+            path.join(
+                __dirname,
+                "public",
+                "country.html"
+            )
+        );
     }
 );
 
 /* =========================================================
-   SEO BRAND PAGE
+   BRAND PAGE
 ========================================================= */
 
 app.get(
     "/brand/:id",
     (req, res) => {
-        const id = safeInteger(req.params.id);
-        if (!id) return res.status(404).send("Brand not found");
 
-        const brand = db.prepare(`
-            SELECT b.id, b.name, b.description, b.website, b.logo,
-                   c.id AS country_id, c.name AS country_name, c.code AS country_code
-            FROM brands b
-            JOIN countries c ON c.id = b.country_id
-            WHERE b.id = ?
-        `).get(id);
-
-        if (!brand) return res.status(404).send("Brand not found");
-
-        const canonical = `${SITE_URL}/brand/${brand.id}`;
-        const description = `${brand.name} — brand from ${brand.country_name}, listed in the ALL WORLD BRANDS global directory.`;
-        const body = `
-<header><p><a href="${SITE_URL}/">ALL WORLD BRANDS</a></p><h1>${htmlEscape(brand.name)}</h1><p><strong>Country:</strong> <a href="${SITE_URL}/country/${brand.country_id}">${htmlEscape(brand.country_name)}</a></p></header>
-<section class="card">${brand.logo ? `<p><img src="${htmlEscape(brand.logo)}" alt="${htmlEscape(brand.name)} logo" style="max-width:180px;max-height:120px"></p>` : ""}${brand.description ? `<p>${htmlEscape(brand.description)}</p>` : `<p>${htmlEscape(brand.name)} is listed in the ALL WORLD BRANDS directory.</p>`}${brand.website ? `<p><a href="${htmlEscape(brand.website)}" rel="nofollow noopener">Official website</a></p>` : ""}</section>`;
-
-        res.type("html").send(renderSeoShell({
-            title: `${brand.name} — ${brand.country_name} | ALL WORLD BRANDS`,
-            description,
-            canonical,
-            body,
-            jsonLd: {
-                "@context": "https://schema.org",
-                "@type": "Brand",
-                name: brand.name,
-                url: canonical,
-                description,
-                logo: brand.logo || undefined
-            }
-        }));
+        res.sendFile(
+            path.join(
+                __dirname,
+                "public",
+                "brand.html"
+            )
+        );
     }
 );
 
